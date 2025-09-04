@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeCategory: 'overview', activeFramework: 'xunit' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Assertive - Fluent Assertions for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-primary-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-primary-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-primary-100 dark:bg-primary-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-primary-600 dark:text-primary-400">Assertive</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    A fluent assertion library that makes your tests readable, intuitive, and expressive with zero runtime dependencies. Transform your test code into self-documenting specifications.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#examples" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">95%+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">Zero</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Dependencies</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">15+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Assertion Methods</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">100%</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Fluent API</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Noundry.Assertive?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Designed specifically for .NET developers who want readable, expressive tests without the complexity.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Fluent & Readable</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Write tests that read like natural language with intuitive fluent API design and method chaining.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Zero Dependencies</h3>
+                    <p class="text-gray-600 dark:text-gray-300">No external dependencies means cleaner package references and faster build times for your test projects.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Clear Error Messages</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Detailed error messages with expected vs actual values help you debug test failures quickly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 2 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Noundry.Assertive and start writing fluent, readable test assertions.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-primary-500">$ dotnet add package Noundry.Assertive</div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-3">Or add to your .csproj:</p>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm mt-2">
+                            <div class="text-gray-300">&lt;PackageReference Include="Noundry.Assertive" Version="1.0.0" /&gt;</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Add Using Statement</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Start Asserting</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsNotNull</span>();</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">ProductTests.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Xunit</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductTests</span>
+{
+    <span class="text-blue-400">[Fact]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">CreateProduct_ShouldReturnValidProduct</span>()
+    {
+        <span class="text-gray-500">// Act</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Product</span>(<span class="text-orange-400">"Laptop"</span>, <span class="text-orange-400">999.99m</span>, <span class="text-orange-400">10</span>);
+        
+        <span class="text-gray-500">// Assert - Fluent and readable</span>
+        <span class="text-blue-400">product</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsNotNull</span>()
+            .<span class="text-green-400">IsOfType</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span> == <span class="text-orange-400">"Laptop"</span>, <span class="text-orange-400">"Product name should match"</span>)
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> > <span class="text-orange-400">0</span>, <span class="text-orange-400">"Price should be positive"</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Complete API Reference</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Comprehensive assertion methods for all your testing scenarios.
+                </p>
+            </div>
+            
+            <!-- Category Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeCategory = 'core'" 
+                            :class="activeCategory === 'core' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Core Assertions
+                    </button>
+                    <button @click="activeCategory = 'type'" 
+                            :class="activeCategory === 'type' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Type Assertions
+                    </button>
+                    <button @click="activeCategory = 'collection'" 
+                            :class="activeCategory === 'collection' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Collections
+                    </button>
+                    <button @click="activeCategory = 'numeric'" 
+                            :class="activeCategory === 'numeric' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Numeric
+                    </button>
+                    <button @click="activeCategory = 'custom'" 
+                            :class="activeCategory === 'custom' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Custom
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Core Assertions -->
+            <div x-show="activeCategory === 'core'" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsNotNull()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures the object isn't null</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsNotNull()
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsNull()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures the object is null</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsNull()
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsEqualTo(value)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Checks equality with expected value</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsEqualTo(42)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsNotEqualTo(value)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Checks inequality with specified value</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsNotEqualTo(0)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Type Assertions -->
+            <div x-show="activeCategory === 'type'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsOfType&lt;T&gt;()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Checks object's exact type</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsOfType&lt;Product&gt;()
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsNotOfType&lt;T&gt;()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures object isn't the specified type</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        result.Assert().IsNotOfType&lt;string&gt;()
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Collection Assertions -->
+            <div x-show="activeCategory === 'collection'" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Contains(item)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures collection contains the item</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        list.Assert().Contains(3)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">DoesNotContain(item)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures collection doesn't contain item</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        list.Assert().DoesNotContain(10)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsEmpty&lt;T&gt;()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures collection is empty</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        list.Assert().IsEmpty&lt;int&gt;()
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsNotEmpty&lt;T&gt;()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures collection is not empty</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        list.Assert().IsNotEmpty&lt;int&gt;()
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">HasCount&lt;T&gt;(count)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures collection has specific count</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        list.Assert().HasCount&lt;int&gt;(5)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Numeric Assertions -->
+            <div x-show="activeCategory === 'numeric'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">IsInRange(min, max)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Checks if value is within range (inclusive)</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        age.Assert().IsInRange(18, 65)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Custom Assertions -->
+            <div x-show="activeCategory === 'custom'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Satisfies(predicate, message)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Validates custom conditions</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        user.Assert().Satisfies(u => u.IsValid)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Fails(predicate, message)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Ensures object doesn't match condition</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        user.Assert().Fails(u => u.IsExpired)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">WithContext(context)</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Adds context to error messages</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        user.Assert().WithContext("User validation")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-World Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Learn from practical examples showing Noundry.Assertive in action across different testing scenarios.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- Basic String Assertions -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">String & Basic Assertions</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Test string values, null checks, and basic equality with fluent, readable assertions.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Fluent method chaining</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Clear assertion intent</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Self-documenting tests</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ProcessMessage_ShouldReturnFormattedString</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">input</span> = <span class="text-orange-400">"Hello, World!"</span>;
+    
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-blue-400">messageService</span>.<span class="text-green-400">ProcessMessage</span>(<span class="text-blue-400">input</span>);
+    
+    <span class="text-gray-500">// Assert - Fluent and readable</span>
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">IsNotNull</span>()
+        .<span class="text-green-400">IsOfType</span>&lt;<span class="text-purple-400">string</span>&gt;()
+        .<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">"HELLO, WORLD!"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">s</span> => <span class="text-blue-400">s</span>.<span class="text-green-400">Length</span> > <span class="text-orange-400">5</span>, <span class="text-orange-400">"Should have content"</span>);
+        
+    <span class="text-gray-500">// Test null scenarios</span>
+    <span class="text-purple-400">string</span> <span class="text-blue-400">nullResult</span> = <span class="text-purple-400">null</span>;
+    <span class="text-blue-400">nullResult</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsNull</span>();
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Numeric Assertions -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Numeric & Range Assertions</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Validate numeric values, ranges, and mathematical operations with expressive assertions.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Range validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Mathematical operations</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Business rule validation</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">CalculateDiscount_ShouldReturnValidDiscount</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">originalPrice</span> = <span class="text-orange-400">100m</span>;
+    <span class="text-purple-400">var</span> <span class="text-blue-400">discountPercent</span> = <span class="text-orange-400">20</span>;
+    
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">discountedPrice</span> = <span class="text-blue-400">calculator</span>.<span class="text-green-400">ApplyDiscount</span>(<span class="text-blue-400">originalPrice</span>, <span class="text-blue-400">discountPercent</span>);
+    
+    <span class="text-gray-500">// Assert - Numeric validations</span>
+    <span class="text-blue-400">discountedPrice</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">IsNotNull</span>()
+        .<span class="text-green-400">IsOfType</span>&lt;<span class="text-purple-400">decimal</span>&gt;()
+        .<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">80m</span>)
+        .<span class="text-green-400">IsInRange</span>(<span class="text-orange-400">0m</span>, <span class="text-blue-400">originalPrice</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">price</span> => <span class="text-blue-400">price</span> < <span class="text-blue-400">originalPrice</span>, 
+                   <span class="text-orange-400">"Discounted price should be less than original"</span>);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collection Testing -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Collection & List Testing</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Test collections, lists, and arrays with intuitive assertions for common scenarios.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Count and emptiness checks</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Contains and membership tests</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Generic type safety</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">GetActiveUsers_ShouldReturnFilteredList</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">users</span> = <span class="text-blue-400">CreateTestUsers</span>();
+    
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">activeUsers</span> = <span class="text-blue-400">userService</span>.<span class="text-green-400">GetActiveUsers</span>(<span class="text-blue-400">users</span>);
+    
+    <span class="text-gray-500">// Assert - Collection validations</span>
+    <span class="text-blue-400">activeUsers</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">IsNotNull</span>()
+        .<span class="text-green-400">IsNotEmpty</span>&lt;<span class="text-yellow-400">User</span>&gt;()
+        .<span class="text-green-400">HasCount</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-orange-400">3</span>)
+        .<span class="text-green-400">Contains</span>(<span class="text-blue-400">users</span>.<span class="text-green-400">First</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">IsActive</span>))
+        .<span class="text-green-400">DoesNotContain</span>(<span class="text-blue-400">users</span>.<span class="text-green-400">First</span>(<span class="text-blue-400">u</span> => !<span class="text-blue-400">u</span>.<span class="text-green-400">IsActive</span>));
+        
+    <span class="text-gray-500">// Validate each user in collection</span>
+    <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">user</span> <span class="text-purple-400">in</span> <span class="text-blue-400">activeUsers</span>)
+    {
+        <span class="text-blue-400">user</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">IsActive</span>, <span class="text-orange-400">"User should be active"</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Custom Objects with Context -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Custom Objects & Context</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Test complex objects with contextual information and custom validation predicates.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Contextual error messages</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Custom validation logic</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Domain-specific assertions</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">CreateOrder_ShouldReturnValidOrder</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">customer</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Customer</span> { <span class="text-green-400">Id</span> = <span class="text-orange-400">1</span>, <span class="text-green-400">Name</span> = <span class="text-orange-400">"John Doe"</span> };
+    <span class="text-purple-400">var</span> <span class="text-blue-400">items</span> = <span class="text-blue-400">CreateTestItems</span>();
+    
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">order</span> = <span class="text-blue-400">orderService</span>.<span class="text-green-400">CreateOrder</span>(<span class="text-blue-400">customer</span>, <span class="text-blue-400">items</span>);
+    
+    <span class="text-gray-500">// Assert with context</span>
+    <span class="text-blue-400">order</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">WithContext</span>(<span class="text-orange-400">"Order creation validation"</span>)
+        .<span class="text-green-400">IsNotNull</span>()
+        .<span class="text-green-400">IsOfType</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Customer</span>.<span class="text-green-400">Id</span> == <span class="text-orange-400">1</span>, <span class="text-orange-400">"Customer should match"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Items</span>.<span class="text-green-400">Count</span> > <span class="text-orange-400">0</span>, <span class="text-orange-400">"Should have items"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Total</span> > <span class="text-orange-400">0</span>, <span class="text-orange-400">"Total should be positive"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Status</span> == <span class="text-yellow-400">OrderStatus</span>.<span class="text-green-400">Pending</span>, 
+                   <span class="text-orange-400">"New order should be pending"</span>);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Exception Testing -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Advanced Testing Patterns</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Combine Assertive with complex testing scenarios including exception handling and edge cases.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Method chaining validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Complex predicate logic</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Edge case handling</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">ProcessPayment_ShouldHandleValidTransaction</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">payment</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Payment</span> 
+    { 
+        <span class="text-green-400">Amount</span> = <span class="text-orange-400">99.99m</span>, 
+        <span class="text-green-400">Currency</span> = <span class="text-orange-400">"USD"</span>,
+        <span class="text-green-400">Method</span> = <span class="text-yellow-400">PaymentMethod</span>.<span class="text-green-400">CreditCard</span>
+    };
+    
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">paymentService</span>.<span class="text-green-400">ProcessAsync</span>(<span class="text-blue-400">payment</span>);
+    
+    <span class="text-gray-500">// Assert - Complex validation chain</span>
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">WithContext</span>(<span class="text-orange-400">"Payment processing result"</span>)
+        .<span class="text-green-400">IsNotNull</span>()
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">r</span> => <span class="text-blue-400">r</span>.<span class="text-green-400">IsSuccess</span>, <span class="text-orange-400">"Payment should succeed"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">r</span> => !<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">r</span>.<span class="text-green-400">TransactionId</span>),
+                   <span class="text-orange-400">"Should have transaction ID"</span>)
+        .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">r</span> => <span class="text-blue-400">r</span>.<span class="text-green-400">ProcessedAt</span> <= <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>,
+                   <span class="text-orange-400">"Processing time should be valid"</span>)
+        .<span class="text-green-400">Fails</span>(<span class="text-blue-400">r</span> => <span class="text-blue-400">r</span>.<span class="text-green-400">HasErrors</span>, <span class="text-orange-400">"Should not have errors"</span>);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Test Framework Integration -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Test Framework Integration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Noundry.Assertive works seamlessly with all popular .NET testing frameworks.
+                </p>
+            </div>
+            
+            <!-- Framework Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex space-x-1">
+                    <button @click="activeFramework = 'xunit'" 
+                            :class="activeFramework === 'xunit' ? 'bg-white dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        xUnit
+                    </button>
+                    <button @click="activeFramework = 'nunit'" 
+                            :class="activeFramework === 'nunit' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        NUnit
+                    </button>
+                    <button @click="activeFramework = 'mstest'" 
+                            :class="activeFramework === 'mstest' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        MSTest
+                    </button>
+                </div>
+            </div>
+            
+            <!-- xUnit Integration -->
+            <div x-show="activeFramework === 'xunit'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        xUnit Integration
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Perfect integration with xUnit.net for modern .NET testing with theories and parameterized tests.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package xunit
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package xunit.runner.visualstudio
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package Noundry.Assertive
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Xunit</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">CalculatorTests</span>
+{
+    <span class="text-blue-400">[Fact]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Add_TwoNumbers_ShouldReturnSum</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Calculator</span>().<span class="text-green-400">Add</span>(<span class="text-orange-400">2</span>, <span class="text-orange-400">3</span>);
+        <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">5</span>);
+    }
+    
+    <span class="text-blue-400">[Theory]</span>
+    <span class="text-blue-400">[InlineData(1, 2, 3)]</span>
+    <span class="text-blue-400">[InlineData(10, 15, 25)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Add_ParameterizedTest</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">a</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">b</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">expected</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Calculator</span>().<span class="text-green-400">Add</span>(<span class="text-blue-400">a</span>, <span class="text-blue-400">b</span>);
+        <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsEqualTo</span>(<span class="text-blue-400">expected</span>)
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">r</span> => <span class="text-blue-400">r</span> >= <span class="text-blue-400">a</span> && <span class="text-blue-400">r</span> >= <span class="text-blue-400">b</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NUnit Integration -->
+            <div x-show="activeFramework === 'nunit'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        NUnit Integration
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Seamless integration with NUnit testing framework for comprehensive test suites.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package NUnit
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package NUnit3TestAdapter
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package Noundry.Assertive
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">NUnit.Framework</span>;
+
+<span class="text-blue-400">[TestFixture]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">StringHelperTests</span>
+{
+    <span class="text-blue-400">[Test]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">FormatName_ShouldCapitalize</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-yellow-400">StringHelper</span>.<span class="text-green-400">FormatName</span>(<span class="text-orange-400">"john doe"</span>);
+        
+        <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsNotNull</span>()
+            .<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">"John Doe"</span>);
+    }
+    
+    <span class="text-blue-400">[TestCase("", ExpectedResult = true)]</span>
+    <span class="text-blue-400">[TestCase(null, ExpectedResult = true)]</span>
+    <span class="text-blue-400">[TestCase("test", ExpectedResult = false)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-green-400">IsNullOrEmpty_TestCases</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">input</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">input</span>);
+        
+        <span class="text-gray-500">// Can be used in expression context</span>
+        <span class="text-purple-400">return</span> <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsOfType</span>&lt;<span class="text-purple-400">bool</span>&gt;().<span class="text-green-400">Value</span>;
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MSTest Integration -->
+            <div x-show="activeFramework === 'mstest'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        MSTest Integration
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Full support for Microsoft's MSTest framework with data-driven testing capabilities.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package MSTest.TestFramework
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package MSTest.TestAdapter
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package Noundry.Assertive
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Microsoft.VisualStudio.TestTools.UnitTesting</span>;
+
+<span class="text-blue-400">[TestClass]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">DataServiceTests</span>
+{
+    <span class="text-blue-400">[TestMethod]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">GetUser_WithValidId_ShouldReturnUser</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">user</span> = <span class="text-blue-400">dataService</span>.<span class="text-green-400">GetUser</span>(<span class="text-orange-400">1</span>);
+        
+        <span class="text-blue-400">user</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsNotNull</span>()
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">Id</span> == <span class="text-orange-400">1</span>);
+    }
+    
+    <span class="text-blue-400">[DataTestMethod]</span>
+    <span class="text-blue-400">[DataRow("test@example.com", true)]</span>
+    <span class="text-blue-400">[DataRow("invalid-email", false)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ValidateEmail_TestCases</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">email</span>, <span class="text-purple-400">bool</span> <span class="text-blue-400">expected</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-blue-400">validator</span>.<span class="text-green-400">IsValidEmail</span>(<span class="text-blue-400">email</span>);
+        
+        <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsEqualTo</span>(<span class="text-blue-400">expected</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NUnit Integration -->
+            <div x-show="activeFramework === 'nunit'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        NUnit Integration
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Works beautifully with NUnit's rich assertion framework and test case attributes.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package NUnit
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package NUnit3TestAdapter
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package Noundry.Assertive
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">NUnit.Framework</span>;
+
+<span class="text-blue-400">[TestFixture]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">OrderServiceTests</span>
+{
+    <span class="text-blue-400">[SetUp]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Setup</span>()
+    {
+        <span class="text-blue-400">_orderService</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">OrderService</span>();
+    }
+    
+    <span class="text-blue-400">[Test]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">CreateOrder_ShouldGenerateOrderNumber</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">order</span> = <span class="text-blue-400">_orderService</span>.<span class="text-green-400">CreateOrder</span>();
+        
+        <span class="text-blue-400">order</span>.<span class="text-green-400">OrderNumber</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsNotNull</span>()
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">on</span> => <span class="text-blue-400">on</span>.<span class="text-green-400">StartsWith</span>(<span class="text-orange-400">"ORD-"</span>));
+    }
+    
+    <span class="text-blue-400">[TestCase(0, ExpectedResult = false)]</span>
+    <span class="text-blue-400">[TestCase(-1, ExpectedResult = false)]</span>
+    <span class="text-blue-400">[TestCase(1, ExpectedResult = true)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-green-400">IsValidQuantity_TestCases</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">quantity</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-blue-400">_orderService</span>.<span class="text-green-400">IsValidQuantity</span>(<span class="text-blue-400">quantity</span>);
+        
+        <span class="text-purple-400">return</span> <span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsOfType</span>&lt;<span class="text-purple-400">bool</span>&gt;().<span class="text-green-400">Value</span>;
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MSTest Integration -->
+            <div x-show="activeFramework === 'mstest'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        MSTest Integration
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Native integration with Microsoft's testing framework for enterprise and Visual Studio environments.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package MSTest.TestFramework
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package MSTest.TestAdapter
+                        </div>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                            dotnet add package Noundry.Assertive
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Microsoft.VisualStudio.TestTools.UnitTesting</span>;
+
+<span class="text-blue-400">[TestClass]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">BusinessLogicTests</span>
+{
+    <span class="text-blue-400">[TestInitialize]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Initialize</span>()
+    {
+        <span class="text-blue-400">_businessService</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">BusinessService</span>();
+    }
+    
+    <span class="text-blue-400">[TestMethod]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">CalculateTotal_ShouldIncludeTax</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">total</span> = <span class="text-blue-400">_businessService</span>.<span class="text-green-400">CalculateTotal</span>(<span class="text-orange-400">100m</span>, <span class="text-orange-400">0.08m</span>);
+        
+        <span class="text-blue-400">total</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">WithContext</span>(<span class="text-orange-400">"Tax calculation"</span>)
+            .<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">108m</span>)
+            .<span class="text-green-400">IsInRange</span>(<span class="text-orange-400">100m</span>, <span class="text-orange-400">200m</span>);
+    }
+    
+    <span class="text-blue-400">[DataTestMethod]</span>
+    <span class="text-blue-400">[DataRow(100, 0.05, 105)]</span>
+    <span class="text-blue-400">[DataRow(200, 0.10, 220)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">TaxCalculation_DataDriven</span>(<span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">rate</span>, <span class="text-purple-404">decimal</span> <span class="text-blue-404">expected</span>)
+    {
+        <span class="text-purple-404">var</span> <span class="text-blue-404">result</span> = <span class="text-blue-404">_businessService</span>.<span class="text-green-404">CalculateTotal</span>(<span class="text-blue-404">amount</span>, <span class="text-blue-404">rate</span>);
+        <span class="text-blue-404">result</span>.<span class="text-green-404">Assert</span>().<span class="text-green-404">IsEqualTo</span>(<span class="text-blue-404">expected</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Error Handling & Best Practices -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Error Handling & Best Practices</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Understanding how Assertive handles errors and following best practices for optimal testing.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Error Handling -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Error Handling</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Assertive throws <code class="text-sm bg-gray-200 dark:bg-gray-700 px-1 rounded">AssertionException</code> when assertions fail, providing clear debugging information.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-primary-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Clear Error Messages</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Detailed descriptions of what went wrong</p>
+                        </div>
+                        <div class="border-l-4 border-primary-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Expected vs Actual</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Properties showing expected and actual values</p>
+                        </div>
+                        <div class="border-l-4 border-primary-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Context Information</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Optional context for complex validation scenarios</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code><span class="text-purple-400">try</span>
+{
+    <span class="text-orange-400">42</span>.<span class="text-green-400">Assert</span>()
+        .<span class="text-green-400">WithContext</span>(<span class="text-orange-400">"Age validation"</span>)
+        .<span class="text-green-400">IsEqualTo</span>(<span class="text-orange-400">18</span>);
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">AssertionException</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-gray-500">// ex.Message: "Age validation failed..."</span>
+    <span class="text-gray-500">// ex.Expected: 18</span>
+    <span class="text-gray-500">// ex.Actual: 42</span>
+}</code></pre>
+                    </div>
+                </div>
+                
+                <!-- Best Practices -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Best Practices</h3>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Use Descriptive Messages
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Provide clear context in Satisfies and Fails methods</p>
+                            <div class="text-sm font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                .Satisfies(x => x.IsValid, "User should pass validation")
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Chain Assertions Logically
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Order assertions from general to specific</p>
+                            <div class="text-sm font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                result.Assert().IsNotNull().IsOfType&lt;User&gt;().Satisfies(...)
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Add Context for Complex Validations
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Use WithContext for better error diagnostics</p>
+                            <div class="text-sm font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                user.Assert().WithContext("Registration flow").Satisfies(...)
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Combine with Test Frameworks
+                            </h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Works with any .NET testing framework</p>
+                            <div class="text-sm font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                // xUnit, NUnit, MSTest - all supported
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-primary-600 to-blue-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Write Better Tests?</h2>
+            <p class="text-xl text-primary-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.Assertive today and transform your test code into readable, expressive specifications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-primary-600 hover:bg-primary-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Noundry.Assertive
+                </a>
+                <a href="docs.html#assertive" class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Full Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Noundry.Assertive is part of the Noundry platform - a comprehensive collection of modern .NET libraries for fluent, readable, and expressive testing.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Performance Tips -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Performance & Tips</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Optimize your test performance and write maintainable assertion code.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Lightweight Design</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Minimal overhead and zero runtime dependencies</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Extensible Architecture</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Easy to extend with custom assertion methods</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">High Performance</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Compiled binary distribution for fast execution</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Clean Integration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Works with existing test projects without conflicts</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code><span class="text-gray-500">// Efficient assertion chaining</span>
+<span class="text-blue-400">result</span>.<span class="text-green-400">Assert</span>()
+    .<span class="text-green-400">IsNotNull</span>()          <span class="text-gray-500">// Fast null check</span>
+    .<span class="text-green-400">IsOfType</span>&lt;<span class="text-yellow-400">Product</span>&gt;()    <span class="text-gray-500">// Type validation</span>
+    .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsValid</span>); <span class="text-gray-500">// Custom logic</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeExample: 'basic', activeEnvironment: 'development' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.DotEnvX - Enhanced Environment Variable Management for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-yellow-50 via-amber-50 to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-yellow-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-yellow-100 dark:bg-yellow-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-yellow-600 dark:text-yellow-400">DotEnvX</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Enhanced .env file support with encryption, validation, and environment-specific configurations. Secure your application secrets while maintaining developer productivity.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-yellow-600 hover:bg-yellow-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#encryption" class="border-2 border-yellow-600 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Learn Encryption
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">22</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Unit Tests</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">75%+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">AES-256</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Encryption</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-600 dark:text-yellow-400">Multi-Env</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Noundry.DotEnvX?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Go beyond basic .env files with encryption, validation, and environment-specific configurations.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Secure Encryption</h3>
+                    <p class="text-gray-600 dark:text-gray-300">AES-256 encryption for sensitive values like API keys, database passwords, and OAuth secrets.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Environment-Specific</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Support for .env.development, .env.production, and .env.testing files with automatic environment detection.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Validation & Required Variables</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Ensure critical environment variables are present and valid before application startup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 3 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Noundry.DotEnvX and start managing your application configuration securely.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-yellow-500"># Package installation</div>
+                            <div class="text-yellow-500">$ dotnet add package Noundry.DotEnvX</div>
+                            <div class="text-gray-400"># Optional: CLI tool for encryption</div>
+                            <div class="text-yellow-500">$ dotnet tool install -g Noundry.DotEnvX.Tool</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Create .env File</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-gray-500"># Database</div>
+                            <div class="text-green-400">DATABASE_URL</div>=<div class="text-orange-400 inline">Server=localhost;Database=MyApp;...</div>
+                            <div class="text-gray-500"># OAuth</div>
+                            <div class="text-green-400">JWT_SECRET</div>=<div class="text-orange-400 inline">your-secret-key</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Configure in Program.cs</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-300">builder.Configuration.<span class="text-green-400">AddDotEnvX</span>();</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.DotEnvX.Core.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Load environment variables with encryption support</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { 
+        <span class="text-orange-400">"DATABASE_URL"</span>, 
+        <span class="text-orange-400">"JWT_SECRET"</span> 
+    };
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+});
+
+<span class="text-gray-500">// Now you can use configuration values</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connectionString</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetConnectionString</span>(<span class="text-orange-400">"Database"</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">jwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>];
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddSingleton</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Environment Management Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Environment-Specific Configuration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Manage different configurations for development, testing, staging, and production environments.
+                </p>
+            </div>
+            
+            <!-- Environment Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex space-x-1">
+                    <button @click="activeEnvironment = 'development'" 
+                            :class="activeEnvironment === 'development' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        Development
+                    </button>
+                    <button @click="activeEnvironment = 'testing'" 
+                            :class="activeEnvironment === 'testing' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        Testing
+                    </button>
+                    <button @click="activeEnvironment = 'production'" 
+                            :class="activeEnvironment === 'production' ? 'bg-white dark:bg-gray-700 text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        Production
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Development Environment -->
+            <div x-show="activeEnvironment === 'development'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Development Environment
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Local development configuration with debugging enabled and test data.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Local Database</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">LocalDB or SQL Server Express</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Test OAuth Credentials</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Development OAuth app credentials</p>
+                        </div>
+                        <div class="border-l-4 border-green-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Debug Settings</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Verbose logging and debug features</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                    <h4 class="text-lg font-semibold text-white mb-4">.env.development</h4>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># Development Database</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">Server=localhost;Database=MyApp_Dev;Integrated Security=true;TrustServerCertificate=true;</span>
+
+<span class="text-gray-500"># Development OAuth (test credentials)</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">123456789-dev.apps.googleusercontent.com</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">dev-secret-not-encrypted</span>
+
+<span class="text-gray-500"># JWT Secret for development</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">development-jwt-secret-key-not-for-production</span>
+
+<span class="text-gray-500"># Debug settings</span>
+<span class="text-green-400">ASPNETCORE_ENVIRONMENT</span>=<span class="text-orange-400">Development</span>
+<span class="text-green-400">LOGGING_LEVEL</span>=<span class="text-orange-400">Debug</span>
+<span class="text-green-400">ENABLE_SWAGGER</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Application URLs</span>
+<span class="text-green-400">BASE_URL</span>=<span class="text-orange-400">https://localhost:5001</span>
+<span class="text-green-400">API_URL</span>=<span class="text-orange-400">https://localhost:5001/api</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testing Environment -->
+            <div x-show="activeEnvironment === 'testing'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        Testing Environment
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Isolated testing configuration with test databases and mock services.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Test Database</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">In-memory or dedicated test database</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Mock Services</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Mocked external API credentials</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Fast Execution</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Optimized for test performance</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                    <h4 class="text-lg font-semibold text-white mb-4">.env.testing</h4>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># Testing Database (in-memory)</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">Data Source=:memory:</span>
+<span class="text-green-400">USE_IN_MEMORY_DATABASE</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Mock OAuth credentials</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">test-client-id</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">test-secret</span>
+
+<span class="text-gray-500"># Test JWT Secret</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">test-jwt-secret-for-unit-tests</span>
+
+<span class="text-gray-500"># Test Environment Settings</span>
+<span class="text-green-400">ASPNETCORE_ENVIRONMENT</span>=<span class="text-orange-400">Testing</span>
+<span class="text-green-400">LOGGING_LEVEL</span>=<span class="text-orange-400">Warning</span>
+<span class="text-green-400">ENABLE_SWAGGER</span>=<span class="text-orange-400">false</span>
+
+<span class="text-gray-500"># Fast test execution</span>
+<span class="text-green-400">DISABLE_HTTPS_REDIRECT</span>=<span class="text-orange-400">true</span>
+<span class="text-green-400">SKIP_MIGRATIONS</span>=<span class="text-orange-400">true</span></code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Production Environment -->
+            <div x-show="activeEnvironment === 'production'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <svg class="w-8 h-8 text-red-600 dark:text-red-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        Production Environment
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Secure production configuration with encrypted secrets and monitoring.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-red-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Encrypted Secrets</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">All sensitive values encrypted with AES-256</p>
+                        </div>
+                        <div class="border-l-4 border-red-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Production Database</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Managed database with connection pooling</p>
+                        </div>
+                        <div class="border-l-4 border-red-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Monitoring & Logging</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Error tracking and performance monitoring</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                    <h4 class="text-lg font-semibold text-white mb-4">.env.production</h4>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># Production Database (encrypted)</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">"encrypted:AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA..."</span>
+
+<span class="text-gray-500"># Production OAuth (all encrypted)</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">123456789-prod.apps.googleusercontent.com</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:BDb7t3QkTRp2AbCdEfGhIjKlMnOpQrSt..."</span>
+
+<span class="text-green-400">MICROSOFT_CLIENT_ID</span>=<span class="text-orange-400">12345678-1234-1234-1234-123456789abc</span>
+<span class="text-green-400">MICROSOFT_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:XyZ9w8v7u6t5s4r3q2p1o0n9m8l7k6j..."</span>
+
+<span class="text-gray-500"># Production JWT Secret (encrypted)</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">"encrypted:Gh1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p..."</span>
+
+<span class="text-gray-500"># Production Settings</span>
+<span class="text-green-400">ASPNETCORE_ENVIRONMENT</span>=<span class="text-orange-400">Production</span>
+<span class="text-green-400">LOGGING_LEVEL</span>=<span class="text-orange-400">Information</span>
+<span class="text-green-400">ENABLE_SWAGGER</span>=<span class="text-orange-400">false</span>
+
+<span class="text-gray-500"># Application URLs</span>
+<span class="text-green-400">BASE_URL</span>=<span class="text-orange-400">https://myapp.com</span>
+<span class="text-green-400">API_URL</span>=<span class="text-orange-400">https://api.myapp.com</span>
+
+<span class="text-gray-500"># Monitoring</span>
+<span class="text-green-400">APPLICATION_INSIGHTS_KEY</span>=<span class="text-orange-400">"encrypted:Mn2o3p4q5r6s7t8u9v0w1x2y3z4a5b6c..."</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Encryption Section -->
+    <section id="encryption" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Secure Value Encryption</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Protect sensitive configuration values with AES-256 encryption and secure key management.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- CLI Tool Usage -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">CLI Tool for Encryption</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Use the DotEnvX CLI tool to encrypt sensitive values before committing them to version control.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">AES-256 encryption</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic decryption</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Version control safe</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Cross-platform support</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 space-y-3">
+                                <div class="text-yellow-500"># Install CLI tool globally</div>
+                                <div class="text-yellow-500">$ dotnet tool install -g Noundry.DotEnvX.Tool</div>
+                                <div class="text-gray-400">✅ Tool installed successfully</div>
+                                
+                                <div class="text-yellow-500"># Generate encryption key</div>
+                                <div class="text-yellow-500">$ dotenvx keygen</div>
+                                <div class="text-gray-400">🔑 Generated encryption key: Abc123Def456...</div>
+                                
+                                <div class="text-yellow-500"># Encrypt a secret value</div>
+                                <div class="text-yellow-500">$ dotenvx encrypt "my-secret-password"</div>
+                                <div class="text-gray-400">🔐 Encrypted: encrypted:BDb7t3QkTRp2AbCdEf...</div>
+                                
+                                <div class="text-yellow-500"># Encrypt entire .env file</div>
+                                <div class="text-yellow-500">$ dotenvx encrypt-file .env.production</div>
+                                <div class="text-gray-400">🔐 All secrets encrypted in .env.production</div>
+                                
+                                <div class="text-yellow-500"># Validate configuration</div>
+                                <div class="text-yellow-500">$ dotenvx validate</div>
+                                <div class="text-green-400">✅ All required variables present</div>
+                                <div class="text-green-400">✅ All encrypted values valid</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Management -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Encryption Key Management</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Secure key storage and distribution for different environments and team members.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="border-l-4 border-yellow-500 pl-4">
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">Environment Variables</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Store encryption key in DOTENVX_KEY environment variable</p>
+                                </div>
+                                <div class="border-l-4 border-yellow-500 pl-4">
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">CI/CD Integration</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Inject keys through build pipeline secrets</p>
+                                </div>
+                                <div class="border-l-4 border-yellow-500 pl-4">
+                                    <h4 class="font-semibold text-gray-900 dark:text-white">Cloud Key Vaults</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Integration with Azure Key Vault, AWS Secrets Manager</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Key management strategies</span>
+
+<span class="text-gray-500">// 1. Environment variable (recommended)</span>
+<span class="text-green-400">DOTENVX_KEY</span>=<span class="text-orange-400">your-encryption-key-here</span>
+
+<span class="text-gray-500">// 2. Configuration method</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">GetEncryptionKeyFromVault</span>();
+});
+
+<span class="text-gray-500">// 3. Azure Key Vault integration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"Azure:KeyVault:DotEnvXKey"</span>];
+});
+
+<span class="text-gray-500">// 4. AWS Secrets Manager</span>
+<span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">await</span> <span class="text-blue-400">GetAwsSecret</span>(<span class="text-orange-400">"dotenvx-key"</span>);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Examples -->
+    <section id="examples" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Configuration Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Real-world configuration examples for different application scenarios.
+                </p>
+            </div>
+            
+            <!-- Example Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeExample = 'basic'" 
+                            :class="activeExample === 'basic' ? 'bg-white dark:bg-gray-700 text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Basic Setup
+                    </button>
+                    <button @click="activeExample = 'webapp'" 
+                            :class="activeExample === 'webapp' ? 'bg-white dark:bg-gray-700 text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Web Application
+                    </button>
+                    <button @click="activeExample = 'api'" 
+                            :class="activeExample === 'api' ? 'bg-white dark:bg-gray-700 text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        API Service
+                    </button>
+                    <button @click="activeExample = 'testing'" 
+                            :class="activeExample === 'testing' ? 'bg-white dark:bg-gray-700 text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Testing Setup
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Basic Setup -->
+            <div x-show="activeExample === 'basic'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Basic Configuration</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Simple .env File Setup</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Start with a basic .env file and gradually add encryption and validation as needed.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic loading on startup</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Override existing configuration</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Standard .NET Configuration API</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Program.cs - Basic setup</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.DotEnvX.Core.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Load .env file (simple)</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>();
+
+<span class="text-gray-500">// Or with options</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"DATABASE_URL"</span> };
+});
+
+<span class="text-gray-500">// Access values like normal configuration</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">dbUrl</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"DATABASE_URL"</span>];
+<span class="text-purple-400">var</span> <span class="text-blue-400">apiKey</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"API_KEY"</span>];
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddDbContext</span>(<span class="text-blue-400">dbUrl</span>);
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Basic .env file -->
+                    <div class="mt-8 grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <h5 class="text-white font-semibold mb-3">.env</h5>
+                            <div class="font-mono text-sm text-gray-300">
+                                <pre><code><span class="text-gray-500"># Basic application configuration</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">Server=localhost;Database=MyApp;Integrated Security=true;</span>
+<span class="text-green-400">API_KEY</span>=<span class="text-orange-400">sk_test_abcdef123456789</span>
+<span class="text-green-400">REDIS_URL</span>=<span class="text-orange-400">localhost:6379</span>
+
+<span class="text-gray-500"># Application settings</span>
+<span class="text-green-400">APP_NAME</span>=<span class="text-orange-400">My Application</span>
+<span class="text-green-400">APP_VERSION</span>=<span class="text-orange-400">1.0.0</span>
+<span class="text-green-400">DEBUG_MODE</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Feature flags</span>
+<span class="text-green-400">ENABLE_FEATURE_X</span>=<span class="text-orange-400">true</span>
+<span class="text-green-400">MAX_UPLOAD_SIZE</span>=<span class="text-orange-400">10485760</span></code></pre>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <h5 class="text-white font-semibold mb-3">Usage in Code</h5>
+                            <div class="font-mono text-sm text-gray-300">
+                                <pre><code><span class="text-gray-500">// Access configuration values</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">appName</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"APP_NAME"</span>];
+<span class="text-purple-400">var</span> <span class="text-blue-400">debugMode</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetValue</span>&lt;<span class="text-purple-400">bool</span>&gt;(<span class="text-orange-400">"DEBUG_MODE"</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">maxUpload</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetValue</span>&lt;<span class="text-purple-400">int</span>&gt;(<span class="text-orange-400">"MAX_UPLOAD_SIZE"</span>);
+
+<span class="text-gray-500">// Use in service configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddDbContext</span>(<span class="text-blue-400">options</span> =>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">UseSqlServer</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"DATABASE_URL"</span>]));
+
+<span class="text-gray-500">// Configure based on feature flags</span>
+<span class="text-purple-400">if</span> (<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetValue</span>&lt;<span class="text-purple-400">bool</span>&gt;(<span class="text-orange-400">"ENABLE_FEATURE_X"</span>))
+{
+    <span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddFeatureX</span>();
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Web Application Example -->
+            <div x-show="activeExample === 'webapp'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Complete Web Application Configuration</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Full-Stack Web App with Authentication</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Configuration for a web application using Noundry.UI, Noundry.Authnz, and Noundry.Tuxedo.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Database connection strings</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">OAuth provider credentials</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">JWT and cookie settings</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Third-party API keys</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># Database Configuration</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">Server=localhost;Database=EcommerceApp;Integrated Security=true;</span>
+<span class="text-green-400">REDIS_URL</span>=<span class="text-orange-400">localhost:6379</span>
+
+<span class="text-gray-500"># OAuth Providers (encrypted in production)</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">123456789-dev.apps.googleusercontent.com</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:BDb7t3QkTRp2AbCdEfGhIjKl..."</span>
+
+<span class="text-green-400">MICROSOFT_CLIENT_ID</span>=<span class="text-orange-400">12345678-1234-1234-1234-123456789abc</span>
+<span class="text-green-400">MICROSOFT_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:XyZ9w8v7u6t5s4r3q2p1o0n..."</span>
+
+<span class="text-green-400">GITHUB_CLIENT_ID</span>=<span class="text-orange-400">Iv1.abcdef123456789</span>
+<span class="text-green-400">GITHUB_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:Gh1b2c3d4e5f6g7h8i9j0k1l..."</span>
+
+<span class="text-gray-500"># JWT Configuration</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">"encrypted:Jw1t2s3c4r5t6k7y8f9r0a1p2p3l4c5t..."</span>
+<span class="text-green-400">JWT_EXPIRATION_DAYS</span>=<span class="text-orange-400">30</span>
+<span class="text-green-400">DEFAULT_REDIRECT_URI</span>=<span class="text-orange-400">/Dashboard</span>
+
+<span class="text-gray-500"># Third-party Services</span>
+<span class="text-green-400">STRIPE_API_KEY</span>=<span class="text-orange-400">"encrypted:Sk_1t2st3_abc123def456..."</span>
+<span class="text-green-400">SENDGRID_API_KEY</span>=<span class="text-orange-400">"encrypted:SG.abc123def456..."</span>
+<span class="text-green-400">AZURE_STORAGE_CONNECTION</span>=<span class="text-orange-400">"encrypted:DefaultEndpointsProtocol=https..."</span>
+
+<span class="text-gray-500"># Application Settings</span>
+<span class="text-green-400">APP_NAME</span>=<span class="text-orange-400">E-Commerce Platform</span>
+<span class="text-green-400">COOKIE_DOMAIN</span>=<span class="text-orange-400">.myapp.com</span>
+<span class="text-green-400">ENABLE_ANALYTICS</span>=<span class="text-orange-400">true</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API Service Example -->
+            <div x-show="activeExample === 'api'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">API Service Configuration</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">REST API with Database and Caching</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Configuration for a high-performance API service with authentication, caching, and monitoring.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># Database & Caching</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">"encrypted:Server=prod-db.company.com;Database=ApiDb..."</span>
+<span class="text-green-400">REDIS_URL</span>=<span class="text-orange-400">"encrypted:redis-prod.company.com:6380,password=..."</span>
+
+<span class="text-gray-500"># API Authentication</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">"encrypted:SuperSecureJwtKeyForProductionApi..."</span>
+<span class="text-green-400">API_KEY_HEADER</span>=<span class="text-orange-400">X-API-Key</span>
+<span class="text-green-400">RATE_LIMIT_REQUESTS</span>=<span class="text-orange-400">1000</span>
+<span class="text-green-400">RATE_LIMIT_WINDOW</span>=<span class="text-orange-400">3600</span>
+
+<span class="text-gray-500"># External Services</span>
+<span class="text-green-400">PAYMENT_API_KEY</span>=<span class="text-orange-400">"encrypted:PaymentProviderSecretKey..."</span>
+<span class="text-green-400">EMAIL_API_KEY</span>=<span class="text-orange-400">"encrypted:EmailServiceApiKey..."</span>
+<span class="text-green-400">STORAGE_CONNECTION</span>=<span class="text-orange-400">"encrypted:BlobStorageConnectionString..."</span>
+
+<span class="text-gray-500"># Monitoring & Logging</span>
+<span class="text-green-400">APPLICATION_INSIGHTS_KEY</span>=<span class="text-orange-400">"encrypted:AppInsightsInstrumentationKey..."</span>
+<span class="text-green-400">LOG_LEVEL</span>=<span class="text-orange-400">Information</span>
+<span class="text-green-400">ENABLE_TELEMETRY</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Performance Settings</span>
+<span class="text-green-400">CONNECTION_POOL_SIZE</span>=<span class="text-orange-400">100</span>
+<span class="text-green-400">CACHE_DURATION_MINUTES</span>=<span class="text-orange-400">30</span>
+<span class="text-green-400">ENABLE_COMPRESSION</span>=<span class="text-orange-400">true</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Testing Setup Example -->
+            <div x-show="activeExample === 'testing'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Testing Environment Setup</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Isolated Test Configuration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Separate configuration for unit tests and integration tests with mocked services.</p>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">In-memory test database</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Mocked external services</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Fast test execution</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">CI/CD friendly</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// TestStartup.cs - Test-specific configuration</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">TestStartup</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ConfigureServices</span>(<span class="text-yellow-400">IServiceCollection</span> <span class="text-blue-400">services</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">configuration</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">ConfigurationBuilder</span>()
+            .<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+            {
+                <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env.testing"</span>;
+                <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"TEST_DATABASE_URL"</span> };
+            })
+            .<span class="text-green-400">Build</span>();
+        
+        <span class="text-gray-500">// Use in-memory database for tests</span>
+        <span class="text-blue-400">services</span>.<span class="text-green-400">AddDbContext</span>&lt;<span class="text-yellow-400">AppDbContext</span>&gt;(<span class="text-blue-400">options</span> =>
+            <span class="text-blue-400">options</span>.<span class="text-green-400">UseInMemoryDatabase</span>(<span class="text-orange-400">"TestDb"</span>));
+        
+        <span class="text-gray-500">// Mock external services</span>
+        <span class="text-blue-400">services</span>.<span class="text-green-400">AddScoped</span>&lt;<span class="text-yellow-400">IEmailService</span>, <span class="text-yellow-400">MockEmailService</span>&gt;();
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Test Configuration File</h4>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <h5 class="text-white font-semibold mb-3">.env.testing</h5>
+                            <div class="font-mono text-sm text-gray-300">
+                                <pre><code><span class="text-gray-500"># Test Database (in-memory)</span>
+<span class="text-green-400">TEST_DATABASE_URL</span>=<span class="text-orange-400">InMemory</span>
+<span class="text-green-400">USE_IN_MEMORY_DATABASE</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Mock OAuth (no real credentials needed)</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">test-google-id</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">test-google-secret</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">test-jwt-secret-not-for-production</span>
+
+<span class="text-gray-500"># Test Environment Settings</span>
+<span class="text-green-400">ASPNETCORE_ENVIRONMENT</span>=<span class="text-orange-400">Testing</span>
+<span class="text-green-400">LOGGING_LEVEL</span>=<span class="text-orange-400">Warning</span>
+<span class="text-green-400">DISABLE_HTTPS_REDIRECT</span>=<span class="text-orange-400">true</span>
+
+<span class="text-gray-500"># Mock External Services</span>
+<span class="text-green-400">MOCK_EMAIL_SERVICE</span>=<span class="text-orange-400">true</span>
+<span class="text-green-400">MOCK_PAYMENT_SERVICE</span>=<span class="text-orange-400">true</span>
+<span class="text-green-400">SKIP_EXTERNAL_CALLS</span>=<span class="text-orange-400">true</span></code></pre>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <h5 class="text-white font-semibold mb-3">Integration Test Usage</h5>
+                            <div class="font-mono text-sm text-gray-300">
+                                <pre><code><span class="text-blue-400">[Fact]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">CreateProduct_ShouldSucceed</span>()
+{
+    <span class="text-gray-500">// DotEnvX automatically loads .env.testing</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">factory</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">WebApplicationFactory</span>&lt;<span class="text-yellow-400">Program</span>&gt;();
+    <span class="text-purple-400">var</span> <span class="text-blue-400">client</span> = <span class="text-blue-400">factory</span>.<span class="text-green-400">CreateClient</span>();
+    
+    <span class="text-gray-500">// Test with configuration from .env.testing</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">response</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">client</span>.<span class="text-green-400">PostAsync</span>(<span class="text-orange-400">"/api/products"</span>, <span class="text-blue-400">content</span>);
+    
+    <span class="text-blue-400">response</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsSuccessStatusCode</span>();
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Powerful features for enterprise applications and complex deployment scenarios.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Variable Validation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-yellow-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Variable Validation
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Required Variables</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Ensure critical variables are present at startup</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Format Validation</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Validate URLs, connection strings, and patterns</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Type Checking</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Ensure numeric and boolean values are valid</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-300">
+                        <pre><code><span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] {
+    <span class="text-orange-400">"DATABASE_URL"</span>,
+    <span class="text-orange-400">"JWT_SECRET"</span>,
+    <span class="text-orange-400">"API_KEY"</span>
+};</code></pre>
+                    </div>
+                </div>
+                
+                <!-- File Hierarchy -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2h2a2 2 0 002-2z"></path>
+                        </svg>
+                        File Loading Hierarchy
+                    </h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            1. .env (base configuration)
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            2. .env.local (local overrides)
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            3. .env.{environment} (environment-specific)
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            4. .env.{environment}.local (final overrides)
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 text-xs text-gray-600 dark:text-gray-400">
+                        Later files override earlier ones. Environment variables always take precedence.
+                    </div>
+                </div>
+                
+                <!-- CLI Commands -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        CLI Commands
+                    </h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            dotenvx keygen - Generate encryption key
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            dotenvx encrypt "value" - Encrypt single value
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            dotenvx encrypt-file .env - Encrypt file
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            dotenvx validate - Validate configuration
+                        </div>
+                        <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                            dotenvx decrypt "encrypted:..." - Decrypt value
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Security Best Practices</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Follow these guidelines to secure your application configuration effectively.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Do's -->
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-400 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Security Best Practices
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Encrypt All Secrets</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Use encryption for passwords, API keys, and sensitive URLs</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Use Environment-Specific Files</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Separate .env files for development, testing, and production</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Validate Required Variables</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Define required variables to fail fast on missing configuration</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Secure Key Management</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Store encryption keys in secure key vaults or environment variables</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Regular Key Rotation</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Rotate encryption keys periodically for enhanced security</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Don'ts -->
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-red-800 dark:text-red-400 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        Security Anti-Patterns
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Commit .env Files</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Add .env files to .gitignore, except encrypted production files</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Store Keys in Code</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Never hardcode encryption keys in source code</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Share Encryption Keys</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Keep encryption keys separate from application code</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Use Same Keys Everywhere</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Use different encryption keys for different environments</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Skip Validation</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Always validate critical configuration variables</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-yellow-600 to-orange-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Secure Your Configuration?</h2>
+            <p class="text-xl text-yellow-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.DotEnvX today and manage your application configuration with encryption, validation, and environment-specific support.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-yellow-600 hover:bg-yellow-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Noundry.DotEnvX
+                </a>
+                <a href="docs.html#dotenvx" class="border-2 border-white text-white hover:bg-white hover:text-yellow-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Full Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Noundry.DotEnvX is part of the Noundry platform - providing secure environment variable management with encryption, validation, and environment-specific configuration support.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Features</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#encryption" class="text-gray-300 hover:text-white transition-colors">Value Encryption</a></li>
+                        <li><a href="#environments" class="text-gray-300 hover:text-white transition-colors">Environment-Specific</a></li>
+                        <li><a href="#validation" class="text-gray-300 hover:text-white transition-colors">Variable Validation</a></li>
+                        <li><a href="#cli" class="text-gray-300 hover:text-white transition-colors">CLI Tool</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html#dotenvx" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#examples" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">GitHub Repository</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

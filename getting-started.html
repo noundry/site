@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeTab: 'web-app' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Getting Started - Noundry Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-primary-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Getting <span class="text-primary-600 dark:text-primary-400">Started</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    Get up and running with the Noundry platform in minutes. Choose your path and build amazing .NET applications faster than ever before.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button @click="activeTab = 'web-app'" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        Web Application Path
+                    </button>
+                    <button @click="activeTab = 'api'" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        API Development Path
+                    </button>
+                </div>
+            </div>
+
+            <!-- Path Selection Tabs -->
+            <div class="max-w-4xl mx-auto">
+                <div class="flex border-b border-gray-200 dark:border-gray-700 mb-8">
+                    <button @click="activeTab = 'web-app'" 
+                            :class="activeTab === 'web-app' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                            class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
+                        🌐 Web Application (15 min)
+                    </button>
+                    <button @click="activeTab = 'api'" 
+                            :class="activeTab === 'api' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                            class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
+                        🔧 API Development (10 min)
+                    </button>
+                    <button @click="activeTab = 'testing'" 
+                            :class="activeTab === 'testing' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                            class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
+                        🧪 Testing & Validation (5 min)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Web Application Path -->
+            <div x-show="activeTab === 'web-app'" class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Web Application Quick Start</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Build a modern web application with authentication, data access, and beautiful UI components.
+                    </p>
+                </div>
+
+                <!-- Step 1 -->
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create Your Project</h3>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto mb-4">
+                            <div class="text-gray-500"># Create new web application</div>
+                            <div class="text-accent-500">dotnet new webapp -n MyApp</div>
+                            <div class="text-accent-500">cd MyApp</div>
+                            <div class="mt-2 text-gray-500"># Install Noundry components</div>
+                            <div class="text-accent-500">dotnet add package Noundry.UI</div>
+                            <div class="text-accent-500">dotnet add package Noundry.Authnz</div>
+                            <div class="text-accent-500">dotnet add package Noundry.Tuxedo</div>
+                            <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
+                            <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300">This creates a new ASP.NET Core web application and installs the essential Noundry components for web development.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Configure Services</h3>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Update your <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">Program.cs</code> file:</p>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.DotEnvX.Core.Extensions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Authnz.Extensions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.DependencyInjection</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-blue-400">args</span>);
+
+<span class="text-gray-500">// Load environment variables</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>();
+
+<span class="text-gray-500">// Add services</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddRazorPages</span>();
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetConnectionString</span>(<span class="text-orange-400">"DefaultConnection"</span>));
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryOAuth</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryUI</span>();
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Configure pipeline</span>
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseHttpsRedirection</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseStaticFiles</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseRouting</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseNoundryOAuth</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthentication</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthorization</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">MapRazorPages</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Environment Configuration</h3>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">Create a <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">.env</code> file:</p>
+                                <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                    <pre><code><span class="text-gray-500"># Database</span>
+<span class="text-yellow-400">DATABASE_URL</span>=<span class="text-orange-400">Server=localhost;Database=MyApp;Integrated Security=true;TrustServerCertificate=true;</span>
+
+<span class="text-gray-500"># OAuth</span>
+<span class="text-yellow-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">your-google-client-id</span>
+<span class="text-yellow-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">your-google-client-secret</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">Update <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">appsettings.json</code>:</p>
+                                <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                    <pre><code>{
+  <span class="text-blue-400">"ConnectionStrings"</span>: {
+    <span class="text-blue-400">"DefaultConnection"</span>: <span class="text-orange-400">"${DATABASE_URL}"</span>
+  },
+  <span class="text-blue-400">"OAuth"</span>: {
+    <span class="text-blue-400">"Providers"</span>: {
+      <span class="text-blue-400">"google"</span>: {
+        <span class="text-blue-400">"ClientId"</span>: <span class="text-orange-400">"${GOOGLE_CLIENT_ID}"</span>,
+        <span class="text-blue-400">"ClientSecret"</span>: <span class="text-orange-400">"${GOOGLE_CLIENT_SECRET}"</span>
+      }
+    }
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">4</div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create Your First Page</h3>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">First, add TagHelper support to <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">_ViewImports.cshtml</code>:</p>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-6">
+                            <pre><code><span class="text-blue-400">@using</span> MyApp
+<span class="text-blue-400">@namespace</span> MyApp.Pages
+<span class="text-blue-400">@addTagHelper</span> *, Microsoft.AspNetCore.Mvc.TagHelpers
+<span class="text-blue-400">@addTagHelper</span> *, Noundry.UI
+<span class="text-blue-400">@addTagHelper</span> *, Noundry.Authnz</code></pre>
+                        </div>
+                        
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Then create <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">Pages/Index.cshtml</code> with Noundry components:</p>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-blue-400">@page</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">IndexModel</span>
+
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-4xl mx-auto py-8"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h1</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-4xl font-bold text-gray-900 mb-8"</span><span class="text-blue-400">&gt;</span>Welcome to My App<span class="text-blue-400">&lt;/h1&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Authentication Status --&gt;</span>
+    <span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-when-anonymous</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">show-all</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+    <span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span>
+    
+    <span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-when-authenticated</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-card&gt;</span>
+            <span class="text-blue-400">&lt;h2&gt;</span>Welcome back!<span class="text-blue-400">&lt;/h2&gt;</span>
+            <span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-name</span>=<span class="text-orange-400">"true"</span> <span class="text-green-400">show-email</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-status&gt;</span>
+        <span class="text-blue-400">&lt;/noundry-card&gt;</span>
+    <span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Success Alert --&gt;</span>
+    <span class="text-blue-400">&lt;noundry-alert</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"success"</span> <span class="text-green-400">title</span>=<span class="text-orange-400">"Success!"</span><span class="text-blue-4s00">&gt;</span>
+        Your Noundry application is running!
+    <span class="text-blue-400">&lt;/noundry-alert&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Toast Container --&gt;</span>
+<span class="text-blue-400">&lt;noundry-toast-container</span> <span class="text-green-400">position</span>=<span class="text-orange-400">"top-right"</span> <span class="text-blue-400">/&gt;</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="mb-12">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-accent-100 dark:bg-accent-900 text-accent-600 dark:text-accent-400 rounded-full flex items-center justify-center font-bold mr-4">5</div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Run Your Application</h3>
+                    </div>
+                    <div class="bg-accent-50 dark:bg-accent-900/20 rounded-lg p-6">
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
+                            <div class="text-accent-500">dotnet run</div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Visit <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">https://localhost:7001</code> and you'll see your application with:</p>
+                        <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Authentication with Google OAuth
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Beautiful UI components
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Database connectivity
+                            </li>
+                            <li class="flex items-center">
+                                <svg class="w-5 h-5 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Toast notifications
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-xl p-8 text-center">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🎉 Congratulations!</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">You've successfully created a modern web application with the Noundry platform.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="ui-components.html" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            Explore UI Components
+                        </a>
+                        <a href="libraries.html" class="border border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-6 py-3 rounded-lg font-semibold transition-colors">
+                            View All Libraries
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Development Path -->
+            <div x-show="activeTab === 'api'" class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">API Development Quick Start</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Build a high-performance API with advanced data access and environment management.
+                    </p>
+                </div>
+
+                <!-- API Steps -->
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create API Project</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <div class="text-gray-500"># Create API project</div>
+                                <div class="text-accent-500">dotnet new webapi -n MyApi</div>
+                                <div class="text-accent-500">cd MyApi</div>
+                                <div class="mt-2 text-gray-500"># Install components</div>
+                                <div class="text-accent-500">dotnet add package Noundry.Tuxedo</div>
+                                <div class="text-accent-500">dotnet add package Noundry.Tuxedo.Bowtie</div>
+                                <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
+                                <div class="text-accent-500">dotnet add package Guardian</div>
+                                <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create Data Model</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Create <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">Models/Product.cs</code>:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Contrib</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Bowtie.Attributes</span>;
+
+<span class="text-blue-400">[Table(<span class="text-orange-400">"Products"</span>)]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Column(MaxLength = 200)]</span>
+    <span class="text-blue-400">[Index(<span class="text-orange-400">"IX_Products_Name"</span>)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-purple-400">string</span>.<span class="text-green-400">Empty</span>;
+    
+    <span class="text-blue-400">[Column(Precision = 18, Scale = 2)]</span>
+    <span class="text-blue-400">[CheckConstraint(<span class="text-orange-400">"Price > 0"</span>)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-green-400">Price</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-green-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>;
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create API Controller</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Create <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">Controllers/ProductsController.cs</code>:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[ApiController]</span>
+<span class="text-blue-400">[Route(<span class="text-orange-400">"api/[controller]"</span>)]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductsController</span> : <span class="text-yellow-400">ControllerBase</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+    
+    <span class="text-purple-400">public</span> <span class="text-green-400">ProductsController</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+    
+    <span class="text-blue-400">[HttpGet]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">ActionResult</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt;&gt; <span class="text-green-400">GetProducts</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">products</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAllAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;();
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">products</span>);
+    }
+    
+    <span class="text-blue-400">[HttpPost]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">ActionResult</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">CreateProduct</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
+    {
+        <span class="text-gray-500">// Validate using Guardian</span>
+        <span class="text-blue-400">product</span>.<span class="text-green-400">Name</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrWhiteSpace</span>(<span class="text-blue-400">product</span>.<span class="text-green-400">Name</span>);
+        <span class="text-blue-400">product</span>.<span class="text-green-400">Price</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">product</span>.<span class="text-green-400">Price</span>);
+        
+        <span class="text-purple-400">var</span> <span class="text-blue-400">id</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">product</span>);
+        <span class="text-purple-400">var</span> <span class="text-blue-400">created</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">id</span>);
+        
+        <span class="text-purple-400">return</span> <span class="text-green-400">CreatedAtAction</span>(<span class="text-purple-400">nameof</span>(<span class="text-green-400">GetProduct</span>), <span class="text-purple-400">new</span> { <span class="text-blue-400">id</span> }, <span class="text-blue-400">created</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps for API -->
+                    <div class="bg-gradient-to-r from-accent-50 to-accent-100 dark:from-accent-900/20 dark:to-accent-800/20 rounded-xl p-8 text-center">
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🚀 Your API is Ready!</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Run <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">dotnet run</code> and visit <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">/swagger</code> to test your API.</p>
+                        <a href="docs.html#tuxedo" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            Learn More About Tuxedo ORM
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing Path -->
+            <div x-show="activeTab === 'testing'" class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Testing & Validation Quick Start</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Add robust testing and validation to any .NET application in minutes.
+                    </p>
+                </div>
+
+                <!-- Testing Steps -->
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Install Components</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                <div class="text-accent-500">dotnet add package Noundry.Assertive</div>
+                                <div class="text-accent-500">dotnet add package Guardian</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create Your First Test</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Guardian</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Xunit</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductTests</span>
+{
+    <span class="text-blue-400">[Fact]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Product_WithValidData_ShouldBeCreated</span>()
+    {
+        <span class="text-gray-500">// Arrange & Act</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Product</span>
+        {
+            <span class="text-green-400">Name</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrWhiteSpace</span>(<span class="text-orange-400">"Test Product"</span>),
+            <span class="text-green-400">Price</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-orange-400">29.99m</span>)
+        };
+        
+        <span class="text-gray-500">// Assert using Assertive</span>
+        <span class="text-blue-400">product</span>.<span class="text-green-400">Assert</span>()
+            .<span class="text-green-400">IsNotNull</span>()
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span> == <span class="text-orange-400">"Test Product"</span>)
+            .<span class="text-green-400">Satisfies</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> == <span class="text-orange-400">29.99m</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-accent-100 dark:bg-accent-900 text-accent-600 dark:text-accent-400 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Run Tests</h3>
+                        </div>
+                        <div class="bg-accent-50 dark:bg-accent-900/20 rounded-lg p-6">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
+                                <div class="text-accent-500">dotnet test</div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300">You now have fluent, readable test assertions and comprehensive input validation!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What's Next Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">What's Next?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Continue your journey with Noundry platform and explore advanced features.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- UI Components -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Explore UI Components</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Discover the complete collection of interactive UI components with live examples and code snippets.</p>
+                    <a href="ui-components.html" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        View Components
+                    </a>
+                </div>
+
+                <!-- All Libraries -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7l2 2-2 2M5 13l-2-2 2-2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Browse All Libraries</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Explore the complete Noundry platform with detailed information about each library and component.</p>
+                    <a href="libraries.html" class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        View Libraries
+                    </a>
+                </div>
+
+                <!-- Documentation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg text-center">
+                    <div class="w-16 h-16 bg-accent-100 dark:bg-accent-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Read Full Docs</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Dive deep into comprehensive documentation with API references, advanced examples, and best practices.</p>
+                    <a href="docs.html" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        Read Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        The modern .NET development platform that accelerates your journey from idea to production with intelligent tools and comprehensive libraries.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Quick Start</h3>
+                    <ul class="space-y-3">
+                        <li><button @click="activeTab = 'web-app'" class="text-gray-300 hover:text-white transition-colors text-left">Web Application</button></li>
+                        <li><button @click="activeTab = 'api'" class="text-gray-300 hover:text-white transition-colors text-left">API Development</button></li>
+                        <li><button @click="activeTab = 'testing'" class="text-gray-300 hover:text-white transition-colors text-left">Testing & Validation</button></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">All Libraries</a></li>
+                        <li><a href="ui-components.html" class="text-gray-300 hover:text-white transition-colors">UI Components</a></li>
+                        <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

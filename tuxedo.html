@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeCategory: 'overview', activeDatabase: 'sqlserver' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Tuxedo - Modern ORM for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-blue-600 dark:text-blue-400">Tuxedo</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Modern ORM combining the power of Dapper with additional functionality for rapid data access. High-performance, lightweight, and developer-friendly for .NET applications.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#examples" class="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">90%+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">4</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Database Providers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">High</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Performance</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">CRUD</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Built-In</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Noundry.Tuxedo?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built on proven Dapper performance with modern .NET features and developer productivity enhancements.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">High Performance</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Built on Dapper's proven performance foundation with optimized query execution and minimal overhead.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Multi-Database Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Support for SQL Server, PostgreSQL, MySQL, and SQLite with consistent API across all providers.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7l2 2-2 2M5 13l-2-2 2-2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Built-In CRUD</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Complete CRUD operations with conventions-based mapping, async support, and transaction management.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 5 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Noundry.Tuxedo and start building high-performance data access layers.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-blue-500">$ dotnet add package Noundry.Tuxedo</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Configure Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-300">builder.Services.<span class="text-green-400">AddTuxedoSqlServer</span>(connectionString);</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Inject & Use</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-300"><span class="text-purple-400">await</span> _connection.<span class="text-green-400">GetAsync</span>&lt;User&gt;(id);</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">UserService.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">UserService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">UserService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+
+    <span class="text-gray-500">// Get by ID - Simple and fast</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">User</span>?&gt; <span class="text-green-400">GetByIdAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+
+    <span class="text-gray-500">// Create new user</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">CreateAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">user</span>);
+    }
+
+    <span class="text-gray-500">// Update existing user</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">UpdateAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">user</span>);
+    }
+
+    <span class="text-gray-500">// Delete user</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Database Providers Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Supported Database Providers</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Choose your database provider with consistent API across all supported platforms.
+                </p>
+            </div>
+            
+            <!-- Database Provider Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeDatabase = 'sqlserver'" 
+                            :class="activeDatabase === 'sqlserver' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        SQL Server
+                    </button>
+                    <button @click="activeDatabase = 'postgresql'" 
+                            :class="activeDatabase === 'postgresql' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        PostgreSQL
+                    </button>
+                    <button @click="activeDatabase = 'mysql'" 
+                            :class="activeDatabase === 'mysql' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        MySQL
+                    </button>
+                    <button @click="activeDatabase = 'sqlite'" 
+                            :class="activeDatabase === 'sqlite' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        SQLite
+                    </button>
+                </div>
+            </div>
+            
+            <!-- SQL Server -->
+            <div x-show="activeDatabase === 'sqlserver'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Microsoft SQL Server</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Full-featured SQL Server support with advanced features and optimizations.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Connection Pooling</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Optimized connection management</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Advanced Types</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Support for SQL Server specific data types</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Bulk Operations</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">High-performance bulk insert and update</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - SQL Server configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Or with options</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">connectionString</span>, <span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">CommandTimeout</span> = <span class="text-orange-400">30</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnableRetryOnFailure</span> = <span class="text-purple-400">true</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryCount</span> = <span class="text-orange-400">3</span>;
+});
+
+<span class="text-gray-500">// Connection string example</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connectionString</span> = <span class="text-orange-400">"Server=localhost;Database=MyApp;Integrated Security=true;TrustServerCertificate=true;"</span>;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PostgreSQL -->
+            <div x-show="activeDatabase === 'postgresql'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">PostgreSQL</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Open-source PostgreSQL support with advanced features and JSON support.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">JSON Support</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Native JSON and JSONB column support</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Arrays & Custom Types</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">PostgreSQL-specific data types</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Full-Text Search</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Advanced search capabilities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - PostgreSQL configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgreSQL</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Connection string example</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connectionString</span> = <span class="text-orange-400">"Host=localhost;Database=myapp;Username=postgres;Password=password"</span>;
+
+<span class="text-gray-500">// JSON column example</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-gray-500">// JSON column for flexible data</span>
+    <span class="text-blue-400">[Column(TypeName = "jsonb")]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">Dictionary</span>&lt;<span class="text-purple-400">string</span>, <span class="text-purple-400">object</span>&gt; <span class="text-blue-400">Metadata</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MySQL -->
+            <div x-show="activeDatabase === 'mysql'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">MySQL</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Popular open-source database with excellent performance and wide hosting support.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Wide Compatibility</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Works with MySQL 5.7+ and MariaDB</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Cloud Ready</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Amazon RDS, Azure Database, Google Cloud SQL</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Cost Effective</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Excellent price-performance ratio</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - MySQL configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySQL</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Connection string examples</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">localConnection</span> = <span class="text-orange-400">"Server=localhost;Database=myapp;Uid=root;Pwd=password;"</span>;
+<span class="text-purple-400">var</span> <span class="text-blue-400">cloudConnection</span> = <span class="text-orange-400">"Server=mysql.aws.com;Database=prod;Uid=user;Pwd=secret;SslMode=Required;"</span>;
+
+<span class="text-gray-500">// Model example with MySQL-specific attributes</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Order</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-blue-400">[DatabaseGenerated(DatabaseGeneratedOption.Identity)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Column(TypeName = "VARCHAR(100)")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">OrderNumber</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Column(TypeName = "DECIMAL(10,2)")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-blue-400">Total</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SQLite -->
+            <div x-show="activeDatabase === 'sqlite'" class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">SQLite</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Lightweight, file-based database perfect for development, testing, and small applications.</p>
+                    
+                    <div class="space-y-3">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Zero Configuration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">No server setup required</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Perfect for Testing</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Fast in-memory database for unit tests</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Cross-Platform</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Works everywhere .NET runs</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - SQLite configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSQLite</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Connection string examples</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">fileDb</span> = <span class="text-orange-400">"Data Source=myapp.db"</span>;
+<span class="text-purple-400">var</span> <span class="text-blue-400">memoryDb</span> = <span class="text-orange-400">"Data Source=:memory:"</span>;
+
+<span class="text-gray-500">// Perfect for testing</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">TestFixture</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+    
+    <span class="text-blue-400">[SetUp]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">Setup</span>()
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">TuxedoConnection</span>(<span class="text-orange-400">"Data Source=:memory:"</span>);
+    }
+    
+    <span class="text-blue-400">[Test]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">CanInsertAndRetrieveUser</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">user</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">User</span> { <span class="text-green-400">Name</span> = <span class="text-orange-400">"Test User"</span> };
+        <span class="text-purple-400">var</span> <span class="text-blue-400">id</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">user</span>);
+        <span class="text-purple-400">var</span> <span class="text-blue-400">retrieved</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+        
+        <span class="text-blue-400">retrieved</span>.<span class="text-green-400">Assert</span>().<span class="text-green-400">IsNotNull</span>();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRUD Operations Section -->
+    <section id="examples" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Complete CRUD Operations</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Learn all the essential data access patterns with Noundry.Tuxedo.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- Basic CRUD -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Basic CRUD Operations</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Simple Create, Read, Update, Delete operations with automatic SQL generation.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Convention-based mapping</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic SQL generation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Async/await support</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Strong typing throughout</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-gray-500">// CREATE - Insert new product</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">CreateProductAsync</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">product</span>);
+    }
+
+    <span class="text-gray-500">// READ - Get by ID</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">Product</span>?&gt; <span class="text-green-400">GetProductAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+
+    <span class="text-gray-500">// READ - Get all</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetAllProductsAsync</span>()
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAllAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;();
+    }
+
+    <span class="text-gray-500">// UPDATE - Update existing</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">UpdateProductAsync</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>);
+    }
+
+    <span class="text-gray-500">// DELETE - Remove by ID</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteProductAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Queries -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Advanced Queries & Custom SQL</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Execute custom SQL queries with parameters, paging, and complex joins.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Custom SQL with parameters</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Paged result support</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Complex joins and aggregations</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Transaction support</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Custom query with parameters</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetActiveProductsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">categoryId</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+        SELECT p.*, c.Name as CategoryName 
+        FROM Products p 
+        INNER JOIN Categories c ON p.CategoryId = c.Id
+        WHERE p.IsActive = @IsActive 
+        AND (@CategoryId IS NULL OR p.CategoryId = @CategoryId)
+        ORDER BY p.CreatedAt DESC"</span>;
+        
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> 
+    { 
+        <span class="text-green-400">IsActive</span> = <span class="text-purple-400">true</span>, 
+        <span class="text-green-400">CategoryId</span> = <span class="text-blue-400">categoryId</span> == <span class="text-orange-400">0</span> ? <span class="text-purple-400">null</span> : <span class="text-blue-400">categoryId</span> 
+    });
+}
+
+<span class="text-gray-500">// Paged results for large datasets</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersPagedAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">page</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span>)
+{
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetPagedAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">page</span>, <span class="text-blue-400">pageSize</span>);
+}
+
+<span class="text-gray-500">// Execute scalar queries</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">GetProductCountAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">categoryId</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">"SELECT COUNT(*) FROM Products WHERE CategoryId = @CategoryId"</span>;
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteScalarAsync</span>&lt;<span class="text-purple-400">int</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">CategoryId</span> = <span class="text-blue-400">categoryId</span> });
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transaction Management -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Transaction Management</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Ensure data consistency with built-in transaction support and rollback capabilities.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic transaction management</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Rollback on errors</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Nested transaction support</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Using statement pattern</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Transfer funds with transaction</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">TransferFundsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">fromId</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">toId</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>)
+{
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+    
+    <span class="text-purple-400">try</span>
+    {
+        <span class="text-gray-500">// Debit from source account</span>
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(
+            <span class="text-orange-400">"UPDATE Accounts SET Balance = Balance - @Amount WHERE Id = @Id"</span>, 
+            <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">fromId</span> }, 
+            <span class="text-blue-400">transaction</span>);
+        
+        <span class="text-gray-500">// Credit to destination account</span>
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(
+            <span class="text-orange-400">"UPDATE Accounts SET Balance = Balance + @Amount WHERE Id = @Id"</span>, 
+            <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">toId</span> }, 
+            <span class="text-blue-400">transaction</span>);
+        
+        <span class="text-gray-500">// Log the transaction</span>
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-purple-400">new</span> <span class="text-yellow-400">TransactionLog</span>
+        {
+            <span class="text-green-400">FromAccountId</span> = <span class="text-blue-400">fromId</span>,
+            <span class="text-green-400">ToAccountId</span> = <span class="text-blue-400">toId</span>,
+            <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>,
+            <span class="text-green-400">TransactionDate</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>
+        }, <span class="text-blue-400">transaction</span>);
+        
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+    }
+    <span class="text-purple-400">catch</span>
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">throw</span>;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Model Mapping -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Model Mapping & Attributes</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Use attributes to customize table mapping, column names, and database behavior.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Convention-based mapping</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Attribute-based customization</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Computed columns</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Relationship mapping</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Contrib</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">System.ComponentModel.DataAnnotations</span>;
+
+<span class="text-blue-400">[Table("Products")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-blue-400">[ExplicitKey]</span> <span class="text-gray-500">// For manually assigned IDs</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Required]</span>
+    <span class="text-blue-400">[StringLength(100)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Column("product_price")]</span> <span class="text-gray-500">// Custom column name</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-blue-400">Price</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[ForeignKey("CategoryId")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Computed]</span> <span class="text-gray-500">// Not included in INSERT/UPDATE</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">CategoryName</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Write(false)]</span> <span class="text-gray-500">// Read-only property</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Query Builder Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Dynamic Query Builder</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Build complex queries dynamically with LINQ-style expressions and fluent API.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Fluent Query Building</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Dynamic Filters</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Build queries with conditional WHERE clauses</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Complex Joins</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Inner, Left, Right joins with multiple tables</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Sorting & Pagination</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Dynamic ordering and efficient pagination</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Dynamic query building</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.QueryBuilder</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>)
+    .<span class="text-green-400">Join</span>&lt;<span class="text-yellow-400">Category</span>&gt;(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>, <span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-blue-400">p</span> => <span class="text-purple-400">new</span> {
+        <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>,
+        <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>,
+        CategoryName = <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span>.<span class="text-green-400">Name</span>
+    })
+    .<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
+    .<span class="text-green-400">Take</span>(<span class="text-orange-400">50</span>);
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">results</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>.<span class="text-green-400">ToListAsync</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conditional Query Example -->
+            <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Advanced Search with Dynamic Filters</h3>
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">SearchProductsAsync</span>(
+    <span class="text-purple-400">string</span>? <span class="text-blue-400">searchTerm</span> = <span class="text-purple-400">null</span>,
+    <span class="text-purple-400">decimal</span>? <span class="text-blue-400">minPrice</span> = <span class="text-purple-400">null</span>,
+    <span class="text-purple-400">decimal</span>? <span class="text-blue-400">maxPrice</span> = <span class="text-purple-400">null</span>,
+    <span class="text-purple-400">int</span>? <span class="text-blue-400">categoryId</span> = <span class="text-purple-400">null</span>,
+    <span class="text-purple-400">string</span> <span class="text-blue-400">sortBy</span> = <span class="text-orange-400">"Name"</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">page</span> = <span class="text-orange-400">1</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span> = <span class="text-orange-400">20</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>);
+    
+    <span class="text-gray-500">// Dynamic search term</span>
+    <span class="text-purple-400">if</span> (!<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">searchTerm</span>))
+    {
+        <span class="text-blue-400">query</span> = <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>.<span class="text-green-400">Contains</span>(<span class="text-blue-400">searchTerm</span>) || 
+                             <span class="text-blue-400">p</span>.<span class="text-green-400">Description</span>.<span class="text-green-400">Contains</span>(<span class="text-blue-400">searchTerm</span>));
+    }
+    
+    <span class="text-gray-500">// Price range filters</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">minPrice</span>.<span class="text-green-400">HasValue</span>)
+        <span class="text-blue-400">query</span> = <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> >= <span class="text-blue-400">minPrice</span>.<span class="text-green-400">Value</span>);
+        
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">maxPrice</span>.<span class="text-green-400">HasValue</span>)
+        <span class="text-blue-400">query</span> = <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> <= <span class="text-blue-400">maxPrice</span>.<span class="text-green-400">Value</span>);
+    
+    <span class="text-gray-500">// Category filter</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">categoryId</span>.<span class="text-green-400">HasValue</span>)
+        <span class="text-blue-400">query</span> = <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-blue-400">categoryId</span>.<span class="text-green-400">Value</span>);
+    
+    <span class="text-gray-500">// Dynamic sorting</span>
+    <span class="text-blue-400">query</span> = <span class="text-blue-400">sortBy</span>.<span class="text-green-400">ToLower</span>() <span class="text-purple-400">switch</span>
+    {
+        <span class="text-orange-400">"price"</span> => <span class="text-blue-400">query</span>.<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>),
+        <span class="text-orange-400">"date"</span> => <span class="text-blue-400">query</span>.<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CreatedDate</span>),
+        _ => <span class="text-blue-400">query</span>.<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
+    };
+    
+    <span class="text-gray-500">// Pagination</span>
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>
+        .<span class="text-green-400">Skip</span>((<span class="text-blue-400">page</span> - <span class="text-orange-400">1</span>) * <span class="text-blue-400">pageSize</span>)
+        .<span class="text-green-400">Take</span>(<span class="text-blue-400">pageSize</span>)
+        .<span class="text-green-400">ToListAsync</span>();
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bulk Operations Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">High-Performance Bulk Operations</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Process thousands of records efficiently with built-in bulk operations and batch processing.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Bulk Insert & Update</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                        <pre><code><span class="text-gray-500">// Bulk insert thousands of records</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">products</span> = <span class="text-green-400">GenerateProducts</span>(<span class="text-orange-400">10000</span>);
+
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BulkInsertAsync</span>(<span class="text-blue-400">products</span>);
+
+<span class="text-gray-500">// Bulk update with conditions</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BulkUpdateAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
+    <span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-orange-400">1</span>,
+    <span class="text-purple-400">new</span> { IsDiscounted = <span class="text-purple-400">true</span> });
+
+<span class="text-gray-500">// Batch processing with progress</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BatchProcessAsync</span>(
+    <span class="text-blue-400">products</span>, 
+    <span class="text-blue-400">batchSize</span>: <span class="text-orange-400">1000</span>,
+    <span class="text-blue-400">processor</span>: <span class="text-blue-400">batch</span> => <span class="text-green-400">ProcessBatch</span>(<span class="text-blue-400">batch</span>));</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Performance Comparison</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
+                            <span class="text-gray-700 dark:text-gray-300">Single Insert (10,000 records)</span>
+                            <span class="text-red-600 font-bold">45.2s</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded">
+                            <span class="text-gray-700 dark:text-gray-300">Bulk Insert (10,000 records)</span>
+                            <span class="text-green-600 font-bold">1.8s</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded">
+                            <span class="text-gray-700 dark:text-gray-300">Individual Updates (5,000 records)</span>
+                            <span class="text-red-600 font-bold">28.7s</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-green-50 dark:bg-green-900/20 rounded">
+                            <span class="text-gray-700 dark:text-gray-300">Bulk Update (5,000 records)</span>
+                            <span class="text-green-600 font-bold">0.9s</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <span class="text-green-600 font-bold text-2xl">25x faster</span>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">with bulk operations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Resiliency & Caching Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Resiliency, Caching & Monitoring</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built-in fault tolerance, intelligent caching, and comprehensive diagnostics for production-ready applications.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <!-- Resiliency -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        Resiliency
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Retry Policies</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Configurable exponential backoff</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Circuit Breaker</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Fail fast on consecutive errors</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Timeout Handling</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Configurable command timeouts</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Caching -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Intelligent Caching
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Query Result Cache</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Automatic query result caching</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Cache Invalidation</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Smart cache invalidation strategies</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Distributed Cache</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Redis and in-memory providers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Diagnostics -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Diagnostics
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Query Metrics</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Execution time and performance</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Health Checks</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Database connectivity monitoring</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Logging Integration</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Structured logging with context</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Example -->
+            <div class="mt-16 bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Complete E-commerce Data Service</h3>
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">EcommerceService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-gray-500">// Get products with category information</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">ProductWithCategory</span>&gt;&gt; <span class="text-green-400">GetProductsWithCategoryAsync</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+            SELECT p.*, c.Name as CategoryName, c.Description as CategoryDescription
+            FROM Products p
+            INNER JOIN Categories c ON p.CategoryId = c.Id
+            WHERE p.IsActive = 1
+            ORDER BY p.Name"</span>;
+            
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">ProductWithCategory</span>&gt;(<span class="text-blue-400">sql</span>);
+    }
+
+    <span class="text-gray-500">// Create order with items (transaction)</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">CreateOrderWithItemsAsync</span>(<span class="text-yellow-400">Order</span> <span class="text-blue-400">order</span>, <span class="text-yellow-400">List</span>&lt;<span class="text-yellow-400">OrderItem</span>&gt; <span class="text-blue-400">items</span>)
+    {
+        <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+        
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// Insert order</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">orderId</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">order</span>, <span class="text-blue-400">transaction</span>);
+            
+            <span class="text-gray-500">// Insert order items</span>
+            <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">item</span> <span class="text-purple-400">in</span> <span class="text-blue-400">items</span>)
+            {
+                <span class="text-blue-400">item</span>.<span class="text-green-400">OrderId</span> = <span class="text-blue-400">orderId</span>;
+                <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">item</span>, <span class="text-blue-400">transaction</span>);
+                
+                <span class="text-gray-500">// Update product stock</span>
+                <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(
+                    <span class="text-orange-400">"UPDATE Products SET StockQuantity = StockQuantity - @Quantity WHERE Id = @ProductId"</span>,
+                    <span class="text-purple-400">new</span> { <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>, <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span> },
+                    <span class="text-blue-400">transaction</span>);
+            }
+            
+            <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+            <span class="text-purple-400">return</span> <span class="text-blue-400">orderId</span>;
+        }
+        <span class="text-purple-400">catch</span>
+        {
+            <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+            <span class="text-purple-400">throw</span>;
+        }
+    }
+}</code></pre>
+                </div>
+            </div>
+            
+            <!-- Configuration Examples -->
+            <div class="grid lg:grid-cols-2 gap-8 mt-16">
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">Resiliency Configuration</h3>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - Resiliency setup</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">connectionString</span>, <span class="text-blue-400">options</span> =>
+{
+    <span class="text-gray-500">// Retry policy configuration</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnableRetryOnFailure</span> = <span class="text-purple-400">true</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryCount</span> = <span class="text-orange-400">3</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryDelay</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
+    
+    <span class="text-gray-500">// Circuit breaker</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">CircuitBreakerThreshold</span> = <span class="text-orange-400">5</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">CircuitBreakerDuration</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">60</span>);
+    
+    <span class="text-gray-500">// Timeout settings</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">CommandTimeout</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
+    
+    <span class="text-gray-500">// Health checks</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnableHealthChecks</span> = <span class="text-purple-400">true</span>;
+});
+
+<span class="text-gray-500">// Add caching with Redis</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddStackExchangeRedisCache</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Configuration</span> = <span class="text-orange-400">"localhost:6379"</span>;
+});
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoCache</span>(<span class="text-blue-400">cache</span> =>
+{
+    <span class="text-blue-400">cache</span>.<span class="text-green-400">DefaultExpiration</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromMinutes</span>(<span class="text-orange-400">15</span>);
+    <span class="text-blue-400">cache</span>.<span class="text-green-400">EnableDistributedCache</span> = <span class="text-purple-400">true</span>;
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">Diagnostics & Monitoring</h3>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Diagnostics service</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ITuxedoMetrics</span> <span class="text-blue-400">_metrics</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ILogger</span> <span class="text-blue-400">_logger</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">Product</span>&gt; <span class="text-green-400">GetProductAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">activity</span> = <span class="text-blue-400">_metrics</span>.<span class="text-green-400">StartActivity</span>(<span class="text-orange-400">"GetProduct"</span>);
+        <span class="text-blue-400">activity</span>?.<span class="text-green-400">SetTag</span>(<span class="text-orange-400">"product.id"</span>, <span class="text-blue-400">id</span>.<span class="text-green-400">ToString</span>());
+        
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// Cached query with metrics</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>
+                .<span class="text-green-400">QueryCachedAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
+                    <span class="text-orange-400">"SELECT * FROM Products WHERE Id = @id"</span>,
+                    <span class="text-purple-400">new</span> { <span class="text-blue-400">id</span> },
+                    <span class="text-blue-400">cacheKey</span>: <span class="text-orange-400">$"product:{id}"</span>,
+                    <span class="text-blue-400">expiration</span>: <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromMinutes</span>(<span class="text-orange-400">30</span>));
+            
+            <span class="text-blue-400">_metrics</span>.<span class="text-green-400">IncrementCounter</span>(<span class="text-orange-400">"products.retrieved"</span>);
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogInformation</span>(<span class="text-orange-400">"Retrieved product {ProductId}"</span>, <span class="text-blue-400">id</span>);
+            
+            <span class="text-purple-400">return</span> <span class="text-blue-400">product</span>;
+        }
+        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">Exception</span> <span class="text-blue-400">ex</span>)
+        {
+            <span class="text-blue-400">_metrics</span>.<span class="text-green-400">IncrementCounter</span>(<span class="text-orange-400">"products.errors"</span>);
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogError</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"Error retrieving product {ProductId}"</span>, <span class="text-blue-400">id</span>);
+            <span class="text-purple-400">throw</span>;
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Bowtie Database Schema Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Database Schema Management with Bowtie</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Automatically create and update database schemas from your .NET models using Noundry.Tuxedo.Bowtie - attribute-driven, declarative database management.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8 mb-16">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Installation & Key Features</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm mb-6">
+                        <div class="text-blue-500">$ dotnet add package Noundry.Tuxedo.Bowtie</div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Attribute-Based Models</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Define schema using C# attributes on your model classes</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Automatic Synchronization</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Automatically create/update tables, indexes, and constraints</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Multi-Database Support</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">SQL Server, PostgreSQL, MySQL, SQLite with unified API</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                    <h4 class="text-lg font-semibold text-white mb-4">Service Configuration</h4>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - Bowtie setup</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryTuxedoBowtie</span>();
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Synchronize database schema in development</span>
+<span class="text-purple-400">if</span> (<span class="text-blue-400">app</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsDevelopment</span>())
+{
+    <span class="text-purple-400">await</span> <span class="text-blue-400">app</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">SynchronizeDatabaseAsync</span>(
+        <span class="text-blue-400">connectionString</span>: <span class="text-orange-400">"Data Source=app.db"</span>,
+        <span class="text-blue-400">provider</span>: <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-green-400">SQLite</span>
+    );
+}
+
+<span class="text-gray-500">// Or for SQL Server</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">app</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">SynchronizeDatabaseAsync</span>(
+    <span class="text-blue-400">connectionString</span>: <span class="text-orange-400">"Server=.;Database=MyApp;Integrated Security=true;"</span>,
+    <span class="text-blue-400">provider</span>: <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-green-400">SqlServer</span>
+);</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Model Examples -->
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">Attribute-Based Model</h3>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-blue-400">[Table("Products")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(MaxLength = 200)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Name")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(MaxLength = 1000)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span>? <span class="text-green-400">Description</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[CheckConstraint("Price > 0")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-green-400">Price</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[ForeignKey("Categories")]</span>
+    <span class="text-blue-400">[Index("IX_Products_CategoryId")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(DefaultValue = true)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-green-400">IsActive</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(DefaultValue = "GETUTCDATE()")]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-green-400">CreatedDate</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// PostgreSQL-specific example</span>
+<span class="text-blue-400">[Table("Documents")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Document</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-gray-500">// GIN index for JSON searches</span>
+    <span class="text-blue-400">[Index("IX_Documents_Content_GIN", IndexType.GIN)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">JsonContent</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-bold text-white">CLI Commands & Usage</h3>
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 space-y-4">
+                        <div>
+                            <div class="text-gray-500 mb-1"># Synchronize database schema</div>
+                            <div class="text-cyan-500">$ bowtie sync --connection "Data Source=app.db" --provider sqlite</div>
+                            <div class="text-gray-400 text-xs">✨ Database schema synchronized successfully</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-gray-500 mb-1"># Generate DDL scripts</div>
+                            <div class="text-cyan-500">$ bowtie generate --output schema.sql</div>
+                            <div class="text-gray-400 text-xs">📄 Generated DDL scripts for review</div>
+                        </div>
+                        
+                        <div>
+                            <div class="text-gray-500 mb-1"># Validate model compatibility</div>
+                            <div class="text-cyan-500">$ bowtie validate --models MyApp.Models</div>
+                            <div class="text-gray-400 text-xs">✅ All models are valid</div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <div class="text-gray-500 mb-2"># Programmatic usage</div>
+                            <div class="text-gray-300 text-xs bg-gray-800 p-2 rounded">
+                                <div><span class="text-green-400">SynchronizeDatabaseAsync</span>() - Sync schema</div>
+                                <div><span class="text-green-400">GenerateDdlScriptsAsync</span>() - Generate SQL</div>
+                                <div><span class="text-green-400">ValidateModels</span>() - Validate schema</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-blue-600 to-indigo-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Build High-Performance Data Access?</h2>
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.Tuxedo today and build fast, reliable data access layers for your .NET applications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-blue-600 hover:bg-blue-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Noundry.Tuxedo
+                </a>
+                <a href="bowtie.html" class="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Explore Database Migrations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Noundry.Tuxedo is part of the Noundry platform - providing high-performance ORM functionality built on Dapper with modern .NET features and developer productivity enhancements.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Database Providers</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#sqlserver" class="text-gray-300 hover:text-white transition-colors">SQL Server</a></li>
+                        <li><a href="#postgresql" class="text-gray-300 hover:text-white transition-colors">PostgreSQL</a></li>
+                        <li><a href="#mysql" class="text-gray-300 hover:text-white transition-colors">MySQL</a></li>
+                        <li><a href="#sqlite" class="text-gray-300 hover:text-white transition-colors">SQLite</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html#tuxedo" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#examples" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="bowtie.html" class="text-gray-300 hover:text-white transition-colors">Database Migrations</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

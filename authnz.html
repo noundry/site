@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeProvider: 'overview', activeExample: 'basic' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Authnz - Sessionless OAuth 2.0 Authentication for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-green-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 dark:bg-green-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-green-600 dark:text-green-400">Authnz</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Sessionless OAuth 2.0 authentication for multiple providers with JWT token management. Secure, scalable, and easy to integrate into any .NET application.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#providers" class="border-2 border-green-600 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Providers
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400">80%+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400">5+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">OAuth Providers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400">Sessionless</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Architecture</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-400">JWT</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Token Management</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Noundry.Authnz?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built for modern .NET applications that need scalable, secure authentication without the complexity.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Sessionless Design</h3>
+                    <p class="text-gray-600 dark:text-gray-300">JWT-based authentication eliminates server-side sessions, enabling true horizontal scaling and stateless architecture.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Multiple Providers</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Support for Google, Microsoft, GitHub, and custom OAuth providers with unified configuration and consistent user experience.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Security First</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Secure JWT token management, automatic token refresh, and built-in protection against common authentication vulnerabilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 5 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Noundry.Authnz and configure OAuth authentication for your .NET application.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-green-500">$ dotnet add package Noundry.Authnz</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Configure Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-gray-300">builder.Services.AddNoundryOAuth(config);</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Add Middleware</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-gray-300">app.UseNoundryOAuth();</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Authnz.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Add OAuth authentication</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryOAuth</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGoogle</span>(<span class="text-blue-400">clientId</span>, <span class="text-blue-400">clientSecret</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddMicrosoft</span>(<span class="text-blue-400">clientId</span>, <span class="text-blue-400">clientSecret</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGitHub</span>(<span class="text-blue-400">clientId</span>, <span class="text-blue-400">clientSecret</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">JwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>];
+    <span class="text-blue-400">options</span>.<span class="text-green-400">DefaultRedirectUri</span> = <span class="text-orange-400">"/Dashboard"</span>;
+});
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Configure authentication pipeline</span>
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseNoundryOAuth</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthentication</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthorization</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OAuth Providers Section -->
+    <section id="providers" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Supported OAuth Providers</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Pre-configured support for popular OAuth providers with consistent configuration patterns.
+                </p>
+            </div>
+            
+            <!-- Provider Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Google</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Google OAuth 2.0 with profile and email access</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M23.5 12.07c0-6.627-5.373-12-12-12s-12 5.373-12 12 5.373 12 12 12 12-5.373 12-12zm-18.5 0c0-3.584 2.916-6.5 6.5-6.5s6.5 2.916 6.5 6.5-2.916 6.5-6.5 6.5-6.5-2.916-6.5-6.5z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Microsoft</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Azure AD and Microsoft Account integration</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-gray-700 dark:text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">GitHub</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">GitHub OAuth for developer-focused applications</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0189 1.3332-.946 2.4189-2.1569 2.4189z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Discord</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Discord OAuth for gaming and community apps</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">LinkedIn</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">LinkedIn OAuth for professional networking</p>
+                </div>
+                
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Custom Provider</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Add any OAuth 2.0 compliant provider</p>
+                </div>
+            </div>
+            
+            <!-- Provider Configuration Examples -->
+            <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-lg">
+                <h3 class="text-xl font-semibold text-white mb-6">Provider Configuration</h3>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-gray-500">// Configure multiple providers</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryOAuth</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-gray-500">// Google OAuth</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGoogle</span>(<span class="text-blue-400">googleClientId</span>, <span class="text-blue-400">googleClientSecret</span>);
+    
+    <span class="text-gray-500">// Microsoft/Azure AD</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddMicrosoft</span>(<span class="text-blue-400">msClientId</span>, <span class="text-blue-400">msClientSecret</span>);
+    
+    <span class="text-gray-500">// GitHub</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGitHub</span>(<span class="text-blue-400">githubClientId</span>, <span class="text-blue-400">githubClientSecret</span>);
+    
+    <span class="text-gray-500">// Discord</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddDiscord</span>(<span class="text-blue-400">discordClientId</span>, <span class="text-blue-400">discordClientSecret</span>);
+    
+    <span class="text-gray-500">// Custom provider</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddCustomProvider</span>(<span class="text-orange-400">"custom"</span>, <span class="text-blue-400">config</span> =>
+    {
+        <span class="text-blue-400">config</span>.<span class="text-green-400">AuthorizationEndpoint</span> = <span class="text-orange-400">"https://oauth.example.com/authorize"</span>;
+        <span class="text-blue-400">config</span>.<span class="text-green-400">TokenEndpoint</span> = <span class="text-orange-400">"https://oauth.example.com/token"</span>;
+        <span class="text-blue-400">config</span>.<span class="text-green-400">UserInfoEndpoint</span> = <span class="text-orange-400">"https://api.example.com/user"</span>;
+    });
+    
+    <span class="text-gray-500">// JWT Configuration</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">JwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>];
+    <span class="text-blue-400">options</span>.<span class="text-green-400">JwtExpiration</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromDays</span>(<span class="text-orange-400">30</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">DefaultRedirectUri</span> = <span class="text-orange-400">"/Dashboard"</span>;
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Configuration & Setup</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Configure OAuth providers and JWT settings for your application.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Environment Configuration -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Environment Variables (.env)</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># JWT Configuration</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">"your-super-secret-jwt-key-here"</span>
+
+<span class="text-gray-500"># Google OAuth</span>
+<span class="text-green-400">GOOGLE_CLIENT_ID</span>=<span class="text-orange-400">"123456789-abcdefghijklmnop.apps.googleusercontent.com"</span>
+<span class="text-green-400">GOOGLE_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:BDb7t3QkTRp2AbCdEfGhIjKl..."</span>
+
+<span class="text-gray-500"># Microsoft OAuth</span>
+<span class="text-green-400">MICROSOFT_CLIENT_ID</span>=<span class="text-orange-400">"12345678-1234-1234-1234-123456789abc"</span>
+<span class="text-green-400">MICROSOFT_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:XyZ9w8v7u6t5s4r3q2p1o0n..."</span>
+
+<span class="text-gray-500"># GitHub OAuth</span>
+<span class="text-green-400">GITHUB_CLIENT_ID</span>=<span class="text-orange-400">"Iv1.abcdef123456789"</span>
+<span class="text-green-400">GITHUB_CLIENT_SECRET</span>=<span class="text-orange-400">"encrypted:Gh1b2c3d4e5f6g7h8i9j0k1l..."</span>
+
+<span class="text-gray-500"># Application Settings</span>
+<span class="text-green-400">DEFAULT_REDIRECT_URI</span>=<span class="text-orange-400">"/Dashboard"</span>
+<span class="text-green-400">COOKIE_DOMAIN</span>=<span class="text-orange-400">".myapp.com"</span></code></pre>
+                    </div>
+                </div>
+                
+                <!-- JSON Configuration -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">appsettings.json</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code>{
+  <span class="text-green-400">"OAuth"</span>: {
+    <span class="text-green-400">"JwtSecret"</span>: <span class="text-orange-400">"${JWT_SECRET}"</span>,
+    <span class="text-green-400">"DefaultRedirectUri"</span>: <span class="text-orange-400">"${DEFAULT_REDIRECT_URI}"</span>,
+    <span class="text-green-400">"CookieSettings"</span>: {
+      <span class="text-green-400">"Domain"</span>: <span class="text-orange-400">"${COOKIE_DOMAIN}"</span>,
+      <span class="text-green-400">"HttpOnly"</span>: <span class="text-purple-400">true</span>,
+      <span class="text-green-400">"Secure"</span>: <span class="text-purple-400">true</span>,
+      <span class="text-green-400">"SameSite"</span>: <span class="text-orange-400">"Lax"</span>
+    },
+    <span class="text-green-400">"Providers"</span>: {
+      <span class="text-green-400">"google"</span>: {
+        <span class="text-green-400">"ClientId"</span>: <span class="text-orange-400">"${GOOGLE_CLIENT_ID}"</span>,
+        <span class="text-green-400">"ClientSecret"</span>: <span class="text-orange-400">"${GOOGLE_CLIENT_SECRET}"</span>,
+        <span class="text-green-400">"Scopes"</span>: [<span class="text-orange-400">"openid"</span>, <span class="text-orange-400">"profile"</span>, <span class="text-orange-400">"email"</span>]
+      },
+      <span class="text-green-400">"microsoft"</span>: {
+        <span class="text-green-400">"ClientId"</span>: <span class="text-orange-400">"${MICROSOFT_CLIENT_ID}"</span>,
+        <span class="text-green-400">"ClientSecret"</span>: <span class="text-orange-400">"${MICROSOFT_CLIENT_SECRET}"</span>,
+        <span class="text-green-400">"TenantId"</span>: <span class="text-orange-400">"common"</span>
+      },
+      <span class="text-green-400">"github"</span>: {
+        <span class="text-green-400">"ClientId"</span>: <span class="text-orange-400">"${GITHUB_CLIENT_ID}"</span>,
+        <span class="text-green-400">"ClientSecret"</span>: <span class="text-orange-400">"${GITHUB_CLIENT_SECRET}"</span>,
+        <span class="text-green-400">"Scopes"</span>: [<span class="text-orange-400">"user:email"</span>]
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Examples Section -->
+    <section id="examples" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Learn how to integrate OAuth authentication into your web application.
+                </p>
+            </div>
+            
+            <!-- Example Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeExample = 'basic'" 
+                            :class="activeExample === 'basic' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Basic Setup
+                    </button>
+                    <button @click="activeExample = 'razor'" 
+                            :class="activeExample === 'razor' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Razor Pages
+                    </button>
+                    <button @click="activeExample = 'api'" 
+                            :class="activeExample === 'api' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        API Protection
+                    </button>
+                    <button @click="activeExample = 'roles'" 
+                            :class="activeExample === 'roles' ? 'bg-white dark:bg-gray-700 text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Role-Based Access
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Basic Setup Example -->
+            <div x-show="activeExample === 'basic'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Basic Authentication Setup</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Complete Program.cs Configuration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">This example shows a complete setup with Google and Microsoft authentication.</p>
+                        </div>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Authnz.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddRazorPages</span>();
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>();
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryOAuth</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGoogle</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GOOGLE_CLIENT_ID"</span>],
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GOOGLE_CLIENT_SECRET"</span>]
+    );
+    
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddMicrosoft</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"MICROSOFT_CLIENT_ID"</span>],
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"MICROSOFT_CLIENT_SECRET"</span>]
+    );
+    
+    <span class="text-blue-400">options</span>.<span class="text-green-400">JwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>];
+});
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseNoundryOAuth</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthentication</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthorization</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">MapRazorPages</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Razor Pages Example -->
+            <div x-show="activeExample === 'razor'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Razor Pages Integration</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Login Page with OAuth Buttons</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Use Noundry.Authnz TagHelpers for easy OAuth integration in Razor Pages.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Pre-built OAuth buttons</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic provider detection</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Responsive design</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">@* Pages/Auth/Login.cshtml *@</span>
+<span class="text-blue-400">@page</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">LoginModel</span>
+
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-md mx-auto mt-16"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"bg-white rounded-lg shadow-lg p-8"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;h2</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-2xl font-bold text-center mb-6"</span><span class="text-blue-400">&gt;</span>
+            Sign In
+        <span class="text-blue-400">&lt;/h2&gt;</span>
+        
+        <span class="text-gray-500">&lt;!-- OAuth Login Buttons --&gt;</span>
+        <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-4"</span><span class="text-blue-400">&gt;</span>
+            <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">show-all</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+        <span class="text-blue-400">&lt;/div&gt;</span>
+        
+        <span class="text-gray-500">&lt;!-- Or show individual providers --&gt;</span>
+        <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-3 mt-6"</span><span class="text-blue-400">&gt;</span>
+            <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">provider</span>=<span class="text-orange-400">"google"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+            <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">provider</span>=<span class="text-orange-400">"microsoft"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+            <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">provider</span>=<span class="text-orange-400">"github"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+        <span class="text-blue-400">&lt;/div&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Status Display -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">User Status & Profile Display</h4>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Show when user is anonymous --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-when-anonymous</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">asp-page</span>=<span class="text-orange-400">"/Auth/Login"</span><span class="text-blue-400">&gt;</span>Sign In<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show when user is authenticated --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-when-authenticated</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">show-avatar</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">show-name</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">show-email</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">user-class</span>=<span class="text-orange-400">"flex items-center space-x-3"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">asp-page</span>=<span class="text-orange-400">"/Auth/Logout"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-red-600"</span><span class="text-blue-400">&gt;</span>Logout<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                            <h5 class="font-semibold text-gray-900 dark:text-white mb-4">Example Output:</h5>
+                            <div class="flex items-center space-x-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                                <img src="https://via.placeholder.com/32" alt="User Avatar" class="w-8 h-8 rounded-full">
+                                <div>
+                                    <div class="font-medium text-gray-900 dark:text-white">John Doe</div>
+                                    <div class="text-sm text-gray-600 dark:text-gray-400">john@example.com</div>
+                                </div>
+                                <a href="#" class="text-red-600 hover:text-red-700 text-sm">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- API Protection Example -->
+            <div x-show="activeExample === 'api'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">API Authentication & Authorization</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Protecting API Endpoints</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Use JWT authentication to protect API endpoints with automatic token validation.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic JWT validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">User claims access</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Role-based authorization</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">[ApiController]</span>
+<span class="text-blue-400">[Route("api/[controller]")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductsController</span> : <span class="text-yellow-400">ControllerBase</span>
+{
+    <span class="text-gray-500">// Public endpoint - no authentication required</span>
+    <span class="text-blue-400">[HttpGet]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">GetProducts</span>()
+    {
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">products</span>);
+    }
+    
+    <span class="text-gray-500">// Protected endpoint - authentication required</span>
+    <span class="text-blue-400">[HttpPost]</span>
+    <span class="text-blue-400">[Authorize]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">CreateProduct</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
+    {
+        <span class="text-gray-500">// Access user information from JWT claims</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">userId</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"sub"</span>)?.<span class="text-green-400">Value</span>;
+        <span class="text-purple-400">var</span> <span class="text-blue-400">email</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"email"</span>)?.<span class="text-green-400">Value</span>;
+        
+        <span class="text-blue-400">product</span>.<span class="text-green-400">CreatedBy</span> = <span class="text-blue-400">userId</span>;
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">CreateProduct</span>(<span class="text-blue-400">product</span>));
+    }
+    
+    <span class="text-gray-500">// Admin only endpoint</span>
+    <span class="text-blue-400">[HttpDelete("{id}")]</span>
+    <span class="text-blue-400">[Authorize(Roles = "Admin")]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">DeleteProduct</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">DeleteProduct</span>(<span class="text-blue-400">id</span>));
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Role-Based Access Example -->
+            <div x-show="activeExample === 'roles'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Role-Based Access Control</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Custom Authorization Policies</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Define custom authorization policies and use claims for fine-grained access control.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Policy-based authorization</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Claims-based identity</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Razor Page protection</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Add authorization policies</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddAuthorization</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddPolicy</span>(<span class="text-orange-400">"AdminOnly"</span>, <span class="text-blue-400">policy</span> =>
+        <span class="text-blue-400">policy</span>.<span class="text-green-400">RequireClaim</span>(<span class="text-orange-400">"role"</span>, <span class="text-orange-400">"admin"</span>));
+        
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddPolicy</span>(<span class="text-orange-400">"ManagerOrAdmin"</span>, <span class="text-blue-400">policy</span> =>
+        <span class="text-blue-400">policy</span>.<span class="text-green-400">RequireClaim</span>(<span class="text-orange-400">"role"</span>, <span class="text-orange-400">"manager"</span>, <span class="text-orange-400">"admin"</span>));
+});
+
+<span class="text-gray-500">// Use in controllers</span>
+<span class="text-blue-400">[Authorize(Policy = "AdminOnly")]</span>
+<span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">AdminDashboard</span>()
+{
+    <span class="text-purple-400">return</span> <span class="text-green-400">View</span>();
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Razor Page Authorization -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Razor Page Authorization</h4>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">@* Pages/Admin/Index.cshtml *@</span>
+<span class="text-blue-400">@page</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">AdminIndexModel</span>
+<span class="text-blue-400">@attribute</span> <span class="text-blue-400">[Authorize(Policy = "AdminOnly")]</span>
+
+<span class="text-blue-400">&lt;h1&gt;</span>Admin Dashboard<span class="text-blue-400">&lt;/h1&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show user information --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-status</span> <span class="text-green-400">show-when-authenticated</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">show-name</span>=<span class="text-orange-400">"true"</span>
+                       <span class="text-green-400">show-email</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Role-specific content --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz-policy</span>=<span class="text-orange-400">"AdminOnly"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h2&gt;</span>Admin Controls<span class="text-blue-400">&lt;/h2&gt;</span>
+    <span class="text-gray-500">&lt;!-- Admin-only content here --&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Pages/Admin/Index.cshtml.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Microsoft.AspNetCore.Authorization</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Microsoft.AspNetCore.Mvc.RazorPages</span>;
+
+<span class="text-blue-400">[Authorize(Policy = "AdminOnly")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">AdminIndexModel</span> : <span class="text-yellow-400">PageModel</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">UserName</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">UserEmail</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">OnGet</span>()
+    {
+        <span class="text-gray-500">// Access user claims from JWT token</span>
+        <span class="text-blue-400">UserName</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"name"</span>)?.<span class="text-green-400">Value</span>;
+        <span class="text-blue-400">UserEmail</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"email"</span>)?.<span class="text-green-400">Value</span>;
+        
+        <span class="text-gray-500">// Check specific permissions</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">canManageUsers</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">HasClaim</span>(<span class="text-orange-400">"permission"</span>, <span class="text-orange-400">"manage:users"</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Explore advanced authentication scenarios and security features.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- JWT Management -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+                        </svg>
+                        JWT Token Management
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Automatic Refresh</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Tokens automatically refresh before expiration</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Secure Storage</h4>
+                            <p class="text-gray-600 dark:text-gray-300">HttpOnly cookies with proper security flags</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Custom Claims</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Add custom claims during token generation</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Multi-Tenant Support -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        Multi-Tenant Support
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Tenant Isolation</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Per-tenant OAuth configuration</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Domain-Based Routing</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Automatic tenant detection from domain</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Separate Providers</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Different OAuth providers per tenant</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Features -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        Security Features
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">CSRF Protection</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Built-in CSRF token validation</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">State Parameter</h4>
+                            <p class="text-gray-600 dark:text-gray-300">OAuth state parameter for security</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Secure Defaults</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Security-first configuration out of the box</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-green-600 to-emerald-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Add Authentication?</h2>
+            <p class="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.Authnz today and add secure, scalable OAuth 2.0 authentication to your .NET applications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-green-600 hover:bg-green-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Noundry.Authnz
+                </a>
+                <a href="docs.html#authnz" class="border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Full Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Noundry.Authnz is part of the Noundry platform - providing sessionless OAuth 2.0 authentication with JWT token management for scalable .NET applications.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">OAuth Providers</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#google" class="text-gray-300 hover:text-white transition-colors">Google OAuth</a></li>
+                        <li><a href="#microsoft" class="text-gray-300 hover:text-white transition-colors">Microsoft Azure AD</a></li>
+                        <li><a href="#github" class="text-gray-300 hover:text-white transition-colors">GitHub OAuth</a></li>
+                        <li><a href="#custom" class="text-gray-300 hover:text-white transition-colors">Custom Providers</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html#authnz" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#examples" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">GitHub Repository</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeComponent: 'overview' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry Documentation - Components & Libraries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .prose pre { background: #1f2937; }
+        .prose code { background: #374151; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+     Navigation 
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                     Dark mode toggle 
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="pt-16 min-h-screen bg-white dark:bg-gray-900">
+        <div class="flex">
+             Sidebar 
+            <div class="w-80 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed h-full overflow-y-auto">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Documentation</h2>
+                    
+                     Overview 
+                    <div class="mb-6">
+                        <button @click="activeComponent = 'overview'" 
+                                :class="activeComponent === 'overview' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                class="w-full text-left px-3 py-2 rounded-lg font-medium transition-colors">
+                            📖 Overview
+                        </button>
+                    </div>
+
+                     Core Libraries 
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Core Libraries</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'assertive'" 
+                                    :class="activeComponent === 'assertive' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                ✅ Noundry.Assertive
+                            </button>
+                            <button @click="activeComponent = 'guardian'" 
+                                    :class="activeComponent === 'guardian' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🛡️ Noundry.Guardian
+                            </button>
+                        </div>
+                    </div>
+
+                     Web Development 
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Web Development</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'authnz'" 
+                                    :class="activeComponent === 'authnz' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔐 Noundry.Authnz
+                            </button>
+                            <button @click="activeComponent = 'taghelpers'" 
+                                    :class="activeComponent === 'taghelpers' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🏷️ Noundry.TagHelpers
+                            </button>
+                            <button @click="activeComponent = 'ui'" 
+                                    :class="activeComponent === 'ui' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🎨 Noundry.UI
+                            </button>
+                        </div>
+                    </div>
+
+                     Data Access 
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Data Access</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'tuxedo'" 
+                                    :class="activeComponent === 'tuxedo' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🗄️ Noundry.Tuxedo
+                            </button>
+                            <button @click="activeComponent = 'bowtie'" 
+                                    :class="activeComponent === 'bowtie' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ml-3">
+                                🎭 Tuxedo.Bowtie
+                            </button>
+                        </div>
+                    </div>
+
+                     Development Tools 
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Development Tools</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'dotenvx'" 
+                                    :class="activeComponent === 'dotenvx' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔒 Noundry.DotEnvX
+                            </button>
+                            <button @click="activeComponent = 'cloud'" 
+                                    :class="activeComponent === 'cloud' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                ☁️ Noundry.Cloud CLI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             Main Content 
+            <div class="ml-80 flex-1 p-8">
+                 Overview 
+                <div x-show="activeComponent === 'overview'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry Documentation</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Welcome to the comprehensive documentation for the Noundry platform. Explore our libraries, components, and tools to accelerate your .NET development.
+                    </p>
+                    
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Getting Started</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">New to Noundry? Start here to learn the basics and set up your first project.</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                <div class="text-accent-500">$ dotnet new webapi -n MyApp</div>
+                                <div class="text-accent-500">$ cd MyApp</div>
+                                <div class="text-accent-500">$ dotnet add package Noundry.UI</div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Quick Reference</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Common patterns and code snippets for rapid development.</p>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center text-gray-600 dark:text-gray-300">
+                                    <svg class="w-4 h-4 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Authentication Setup
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-300">
+                                    <svg class="w-4 h-4 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Database Configuration
+                                </li>
+                                <li class="flex items-center text-gray-600 dark:text-gray-300">
+                                    <svg class="w-4 h-4 text-primary-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    UI Components
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                 Noundry.Assertive 
+                <div x-show="activeComponent === 'assertive'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Assertive</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        A fluent assertion library that makes your tests more readable and expressive.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Assertive</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Usage</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Assertive</span>;
+
+<span class="text-gray-500">// String assertions</span>
+<span class="text-blue-400">result</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Be</span>(<span class="text-orange-400">"expected"</span>);
+<span class="text-blue-400">name</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeNullOrEmpty</span>();
+<span class="text-blue-400">email</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Contain</span>(<span class="text-orange-400">"@"</span>);
+
+<span class="text-gray-500">// Numeric assertions</span>
+<span class="text-blue-400">count</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">BeGreaterThan</span>(<span class="text-orange-400">0</span>);
+<span class="text-blue-400">price</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">BeBetween</span>(<span class="text-orange-400">10.0</span>, <span class="text-orange-400">100.0</span>);
+
+<span class="text-gray-500">// Collection assertions</span>
+<span class="text-blue-400">items</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeEmpty</span>();
+<span class="text-blue-400">users</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">HaveCount</span>(<span class="text-orange-400">3</span>);
+<span class="text-blue-400">names</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Contain</span>(<span class="text-orange-400">"John"</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Examples</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Object property assertions</span>
+<span class="text-blue-400">user</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeNull</span>();
+<span class="text-blue-400">user</span>.<span class="text-green-400">Name</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Be</span>(<span class="text-orange-400">"John Doe"</span>);
+<span class="text-blue-400">user</span>.<span class="text-green-400">Age</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">BeGreaterThan</span>(<span class="text-orange-400">18</span>);
+
+<span class="text-gray-500">// Exception assertions</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">action</span> = () => <span class="text-blue-400">service</span>.<span class="text-green-400">ThrowException</span>();
+<span class="text-blue-400">action</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Throw</span>&lt;<span class="text-yellow-400">ArgumentException</span>&gt;()
+    .<span class="text-green-400">WithMessage</span>(<span class="text-orange-400">"Invalid argument"</span>);
+
+<span class="text-gray-500">// Async assertions</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">asyncResult</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">CompleteWithin</span>(<span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">5</span>));</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                 Guardian 
+                <div x-show="activeComponent === 'guardian'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Guardian</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Lightweight guard clauses for defensive programming and input validation.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Guardian</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Usage</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Guardian</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ProcessUser</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">email</span>)
+{
+    <span class="text-gray-500">// Null checks</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">user</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">user</span>));
+    
+    <span class="text-gray-500">// String validation</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrEmpty</span>(<span class="text-blue-400">email</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">email</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">InvalidFormat</span>(<span class="text-blue-400">email</span>, <span class="text-orange-400">@"^[^@\s]+@[^@\s]+\.[^@\s]+$"</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">email</span>));
+    
+    <span class="text-gray-500">// Numeric validation</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">user</span>.<span class="text-green-400">Age</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">user</span>.<span class="text-green-400">Age</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">OutOfRange</span>(<span class="text-blue-400">user</span>.<span class="text-green-400">Age</span>, <span class="text-orange-400">1</span>, <span class="text-orange-400">120</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">user</span>.<span class="text-green-400">Age</span>));
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Collection Guards</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Collection validation</span>
+<span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrEmpty</span>(<span class="text-blue-400">items</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">items</span>));
+<span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">CountOutOfRange</span>(<span class="text-blue-400">items</span>, <span class="text-orange-400">1</span>, <span class="text-orange-400">100</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">items</span>));
+
+<span class="text-gray-500">// Custom conditions</span>
+<span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Expression</span>(<span class="text-blue-400">x</span> => <span class="text-blue-400">x</span>.<span class="text-green-400">StartDate</span> > <span class="text-blue-400">x</span>.<span class="text-green-400">EndDate</span>, <span class="text-blue-400">request</span>, <span class="text-orange-400">"Start date must be before end date"</span>);</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                 Noundry.UI 
+                <div x-show="activeComponent === 'ui'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.UI</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Complete UI component library with Alpine.js integration and Tailwind CSS styling.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.UI</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Button Component</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Usage</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500">&lt;!-- Primary Button --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">size</span>=<span class="text-orange-400">"md"</span><span class="text-blue-400">&gt;</span>
+    Click Me
+<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Secondary Button --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"secondary"</span><span class="text-blue-400">&gt;</span>
+    Cancel
+<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Loading State --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">loading</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    Processing...
+<span class="text-blue-400">&lt;/noundry-button&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Examples</h3>
+                                <div class="space-y-3">
+                                    <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                                        Primary Button
+                                    </button>
+                                    <button class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg font-medium transition-colors">
+                                        Secondary Button
+                                    </button>
+                                    <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                                        Danger Button
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Modal Component</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Usage</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-blue-400">&lt;noundry-modal</span> <span class="text-green-400">id</span>=<span class="text-orange-400">"example-modal"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">slot</span>=<span class="text-orange-400">"header"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;h3&gt;</span>Modal Title<span class="text-blue-400">&lt;/h3&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+    
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">slot</span>=<span class="text-orange-400">"body"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;p&gt;</span>Modal content goes here.<span class="text-blue-400">&lt;/p&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+    
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">slot</span>=<span class="text-orange-400">"footer"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span><span class="text-blue-400">&gt;</span>
+            Save
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+<span class="text-blue-400">&lt;/noundry-modal&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Example</h3>
+                                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 max-w-sm">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Confirm Action</h3>
+                                            <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <p class="text-gray-600 dark:text-gray-300 mb-6">Are you sure you want to delete this item?</p>
+                                        <div class="flex space-x-3">
+                                            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                                Delete
+                                            </button>
+                                            <button class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Form Components</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Input Field</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter your email"</span>
+    <span class="text-green-400">required</span>=<span class="text-orange-400">"true"</span>
+<span class="text-blue-400">/&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Example</h3>
+                                <div class="space-y-2">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email Address</label>
+                                    <input type="email" placeholder="Enter your email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 Noundry.Tuxedo 
+                <div x-show="activeComponent === 'tuxedo'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Tuxedo</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Modern ORM combining the power of Dapper with additional functionality for rapid data access.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Tuxedo</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Configuration</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Program.cs</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Or for PostgreSQL</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgreSQL</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Or for MySQL</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySQL</span>(<span class="text-blue-400">connectionString</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic CRUD Operations</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">UserService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ITuxedoConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">UserService</span>(<span class="text-yellow-400">ITuxedoConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+
+    <span class="text-gray-500">// Get by ID</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">User</span>&gt; <span class="text-green-400">GetByIdAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+
+    <span class="text-gray-500">// Get all</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetAllAsync</span>()
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAllAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;();
+    }
+
+    <span class="text-gray-500">// Insert</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">CreateAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">user</span>);
+    }
+
+    <span class="text-gray-500">// Update</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">UpdateAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">user</span>);
+    }
+
+    <span class="text-gray-500">// Delete</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Queries</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Custom queries with parameters</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetActiveUsersAsync</span>()
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">"SELECT * FROM Users WHERE IsActive = @IsActive"</span>;
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">IsActive</span> = <span class="text-purple-400">true</span> });
+}
+
+<span class="text-gray-500">// Paged results</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersPagedAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">page</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span>)
+{
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetPagedAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">page</span>, <span class="text-blue-400">pageSize</span>);
+}
+
+<span class="text-gray-500">// Transactions</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">TransferFundsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">fromId</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">toId</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>)
+{
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+    <span class="text-purple-400">try</span>
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance - @Amount WHERE Id = @Id"</span>, 
+            <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">fromId</span> }, <span class="text-blue-400">transaction</span>);
+        
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance + @Amount WHERE Id = @Id"</span>, 
+            <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">toId</span> }, <span class="text-blue-400">transaction</span>);
+        
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+    }
+    <span class="text-purple-400">catch</span>
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">throw</span>;
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                 Add similar sections for other components 
+                <div x-show="activeComponent === 'taghelpers'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.TagHelpers</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        ASP.NET Core TagHelpers optimized for Tailwind CSS with built-in accessibility and responsive design.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.TagHelpers</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Form TagHelpers</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">&lt;!-- Enhanced form with validation --&gt;</span>
+<span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-green-400">required</span><span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span><span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-select</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Country"</span> <span class="text-green-400">asp-items</span>=<span class="text-orange-400">"ViewBag.Countries"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Country"</span><span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="activeComponent === 'authnz'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Authnz</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Sessionless OAuth 2.0 authentication for multiple providers with JWT token management. Secure, scalable, and easy to integrate into any .NET application.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Multiple Providers</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• Google OAuth 2.0</li>
+                                    <li>• Microsoft Azure AD</li>
+                                    <li>• GitHub OAuth</li>
+                                    <li>• Apple Sign In</li>
+                                    <li>• Facebook & Twitter</li>
+                                    <li>• Custom providers</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Security Features</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• Sessionless architecture with JWT</li>
+                                    <li>• PKCE support for enhanced security</li>
+                                    <li>• Automatic token refresh</li>
+                                    <li>• CSRF protection</li>
+                                    <li>• State parameter validation</li>
+                                    <li>• Secure cookie management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Authnz</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Setup</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Authnz.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Add OAuth authentication</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryOAuth</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGoogle</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GOOGLE_CLIENT_ID"</span>],
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GOOGLE_CLIENT_SECRET"</span>]
+    );
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddMicrosoft</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"MICROSOFT_CLIENT_ID"</span>],
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"MICROSOFT_CLIENT_SECRET"</span>]
+    );
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AddGitHub</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GITHUB_CLIENT_ID"</span>],
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"GITHUB_CLIENT_SECRET"</span>]
+    );
+    
+    <span class="text-blue-400">options</span>.<span class="text-green-400">JwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>];
+    <span class="text-blue-400">options</span>.<span class="text-green-400">DefaultRedirectUri</span> = <span class="text-orange-400">"/Dashboard"</span>;
+});
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Configure authentication pipeline</span>
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseNoundryOAuth</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthentication</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">UseAuthorization</span>();
+
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">TagHelper Components</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Login Component</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500">&lt;!-- Show all providers --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">show-all</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Individual provider --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">provider</span>=<span class="text-orange-400">"google"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Custom styling --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-login</span> 
+    <span class="text-green-400">provider</span>=<span class="text-orange-400">"microsoft"</span>
+    <span class="text-green-400">button-text</span>=<span class="text-orange-400">"Sign in with Microsoft"</span>
+    <span class="text-green-400">button-class</span>=<span class="text-orange-400">"custom-btn-style"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-login&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">User Status</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500">&lt;!-- Anonymous users --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-status</span> 
+    <span class="text-green-400">show-when-anonymous</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">asp-page</span>=<span class="text-orange-400">"/Auth/Login"</span><span class="text-blue-400">&gt;</span>Sign In<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Authenticated users --&gt;</span>
+<span class="text-blue-400">&lt;noundry-oauth-status</span> 
+    <span class="text-green-400">show-when-authenticated</span>=<span class="text-orange-400">"true"</span>
+    <span class="text-green-400">show-avatar</span>=<span class="text-orange-400">"true"</span>
+    <span class="text-green-400">show-name</span>=<span class="text-orange-400">"true"</span>
+    <span class="text-green-400">show-email</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">asp-page</span>=<span class="text-orange-400">"/Auth/Logout"</span><span class="text-blue-400">&gt;</span>Logout<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/noundry-oauth-status&gt;</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">API Protection</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-blue-400">[ApiController]</span>
+<span class="text-blue-400">[Route("api/[controller]")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductsController</span> : <span class="text-yellow-400">ControllerBase</span>
+{
+    <span class="text-gray-500">// Protected endpoint - authentication required</span>
+    <span class="text-blue-400">[HttpPost]</span>
+    <span class="text-blue-400">[Authorize]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">CreateProduct</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
+    {
+        <span class="text-gray-500">// Access user information from JWT claims</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">userId</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"sub"</span>)?.<span class="text-green-400">Value</span>;
+        <span class="text-purple-400">var</span> <span class="text-blue-400">email</span> = <span class="text-yellow-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"email"</span>)?.<span class="text-green-400">Value</span>;
+        
+        <span class="text-blue-400">product</span>.<span class="text-green-400">CreatedBy</span> = <span class="text-blue-400">userId</span>;
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">CreateProduct</span>(<span class="text-blue-400">product</span>));
+    }
+    
+    <span class="text-gray-500">// Role-based authorization</span>
+    <span class="text-blue-400">[HttpDelete("{id}")]</span>
+    <span class="text-blue-400">[Authorize(Roles = "Admin")]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">DeleteProduct</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">DeleteProduct</span>(<span class="text-blue-400">id</span>));
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="activeComponent === 'bowtie'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Tuxedo.Bowtie</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Automated database schema synchronization library that creates and updates database tables directly from your C# model classes. No manual migrations needed.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Database Support</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• SQL Server</li>
+                                    <li>• PostgreSQL</li>
+                                    <li>• MySQL</li>
+                                    <li>• SQLite</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Advanced Features</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• Model-first schema generation</li>
+                                    <li>• Advanced indexing (B-Tree, Hash, GIN)</li>
+                                    <li>• Complex constraints support</li>
+                                    <li>• CLI and programmatic APIs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Tuxedo.Bowtie</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Model Definition</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.ComponentModel.DataAnnotations</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">System.ComponentModel.DataAnnotations.Schema</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Bowtie.Attributes</span>;
+
+<span class="text-blue-400">[Table("Products")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(MaxLength = 100)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Name")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-purple-400">string</span>.<span class="text-green-400">Empty</span>;
+
+    <span class="text-blue-400">[Column(Precision = 18, Scale = 2)]</span>
+    <span class="text-blue-400">[CheckConstraint("Price > 0")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-green-400">Price</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(MaxLength = 500)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span>? <span class="text-green-400">Description</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[ForeignKey("Category")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-blue-400">[Column(DefaultValue = "GETDATE()")]</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-green-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Database Synchronization</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Program.cs - Automatic synchronization on startup</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Bowtie</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Add Bowtie services</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddBowtie</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">ConnectionString</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">GetConnectionString</span>(<span class="text-orange-400">"DefaultConnection"</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Provider</span> = <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-green-400">SQLServer</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AutoMigrate</span> = <span class="text-purple-400">true</span>; <span class="text-gray-500">// Automatically sync on startup</span>
+});
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Manual synchronization</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">app</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">SynchronizeDatabaseAsync</span>(
+    <span class="text-green-400">connectionString</span>: <span class="text-orange-400">"Data Source=app.db"</span>,
+    <span class="text-green-400">provider</span>: <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-green-400">SQLite</span>
+);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Indexing & Constraints</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-blue-400">[Table("Users")]</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">User</span>
+{
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-gray-500">// Unique constraint with custom index</span>
+    <span class="text-blue-400">[Column(MaxLength = 255)]</span>
+    <span class="text-blue-400">[Index("IX_Users_Email", IsUnique = true)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-purple-400">string</span>.<span class="text-green-400">Empty</span>;
+
+    <span class="text-gray-500">// Full-text search index (PostgreSQL)</span>
+    <span class="text-blue-400">[Column(MaxLength = 1000)]</span>
+    <span class="text-blue-400">[Index("IX_Users_Bio_GIN", IndexType = IndexType.GIN)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span>? <span class="text-green-400">Biography</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    <span class="text-gray-500">// Composite index</span>
+    <span class="text-blue-400">[Index("IX_Users_Name_Status", Order = 1)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">FirstName</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-purple-400">string</span>.<span class="text-green-400">Empty</span>;
+
+    <span class="text-blue-400">[Index("IX_Users_Name_Status", Order = 2)]</span>
+    <span class="text-blue-400">[CheckConstraint("Status IN ('Active', 'Inactive', 'Pending')")]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Status</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } = <span class="text-orange-400">"Pending"</span>;
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">CLI Usage</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500"># Install CLI tool</span>
+<span class="text-accent-500">$ dotnet tool install -g Noundry.Tuxedo.Bowtie.Cli</span>
+
+<span class="text-gray-500"># Generate schema from models</span>
+<span class="text-accent-500">$ bowtie sync --connection "Server=localhost;Database=MyApp;" --provider sqlserver</span>
+
+<span class="text-gray-500"># Dry run to see what changes would be made</span>
+<span class="text-accent-500">$ bowtie sync --connection "Data Source=app.db" --provider sqlite --dry-run</span>
+
+<span class="text-gray-500"># Generate DDL script without applying</span>
+<span class="text-accent-500">$ bowtie script --connection "Host=localhost;Database=myapp" --provider postgresql --output schema.sql</span>
+
+<span class="text-gray-500"># Validate models against database</span>
+<span class="text-accent-500">$ bowtie validate --connection "Server=localhost;Database=MyApp;" --provider sqlserver</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="activeComponent === 'dotenvx'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.DotEnvX</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Enhanced .env file support with encryption, validation, and environment-specific configurations. Secure your application secrets while maintaining developer productivity.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Security</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• AES-256 encryption for sensitive values</li>
+                                    <li>• Secure key derivation (PBKDF2)</li>
+                                    <li>• Automatic encryption detection</li>
+                                    <li>• Safe default configurations</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Developer Experience</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• Environment-specific files</li>
+                                    <li>• Required variable validation</li>
+                                    <li>• Auto-loading and hot-reload</li>
+                                    <li>• Integration with ASP.NET Configuration</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.DotEnvX</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Usage</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.DotEnvX.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Add DotEnvX configuration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>; <span class="text-gray-500">// Loads .env.development, .env.production, etc.</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"DATABASE_URL"</span>, <span class="text-orange-400">"JWT_SECRET"</span> };
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-orange-400">"your-encryption-key"</span>; <span class="text-gray-500">// For encrypted values</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">ThrowOnMissingRequired</span> = <span class="text-purple-400">true</span>;
+});</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Environment Files</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">.env (Base)</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500"># Base configuration</span>
+<span class="text-green-400">APP_NAME</span>=<span class="text-orange-400">MyApplication</span>
+<span class="text-green-400">LOG_LEVEL</span>=<span class="text-orange-400">Information</span>
+
+<span class="text-gray-500"># Database</span>
+<span class="text-green-400">DATABASE_HOST</span>=<span class="text-orange-400">localhost</span>
+<span class="text-green-400">DATABASE_PORT</span>=<span class="text-orange-400">5432</span>
+
+<span class="text-gray-500"># Encrypted secrets</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">encrypted:BDb7t3QkTRp2AbCdEfGhIjKl...</span>
+<span class="text-green-400">API_KEY</span>=<span class="text-orange-400">encrypted:XyZ9w8v7u6t5s4r3q2p1o0n...</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">.env.development</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500"># Development overrides</span>
+<span class="text-green-400">LOG_LEVEL</span>=<span class="text-orange-400">Debug</span>
+<span class="text-green-400">DATABASE_URL</span>=<span class="text-orange-400">postgres://user:pass@localhost/dev_db</span>
+
+<span class="text-gray-500"># Development-specific settings</span>
+<span class="text-green-400">ENABLE_SWAGGER</span>=<span class="text-orange-400">true</span>
+<span class="text-green-400">CORS_ORIGINS</span>=<span class="text-orange-400">http://localhost:3000,http://localhost:5173</span>
+
+<span class="text-gray-500"># Non-encrypted for development</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">development-secret-key</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Encryption & Security</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Encrypt values programmatically</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">encryptor</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">DotEnvXEncryptor</span>(<span class="text-orange-400">"your-encryption-key"</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">encryptedValue</span> = <span class="text-blue-400">encryptor</span>.<span class="text-green-400">Encrypt</span>(<span class="text-orange-400">"sensitive-data"</span>);
+<span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"encrypted:{</span><span class="text-blue-400">encryptedValue</span><span class="text-orange-400">}"</span>);
+
+<span class="text-gray-500">// Or use CLI tool</span>
+<span class="text-gray-500">// $ dotenvx encrypt "my-secret-value"</span>
+<span class="text-gray-500">// encrypted:BDb7t3QkTRp2AbCdEfGhIjKlMnOpQrStUv...</span>
+
+<span class="text-gray-500">// Values are automatically decrypted when loaded</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">jwtSecret</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"JWT_SECRET"</span>]; <span class="text-gray-500">// Returns decrypted value</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Configuration</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-gray-500">// Multiple environment files</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Files</span> = <span class="text-purple-400">new</span>[] 
+    {
+        <span class="text-orange-400">".env"</span>,
+        <span class="text-orange-400">".env.local"</span>,
+        <span class="text-orange-400">$".env.{</span><span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">EnvironmentName</span>.<span class="text-green-400">ToLower</span>()<span class="text-orange-400">}"</span>
+    };
+    
+    <span class="text-gray-500">// Validation rules</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] 
+    { 
+        <span class="text-orange-400">"DATABASE_URL"</span>, 
+        <span class="text-orange-400">"JWT_SECRET"</span>, 
+        <span class="text-orange-400">"ENCRYPTION_KEY"</span> 
+    };
+    
+    <span class="text-gray-500">// Custom validation</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Validators</span>.<span class="text-green-400">Add</span>(<span class="text-orange-400">"JWT_SECRET"</span>, <span class="text-blue-400">value</span> => 
+        <span class="text-blue-400">value</span>.<span class="text-green-400">Length</span> >= <span class="text-orange-400">32</span> ? <span class="text-purple-400">null</span> : <span class="text-orange-400">"JWT_SECRET must be at least 32 characters"</span>);
+    
+    <span class="text-gray-500">// Environment overrides</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AllowSystemEnvironmentOverrides</span> = <span class="text-purple-400">true</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">OverrideExistingVariables</span> = <span class="text-purple-400">false</span>;
+    
+    <span class="text-gray-500">// Security settings</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">RequireEncryption</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsProduction</span>();
+});</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="activeComponent === 'cloud'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry Cloud CLI (NDC)</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        A unified .NET CLI tool providing "write once, deploy anywhere" experience across multiple cloud platforms. Use .NET Aspire for local development and deploy seamlessly to AWS, Google Cloud, Azure, or containers.
+                    </p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🌐 Multi-Cloud Support</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• AWS (App Runner, RDS, ElastiCache)</li>
+                                    <li>• Google Cloud (Cloud Run, Cloud SQL, Memorystore)</li>
+                                    <li>• Azure (Container Apps, SQL Database, Redis)</li>
+                                    <li>• Docker/Kubernetes containers</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🏠 Consistent Development</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• .NET Aspire for local orchestration</li>
+                                    <li>• Same commands across all platforms</li>
+                                    <li>• Identical developer experience</li>
+                                    <li>• Infrastructure as Code with Terraform</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet tool install -g noundry-cloud-cli</div>
+                        </div>
+                        <div class="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                            <h4 class="font-medium text-blue-900 dark:text-blue-100 mb-2">Prerequisites:</h4>
+                            <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
+                                <li>• .NET 9.0 SDK</li>
+                                <li>• Docker Desktop</li>
+                                <li>• Terraform ≥ 1.0</li>
+                                <li>• Platform CLI tools (AWS CLI, gcloud, Azure CLI)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500"># Create a new project</span>
+<span class="text-accent-500">$ ndc new myapp --template webapi</span>
+<span class="text-accent-500">$ cd myapp</span>
+
+<span class="text-gray-500"># Start local development with Aspire</span>
+<span class="text-accent-500">$ ndc dev</span>
+<span class="text-gray-500"># This starts PostgreSQL, Redis, MinIO locally</span>
+
+<span class="text-gray-500"># Deploy to any cloud platform</span>
+<span class="text-accent-500">$ ndc deploy --target aws</span>
+<span class="text-accent-500">$ ndc deploy --target gcp</span>
+<span class="text-accent-500">$ ndc deploy --target azure</span>
+
+<span class="text-gray-500"># Same commands work for all platforms!</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Local Development with Aspire</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Project Structure</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-green-400">myapp/</span>
+├── <span class="text-blue-400">src/</span>
+│   ├── <span class="text-yellow-400">MyApp.Api/</span>          <span class="text-gray-500"># Your API project</span>
+│   └── <span class="text-yellow-400">MyApp.AppHost/</span>      <span class="text-gray-500"># Aspire orchestration</span>
+├── <span class="text-blue-400">deploy/</span>
+│   ├── <span class="text-yellow-400">aws/</span>               <span class="text-gray-500"># Terraform for AWS</span>
+│   ├── <span class="text-yellow-400">gcp/</span>               <span class="text-gray-500"># Terraform for GCP</span>
+│   └── <span class="text-yellow-400">azure/</span>             <span class="text-gray-500"># Terraform for Azure</span>
+└── <span class="text-blue-400">ndc.json</span>              <span class="text-gray-500"># NDC configuration</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Aspire AppHost Setup</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500">// Program.cs in AppHost</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">DistributedApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
+
+<span class="text-gray-500">// Add backing services</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">postgres</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddPostgres</span>(<span class="text-orange-400">"postgres"</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">redis</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddRedis</span>(<span class="text-orange-400">"redis"</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">minio</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddMinIO</span>(<span class="text-orange-400">"storage"</span>);
+
+<span class="text-gray-500">// Add your API</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">AddProject</span>&lt;<span class="text-yellow-400">Projects</span>.<span class="text-yellow-400">MyApp_Api</span>&gt;(<span class="text-orange-400">"api"</span>)
+    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">postgres</span>)
+    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">redis</span>)
+    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">minio</span>);
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>().<span class="text-green-400">Run</span>();</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Cloud Deployment Examples</h2>
+                        <div class="space-y-6">
+                            <!-- AWS Deployment -->
+                            <div class="bg-orange-50 dark:bg-orange-900/20 rounded-xl p-6 border border-orange-200 dark:border-orange-800">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                                    <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm mr-3">AWS</span>
+                                    Deploy to AWS
+                                </h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500"># Configure AWS credentials</span>
+<span class="text-accent-500">$ aws configure</span>
+
+<span class="text-gray-500"># Deploy to AWS App Runner + RDS + ElastiCache</span>
+<span class="text-accent-500">$ ndc deploy --target aws --region us-east-1</span>
+
+<span class="text-gray-500"># Creates:</span>
+<span class="text-gray-500"># - App Runner service for your API</span>
+<span class="text-gray-500"># - RDS PostgreSQL instance</span>
+<span class="text-gray-500"># - ElastiCache Redis cluster</span></code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Google Cloud Deployment -->
+                            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded text-sm mr-3">GCP</span>
+                                    Deploy to Google Cloud
+                                </h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500"># Authenticate with Google Cloud</span>
+<span class="text-accent-500">$ gcloud auth login</span>
+<span class="text-accent-500">$ gcloud config set project YOUR_PROJECT_ID</span>
+
+<span class="text-gray-500"># Deploy to Cloud Run + Cloud SQL + Memorystore</span>
+<span class="text-accent-500">$ ndc deploy --target gcp --region us-central1</span>
+
+<span class="text-gray-500"># Creates:</span>
+<span class="text-gray-500"># - Cloud Run service for your API</span>
+<span class="text-gray-500"># - Cloud SQL PostgreSQL instance</span>
+<span class="text-gray-500"># - Memorystore Redis instance</span></code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Azure Deployment -->
+                            <div class="bg-cyan-50 dark:bg-cyan-900/20 rounded-xl p-6 border border-cyan-200 dark:border-cyan-800">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
+                                    <span class="bg-cyan-500 text-white px-2 py-1 rounded text-sm mr-3">Azure</span>
+                                    Deploy to Microsoft Azure
+                                </h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-gray-500"># Login to Azure</span>
+<span class="text-accent-500">$ az login</span>
+
+<span class="text-gray-500"># Deploy to Container Apps + SQL Database + Redis</span>
+<span class="text-accent-500">$ ndc deploy --target azure --region eastus</span>
+
+<span class="text-gray-500"># Creates:</span>
+<span class="text-gray-500"># - Container Apps for your API</span>
+<span class="text-gray-500"># - Azure SQL Database</span>
+<span class="text-gray-500"># - Azure Cache for Redis</span></code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Configuration</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// ndc.json configuration file</span>
+{
+  <span class="text-green-400">"name"</span>: <span class="text-orange-400">"myapp"</span>,
+  <span class="text-green-400">"version"</span>: <span class="text-orange-400">"1.0.0"</span>,
+  <span class="text-green-400">"targets"</span>: {
+    <span class="text-green-400">"aws"</span>: {
+      <span class="text-green-400">"region"</span>: <span class="text-orange-400">"us-east-1"</span>,
+      <span class="text-green-400">"services"</span>: {
+        <span class="text-green-400">"database"</span>: <span class="text-orange-400">"rds-postgres"</span>,
+        <span class="text-green-400">"cache"</span>: <span class="text-orange-400">"elasticache-redis"</span>,
+        <span class="text-green-400">"compute"</span>: <span class="text-orange-400">"app-runner"</span>
+      }
+    },
+    <span class="text-green-400">"gcp"</span>: {
+      <span class="text-green-400">"project"</span>: <span class="text-orange-400">"your-project-id"</span>,
+      <span class="text-green-400">"region"</span>: <span class="text-orange-400">"us-central1"</span>,
+      <span class="text-green-400">"services"</span>: {
+        <span class="text-green-400">"database"</span>: <span class="text-orange-400">"cloud-sql-postgres"</span>,
+        <span class="text-green-400">"cache"</span>: <span class="text-orange-400">"memorystore-redis"</span>,
+        <span class="text-green-400">"compute"</span>: <span class="text-orange-400">"cloud-run"</span>
+      }
+    },
+    <span class="text-green-400">"azure"</span>: {
+      <span class="text-green-400">"subscription"</span>: <span class="text-orange-400">"your-subscription-id"</span>,
+      <span class="text-green-400">"region"</span>: <span class="text-orange-400">"eastus"</span>,
+      <span class="text-green-400">"services"</span>: {
+        <span class="text-green-400">"database"</span>: <span class="text-orange-400">"azure-sql"</span>,
+        <span class="text-green-400">"cache"</span>: <span class="text-orange-400">"azure-redis"</span>,
+        <span class="text-green-400">"compute"</span>: <span class="text-orange-400">"container-apps"</span>
+      }
+    }
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16 ml-80">
+        <div class="max-w-6xl mx-auto px-8">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Comprehensive documentation for the Noundry platform. Learn how to build amazing .NET applications with our modern libraries and tools.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">All Libraries</a></li>
+                        <li><a href="ui-components.html" class="text-gray-300 hover:text-white transition-colors">UI Components</a></li>
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

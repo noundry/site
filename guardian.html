@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeCategory: 'overview' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian - Defensive Programming Library for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-accent-50 via-green-50 to-teal-50 dark:from-gray-900 dark:via-gray-800 dark:to-green-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-accent-100 dark:bg-accent-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Guardian
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Lightweight, high-performance library providing guard clauses for validating method parameters and ensuring defensive programming practices in .NET applications.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-accent-600 hover:bg-accent-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#examples" class="border-2 border-accent-600 text-accent-600 dark:text-accent-400 hover:bg-accent-50 dark:hover:bg-accent-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent-600 dark:text-accent-400">109</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Unit Tests</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent-600 dark:text-accent-400">90%+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Code Coverage</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent-600 dark:text-accent-400">Zero</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Dependencies</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-accent-600 dark:text-accent-400">25+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Guard Methods</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Guardian?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built specifically for defensive programming with performance and developer experience in mind.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-accent-100 dark:bg-accent-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Performance Optimized</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Minimal overhead with inline methods and zero allocations for successful validations. Built for production workloads.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Type Safe</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Full support for generics and nullable reference types with compile-time safety and IntelliSense support.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7l2 2-2 2M5 13l-2-2 2-2"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Modern C# Features</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Uses CallerArgumentExpression for automatic parameter name capture and supports the latest .NET versions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 2 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Guardian and start writing defensive code immediately.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Guardian</div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-3">Or via Package Manager Console:</p>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm mt-2">
+                            <div class="text-accent-500">Install-Package Guardian</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Add Using Statement</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-purple-400">using</span> <span class="text-yellow-400">Guardian</span>;</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Start Using Guards</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">user</span>);</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Product.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Guardian</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-blue-400">Price</span> { <span class="text-purple-400">get</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">StockQuantity</span> { <span class="text-purple-400">get</span>; }
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">Product</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">name</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">price</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">stockQuantity</span>)
+    {
+        <span class="text-blue-400">Name</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrWhiteSpace</span>(<span class="text-blue-400">name</span>);
+        <span class="text-blue-400">Price</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">price</span>);
+        <span class="text-blue-400">StockQuantity</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Negative</span>(<span class="text-blue-400">stockQuantity</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guard Clauses Reference -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Available Guard Clauses</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Comprehensive validation methods for all common scenarios and edge cases.
+                </p>
+            </div>
+            
+            <!-- Category Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeCategory = 'null'" 
+                            :class="activeCategory === 'null' ? 'bg-white dark:bg-gray-700 text-accent-600 dark:text-accent-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Null Checks
+                    </button>
+                    <button @click="activeCategory = 'numeric'" 
+                            :class="activeCategory === 'numeric' ? 'bg-white dark:bg-gray-700 text-accent-600 dark:text-accent-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Numeric
+                    </button>
+                    <button @click="activeCategory = 'string'" 
+                            :class="activeCategory === 'string' ? 'bg-white dark:bg-gray-700 text-accent-600 dark:text-accent-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        String
+                    </button>
+                    <button @click="activeCategory = 'collection'" 
+                            :class="activeCategory === 'collection' ? 'bg-white dark:bg-gray-700 text-accent-600 dark:text-accent-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Collection
+                    </button>
+                    <button @click="activeCategory = 'custom'" 
+                            :class="activeCategory === 'custom' ? 'bg-white dark:bg-gray-700 text-accent-600 dark:text-accent-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Custom
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Null Checks -->
+            <div x-show="activeCategory === 'null'" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.Null()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is null</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.Null(user)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NullOrEmpty()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if string/collection is null or empty</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NullOrEmpty(name)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NullOrWhiteSpace()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if string is null, empty, or whitespace</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NullOrWhiteSpace(email)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.Default()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value equals default(T)</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.Default(orderId)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Numeric Checks -->
+            <div x-show="activeCategory === 'numeric'" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.Negative()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is negative</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.Negative(quantity)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.Zero()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is zero</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.Zero(divisor)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NegativeOrZero()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is negative or zero</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NegativeOrZero(price)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.OutOfRange()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is outside specified range</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.OutOfRange(age, 1, 120)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.GreaterThan()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value exceeds maximum</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.GreaterThan(score, 100)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.LessThan()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is below minimum</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.LessThan(temperature, 0)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- String Checks -->
+            <div x-show="activeCategory === 'string'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.InvalidFormat()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if string doesn't match regex pattern</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.InvalidFormat(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.InvalidLength()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if string length is outside range</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.InvalidLength(password, 8, 100)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Collection Checks -->
+            <div x-show="activeCategory === 'collection'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NullOrEmpty()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if collection is null or empty</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NullOrEmpty(items)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NotInEnum()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is not a defined enum value</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NotInEnum(status)
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Custom Checks -->
+            <div x-show="activeCategory === 'custom'" class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.Condition()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if custom condition is false</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.Condition(balance >= amount)
+                    </div>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Guard.Against.NotOneOf()</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Throws if value is not in allowed list</p>
+                    <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                        Guard.Against.NotOneOf(currency, validCurrencies)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-World Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    See Guardian in action with practical examples from common development scenarios.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- Constructor Validation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Constructor Validation</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Validate constructor parameters to ensure objects are created in a valid state from the start.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Fail fast at object creation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Clear parameter validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Immutable object guarantee</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Customer</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">Guid</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Age</span> { <span class="text-purple-400">get</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Email</span> { <span class="text-purple-400">get</span>; }
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">Customer</span>(<span class="text-yellow-400">Guid</span> <span class="text-blue-400">id</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">name</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">age</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">email</span>)
+    {
+        <span class="text-blue-400">Id</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Default</span>(<span class="text-blue-400">id</span>);
+        <span class="text-blue-400">Name</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">InvalidLength</span>(<span class="text-blue-400">name</span>, <span class="text-orange-400">2</span>, <span class="text-orange-400">100</span>);
+        <span class="text-blue-400">Age</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">OutOfRange</span>(<span class="text-blue-400">age</span>, <span class="text-orange-400">18</span>, <span class="text-orange-400">120</span>);
+        <span class="text-blue-400">Email</span> = <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">InvalidFormat</span>(<span class="text-blue-400">email</span>, 
+            <span class="text-orange-400">@"^[^@\s]+@[^@\s]+\.[^@\s]+$"</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Method Parameter Validation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Method Parameter Validation</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Validate method parameters at the entry point to prevent invalid operations and provide clear error messages.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Early parameter validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Multiple guard combinations</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Business rule validation</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ProcessOrder</span>(<span class="text-yellow-400">Guid</span> <span class="text-blue-400">orderId</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">customerEmail</span>, 
+                         <span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>, <span class="text-yellow-400">List</span>&lt;<span class="text-yellow-400">Item</span>&gt; <span class="text-blue-400">items</span>)
+{
+    <span class="text-gray-500">// Basic validation</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Default</span>(<span class="text-blue-400">orderId</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">InvalidFormat</span>(<span class="text-blue-400">customerEmail</span>, 
+        <span class="text-orange-400">@"^[^@\s]+@[^@\s]+\.[^@\s]+$"</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">OutOfRange</span>(<span class="text-blue-400">amount</span>, <span class="text-orange-400">0.01m</span>, <span class="text-orange-400">10000m</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrEmpty</span>(<span class="text-blue-400">items</span>);
+    
+    <span class="text-gray-500">// Business rule validation</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">totalItemValue</span> = <span class="text-blue-400">items</span>.<span class="text-green-400">Sum</span>(<span class="text-blue-400">i</span> => <span class="text-blue-400">i</span>.<span class="text-green-400">Price</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Condition</span>(<span class="text-blue-400">totalItemValue</span> == <span class="text-blue-400">amount</span>,
+        <span class="text-purple-400">nameof</span>(<span class="text-blue-400">amount</span>), <span class="text-orange-400">"Amount must match total item value"</span>);
+    
+    <span class="text-gray-500">// Process the order...</span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Business Logic Validation -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Business Logic Validation</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Use custom conditions to validate complex business rules and domain-specific constraints.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Domain-specific validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Custom error messages</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Complex condition checking</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">TransferFunds</span>(<span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>, <span class="text-yellow-400">Account</span> <span class="text-blue-400">fromAccount</span>, 
+                        <span class="text-yellow-400">Account</span> <span class="text-blue-400">toAccount</span>)
+{
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">amount</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">fromAccount</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">toAccount</span>);
+    
+    <span class="text-gray-500">// Business rule: Sufficient funds</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Condition</span>(
+        <span class="text-blue-400">fromAccount</span>.<span class="text-green-400">Balance</span> >= <span class="text-blue-400">amount</span>,
+        <span class="text-purple-400">nameof</span>(<span class="text-blue-400">amount</span>),
+        <span class="text-orange-400">$"Insufficient funds. Available: {fromAccount.Balance}, Requested: {amount}"</span>
+    );
+    
+    <span class="text-gray-500">// Business rule: Different accounts</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Condition</span>(
+        <span class="text-blue-400">fromAccount</span>.<span class="text-green-400">Id</span> != <span class="text-blue-400">toAccount</span>.<span class="text-green-400">Id</span>,
+        <span class="text-purple-400">nameof</span>(<span class="text-blue-400">toAccount</span>),
+        <span class="text-orange-400">"Cannot transfer to the same account"</span>
+    );
+    
+    <span class="text-gray-500">// Business rule: Account status</span>
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Condition</span>(
+        <span class="text-blue-400">fromAccount</span>.<span class="text-green-400">Status</span> == <span class="text-yellow-400">AccountStatus</span>.<span class="text-green-400">Active</span> &&
+        <span class="text-blue-400">toAccount</span>.<span class="text-green-400">Status</span> == <span class="text-yellow-400">AccountStatus</span>.<span class="text-green-400">Active</span>,
+        <span class="text-purple-400">nameof</span>(<span class="text-blue-400">fromAccount</span>),
+        <span class="text-orange-400">"Both accounts must be active"</span>
+    );
+    
+    <span class="text-gray-500">// Perform transfer...</span>
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Practices Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Best Practices</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Follow these guidelines to get the most out of Guardian in your applications.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Do's -->
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-green-800 dark:text-green-400 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Do's
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Use at Method Entry Points</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Place guards at the beginning of methods to fail fast and provide clear error messages.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Be Specific</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Use the most specific guard clause available for better error messages and clearer intent.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Provide Custom Messages</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Add custom error messages for domain-specific validations to help with debugging.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Combine Multiple Guards</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Use multiple guard clauses together for comprehensive parameter validation.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Apply Consistently</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Use guards consistently across your codebase for predictable behavior.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Don'ts -->
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-red-800 dark:text-red-400 mb-6 flex items-center">
+                        <svg class="w-8 h-8 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        Don'ts
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Overuse in Hot Paths</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Avoid excessive guards in performance-critical loops where validation has already occurred.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Replace Domain Logic</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Guards are for parameter validation, not complex business rule enforcement.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Ignore Return Values</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Always use the return value from guard methods as they may modify the input.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Use Generic Exceptions</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Let Guardian throw appropriate exception types rather than catching and re-throwing.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-red-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Don't Skip Documentation</h4>
+                                <p class="text-gray-700 dark:text-gray-300 text-sm">Document complex guard conditions to help other developers understand the constraints.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance & Framework Support -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Performance -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <svg class="w-8 h-8 text-accent-600 dark:text-accent-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Performance Optimized
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Guardian is designed for minimal performance impact in production applications.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-accent-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Zero Allocations</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">No memory allocations when validation passes</p>
+                        </div>
+                        <div class="border-l-4 border-accent-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Inline Optimization</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Methods optimized for JIT compilation</p>
+                        </div>
+                        <div class="border-l-4 border-accent-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Generic Constraints</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Prevents boxing of value types</p>
+                        </div>
+                        <div class="border-l-4 border-accent-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Success Path Optimized</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Fast execution when validation succeeds</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Framework Support -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14-7l2 2-2 2M5 13l-2-2 2-2"></path>
+                        </svg>
+                        Framework Support
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Guardian supports all modern .NET platforms and framework versions.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">.NET 6.0, 7.0, 8.0</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Full support for latest .NET versions</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">.NET Standard 2.0/2.1</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Compatibility with .NET Framework 4.6.1+</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Modern C# Features</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">CallerArgumentExpression and nullable references</p>
+                        </div>
+                        <div class="border-l-4 border-blue-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Zero Dependencies</h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">No external package dependencies</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div class="text-sm font-mono text-gray-800 dark:text-gray-200">
+                            &lt;PackageReference Include="Guardian" Version="1.0.0" /&gt;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-accent-600 to-green-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Write Defensive Code?</h2>
+            <p class="text-xl text-accent-100 mb-8 max-w-3xl mx-auto">
+                Start using Guardian today and make your .NET applications more robust with comprehensive parameter validation.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-accent-600 hover:bg-accent-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Guardian
+                </a>
+                <a href="docs.html#guardian" class="border-2 border-white text-white hover:bg-white hover:text-accent-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Full Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Guardian is part of the Noundry platform - a comprehensive collection of modern .NET libraries and tools for defensive programming and robust applications.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Guard Types</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#null" class="text-gray-300 hover:text-white transition-colors">Null Checks</a></li>
+                        <li><a href="#numeric" class="text-gray-300 hover:text-white transition-colors">Numeric Validation</a></li>
+                        <li><a href="#string" class="text-gray-300 hover:text-white transition-colors">String Validation</a></li>
+                        <li><a href="#collection" class="text-gray-300 hover:text-white transition-colors">Collection Guards</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html#guardian" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#examples" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">GitHub Repository</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true, activeCategory: 'overview', activeComponent: 'form' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.TagHelpers - ASP.NET Core TagHelpers for Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-orange-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-orange-100 dark:bg-orange-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-orange-600 dark:text-orange-400">TagHelpers</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Powerful attribute-based TagHelpers for ASP.NET Core that enhance your HTML with conditional rendering, modern web APIs, authorization helpers, and Tailwind CSS integration.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#components" class="border-2 border-orange-600 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Components
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">15+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">TagHelpers</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">.NET 6-9</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Support</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">Web APIs</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Modern</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">Zero JS</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Required</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Noundry.TagHelpers?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Enhanced ASP.NET Core TagHelpers designed specifically for modern web development with Tailwind CSS.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Tailwind CSS Optimized</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Pre-configured with Tailwind CSS classes for consistent styling and responsive design out of the box.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Authorization Helpers</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Built-in authorization TagHelpers for policy-based and role-based content rendering with asp-authz attributes.</p>
+                </div>
+                
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enhanced Forms & UI</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Form groups, alerts, validation messages, and UI enhancements with Tailwind CSS styling built-in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 3 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Noundry.TagHelpers and enhance your HTML with powerful attribute-based helpers.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-orange-500">$ dotnet add package Noundry.TagHelpers</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Register TagHelpers</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-blue-400">@addTagHelper</span> *, <span class="text-yellow-400">Noundry.TagHelpers</span></div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-3">Add to _ViewImports.cshtml</p>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Start Building</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div><span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-if</span>=<span class="text-orange-400">"Model.IsActive"</span><span class="text-blue-400">&gt;</span>Content<span class="text-blue-400">&lt;/div&gt;</span></div>
+                            <div><span class="text-blue-400">&lt;img</span> <span class="text-green-400">lazy</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"image.jpg"</span> <span class="text-blue-400">/&gt;</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">UserDashboard.cshtml</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">&lt;!-- Conditional rendering and modern features --&gt;</span>
+<span class="text-gray-500">&lt;!-- Show admin panel only for admins --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span>=<span class="text-orange-400">"Admin"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"bg-red-50 p-4 rounded"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h2&gt;</span>Admin Dashboard<span class="text-blue-400">&lt;/h2&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show content only when user is logged in --&gt;</span>
+<span class="text-blue-400">&lt;section</span> <span class="text-green-400">asp-if</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h1&gt;</span>Welcome, @User.Identity.Name!<span class="text-blue-400">&lt;/h1&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Native lazy loading --&gt;</span>
+    <span class="text-blue-400">&lt;img</span> <span class="text-green-400">lazy</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"profile-picture.jpg"</span> <span class="text-green-400">alt</span>=<span class="text-orange-400">"Profile"</span> <span class="text-blue-400">/&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Web Share API --&gt;</span>
+    <span class="text-blue-400">&lt;button</span> <span class="text-green-400">web-share</span> 
+            <span class="text-green-400">title</span>=<span class="text-orange-400">"My Profile"</span> 
+            <span class="text-green-400">url</span>=<span class="text-orange-400">"@Url.Page("/Profile")"</span><span class="text-blue-400">&gt;</span>
+        Share Profile
+    <span class="text-blue-400">&lt;/button&gt;</span>
+<span class="text-blue-400">&lt;/section&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show login form when not authenticated --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-unless</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;form-group</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;input</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"email"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;/form-group&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Components Section -->
+    <section id="components" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Available TagHelper Attributes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Powerful attribute-based helpers that enhance your existing HTML elements with modern web features.
+                </p>
+            </div>
+            
+            <!-- TagHelper Categories -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeComponent = 'conditional'" 
+                            :class="activeComponent === 'conditional' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Conditional
+                    </button>
+                    <button @click="activeComponent = 'webapi'" 
+                            :class="activeComponent === 'webapi' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Web APIs
+                    </button>
+                    <button @click="activeComponent = 'forms'" 
+                            :class="activeComponent === 'forms' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Forms & UI
+                    </button>
+                    <button @click="activeComponent = 'seo'" 
+                            :class="activeComponent === 'seo' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        SEO & Data
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Conditional Rendering -->
+            <div x-show="activeComponent === 'conditional'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Conditional Rendering TagHelpers</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">asp-if / asp-unless</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Show or hide elements based on boolean conditions or expressions.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-if</span> - Show element when condition is true
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-unless</span> - Show element when condition is false
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Show only when user is authenticated --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-if</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>
+    Welcome back, @User.Identity.Name!
+<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show login form when not authenticated --&gt;</span>
+<span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-unless</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;input</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span><span class="text-blue-400">&gt;</span>Sign In<span class="text-blue-400">&lt;/button&gt;</span>
+<span class="text-blue-400">&lt;/form&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show based on model property --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-if</span>=<span class="text-orange-400">"Model.HasError"</span> 
+     <span class="text-green-400">class</span>=<span class="text-orange-400">"bg-red-100 text-red-800 p-4"</span><span class="text-blue-400">&gt;</span>
+    Error: @Model.ErrorMessage
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Authorization Helpers -->
+                    <div class="grid lg:grid-cols-2 gap-8 mt-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">asp-authz</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Authorization-based rendering using roles and policies.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-authz</span> - Show for specific role
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-authz-policy</span> - Show when ALL policies met
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-authz-policy-any</span> - Show when ANY policy met
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Show only for admin users --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span>=<span class="text-orange-400">"Admin"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h2&gt;</span>Admin Dashboard<span class="text-blue-400">&lt;/h2&gt;</span>
+    <span class="text-blue-400">&lt;button&gt;</span>Delete User<span class="text-blue-400">&lt;/button&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show when user has specific policy --&gt;</span>
+<span class="text-blue-400">&lt;section</span> <span class="text-green-400">asp-authz-policy</span>=<span class="text-orange-400">"CanEditPosts"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"/posts/edit"</span><span class="text-blue-400">&gt;</span>Edit Post<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/section&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Show when user has ANY of these policies --&gt;</span>
+<span class="text-blue-400">&lt;nav</span> <span class="text-green-400">asp-authz-policy-any</span>=<span class="text-orange-400">"CanRead,CanWrite"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;a</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"/content"</span><span class="text-blue-400">&gt;</span>Content Management<span class="text-blue-400">&lt;/a&gt;</span>
+<span class="text-blue-400">&lt;/nav&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Web APIs Section -->
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                    <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Web APIs</span>
+                </h3>
+                <p class="text-gray-600 mb-6">Modern web features made simple with declarative attributes.</p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Lazy Loading</h4>
+                        <pre><code class="language-html">&lt;img src="placeholder.jpg" lazy="hero-image.jpg" alt="Hero" /&gt;
+&lt;div lazy="expensive-component.html"&gt;Loading...&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Web Share</h4>
+                        <pre><code class="language-html">&lt;button web-share="{ title: 'Amazing Product', text: 'Check this out!', url: '/products/123' }"&gt;
+    Share Product
+&lt;/button&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Intersection Observer</h4>
+                        <pre><code class="language-html">&lt;div intersection-observe="{ threshold: 0.5, action: 'fadeIn' }"&gt;
+    Animate when visible
+&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">PWA Install</h4>
+                        <pre><code class="language-html">&lt;button pwa-install="Install App"&gt;Install&lt;/button&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forms & UI Section -->
+            <div class="bg-gray-50 p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                    <span class="bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">Forms & UI</span>
+                </h3>
+                <p class="text-gray-600 mb-6">Enhanced form controls and UI components with built-in validation and styling.</p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Form Groups</h4>
+                        <pre><code class="language-html">&lt;div form-group="email"&gt;
+    &lt;label asp-for="Email"&gt;&lt;/label&gt;
+    &lt;input asp-for="Email" /&gt;
+    &lt;span asp-validation-for="Email"&gt;&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Alerts</h4>
+                        <pre><code class="language-html">&lt;div alert="success" dismissible="true"&gt;
+    Operation completed successfully!
+&lt;/div&gt;
+&lt;div alert="error" asp-if="ViewBag.HasError"&gt;
+    @ViewBag.ErrorMessage
+&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Validation Messages</h4>
+                        <pre><code class="language-html">&lt;span validation-message="Email" class="text-red-500"&gt;&lt;/span&gt;
+&lt;div validation-summary="true" class="alert alert-danger"&gt;&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Data Lists</h4>
+                        <pre><code class="language-html">&lt;input asp-for="Country" datalist="countries" /&gt;
+&lt;datalist id="countries" data-source="/api/countries"&gt;&lt;/datalist&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO & Data Section -->
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                    <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">SEO & Data</span>
+                </h3>
+                <p class="text-gray-600 mb-6">Optimize for search engines and enhance data presentation.</p>
+                
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">SEO Meta Tags</h4>
+                        <pre><code class="language-html">&lt;head seo="{ title: 'Product Name', description: 'Amazing product description', keywords: 'product,amazing' }"&gt;
+&lt;/head&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">JSON-LD Structured Data</h4>
+                        <pre><code class="language-html">&lt;div json-ld="{ '@type': 'Product', name: 'Product Name', price: '99.99' }"&gt;&lt;/div&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Time Display</h4>
+                        <pre><code class="language-html">&lt;time time-ago="@Model.CreatedAt"&gt;@Model.CreatedAt&lt;/time&gt;
+&lt;span time-format="@Model.UpdatedAt" format="MMM dd, yyyy"&gt;&lt;/span&gt;</code></pre>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Performance Helpers</h4>
+                        <pre><code class="language-html">&lt;link prefetch="/api/user-data" /&gt;
+&lt;img preload="critical-image.jpg" alt="Critical content" /&gt;</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Old Fictional Content Removed -->
+            <div x-show="false" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Input Field Components</h3>
+                    
+                    <!-- Text Input -->
+                    <div class="grid lg:grid-cols-2 gap-8 mb-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">noundry-input</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Enhanced input field with label, validation, and multiple input types.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">type</span> - text, email, password, number, tel, url
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">label</span> - Field label text
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">placeholder</span> - Placeholder text
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">required</span> - Required field indicator
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">asp-for</span> - Model binding property
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Basic text input --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"text"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter your full name"</span>
+    <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Email input with validation --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"your@email.com"</span>
+    <span class="text-green-400">help-text</span>=<span class="text-orange-400">"We'll never share your email"</span> <span class="text-blue-400">/&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Password input --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Password"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Password"</span>
+    <span class="text-green-400">show-strength</span>=<span class="text-orange-400">"true"</span> <span class="text-blue-400">/&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Select and Textarea -->
+                    <div class="grid lg:grid-cols-2 gap-8 mt-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">noundry-select & noundry-textarea</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Dropdown selection and multi-line text input components.</p>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Select dropdown --&gt;</span>
+<span class="text-blue-400">&lt;noundry-select</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"CategoryId"</span>
+    <span class="text-green-400">asp-items</span>=<span class="text-orange-400">"Model.Categories"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Category"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Choose a category"</span> <span class="text-blue-400">/&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Textarea --&gt;</span>
+<span class="text-blue-400">&lt;noundry-textarea</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Description"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Description"</span>
+    <span class="text-green-400">rows</span>=<span class="text-orange-400">"4"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter description..."</span> <span class="text-blue-400">/&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons -->
+            <div x-show="activeComponent === 'button'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Button Components</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">noundry-button</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Styled button component with multiple variants, sizes, and states.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">variant</span> - primary, secondary, success, danger, warning
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">size</span> - sm, md, lg, xl
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">type</span> - button, submit, reset
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">loading</span> - Show loading state
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-gray-600 dark:text-gray-400">disabled</span> - Disable button
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Primary button --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> 
+    <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> 
+    <span class="text-green-400">size</span>=<span class="text-orange-400">"md"</span><span class="text-blue-400">&gt;</span>
+    Save Changes
+<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Secondary button --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> 
+    <span class="text-green-400">variant</span>=<span class="text-orange-400">"secondary"</span><span class="text-blue-400">&gt;</span>
+    Cancel
+<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Loading state --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> 
+    <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span>
+    <span class="text-green-400">loading</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    Processing...
+<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Danger button --&gt;</span>
+<span class="text-blue-400">&lt;noundry-button</span> 
+    <span class="text-green-400">variant</span>=<span class="text-orange-400">"danger"</span>
+    <span class="text-green-400">onclick</span>=<span class="text-orange-400">"confirm('Are you sure?')"</span><span class="text-blue-400">&gt;</span>
+    Delete Item
+<span class="text-blue-400">&lt;/noundry-button&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Button Examples -->
+                    <div class="mt-8 p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
+                        <h5 class="font-semibold text-gray-900 dark:text-white mb-4">Live Examples:</h5>
+                        <div class="flex flex-wrap gap-3">
+                            <button class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Primary</button>
+                            <button class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg font-medium transition-colors">Secondary</button>
+                            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Success</button>
+                            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">Danger</button>
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Warning</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Input Examples -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Advanced Input Examples</h4>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">&lt;!-- Number input with range --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Age"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Age"</span>
+    <span class="text-green-400">min</span>=<span class="text-orange-400">"18"</span>
+    <span class="text-green-400">max</span>=<span class="text-orange-400">"120"</span>
+    <span class="text-green-400">help-text</span>=<span class="text-orange-400">"Must be 18 or older"</span> <span class="text-blue-400">/&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Phone input with pattern --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Phone"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"tel"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Phone Number"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"(555) 123-4567"</span>
+    <span class="text-green-400">pattern</span>=<span class="text-orange-400">"[0-9]{3}-[0-9]{3}-[0-9]{4}"</span> <span class="text-blue-400">/&gt;</span>
+
+<span class="text-gray-500">&lt;!-- URL input --&gt;</span>
+<span class="text-blue-400">&lt;noundry-input</span>
+    <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Website"</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"url"</span>
+    <span class="text-green-400">label</span>=<span class="text-orange-400">"Website"</span>
+    <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"https://example.com"</span> <span class="text-blue-400">/&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age</label>
+                                <input type="number" min="18" max="120" placeholder="Enter your age" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Must be 18 or older</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                                <input type="tel" placeholder="(555) 123-4567" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Website</label>
+                                <input type="url" placeholder="https://example.com" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Validation -->
+            <div x-show="activeComponent === 'validation'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Validation Integration</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Model Binding & Validation</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Automatic integration with ASP.NET Core model validation and data annotations.</p>
+                            
+                            <div class="space-y-2 text-sm">
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Automatic error display</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Client-side validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Data annotation support</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Model with validation attributes</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ContactForm</span>
+{
+    <span class="text-blue-400">[Required]</span>
+    <span class="text-blue-400">[StringLength(100, MinimumLength = 2)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Required]</span>
+    <span class="text-blue-400">[EmailAddress]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[Required]</span>
+    <span class="text-blue-400">[Range(18, 120)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Age</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    
+    <span class="text-blue-400">[StringLength(500)]</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Message</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 grid lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <h5 class="text-white font-semibold mb-3">Razor Page Implementation</h5>
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Age"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Age"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-textarea</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Message"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Message"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/noundry-button&gt;</span>
+<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                                <input type="text" placeholder="Enter your full name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                <input type="email" placeholder="your@email.com" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Age</label>
+                                <input type="number" min="18" max="120" placeholder="Enter your age" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+                                <textarea rows="3" placeholder="Enter your message" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Examples -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-World Integration Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    See how Noundry.TagHelpers integrates with other Noundry components and ASP.NET Core features.
+                </p>
+            </div>
+            
+            <div class="space-y-12">
+                <!-- E-commerce Product Form -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">E-commerce Product Form</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Complete product creation form with validation, file upload, and category selection.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Model binding with validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">File upload support</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Dynamic dropdown population</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Responsive form layout</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-2xl mx-auto space-y-6"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-gray-500">&lt;!-- Basic product information --&gt;</span>
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"grid md:grid-cols-2 gap-4"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-input</span> 
+            <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span>
+            <span class="text-green-400">label</span>=<span class="text-orange-400">"Product Name"</span>
+            <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter product name"</span>
+            <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+            
+        <span class="text-blue-400">&lt;noundry-input</span> 
+            <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Price"</span>
+            <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span>
+            <span class="text-green-400">label</span>=<span class="text-orange-400">"Price"</span>
+            <span class="text-green-400">min</span>=<span class="text-orange-400">"0"</span>
+            <span class="text-green-400">step</span>=<span class="text-orange-400">"0.01"</span>
+            <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"0.00"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Category selection --&gt;</span>
+    <span class="text-blue-400">&lt;noundry-select</span>
+        <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"CategoryId"</span>
+        <span class="text-green-400">asp-items</span>=<span class="text-orange-400">"ViewBag.Categories"</span>
+        <span class="text-green-400">label</span>=<span class="text-orange-400">"Category"</span>
+        <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Select a category"</span> <span class="text-blue-400">/&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Description --&gt;</span>
+    <span class="text-blue-400">&lt;noundry-textarea</span>
+        <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Description"</span>
+        <span class="text-green-400">label</span>=<span class="text-orange-400">"Description"</span>
+        <span class="text-green-400">rows</span>=<span class="text-orange-400">"4"</span>
+        <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Describe your product..."</span> <span class="text-blue-400">/&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Form actions --&gt;</span>
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"flex space-x-4"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"flex-1"</span><span class="text-blue-400">&gt;</span>
+            Create Product
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"button"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"secondary"</span><span class="text-blue-400">&gt;</span>
+            Cancel
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">Form Preview:</h5>
+                            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+                                <div class="space-y-4">
+                                    <div class="grid md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Product Name</label>
+                                            <input type="text" placeholder="Enter product name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price</label>
+                                            <input type="number" min="0" step="0.01" placeholder="0.00" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
+                                        <select class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                            <option>Select a category</option>
+                                            <option>Electronics</option>
+                                            <option>Clothing</option>
+                                            <option>Books</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                                        <textarea rows="3" placeholder="Describe your product..." class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"></textarea>
+                                    </div>
+                                    <div class="flex space-x-4">
+                                        <button class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg font-medium transition-colors flex-1">Create Product</button>
+                                        <button class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 px-4 py-2 rounded-lg font-medium transition-colors">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Registration Form -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">User Registration with Authentication</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Integration with Noundry.Authnz for user registration and OAuth alternatives.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Traditional form registration</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">OAuth alternative options</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Password strength validation</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    <span class="text-gray-700 dark:text-gray-300">Terms and conditions checkbox</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-md mx-auto"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-gray-500">&lt;!-- OAuth Options (Noundry.Authnz) --&gt;</span>
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"mb-6"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-oauth-login</span> <span class="text-green-400">show-all</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;&lt;/noundry-oauth-login&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+    
+    <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-center text-gray-500 mb-6"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;span&gt;</span>Or register with email<span class="text-blue-400">&lt;/span&gt;</span>
+    <span class="text-blue-400">&lt;/div&gt;</span>
+    
+    <span class="text-gray-500">&lt;!-- Traditional registration form --&gt;</span>
+    <span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Register"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-4"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Password"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Password"</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"ConfirmPassword"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Confirm"</span> <span class="text-blue-400">/&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-checkbox</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"AcceptTerms"</span> <span class="text-green-400">required</span><span class="text-blue-400">&gt;</span>
+            I accept the <span class="text-blue-400">&lt;a</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"/terms"</span><span class="text-blue-400">&gt;</span>terms and conditions<span class="text-blue-400">&lt;/a&gt;</span>
+        <span class="text-blue-400">&lt;/noundry-checkbox&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"w-full"</span><span class="text-blue-400">&gt;</span>
+            Create Account
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+    <span class="text-blue-400">&lt;/noundry-form&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Powerful features that make Noundry.TagHelpers perfect for complex web applications.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Accessibility -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-orange-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        Accessibility First
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">ARIA Support</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Automatic ARIA attributes for screen readers</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Keyboard Navigation</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Full keyboard accessibility support</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Focus Management</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Proper focus indicators and tab order</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Responsive Design -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                        Responsive Design
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Mobile First</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Optimized for mobile devices and small screens</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Flexible Layouts</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Grid and flexbox layouts with Tailwind CSS</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Breakpoint Aware</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Responsive behavior across all screen sizes</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Performance Optimized
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Server-Side Rendering</h4>
+                            <p class="text-gray-600 dark:text-gray-300">No client-side JavaScript required</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">Minimal Markup</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Clean, optimized HTML output</p>
+                        </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white">CSS Purging Compatible</h4>
+                            <p class="text-gray-600 dark:text-gray-300">Works with Tailwind CSS purging</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Example -->
+            <div class="mt-16 bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-bold text-white">Complete Contact Form with Validation</h3>
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-gray-500">@* Contact.cshtml - Complete form example *@</span>
+<span class="text-blue-400">@page</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">ContactModel</span>
+
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-2xl mx-auto py-8"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;h1</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-3xl font-bold mb-8"</span><span class="text-blue-400">&gt;</span>Contact Us<span class="text-blue-400">&lt;/h1&gt;</span>
+    
+    <span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Submit"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-gray-500">&lt;!-- Personal Information --&gt;</span>
+        <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"grid md:grid-cols-2 gap-4"</span><span class="text-blue-400">&gt;</span>
+            <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"FirstName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"First Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+            <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"LastName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Last Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;/div&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-select</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Subject"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Subject"</span> <span class="text-green-400">required</span><span class="text-blue-400">&gt;</span>
+            <span class="text-blue-400">&lt;option</span> <span class="text-green-400">value</span>=<span class="text-orange-400">""</span><span class="text-blue-400">&gt;</span>Select a subject<span class="text-blue-400">&lt;/option&gt;</span>
+            <span class="text-blue-400">&lt;option</span> <span class="text-green-400">value</span>=<span class="text-orange-400">"general"</span><span class="text-blue-400">&gt;</span>General Inquiry<span class="text-blue-400">&lt;/option&gt;</span>
+            <span class="text-blue-400">&lt;option</span> <span class="text-green-400">value</span>=<span class="text-orange-400">"support"</span><span class="text-blue-400">&gt;</span>Technical Support<span class="text-blue-400">&lt;/option&gt;</span>
+            <span class="text-blue-400">&lt;option</span> <span class="text-green-400">value</span>=<span class="text-orange-400">"sales"</span><span class="text-blue-400">&gt;</span>Sales Question<span class="text-blue-400">&lt;/option&gt;</span>
+        <span class="text-blue-400">&lt;/noundry-select&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-textarea</span> 
+            <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Message"</span> 
+            <span class="text-green-400">label</span>=<span class="text-orange-400">"Message"</span>
+            <span class="text-green-400">rows</span>=<span class="text-orange-400">"5"</span>
+            <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"How can we help you?"</span>
+            <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+        
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"w-full"</span><span class="text-blue-400">&gt;</span>
+            Send Message
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+    <span class="text-blue-400">&lt;/noundry-form&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Setup & Configuration -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Setup & Configuration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Configure Noundry.TagHelpers in your ASP.NET Core application.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Basic Setup -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Basic Setup</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">1. Install Package</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-3 font-mono text-sm">
+                                <div class="text-orange-500">$ dotnet add package Noundry.TagHelpers</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">2. Register TagHelpers</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-3 font-mono text-sm">
+                                <div class="text-gray-300"><span class="text-blue-400">@addTagHelper</span> *, <span class="text-yellow-400">Noundry.TagHelpers</span></div>
+                            </div>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">Add to _ViewImports.cshtml</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">3. Start Using Attributes</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-3 font-mono text-sm text-gray-300">
+                                <pre><code><span class="text-gray-500">&lt;!-- Conditional rendering --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-if</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>Welcome!<span class="text-blue-400">&lt;/div&gt;</span>
+
+<span class="text-gray-500">&lt;!-- Web APIs --&gt;</span>
+<span class="text-blue-400">&lt;button</span> <span class="text-green-400">web-share</span>=<span class="text-orange-400">"shareData"</span><span class="text-blue-400">&gt;</span>Share<span class="text-blue-400">&lt;/button&gt;</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Advanced Configuration -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Advanced Configuration</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Program.cs - Service registration</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundryTagHelpers</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-gray-500">// Configure default CSS classes</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">AlertClasses</span> = <span class="text-orange-400">"alert"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">FormGroupClasses</span> = <span class="text-orange-400">"form-group mb-3"</span>;
+    
+    <span class="text-gray-500">// Configure validation styling</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">ValidationClasses</span> = <span class="text-orange-400">"text-danger"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">SuccessClasses</span> = <span class="text-orange-400">"border-green-500 text-green-500"</span>;
+    
+    <span class="text-gray-500">// Theme configuration</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Theme</span> = <span class="text-yellow-400">NoundryTheme</span>.<span class="text-green-400">Default</span>; <span class="text-gray-500">// or Custom</span>
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-orange-600 to-amber-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Enhance Your Views?</h2>
+            <p class="text-xl text-orange-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.TagHelpers today and add powerful attribute-based functionality to your ASP.NET Core applications.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-orange-600 hover:bg-orange-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Install Noundry.TagHelpers
+                </a>
+                <a href="docs.html#taghelpers" class="border-2 border-white text-white hover:bg-white hover:text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Full Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Noundry.TagHelpers is part of the Noundry platform - providing enhanced ASP.NET Core TagHelpers optimized for Tailwind CSS and modern web development.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Components</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#form" class="text-gray-300 hover:text-white transition-colors">Form Controls</a></li>
+                        <li><a href="#input" class="text-gray-300 hover:text-white transition-colors">Input Fields</a></li>
+                        <li><a href="#button" class="text-gray-300 hover:text-white transition-colors">Buttons</a></li>
+                        <li><a href="#validation" class="text-gray-300 hover:text-white transition-colors">Validation</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html#taghelpers" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#components" class="text-gray-300 hover:text-white transition-colors">Components</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">GitHub Repository</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
