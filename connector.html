@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Connector - API Client Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="index.html#pricing" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-primary-50 to-white dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-primary-600 dark:text-primary-400">Connector</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    A powerful API connector library for .NET that provides strongly-typed HTTP clients with automatic authentication and comprehensive features.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#installation" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Get Started
+                    </a>
+                    <a href="https://github.com/noundry/Connector" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Key Features</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">🚀 CLI Code Generator</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Interactive wizard to generate strongly-typed C# models and Refit interfaces from REST APIs.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">🔐 Automatic Authentication</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Built-in authentication handling with support for various auth schemes and token management.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">🎯 Type-Safe API Clients</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Compile-time safety with strongly-typed models and enhanced IntelliSense support.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">🔄 Full CRUD Operations</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Complete support for Create, Read, Update, and Delete operations with intuitive APIs.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">🔍 Advanced LINQ Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Powerful querying capabilities with full LINQ integration for complex data operations.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">⚙️ Dependency Injection Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Seamless integration with ASP.NET Core DI container and modern .NET patterns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Installation</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Get started with Noundry.Connector in minutes</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">CLI Tool</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Install the CLI generator tool globally or locally in your project.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Global Installation:</p>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">dotnet tool install -g Noundry.Connector.Generator</code>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Local Installation:</p>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">dotnet new tool-manifest<br>dotnet tool install Noundry.Connector.Generator</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Core Library</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Add the Noundry.Connector library to your .NET project.</p>
+                    
+                    <div>
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Package Installation:</p>
+                        <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                            <code class="text-green-400 font-mono text-sm">dotnet add package Noundry.Connector</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Workflow Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">CLI Generator Workflow</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">The CLI tool provides an interactive wizard to generate your API clients</p>
+            </div>
+
+            <div class="grid lg:grid-cols-5 gap-4 mb-12">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-xl">1</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Enter API URL</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Provide your REST API base URL</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-xl">2</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Configure Auth</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Set up authentication requirements</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-xl">3</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Discover Endpoints</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Automatically find API endpoints</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-xl">4</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Analyze Schemas</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Parse response schemas and types</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-primary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-white font-bold text-xl">5</span>
+                    </div>
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Generate Code</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Create ready-to-use client files</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Examples Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">See how easy it is to work with generated API clients</p>
+            </div>
+
+            <div class="space-y-8">
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Dependency Injection Setup</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>builder.Services.AddJsonPlaceholderClient("https://jsonplaceholder.typicode.com");</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Service Implementation</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>public class PostService
+{
+    private readonly JsonPlaceholderClient _client;
+
+    public PostService(JsonPlaceholderClient client)
+    {
+        _client = client;
+    }
+
+    public async Task&lt;IEnumerable&lt;Post&gt;&gt; GetRecentPostsAsync()
+    {
+        var posts = await _client.GetAllPostsAsync();
+        return posts
+            .Where(p =&gt; p.UserId &lt;= 5)
+            .OrderByDescending(p =&gt; p.Id)
+            .Take(10);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Benefits of Strongly-Typed Models</h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Compile-time Safety</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Catch errors at compile time instead of runtime</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Enhanced IntelliSense</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Better code completion and documentation</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Improved Refactoring</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Safe code changes across your entire project</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Better Performance</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Optimized serialization and reduced allocations</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Type Documentation</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Self-documenting code with clear type definitions</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-accent-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Team Collaboration</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Consistent APIs across development teams</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto mr-3">
+                    <span class="text-xl font-bold">Noundry</span>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="index.html" class="text-gray-300 hover:text-white transition-colors">Home</a>
+                    <a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">Libraries</a>
+                    <a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a>
+                    <a href="https://github.com/noundry/Connector" class="text-gray-300 hover:text-white transition-colors">GitHub</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+                <p>&copy; 2024 Noundry. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
