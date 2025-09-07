@@ -268,6 +268,448 @@
         </div>
     </section>
 
+    <!-- CLI Commands and Options Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">CLI Commands & Options</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Comprehensive guide to all CLI commands and configuration options</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Basic Usage -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Usage</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Start the interactive wizard to generate your API client:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Start the interactive generator
+noundry-connector generate
+
+# Or use the short form
+noundry-connector gen</code></pre>
+                    </div>
+                </div>
+
+                <!-- Command Line Options -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Command Line Options</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Skip the interactive wizard by providing parameters directly:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Generate with specific options
+noundry-connector generate \
+  --url "https://api.example.com" \
+  --namespace "MyApp.ApiClients" \
+  --output "./Generated" \
+  --auth-type "Bearer" \
+  --client-name "ExampleApiClient"
+
+# Available options:
+--url, -u           API base URL
+--namespace, -n     Generated code namespace
+--output, -o        Output directory (default: ./Generated)
+--auth-type, -a     Authentication type (None, ApiKey, Bearer, OAuth2)
+--client-name, -c   Generated client class name
+--config-file, -f   Use configuration file
+--verbose, -v       Enable verbose logging
+--dry-run, -d       Preview without generating files
+--force             Overwrite existing files</code></pre>
+                    </div>
+                </div>
+
+                <!-- Configuration File -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Configuration File</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create a <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">noundry-connector.json</code> file for reusable configurations:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>{
+  "apiUrl": "https://api.example.com",
+  "namespace": "MyApp.ApiClients",
+  "outputPath": "./Generated",
+  "clientName": "ExampleApiClient",
+  "authentication": {
+    "type": "Bearer",
+    "tokenEndpoint": "https://api.example.com/auth/token",
+    "clientId": "your-client-id",
+    "scopes": ["api.read", "api.write"]
+  },
+  "generation": {
+    "includeDocumentation": true,
+    "generateInterfaces": true,
+    "useNullableTypes": true,
+    "dateTimeFormat": "ISO8601"
+  },
+  "endpoints": {
+    "include": ["users", "posts", "comments"],
+    "exclude": ["internal", "debug"]
+  }
+}</code></pre>
+                    </div>
+                    <div class="mt-4">
+                        <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                            <code class="text-green-400 font-mono text-sm">noundry-connector generate --config-file noundry-connector.json</code>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Authentication Types -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Supported Authentication Types</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">API Key Authentication</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">--auth-type ApiKey</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Supports header and query parameter API keys</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Bearer Token</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">--auth-type Bearer</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">JWT and other bearer token schemes</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">OAuth 2.0</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">--auth-type OAuth2</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Full OAuth 2.0 flow with token refresh</p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">No Authentication</h4>
+                            <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">--auth-type None</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">For public APIs without authentication</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Step-by-Step Demo Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Complete Demo Walkthrough</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Follow along with this complete example using JSONPlaceholder API</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Step 1: Installation -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">1</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Install the CLI Tool</h3>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Install globally
+dotnet tool install -g Noundry.Connector.Generator
+
+# Verify installation
+noundry-connector --version</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 2: Run Generator -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">2</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Generate Client for JSONPlaceholder</h3>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Start the generator
+noundry-connector generate
+
+# Follow the interactive prompts:
+# > API URL: https://jsonplaceholder.typicode.com
+# > Client Name: JsonPlaceholderClient  
+# > Namespace: MyApp.ApiClients
+# > Output Directory: ./Generated
+# > Authentication: None (public API)
+
+# Or use command line options:
+noundry-connector generate \
+  --url "https://jsonplaceholder.typicode.com" \
+  --client-name "JsonPlaceholderClient" \
+  --namespace "MyApp.ApiClients" \
+  --output "./Generated" \
+  --auth-type "None"</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 3: Generated Files -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">3</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Review Generated Files</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">The generator creates several files:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>Generated/
+├── Models/
+│   ├── Post.cs
+│   ├── User.cs
+│   ├── Comment.cs
+│   └── Album.cs
+├── Interfaces/
+│   └── IJsonPlaceholderClient.cs
+├── JsonPlaceholderClient.cs
+└── ServiceCollectionExtensions.cs</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 4: Add to Project -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">4</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Add Generated Files to Your Project</h3>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Add the core library
+dotnet add package Noundry.Connector
+
+# Copy generated files to your project
+cp -r Generated/* src/MyApp/
+
+# Or include them directly from the Generated folder</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 5: Register Services -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">5</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Register in Dependency Injection</h3>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>// In Program.cs or Startup.cs
+using MyApp.ApiClients;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Register the generated client
+builder.Services.AddJsonPlaceholderClient("https://jsonplaceholder.typicode.com");
+
+var app = builder.Build();</code></pre>
+                    </div>
+                </div>
+
+                <!-- Step 6: Use in Service -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-primary-600 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-white font-bold">6</span>
+                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Use in Your Services</h3>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code>using MyApp.ApiClients;
+using MyApp.ApiClients.Models;
+
+public class BlogService
+{
+    private readonly IJsonPlaceholderClient _apiClient;
+
+    public BlogService(IJsonPlaceholderClient apiClient)
+    {
+        _apiClient = apiClient;
+    }
+
+    public async Task&lt;IEnumerable&lt;Post&gt;&gt; GetUserPostsAsync(int userId)
+    {
+        var posts = await _apiClient.GetPostsAsync();
+        return posts.Where(p =&gt; p.UserId == userId);
+    }
+
+    public async Task&lt;Post&gt; CreatePostAsync(Post post)
+    {
+        return await _apiClient.CreatePostAsync(post);
+    }
+
+    public async Task UpdatePostAsync(int id, Post post)
+    {
+        await _apiClient.UpdatePostAsync(id, post);
+    }
+
+    public async Task DeletePostAsync(int id)
+    {
+        await _apiClient.DeletePostAsync(id);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced CLI Features Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Advanced CLI Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Powerful features for complex API scenarios</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- OpenAPI/Swagger Support -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">OpenAPI/Swagger Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Generate from OpenAPI specifications:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># From Swagger URL
+noundry-connector generate \
+  --swagger-url "https://api.example.com/swagger.json"
+
+# From local file
+noundry-connector generate \
+  --swagger-file "./openapi.yaml"</code></pre>
+                    </div>
+                </div>
+
+                <!-- Custom Templates -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Custom Templates</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Use custom code generation templates:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Use custom template directory
+noundry-connector generate \
+  --templates "./CustomTemplates"
+
+# List available templates
+noundry-connector templates list</code></pre>
+                    </div>
+                </div>
+
+                <!-- Batch Processing -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Batch Processing</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Generate multiple clients at once:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Use batch configuration
+noundry-connector batch \
+  --config "./batch-config.json"
+
+# Generate from multiple URLs
+noundry-connector batch \
+  --urls "api1.com,api2.com,api3.com"</code></pre>
+                    </div>
+                </div>
+
+                <!-- Update Existing -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Update Existing Clients</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Regenerate when APIs change:</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code># Update existing client
+noundry-connector update \
+  --config "./noundry-connector.json"
+
+# Compare with existing
+noundry-connector diff \
+  --config "./noundry-connector.json"</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Troubleshooting & FAQ</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Common issues and their solutions</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Common Issues -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Common Issues</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">SSL Certificate Issues</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">If you encounter SSL certificate errors:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">noundry-connector generate --ignore-ssl-errors</code>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Authentication Failures</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">For APIs requiring authentication during discovery:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">noundry-connector generate --auth-header "Authorization: Bearer YOUR_TOKEN"</code>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Large API Responses</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">For APIs with large response payloads:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">noundry-connector generate --sample-size 10 --timeout 60</code>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Proxy Configuration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-2">Working behind a corporate proxy:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 p-4 rounded-lg">
+                                <code class="text-green-400 font-mono text-sm">noundry-connector generate --proxy "http://proxy.company.com:8080"</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Frequently Asked Questions</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Q: Can I customize the generated code?</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A: Yes! You can provide custom templates or use partial classes to extend the generated code without modifying the generated files directly.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Q: How do I handle API versioning?</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A: Use different namespaces and client names for different versions, or configure version headers in your authentication settings.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Q: What if my API doesn't have OpenAPI documentation?</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A: The CLI can discover endpoints by making sample requests and analyzing responses. It works with any REST API that returns JSON.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Q: Can I use this with existing HttpClient code?</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A: Absolutely! The generated clients work alongside existing HttpClient code and can be gradually adopted.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Q: How do I contribute or report issues?</h4>
+                            <p class="text-gray-600 dark:text-gray-300">A: Visit our <a href="https://github.com/noundry/Connector" class="text-primary-600 dark:text-primary-400 hover:underline">GitHub repository</a> to report issues, request features, or contribute to the project.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Usage Examples Section -->
     <section class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
