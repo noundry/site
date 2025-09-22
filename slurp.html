@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: true }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Slurp - High-Performance CSV to Database Ingestion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        },
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            900: '#064e3b'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="https://github.com/noundry/slurp" target="_blank" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-emerald-50 to-green-100 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 dark:bg-emerald-900 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-emerald-600 dark:text-emerald-400">Slurp</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    High-performance CSV to database ingestion tool that processes millions of rows in seconds with zero-allocation parsing and intelligent schema inference.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#installation" class="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Get Started
+                    </a>
+                    <a href="#examples" class="border-2 border-emerald-600 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Blazing Fast Performance</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Optimized for speed with zero-allocation CSV parsing and parallel processing capabilities.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8 mb-16">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">100K+</div>
+                    <div class="text-gray-600 dark:text-gray-300">Rows per second</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">Zero</div>
+                    <div class="text-gray-600 dark:text-gray-300">Memory allocations</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">4+</div>
+                    <div class="text-gray-600 dark:text-gray-300">Database providers</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">Smart</div>
+                    <div class="text-gray-600 dark:text-gray-300">Schema inference</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Everything you need for efficient CSV data ingestion into your database.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">High Performance</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Leverages the SEP library for zero-allocation CSV parsing, achieving exceptional throughput of 100,000+ rows per second.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Minimal memory footprint
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Parallel processing
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Streaming support
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Multi-Database Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Works seamlessly with all major database providers, adapting to their specific capabilities and optimizations.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            SQL Server
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            PostgreSQL
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            MySQL & SQLite
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Intelligent Features</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Smart automation reduces manual configuration while maintaining full control when needed.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Automatic schema inference
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Intelligent indexing
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-emerald-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Type detection
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Installation</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Get started with Noundry.Slurp in seconds using your preferred package manager.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Package Installation</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-6">
+                        <div class="text-emerald-500">$ dotnet add package Noundry.Slurp</div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Global CLI Tool</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <div class="text-emerald-500">$ dotnet tool install -g Noundry.Slurp</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                    <h4 class="font-medium text-emerald-900 dark:text-emerald-100 mb-2">Requirements</h4>
+                    <ul class="text-sm text-emerald-800 dark:text-emerald-200 space-y-1">
+                        <li>• .NET 8.0 or 9.0 SDK</li>
+                        <li>• Supported database (SQL Server, PostgreSQL, MySQL, or SQLite)</li>
+                        <li>• CSV files with consistent structure</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Multiple ways to use Slurp for your data ingestion needs.
+                </p>
+            </div>
+
+            <!-- Interactive Mode -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Interactive Mode</h3>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Simple Interactive CLI</h4>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500"># Launch interactive CLI</span>
+<span class="text-emerald-500">$ slurp data.csv</span>
+
+<span class="text-gray-400">? Select database provider: </span>
+<span class="text-blue-400">  ❯ PostgreSQL
+    SQL Server
+    MySQL
+    SQLite</span>
+
+<span class="text-gray-400">? Enter server: </span><span class="text-yellow-400">localhost</span>
+<span class="text-gray-400">? Enter database: </span><span class="text-yellow-400">mydb</span>
+<span class="text-gray-400">? Enter username: </span><span class="text-yellow-400">user</span>
+<span class="text-gray-400">? Enter password: </span><span class="text-gray-500">******</span>
+
+<span class="text-green-400">✓ Ingested 1,234,567 rows in 12.34 seconds</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Features</h4>
+                        <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Beautiful interactive prompts guide you through configuration
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Automatic detection of CSV format and encoding
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Progress bar with real-time statistics
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Command Line Mode -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Command Line Mode</h3>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">PostgreSQL Example</h4>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-emerald-500">$ slurp sales_data.csv</span> \
+    <span class="text-blue-400">--provider</span> postgres \
+    <span class="text-blue-400">--server</span> localhost \
+    <span class="text-blue-400">--database</span> analytics \
+    <span class="text-blue-400">--username</span> admin \
+    <span class="text-blue-400">--password</span> secure123 \
+    <span class="text-blue-400">--table</span> sales_2024</code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">SQL Server Example</h4>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-emerald-500">$ slurp inventory.csv</span> \
+    <span class="text-blue-400">-p</span> sqlserver \
+    <span class="text-blue-400">-s</span> <span class="text-yellow-400">"tcp:myserver.database.windows.net,1433"</span> \
+    <span class="text-blue-400">-d</span> InventoryDB \
+    <span class="text-blue-400">-u</span> sa \
+    <span class="text-blue-400">--password</span> <span class="text-yellow-400">"MyStr0ngP@ssw0rd"</span></code></pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">SQLite Example</h4>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-emerald-500">$ slurp customers.csv</span> \
+    <span class="text-blue-400">--provider</span> sqlite \
+    <span class="text-blue-400">--database</span> <span class="text-yellow-400">"./data/customers.db"</span> \
+    <span class="text-blue-400">--create-if-missing</span></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Library Usage -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Library Usage in Code</h3>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Slurp</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">System.Threading.Tasks</span>;
+
+<span class="text-purple-400">class</span> <span class="text-yellow-400">Program</span>
+{
+    <span class="text-purple-400">static async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">Main</span>()
+    {
+        <span class="text-gray-500">// Configure the Slurp engine</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">config</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpConfiguration</span>
+        {
+            <span class="text-green-400">Provider</span> = <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-blue-400">PostgreSQL</span>,
+            <span class="text-green-400">ConnectionString</span> = <span class="text-orange-400">"Host=localhost;Database=mydb;Username=user;Password=pass"</span>,
+            <span class="text-green-400">BatchSize</span> = <span class="text-orange-400">10000</span>,
+            <span class="text-green-400">ParallelDegree</span> = <span class="text-orange-400">4</span>
+        };
+
+        <span class="text-gray-500">// Create the engine and ingest data</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">engine</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpEngine</span>(<span class="text-blue-400">config</span>);
+
+        <span class="text-gray-500">// Configure CSV options</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">csvOptions</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">CsvOptions</span>
+        {
+            <span class="text-green-400">Delimiter</span> = <span class="text-orange-400">','</span>,
+            <span class="text-green-400">HasHeaders</span> = <span class="text-purple-400">true</span>,
+            <span class="text-green-400">QuoteCharacter</span> = <span class="text-orange-400">'"'</span>
+        };
+
+        <span class="text-gray-500">// Perform the ingestion</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(
+            <span class="text-orange-400">"data/large_dataset.csv"</span>,
+            <span class="text-orange-400">"target_table"</span>,
+            <span class="text-blue-400">csvOptions</span>
+        );
+
+        <span class="text-gray-500">// Check the results</span>
+        <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"✓ Ingested </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">RowCount</span>}<span class="text-orange-400"> rows"</span>);
+        <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"⚡ Speed: </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">RowsPerSecond</span>:N0}<span class="text-orange-400"> rows/sec"</span>);
+        <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"⏱️ Time: </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">ElapsedTime</span>}<span class="text-orange-400">"</span>);
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Configuration -->
+            <div>
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Advanced Configuration</h3>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Schema Customization</h4>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">schema</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">TableSchema</span>
+{
+    <span class="text-green-400">Name</span> = <span class="text-orange-400">"products"</span>,
+    <span class="text-green-400">Columns</span> = <span class="text-purple-400">new</span>[]
+    {
+        <span class="text-purple-400">new</span> <span class="text-yellow-400">Column</span>(<span class="text-orange-400">"id"</span>, <span class="text-yellow-400">DbType</span>.<span class="text-blue-400">Int32</span>, <span class="text-green-400">isPrimaryKey:</span> <span class="text-purple-400">true</span>),
+        <span class="text-purple-400">new</span> <span class="text-yellow-400">Column</span>(<span class="text-orange-400">"name"</span>, <span class="text-yellow-400">DbType</span>.<span class="text-blue-400">String</span>, <span class="text-green-400">maxLength:</span> <span class="text-orange-400">200</span>),
+        <span class="text-purple-400">new</span> <span class="text-yellow-400">Column</span>(<span class="text-orange-400">"price"</span>, <span class="text-yellow-400">DbType</span>.<span class="text-blue-400">Decimal</span>),
+        <span class="text-purple-400">new</span> <span class="text-yellow-400">Column</span>(<span class="text-orange-400">"created"</span>, <span class="text-yellow-400">DbType</span>.<span class="text-blue-400">DateTime</span>)
+    }
+};
+
+<span class="text-blue-400">engine</span>.<span class="text-green-400">IngestWithSchema</span>(<span class="text-orange-400">"products.csv"</span>, <span class="text-blue-400">schema</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Progress Monitoring</h4>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">progress</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Progress</span>&lt;<span class="text-yellow-400">SlurpProgress</span>&gt;(<span class="text-blue-400">p</span> =>
+{
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Progress: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">PercentComplete</span>:P}<span class="text-orange-400">"</span>);
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Rows: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">RowsProcessed</span>:N0}<span class="text-orange-400"> / </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">TotalRows</span>:N0}<span class="text-orange-400">"</span>);
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Speed: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">RowsPerSecond</span>:N0}<span class="text-orange-400"> rows/sec"</span>);
+});
+
+<span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(
+    <span class="text-orange-400">"huge_file.csv"</span>,
+    <span class="text-green-400">progress:</span> <span class="text-blue-400">progress</span>
+);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Best Practices -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Best Practices</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Tips and recommendations for optimal performance and reliability.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-xl p-8 border border-emerald-200 dark:border-emerald-800">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Performance Tips</h3>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Use appropriate batch sizes (10,000-50,000 rows) for your database
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Enable parallel processing for large files (>1M rows)
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Disable indexes during bulk load, recreate after
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            Use SSD storage for temporary data when possible
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-8 border border-blue-200 dark:border-blue-800">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Data Preparation</h3>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Ensure CSV files have consistent structure and encoding
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Remove or handle special characters in headers
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Validate date formats match database expectations
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Consider pre-sorting data by primary key if possible
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-emerald-600 to-green-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Accelerate Your Data Ingestion?</h2>
+            <p class="text-xl text-emerald-100 mb-8 max-w-3xl mx-auto">
+                Start using Noundry.Slurp today and experience blazing-fast CSV to database ingestion with intelligent automation.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://github.com/noundry/slurp" target="_blank" class="bg-white text-emerald-600 hover:bg-emerald-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                    </svg>
+                    View on GitHub
+                </a>
+                <a href="docs.html" class="border-2 border-white text-white hover:bg-white hover:text-emerald-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Browse All Libraries
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        The modern .NET development platform that accelerates your journey from idea to production.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Libraries</h3>
+                    <ul class="space-y-3">
+                        <li><a href="tuxedo.html" class="text-gray-300 hover:text-white transition-colors">Noundry.Tuxedo</a></li>
+                        <li><a href="bowtie.html" class="text-gray-300 hover:text-white transition-colors">Tuxedo.Bowtie</a></li>
+                        <li><a href="connector.html" class="text-gray-300 hover:text-white transition-colors">Noundry.Connector</a></li>
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">All Libraries</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="https://github.com/noundry" class="text-gray-300 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

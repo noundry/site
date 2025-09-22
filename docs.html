@@ -143,10 +143,15 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🗄️ Noundry.Tuxedo
                             </button>
-                            <button @click="activeComponent = 'bowtie'" 
+                            <button @click="activeComponent = 'bowtie'"
                                     :class="activeComponent === 'bowtie' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ml-3">
                                 🎭 Tuxedo.Bowtie
+                            </button>
+                            <button @click="activeComponent = 'slurp'"
+                                    :class="activeComponent === 'slurp' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🚀 Noundry.Slurp
                             </button>
                         </div>
                     </div>
@@ -885,6 +890,124 @@
 
 <span class="text-gray-500"># Validate models against database</span>
 <span class="text-accent-500">$ bowtie validate --connection "Server=localhost;Database=MyApp;" --provider sqlserver</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noundry.Slurp -->
+                <div x-show="activeComponent === 'slurp'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Slurp</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        High-performance CSV to database ingestion tool capable of processing millions of rows in seconds with zero-allocation parsing and intelligent schema inference.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">⚡ Blazing Performance</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• 100,000+ rows per second typical performance</li>
+                                    <li>• Zero-allocation CSV parsing using SEP library</li>
+                                    <li>• Minimal memory footprint</li>
+                                    <li>• Parallel processing capabilities</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🗄️ Multi-Database Support</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• SQL Server</li>
+                                    <li>• PostgreSQL</li>
+                                    <li>• MySQL</li>
+                                    <li>• SQLite</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Slurp</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Interactive Mode</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># Launch interactive CLI with beautiful prompts</span>
+<span class="text-accent-500">$ slurp data.csv</span>
+
+<span class="text-gray-500"># The CLI will guide you through:</span>
+<span class="text-gray-500"># - Database provider selection</span>
+<span class="text-gray-500"># - Connection configuration</span>
+<span class="text-gray-500"># - Table name and schema options</span></code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Command Line Mode</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># Direct command with all parameters</span>
+<span class="text-accent-500">$ slurp data.csv -p postgres -s localhost -d mydb -u myuser --password mypass</span>
+
+<span class="text-gray-500"># SQL Server example</span>
+<span class="text-accent-500">$ slurp sales.csv -p sqlserver -s localhost -d Sales -u sa --password MyPass123!</span>
+
+<span class="text-gray-500"># SQLite example (simple local database)</span>
+<span class="text-accent-500">$ slurp inventory.csv -p sqlite -d inventory.db</span></code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Library Usage</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Slurp</span>;
+
+<span class="text-gray-500">// Configure the ingestion engine</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">config</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpConfiguration</span>
+{
+    <span class="text-green-400">Provider</span> = <span class="text-orange-400">"postgres"</span>,
+    <span class="text-green-400">Server</span> = <span class="text-orange-400">"localhost"</span>,
+    <span class="text-green-400">Database</span> = <span class="text-orange-400">"mydb"</span>,
+    <span class="text-green-400">Username</span> = <span class="text-orange-400">"user"</span>,
+    <span class="text-green-400">Password</span> = <span class="text-orange-400">"pass"</span>
+};
+
+<span class="text-gray-500">// Create and run the engine</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">engine</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpEngine</span>(<span class="text-blue-400">config</span>);
+<span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(<span class="text-orange-400">"data.csv"</span>);
+
+<span class="text-gray-500">// Check results</span>
+<span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Ingested </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">RowCount</span>}<span class="text-orange-400"> rows in </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">ElapsedTime</span>}<span class="text-orange-400">"</span>);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+                                <h4 class="font-medium text-blue-900 dark:text-blue-100 mb-2">Smart Schema Inference</h4>
+                                <p class="text-sm text-blue-800 dark:text-blue-200">
+                                    Automatically detects column types, sizes, and constraints from your CSV data, creating optimal database schemas without manual configuration.
+                                </p>
+                            </div>
+                            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                                <h4 class="font-medium text-green-900 dark:text-green-100 mb-2">Intelligent Indexing</h4>
+                                <p class="text-sm text-green-800 dark:text-green-200">
+                                    Automatically creates indexes on commonly queried columns like ID fields and foreign keys for optimal query performance.
+                                </p>
+                            </div>
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
+                                <h4 class="font-medium text-purple-900 dark:text-purple-100 mb-2">CSV Configuration</h4>
+                                <p class="text-sm text-purple-800 dark:text-purple-200">
+                                    Supports various CSV formats with configurable delimiters, quotes, escape characters, and encoding options.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
