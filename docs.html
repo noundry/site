@@ -772,13 +772,21 @@
                     </div>
 
                     <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Exception Translation (NEW)</h2>
-                        <p class="text-gray-600 dark:text-gray-300 mb-4">Strongly-typed database exceptions for precise error handling:</p>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Exceptions</span>;
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Exception Translation</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Strongly-typed database exceptions for precise error handling. Transform generic DbException errors into specific, catchable exception types:</p>
 
-<span class="text-gray-500">// Wrap connection with exception translation</span>
+                        <!-- Basic Exception Translation -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Basic Usage</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Exceptions</span>;
+
+<span class="text-gray-500">// Auto-detect database provider</span>
 <span class="text-purple-400">var</span> <span class="text-blue-400">wrappedConn</span> = <span class="text-blue-400">connection</span>.<span class="text-green-400">WithExceptionTranslation</span>();
+
+<span class="text-gray-500">// Or specify explicitly</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">sqlServerConn</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SqlConnection</span>(<span class="text-blue-400">connectionString</span>)
+    .<span class="text-green-400">WithSqlServerExceptionTranslation</span>();
 
 <span class="text-purple-400">try</span>
 {
@@ -786,8 +794,11 @@
 }
 <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>)
 {
-    <span class="text-gray-500">// Handle duplicate email</span>
-    <span class="text-purple-400">return</span> <span class="text-orange-400">"Email already registered"</span>;
+    <span class="text-gray-500">// Access detailed constraint information</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
+        <span class="text-purple-400">return</span> <span class="text-orange-400">"Email already registered"</span>;
+
+    <span class="text-purple-400">return</span> <span class="text-orange-400">$"Duplicate value for {<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}"</span>;
 }
 <span class="text-purple-400">catch</span> (<span class="text-yellow-400">CannotInsertNullException</span> <span class="text-blue-400">ex</span>)
 {
@@ -796,14 +807,78 @@
 <span class="text-purple-400">catch</span> (<span class="text-yellow-400">ReferenceConstraintException</span> <span class="text-blue-400">ex</span>)
 {
     <span class="text-purple-400">return</span> <span class="text-orange-400">"Invalid foreign key reference"</span>;
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">MaxLengthExceededException</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-purple-400">return</span> <span class="text-orange-400">$"</span>{<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}<span class="text-orange-400"> exceeds maximum length"</span>;
 }</code></pre>
+                            </div>
                         </div>
+
+                        <!-- User Registration Example -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">User Registration with Exception Translation</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">Result</span>&gt; <span class="text-green-400">RegisterUserAsync</span>(<span class="text-yellow-400">UserRegistration</span> <span class="text-blue-400">registration</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">wrappedConn</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">WithExceptionTranslation</span>();
+
+    <span class="text-purple-400">try</span>
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">user</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">User</span>
+        {
+            <span class="text-green-400">Email</span> = <span class="text-blue-400">registration</span>.<span class="text-green-400">Email</span>,
+            <span class="text-green-400">Username</span> = <span class="text-blue-400">registration</span>.<span class="text-green-400">Username</span>,
+            <span class="text-green-400">PasswordHash</span> = <span class="text-green-400">HashPassword</span>(<span class="text-blue-400">registration</span>.<span class="text-green-400">Password</span>)
+        };
+
+        <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">user</span>);
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Success</span>();
+    }
+    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>) <span class="text-purple-400">when</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"This email address is already registered"</span>);
+    }
+    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>) <span class="text-purple-400">when</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Username"</span>) == <span class="text-purple-400">true</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"This username is already taken"</span>);
+    }
+    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">CannotInsertNullException</span> <span class="text-blue-400">ex</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">$"</span>{<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}<span class="text-orange-400"> is required"</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Pipeline Pattern -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Combine with Resiliency</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Resiliency</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Exceptions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Polly</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">retryPolicy</span> = <span class="text-yellow-400">Policy</span>
+    .<span class="text-green-400">Handle</span>&lt;<span class="text-yellow-400">Exception</span>&gt;()
+    .<span class="text-green-400">WaitAndRetryAsync</span>(<span class="text-orange-400">3</span>, <span class="text-blue-400">attempt</span> => <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-blue-400">attempt</span>));
+
+<span class="text-gray-500">// Exception translation + Retry policy (order doesn't matter)</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connection</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SqlConnection</span>(<span class="text-blue-400">connectionString</span>)
+    .<span class="text-green-400">WithExceptionTranslation</span>()
+    .<span class="text-green-400">WithRetryPolicy</span>(<span class="text-blue-400">retryPolicy</span>);</code></pre>
+                            </div>
+                        </div>
+
                         <div class="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                             <p class="text-sm text-gray-600 dark:text-gray-300">
                                 <strong>Install:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">dotnet add package Noundry.Tuxedo.Exceptions</code>
                             </p>
                             <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
-                                Supports: UniqueConstraintException, ReferenceConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException
+                                <strong>Exception Types:</strong> UniqueConstraintException, ReferenceConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                <strong>Supported Databases:</strong> SQL Server, PostgreSQL, MySQL, SQLite
                             </p>
                         </div>
                     </div>
@@ -1776,6 +1851,160 @@
     }
 }</code></pre>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Tuxedo.Auditor Section -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Automatic Audit Logging</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Comprehensive change tracking for Insert, Update, and Delete operations with automatic audit trail generation:</p>
+
+                        <!-- Basic Auditing -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Basic Usage</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Auditor</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Auditor.UserProviders</span>;
+
+<span class="text-gray-500">// Wrap connection with automatic auditing</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">auditedConn</span> = <span class="text-blue-400">connection</span>.<span class="text-green-400">WithAuditing</span>(<span class="text-blue-400">config</span> =>
+{
+    <span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">StaticAuditUserProvider</span>(<span class="text-orange-400">"admin"</span>);
+    <span class="text-blue-400">config</span>.<span class="text-green-400">AuditTableName</span> = <span class="text-orange-400">"audit_log"</span>; <span class="text-gray-500">// Optional, default</span>
+});
+
+<span class="text-gray-500">// All CRUD operations are automatically audited</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">auditedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">product</span>);  <span class="text-gray-500">// Logged: Insert with new values</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">auditedConn</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>);  <span class="text-gray-500">// Logged: Update with old/new values + changed columns</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">auditedConn</span>.<span class="text-green-400">DeleteAsync</span>(<span class="text-blue-400">product</span>);  <span class="text-gray-500">// Logged: Delete with old values</span></code></pre>
+                            </div>
+                        </div>
+
+                        <!-- User Providers -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">User Providers</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Static user (testing, background jobs)</span>
+<span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">StaticAuditUserProvider</span>(<span class="text-orange-400">"system"</span>);
+
+<span class="text-gray-500">// Delegate provider (custom logic)</span>
+<span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">DelegateAuditUserProvider</span>(() =>
+{
+    <span class="text-purple-400">return</span> <span class="text-yellow-400">Thread</span>.<span class="text-green-400">CurrentPrincipal</span>?.<span class="text-green-400">Identity</span>?.<span class="text-green-400">Name</span> ?? <span class="text-orange-400">"Anonymous"</span>;
+});
+
+<span class="text-gray-500">// HTTP Context (ASP.NET Core web apps)</span>
+<span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">HttpContextAuditUserProvider</span>(<span class="text-blue-400">httpContextAccessor</span>);</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- ASP.NET Core DI -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">ASP.NET Core Dependency Injection</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// In Program.cs or Startup.cs</span>
+<span class="text-blue-400">services</span>.<span class="text-green-400">AddHttpContextAccessor</span>();
+
+<span class="text-blue-400">services</span>.<span class="text-green-400">AddScoped</span>&lt;<span class="text-yellow-400">IDbConnection</span>&gt;(<span class="text-blue-400">sp</span> =>
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">httpContext</span> = <span class="text-blue-400">sp</span>.<span class="text-green-400">GetRequiredService</span>&lt;<span class="text-yellow-400">IHttpContextAccessor</span>&gt;();
+    <span class="text-purple-400">var</span> <span class="text-blue-400">connectionString</span> = <span class="text-blue-400">sp</span>.<span class="text-green-400">GetRequiredService</span>&lt;<span class="text-yellow-400">IConfiguration</span>&gt;()
+        .<span class="text-green-400">GetConnectionString</span>(<span class="text-orange-400">"DefaultConnection"</span>);
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">connection</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SqlConnection</span>(<span class="text-blue-400">connectionString</span>);
+
+    <span class="text-purple-400">return</span> <span class="text-blue-400">connection</span>.<span class="text-green-400">WithAuditing</span>(<span class="text-blue-400">config</span> =>
+    {
+        <span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">HttpContextAuditUserProvider</span>(<span class="text-blue-400">httpContext</span>);
+        <span class="text-blue-400">config</span>.<span class="text-green-400">ExcludeTables</span>(<span class="text-orange-400">"Logs"</span>, <span class="text-orange-400">"TempData"</span>);
+    });
+});</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Soft Delete Detection -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Automatic Soft Delete Detection</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">User</span>
+{
+    [<span class="text-yellow-400">Key</span>]
+    <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-green-400">IsDeleted</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span>? <span class="text-green-400">DeletedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// Regular update</span>
+<span class="text-blue-400">user</span>.<span class="text-green-400">Email</span> = <span class="text-orange-400">"newemail@example.com"</span>;
+<span class="text-purple-400">await</span> <span class="text-blue-400">auditedConn</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">user</span>);
+<span class="text-gray-500">// Event Type: "Update"</span>
+
+<span class="text-gray-500">// Soft delete (automatically detected)</span>
+<span class="text-blue-400">user</span>.<span class="text-green-400">IsDeleted</span> = <span class="text-purple-400">true</span>;
+<span class="text-blue-400">user</span>.<span class="text-green-400">DeletedAt</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>;
+<span class="text-purple-400">await</span> <span class="text-blue-400">auditedConn</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">user</span>);
+<span class="text-gray-500">// Event Type: "SoftDelete"</span></code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Pipeline Pattern -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Combine with Exceptions and Resiliency</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Auditor</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Exceptions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Resiliency</span>;
+
+<span class="text-gray-500">// Combine all three features (order doesn't matter!)</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connection</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SqlConnection</span>(<span class="text-blue-400">connectionString</span>)
+    .<span class="text-green-400">WithAuditing</span>(<span class="text-blue-400">config</span> => <span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">StaticAuditUserProvider</span>(<span class="text-orange-400">"admin"</span>))
+    .<span class="text-green-400">WithExceptionTranslation</span>()
+    .<span class="text-green-400">WithRetryPolicy</span>(<span class="text-blue-400">retryPolicy</span>);</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Querying Audit Logs -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Querying Audit Logs</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Get audit history for a specific entity</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">history</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">AuditEvent</span>&gt;(<span class="text-orange-400">@"
+    SELECT * FROM audit_log
+    WHERE table_name = @Table AND entity_id = @EntityId
+    ORDER BY timestamp DESC"</span>,
+    <span class="text-purple-400">new</span> { <span class="text-green-400">Table</span> = <span class="text-orange-400">"Users"</span>, <span class="text-green-400">EntityId</span> = <span class="text-orange-400">"123"</span> }
+);
+
+<span class="text-gray-500">// Get all changes by a specific user</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">userChanges</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">AuditEvent</span>&gt;(
+    <span class="text-orange-400">"SELECT * FROM audit_log WHERE username = @Username ORDER BY timestamp DESC"</span>,
+    <span class="text-purple-400">new</span> { <span class="text-green-400">Username</span> = <span class="text-orange-400">"admin"</span> }
+);
+
+<span class="text-gray-500">// Get today's changes</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">todaysChanges</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">AuditEvent</span>&gt;(<span class="text-orange-400">@"
+    SELECT * FROM audit_log
+    WHERE timestamp >= @StartOfDay
+    ORDER BY timestamp DESC"</span>,
+    <span class="text-purple-400">new</span> { <span class="text-green-400">StartOfDay</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">Today</span> }
+);</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                <strong>Install:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">dotnet add package Noundry.Tuxedo.Auditor</code>
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                <strong>Features:</strong> Automatic Insert/Update/Delete logging, old/new value tracking, changed column detection, soft delete detection, user tracking
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                <strong>Audit Table:</strong> Auto-created with event type, table name, entity ID, username, timestamp, old/new values (JSON), changed columns
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                <strong>Databases:</strong> SQL Server, PostgreSQL (JSONB), MySQL (JSON), SQLite (TEXT)
+                            </p>
                         </div>
                     </div>
                 </div>
