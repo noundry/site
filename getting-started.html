@@ -111,10 +111,15 @@
                             class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
                         🔧 API Development (10 min)
                     </button>
-                    <button @click="activeTab = 'testing'" 
+                    <button @click="activeTab = 'testing'"
                             :class="activeTab === 'testing' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
                             class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
                         🧪 Testing & Validation (5 min)
+                    </button>
+                    <button @click="activeTab = 'data-import'"
+                            :class="activeTab === 'data-import' ? 'border-primary-500 text-primary-600 dark:text-primary-400' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'"
+                            class="py-4 px-6 border-b-2 font-medium text-sm transition-colors">
+                        💾 Data Import (2 min)
                     </button>
                 </div>
             </div>
@@ -150,6 +155,8 @@
                             <div class="text-accent-500">dotnet add package Noundry.Tuxedo</div>
                             <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
                             <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
+                            <div class="mt-2 text-gray-500"># Optional: For CSV data import</div>
+                            <div class="text-accent-500">dotnet tool install --global Noundry.Slurp.Tool</div>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300">This creates a new ASP.NET Core web application and installs the essential Noundry components for web development.</p>
                     </div>
@@ -252,7 +259,13 @@
 <span class="text-blue-400">@addTagHelper</span> *, Noundry.UI
 <span class="text-blue-400">@addTagHelper</span> *, Noundry.Authnz</code></pre>
                         </div>
-                        
+
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Also include Elements for client-side form validation in your layout:</p>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-6">
+                            <div class="text-gray-500">&lt;!-- In your _Layout.cshtml or page --&gt;</div>
+                            <div class="text-gray-300">&lt;script src="https://unpkg.com/noundry-elements@latest/dist/noundry-elements.min.js"&gt;&lt;/script&gt;</div>
+                        </div>
+
                         <p class="text-gray-600 dark:text-gray-300 mb-4">Then create <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">Pages/Index.cshtml</code> with Noundry components:</p>
                         <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
                             <pre><code><span class="text-blue-400">@page</span>
@@ -281,6 +294,22 @@
 
 <span class="text-gray-500">&lt;!-- Toast Container --&gt;</span>
 <span class="text-blue-400">&lt;noundry-toast-container</span> <span class="text-green-400">position</span>=<span class="text-orange-400">"top-right"</span> <span class="text-blue-400">/&gt;</span></code></pre>
+                        </div>
+
+                        <!-- Client-Side Form Validation -->
+                        <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">💡 Add Client-Side Validation</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Wrap your forms with Noundry Elements for instant validation:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-blue-400">&lt;noundry-element&gt;</span>
+    <span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Submit"</span> <span class="text-green-400">method</span>=<span class="text-orange-400">"post"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;input</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">required</span>
+               <span class="text-green-400">data-error</span>=<span class="text-orange-400">"Valid email required"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/button&gt;</span>
+    <span class="text-blue-400">&lt;/form&gt;</span>
+<span class="text-blue-400">&lt;/noundry-element&gt;</span></code></pre>
+                            </div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Automatic validation with beautiful error messages!</p>
                         </div>
                     </div>
                 </div>
@@ -531,6 +560,83 @@
                             </div>
                             <p class="text-gray-600 dark:text-gray-300">You now have fluent, readable test assertions and comprehensive input validation!</p>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Import Path -->
+            <div x-show="activeTab === 'data-import'" class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Data Import Quick Start</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">
+                        Import massive CSV files into your database in seconds with Noundry.Slurp
+                    </p>
+                </div>
+
+                <!-- Data Import Steps -->
+                <div class="space-y-12">
+                    <!-- Step 1 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Install Slurp</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                <div class="text-accent-500">$ dotnet tool install --global Noundry.Slurp.Tool</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Import Your Data</h3>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Import a CSV file with automatic schema inference:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                <div class="text-gray-500"># Import to SQL Server</div>
+                                <div class="text-accent-500">$ slurp data.csv -p sqlserver -s localhost -d MyDB</div>
+                                <div class="mt-2 text-gray-500"># Import to PostgreSQL</div>
+                                <div class="text-accent-500">$ slurp customers.csv -p postgres -s localhost -d mydb -u user</div>
+                                <div class="mt-2 text-gray-500"># Import to SQLite (simplest)</div>
+                                <div class="text-accent-500">$ slurp sales.csv -p sqlite -d sales.db</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Key Features</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">⚡ Blazing Fast</h4>
+                                <p class="text-gray-600 dark:text-gray-300">100,000+ rows per second on modern hardware</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🧠 Smart Schema Inference</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Automatically detects column types and constraints</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🗄️ Multi-Database Support</h4>
+                                <p class="text-gray-600 dark:text-gray-300">SQL Server, PostgreSQL, MySQL, SQLite</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🎯 Intelligent Indexing</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Auto-creates indexes on key columns</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="bg-gradient-to-r from-accent-50 to-accent-100 dark:from-accent-900/20 dark:to-accent-800/20 rounded-xl p-8 text-center">
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🎉 Ready to Import!</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Slurp can handle millions of rows in seconds.</p>
+                        <a href="slurp.html" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                            Learn More About Slurp
+                        </a>
                     </div>
                 </div>
             </div>

@@ -125,10 +125,15 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🏷️ Noundry.TagHelpers
                             </button>
-                            <button @click="activeComponent = 'ui'" 
+                            <button @click="activeComponent = 'ui'"
                                     :class="activeComponent === 'ui' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🎨 Noundry.UI
+                            </button>
+                            <button @click="activeComponent = 'elements'"
+                                    :class="activeComponent === 'elements' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                📝 Noundry Elements
                             </button>
                         </div>
                     </div>
@@ -451,7 +456,100 @@
                     </div>
                 </div>
 
-                 Noundry.Tuxedo 
+                <!-- Noundry Elements -->
+                <div x-show="activeComponent === 'elements'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry Elements</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        A powerful, lightweight form validation library for modern web applications. Built for vanilla JavaScript and Alpine.js integration.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-500"># CDN (Quick Start)</div>
+                            <div class="text-gray-300">&lt;script src="https://unpkg.com/noundry-elements@latest/dist/noundry-elements.min.js"&gt;&lt;/script&gt;</div>
+                            <div class="mt-2 text-gray-500"># NPM</div>
+                            <div class="text-accent-500">$ npm install noundry-elements</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">✅ Web Component Architecture</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Custom &lt;noundry-element&gt; tag for seamless integration</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">✅ Native HTML5 Validation</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Leverages built-in browser validation</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">✅ Real-time State Tracking</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Monitor dirty, valid, and submitting states</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">✅ Alpine.js Integration</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Seamless reactive integration</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Usage</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">&lt;!-- Simple form with validation --&gt;</span>
+<span class="text-blue-400">&lt;noundry-element&gt;</span>
+    <span class="text-blue-400">&lt;form</span> <span class="text-green-400">action</span>=<span class="text-orange-400">"/api/contact"</span> <span class="text-green-400">method</span>=<span class="text-orange-400">"POST"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;input</span>
+            <span class="text-green-400">type</span>=<span class="text-orange-400">"text"</span>
+            <span class="text-green-400">name</span>=<span class="text-orange-400">"name"</span>
+            <span class="text-green-400">required</span>
+            <span class="text-green-400">data-error</span>=<span class="text-orange-400">"Name is required"</span><span class="text-blue-400">&gt;</span>
+
+        <span class="text-blue-400">&lt;input</span>
+            <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span>
+            <span class="text-green-400">name</span>=<span class="text-orange-400">"email"</span>
+            <span class="text-green-400">required</span>
+            <span class="text-green-400">data-error</span>=<span class="text-orange-400">"Valid email required"</span><span class="text-blue-400">&gt;</span>
+
+        <span class="text-blue-400">&lt;button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/button&gt;</span>
+    <span class="text-blue-400">&lt;/form&gt;</span>
+<span class="text-blue-400">&lt;/noundry-element&gt;</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Alpine.js Integration</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-blue-400">&lt;div</span> <span class="text-green-400">x-data</span>=<span class="text-orange-400">"{ formData: {}, formState: {} }"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-element</span>
+        <span class="text-green-400">x-ref</span>=<span class="text-orange-400">"myForm"</span>
+        <span class="text-green-400">@noundry-change</span>=<span class="text-orange-400">"formData = $event.detail.values; formState = $refs.myForm.$noundry"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;form&gt;</span>
+            <span class="text-blue-400">&lt;input</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"text"</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"username"</span> <span class="text-green-400">x-model</span>=<span class="text-orange-400">"formData.username"</span><span class="text-blue-400">&gt;</span>
+            <span class="text-blue-400">&lt;button</span> <span class="text-green-400">:disabled</span>=<span class="text-orange-400">"!formState.isValid"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/button&gt;</span>
+        <span class="text-blue-400">&lt;/form&gt;</span>
+    <span class="text-blue-400">&lt;/noundry-element&gt;</span>
+<span class="text-blue-400">&lt;/div&gt;</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Performance & Size</h3>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300">Lightweight (~8KB minified) with zero dependencies. Perfect for modern web applications.</p>
+                        <a href="elements.html" class="inline-block mt-4 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium">
+                            View Full Documentation →
+                        </a>
+                    </div>
+                </div>
+
+                 Noundry.Tuxedo
                 <div x-show="activeComponent === 'tuxedo'" class="max-w-4xl">
                     <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Tuxedo</h1>
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
