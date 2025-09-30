@@ -47,7 +47,8 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <a href="index.html">
-                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                         </a>
                     </div>
                     <div class="hidden md:block ml-10">
@@ -706,7 +707,8 @@
             <div class="grid lg:grid-cols-4 gap-8">
                 <div class="lg:col-span-2">
                     <div class="flex items-center mb-6">
-                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                     </div>
                     <p class="text-gray-300 mb-6 max-w-md">
                         The modern .NET development platform that accelerates your journey from idea to production with intelligent tools and comprehensive libraries.

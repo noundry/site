@@ -147,7 +147,8 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <a href="index.html">
-                            <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                         </a>
                     </div>
                     <div class="hidden md:block ml-10">
@@ -2749,7 +2750,8 @@ function greet(name) {
         <div class="max-w-6xl mx-auto px-8">
             <div class="text-center">
                 <div class="flex items-center justify-center mb-6">
-                    <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                 </div>
                 <p class="text-gray-300 mb-6">
                     Build beautiful, interactive user interfaces with Noundry.UI components.
