@@ -208,8 +208,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Andy AI CLI (Coming Soon)</h3>
-                    <p class="text-gray-600 dark:text-gray-300">AI-powered command-line tool that generates code using Noundry patterns and best practices.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Andy AI CLI</h3>
+                    <p class="text-gray-600 dark:text-gray-300">AI-powered command-line tool that generates production-ready Noundry code using trained LLM models.</p>
                 </div>
             </div>
         </div>
@@ -441,9 +441,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
                 </div>
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Meet Andy - Your AI Development Partner (Coming Soon)</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Meet Andy - Your AI Development Partner</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Andy is an AI-powered CLI that understands Noundry patterns and generates production-ready code using your preferred blocks and blueprints.
+                    Andy is an AI-powered CLI that generates production-ready Noundry code using CodeLlama-7B with LlamaSharp. Generate UI components, services, repositories, and complete CRUD operations with simple natural language commands.
                 </p>
             </div>
             
@@ -454,9 +454,9 @@
                             <svg class="w-6 h-6 text-orange-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
-                            Intelligent Code Generation
+                            Template-Based Code Generation
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Andy analyzes your project context and generates code that follows Noundry best practices, including proper error handling, validation, and testing patterns.</p>
+                        <p class="text-gray-600 dark:text-gray-300">Powered by CodeLlama-7B with LlamaSharp, Andy uses proven templates to generate production-ready code instantly. No training required - just describe what you need in natural language.</p>
                     </div>
                     
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
@@ -464,9 +464,9 @@
                             <svg class="w-6 h-6 text-orange-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
-                            Context-Aware Suggestions
+                            Noundry.UI Integration
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Understands your existing codebase and suggests the most appropriate Noundry components and patterns for your specific use case.</p>
+                        <p class="text-gray-600 dark:text-gray-300">Generate complete forms with Noundry.UI TagHelpers like &lt;noundry-text-input&gt;, &lt;noundry-button&gt;, and &lt;noundry-card&gt; with built-in validation and Tailwind CSS styling.</p>
                     </div>
                     
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
@@ -474,9 +474,9 @@
                             <svg class="w-6 h-6 text-orange-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
                             </svg>
-                            Continuous Learning
+                            Smart File Placement
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Andy learns from the Noundry community and stays updated with the latest patterns, ensuring your generated code uses current best practices.</p>
+                        <p class="text-gray-600 dark:text-gray-300">Andy analyzes your project structure and places generated files in the correct directories - Models/, Services/, Controllers/, Views/ - following ASP.NET Core conventions automatically.</p>
                     </div>
                 </div>
                 
@@ -490,46 +490,53 @@
                         <div class="ml-4 text-gray-400 text-sm font-mono">Andy CLI</div>
                     </div>
                     <div class="font-mono text-sm space-y-3">
-                        <div class="text-accent-500">$ andy generate controller --entity User --crud</div>
-                        <div class="text-gray-400">🤖 Analyzing project structure...</div>
-                        <div class="text-gray-400">📋 Found existing User model</div>
-                        <div class="text-gray-400">🔍 Detected Noundry.Tuxedo usage</div>
-                        <div class="text-green-400">✨ Generated UserController.cs</div>
-                        <div class="text-green-400">✨ Generated UserService.cs</div>
-                        <div class="text-green-400">✨ Generated UserValidator.cs</div>
-                        <div class="text-green-400">✨ Generated UserControllerTests.cs</div>
-                        <div class="text-blue-400">💡 Suggestion: Add Noundry.Authnz for user authentication</div>
-                        <div class="text-orange-400">$ andy add auth --provider google,microsoft</div>
-                        <div class="text-gray-400">🔐 Configuring OAuth providers...</div>
-                        <div class="text-green-400">✅ Authentication configured successfully!</div>
+                        <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: firstName, lastName, email"</div>
+                        <div class="text-gray-400">🤖 Processing with CodeLlama-7B...</div>
+                        <div class="text-gray-400">📋 Using template: Noundry.UI Form</div>
+                        <div class="text-green-400">✨ Created Models/ContactFormModel.cs</div>
+                        <div class="text-green-400">✨ Created Views/Contact/Create.cshtml</div>
+                        <div class="text-blue-400">Generated form with Noundry TagHelpers:</div>
+                        <div class="text-gray-400">  &lt;noundry-text-input asp-for="FirstName" /&gt;</div>
+                        <div class="text-gray-400">  &lt;noundry-text-input asp-for="Email" type="email" /&gt;</div>
+                        <div class="text-blue-400 mt-2">$ andy generate "service for managing products with CRUD operations"</div>
+                        <div class="text-gray-400">🤖 Processing with CodeLlama-7B...</div>
+                        <div class="text-green-400">✨ Created Services/ProductService.cs</div>
+                        <div class="text-green-400">✨ Created Services/IProductService.cs</div>
+                        <div class="text-green-400">✅ Service ready with async CRUD methods!</div>
                     </div>
                 </div>
             </div>
             
             <div class="mt-16 text-center">
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg max-w-4xl mx-auto">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Andy Command Examples</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Real Andy CLI Commands</h3>
                     <div class="grid md:grid-cols-2 gap-6 text-left">
                         <div class="space-y-3">
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy create</span> <span class="text-gray-600 dark:text-gray-300">--blueprint web-api</span>
+                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"repository for User entity with async CRUD"</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">api --entity Product</span>
+                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"API controller for Product with pagination"</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy add</span> <span class="text-gray-600 dark:text-gray-300">auth --provider github</span>
+                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"Razor view with Noundry.UI components"</span>
+                            </div>
+                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                                <span class="text-accent-500">andy chat</span> <span class="text-gray-600 dark:text-gray-300">--context ./src</span>
                             </div>
                         </div>
                         <div class="space-y-3">
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy scaffold</span> <span class="text-gray-600 dark:text-gray-300">ui --component modal</span>
+                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"validation model with data annotations"</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy deploy</span> <span class="text-gray-600 dark:text-gray-300">--target azure</span>
+                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"service layer with dependency injection"</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy optimize</span> <span class="text-gray-600 dark:text-gray-300">--performance</span>
+                                <span class="text-accent-500">andy auth login</span>
+                            </div>
+                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                                <span class="text-accent-500">andy config</span> <span class="text-gray-600 dark:text-gray-300">--api-url https://api.noundry.com</span>
                             </div>
                         </div>
                     </div>
@@ -895,7 +902,7 @@
                             <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI with Full Features (Coming Soon)</span>
+                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI with Full Features</span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1054,7 +1061,7 @@
                     <ul class="space-y-3">
                         <li><a href="#blocks" class="text-gray-300 hover:text-white transition-colors">Blocks</a></li>
                         <li><a href="#blueprints" class="text-gray-300 hover:text-white transition-colors">Blueprints</a></li>
-                        <li><a href="#andy" class="text-gray-300 hover:text-white transition-colors">Andy AI (Coming Soon)</a></li>
+                        <li><a href="#andy" class="text-gray-300 hover:text-white transition-colors">Andy AI</a></li>
                         <li><a href="#docs" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
                         <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
                     </ul>
