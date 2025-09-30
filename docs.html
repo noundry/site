@@ -1097,11 +1097,12 @@
         .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">UserId</span> == <span class="text-blue-400">userId</span>)
         .<span class="text-green-400">CountAsync</span>(<span class="text-blue-400">_connection</span>);
 
-    <span class="text-gray-500">// 4. Calculate total revenue with QueryBuilder aggregation</span>
-    <span class="text-purple-400">var</span> <span class="text-blue-400">totalRevenue</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
-        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">UserId</span> == <span class="text-blue-400">userId</span>)
-        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Status</span> == <span class="text-orange-400">"Completed"</span>)
-        .<span class="text-green-400">Sum</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">TotalAmount</span>);
+    <span class="text-gray-500">// 4. Calculate total revenue with aggregation query</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">totalRevenue</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteScalarAsync</span>&lt;<span class="text-purple-400">decimal</span>?&gt;(
+        <span class="text-orange-400">@"SELECT SUM(TotalAmount)
+          FROM Orders
+          WHERE UserId = @UserId AND Status = @Status"</span>,
+        <span class="text-purple-400">new</span> { <span class="text-green-400">UserId</span> = <span class="text-blue-400">userId</span>, <span class="text-green-400">Status</span> = <span class="text-orange-400">"Completed"</span> }) ?? <span class="text-orange-400">0</span>;
 
     <span class="text-purple-400">return</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">DashboardData</span>
     {
@@ -1146,7 +1147,6 @@
                     </div>
                 </div>
 
-                 Add similar sections for other components 
                 <div x-show="activeComponent === 'taghelpers'" class="max-w-4xl">
                     <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.TagHelpers</h1>
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">

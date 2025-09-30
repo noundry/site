@@ -21,11 +21,11 @@
     countries: ['United States', 'Canada', 'United Kingdom', 'Germany', 'France', 'Japan', 'Australia'],
     skillsOptions: ['JavaScript', 'Python', 'Java', 'C#', 'PHP', 'Ruby', 'Go', 'Rust', 'TypeScript', 'Swift'],
     users: [
-        { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-15', avatar: 'https://via.placeholder.com/32', department: 'Engineering', salary: 95000, phone: '+1-555-0101', address: '123 Main St, Tech City', projects: ['Project Alpha', 'Dashboard Redesign'], skills: ['C#', 'React', 'Azure'] },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active', lastLogin: '2024-01-14', avatar: 'https://via.placeholder.com/32', department: 'Marketing', salary: 75000, phone: '+1-555-0102', address: '456 Oak Ave, Marketing Plaza', projects: ['Brand Refresh', 'Campaign Q1'], skills: ['Marketing', 'Analytics', 'Design'] },
-        { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'User', status: 'Inactive', lastLogin: '2024-01-10', avatar: 'https://via.placeholder.com/32', department: 'Sales', salary: 68000, phone: '+1-555-0103', address: '789 Pine Rd, Business District', projects: ['Sales Portal'], skills: ['Sales', 'CRM', 'Negotiation'] },
-        { id: 4, name: 'Sarah Wilson', email: 'sarah@example.com', role: 'Moderator', status: 'Active', lastLogin: '2024-01-16', avatar: 'https://via.placeholder.com/32', department: 'Support', salary: 72000, phone: '+1-555-0104', address: '321 Elm St, Support Center', projects: ['Help Center', 'Ticket System'], skills: ['Support', 'Documentation', 'Training'] },
-        { id: 5, name: 'Tom Brown', email: 'tom@example.com', role: 'User', status: 'Pending', lastLogin: 'Never', avatar: 'https://via.placeholder.com/32', department: 'Engineering', salary: 85000, phone: '+1-555-0105', address: '654 Maple Dr, Tech Campus', projects: ['API Gateway'], skills: ['JavaScript', 'Node.js', 'MongoDB'] }
+        { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', status: 'Active', lastLogin: '2024-01-15', avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&size=32', department: 'Engineering', salary: 95000, phone: '+1-555-0101', address: '123 Main St, Tech City', projects: ['Project Alpha', 'Dashboard Redesign'], skills: ['C#', 'React', 'Azure'] },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', status: 'Active', lastLogin: '2024-01-14', avatar: 'https://ui-avatars.com/api/?name=Jane+Smith&background=ec4899&color=fff&size=32', department: 'Marketing', salary: 75000, phone: '+1-555-0102', address: '456 Oak Ave, Marketing Plaza', projects: ['Brand Refresh', 'Campaign Q1'], skills: ['Marketing', 'Analytics', 'Design'] },
+        { id: 3, name: 'Mike Johnson', email: 'mike@example.com', role: 'User', status: 'Inactive', lastLogin: '2024-01-10', avatar: 'https://ui-avatars.com/api/?name=Mike+Johnson&background=8b5cf6&color=fff&size=32', department: 'Sales', salary: 68000, phone: '+1-555-0103', address: '789 Pine Rd, Business District', projects: ['Sales Portal'], skills: ['Sales', 'CRM', 'Negotiation'] },
+        { id: 4, name: 'Sarah Wilson', email: 'sarah@example.com', role: 'Moderator', status: 'Active', lastLogin: '2024-01-16', avatar: 'https://ui-avatars.com/api/?name=Sarah+Wilson&background=14b8a6&color=fff&size=32', department: 'Support', salary: 72000, phone: '+1-555-0104', address: '321 Elm St, Support Center', projects: ['Help Center', 'Ticket System'], skills: ['Support', 'Documentation', 'Training'] },
+        { id: 5, name: 'Tom Brown', email: 'tom@example.com', role: 'User', status: 'Pending', lastLogin: 'Never', avatar: 'https://ui-avatars.com/api/?name=Tom+Brown&background=f59e0b&color=fff&size=32', department: 'Engineering', salary: 85000, phone: '+1-555-0105', address: '654 Maple Dr, Tech Campus', projects: ['API Gateway'], skills: ['JavaScript', 'Node.js', 'MongoDB'] }
     ],
     steps: [
         { id: 1, title: 'Account Setup', description: 'Create your account' },
@@ -1999,7 +1999,7 @@ toast.warning('Warning!', 'Please check your input.');</code></pre>
                                     <template x-if="!isLoading">
                                         <div>
                                             <div class="flex items-center space-x-4">
-                                                <img src="https://via.placeholder.com/48" alt="Avatar" class="w-12 h-12 rounded-full">
+                                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&size=48" alt="Avatar" class="w-12 h-12 rounded-full">
                                                 <div>
                                                     <h4 class="font-semibold text-gray-900 dark:text-white">John Doe</h4>
                                                     <p class="text-sm text-gray-600 dark:text-gray-400">Software Engineer</p>
@@ -2187,7 +2187,7 @@ toast.warning('Warning!', 'Please check your input.');</code></pre>
                                 <div class="relative inline-block">
                                     <button @click="showPopover1 = !showPopover1"
                                             class="flex items-center space-x-2 px-3 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
-                                        <img src="https://via.placeholder.com/24" alt="User" class="w-6 h-6 rounded-full">
+                                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&size=24" alt="User" class="w-6 h-6 rounded-full">
                                         <span>John Doe</span>
                                     </button>
                                     <div x-show="showPopover1" @click.away="showPopover1 = false"
@@ -2195,7 +2195,7 @@ toast.warning('Warning!', 'Please check your input.');</code></pre>
                                          class="absolute bottom-full left-0 mb-2 w-80 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl z-20">
                                         <div class="p-4">
                                             <div class="flex items-start space-x-3">
-                                                <img src="https://via.placeholder.com/48" alt="Profile" class="w-12 h-12 rounded-full">
+                                                <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&size=48" alt="Profile" class="w-12 h-12 rounded-full">
                                                 <div class="flex-1">
                                                     <h4 class="font-semibold text-gray-900 dark:text-white">John Doe</h4>
                                                     <p class="text-sm text-gray-600 dark:text-gray-400">Senior Developer</p>
@@ -2635,7 +2635,7 @@ function greet(name) {
             </div>
             <div class="p-6 space-y-6">
                 <div class="flex items-center space-x-4">
-                    <img src="https://via.placeholder.com/80" alt="Profile" class="w-20 h-20 rounded-full">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=6366f1&color=fff&size=80" alt="Profile" class="w-20 h-20 rounded-full">
                     <div>
                         <h4 class="text-xl font-semibold text-gray-900 dark:text-white">John Doe</h4>
                         <p class="text-gray-600 dark:text-gray-400">Senior Developer</p>
