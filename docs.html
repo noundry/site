@@ -278,6 +278,53 @@
 <span class="text-purple-400">await</span> <span class="text-blue-400">asyncResult</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">CompleteWithin</span>(<span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">5</span>));</code></pre>
                         </div>
                     </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Testing Scenarios</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Unit Test - Service Layer</span>
+[<span class="text-yellow-400">Fact</span>]
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">CreateUser_ValidData_ReturnsCreatedUser</span>()
+{
+    <span class="text-gray-500">// Arrange</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">request</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">CreateUserRequest</span>
+    {
+        <span class="text-green-400">Email</span> = <span class="text-orange-400">"user@example.com"</span>,
+        <span class="text-green-400">Name</span> = <span class="text-orange-400">"John Doe"</span>,
+        <span class="text-green-400">Age</span> = <span class="text-orange-400">25</span>
+    };
+
+    <span class="text-gray-500">// Act</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_userService</span>.<span class="text-green-400">CreateUserAsync</span>(<span class="text-blue-400">request</span>);
+
+    <span class="text-gray-500">// Assert</span>
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeNull</span>();
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Id</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">BeGreaterThan</span>(<span class="text-orange-400">0</span>);
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Email</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Be</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">Email</span>);
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Name</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Be</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">Name</span>);
+    <span class="text-blue-400">result</span>.<span class="text-green-400">CreatedAt</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">BeCloseTo</span>(<span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>, <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">2</span>));
+}
+
+<span class="text-gray-500">// Integration Test - API Response</span>
+[<span class="text-yellow-400">Fact</span>]
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">GetUsers_ReturnsPagedResults</span>()
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">response</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_client</span>.<span class="text-green-400">GetAsync</span>(<span class="text-orange-400">"/api/users?page=1&pageSize=10"</span>);
+
+    <span class="text-blue-400">response</span>.<span class="text-green-400">StatusCode</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">Be</span>(<span class="text-yellow-400">HttpStatusCode</span>.<span class="text-green-400">OK</span>);
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">response</span>.<span class="text-green-400">Content</span>.<span class="text-green-400">ReadFromJsonAsync</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">UserDto</span>&gt;&gt;();
+
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeNull</span>();
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Items</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">HaveCountLessOrEqualTo</span>(<span class="text-orange-400">10</span>);
+    <span class="text-blue-400">result</span>.<span class="text-green-400">Items</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">AllSatisfy</span>(<span class="text-blue-400">u</span> =>
+    {
+        <span class="text-blue-400">u</span>.<span class="text-green-400">Email</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">NotBeNullOrEmpty</span>();
+        <span class="text-blue-400">u</span>.<span class="text-green-400">Email</span>.<span class="text-green-400">Should</span>().<span class="text-green-400">MatchRegex</span>(<span class="text-orange-400">@"^[^@\s]+@[^@\s]+\.[^@\s]+$"</span>);
+    });
+}</code></pre>
+                        </div>
+                    </div>
                 </div>
 
                  Guardian 
@@ -324,6 +371,58 @@
 
 <span class="text-gray-500">// Custom conditions</span>
 <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Expression</span>(<span class="text-blue-400">x</span> => <span class="text-blue-400">x</span>.<span class="text-green-400">StartDate</span> > <span class="text-blue-400">x</span>.<span class="text-green-400">EndDate</span>, <span class="text-blue-400">request</span>, <span class="text-orange-400">"Start date must be before end date"</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Validation Patterns</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// API Controller - Input Validation</span>
+[<span class="text-yellow-400">HttpPost</span>(<span class="text-orange-400">"api/orders"</span>)]
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IActionResult</span>&gt; <span class="text-green-400">CreateOrder</span>([<span class="text-yellow-400">FromBody</span>] <span class="text-yellow-400">CreateOrderRequest</span> <span class="text-blue-400">request</span>)
+{
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">request</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">request</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NullOrEmpty</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">Items</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">Items</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">CustomerId</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">request</span>.<span class="text-green-400">CustomerId</span>));
+
+    <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">item</span> <span class="text-purple-400">in</span> <span class="text-blue-400">request</span>.<span class="text-green-400">Items</span>)
+    {
+        <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>));
+        <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Negative</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">Price</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">Price</span>));
+    }
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">order</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_orderService</span>.<span class="text-green-400">CreateAsync</span>(<span class="text-blue-400">request</span>);
+    <span class="text-purple-400">return</span> <span class="text-green-400">CreatedAtAction</span>(<span class="text-purple-400">nameof</span>(<span class="text-green-400">GetOrder</span>), <span class="text-purple-400">new</span> { <span class="text-green-400">id</span> = <span class="text-blue-400">order</span>.<span class="text-green-400">Id</span> }, <span class="text-blue-400">order</span>);
+}
+
+<span class="text-gray-500">// Domain Model - Business Logic Validation</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Order</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">void</span> <span class="text-green-400">ApplyDiscount</span>(<span class="text-purple-400">decimal</span> <span class="text-blue-400">discountPercentage</span>)
+    {
+        <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">OutOfRange</span>(<span class="text-blue-400">discountPercentage</span>, <span class="text-orange-400">0</span>, <span class="text-orange-400">100</span>,
+            <span class="text-purple-400">nameof</span>(<span class="text-blue-400">discountPercentage</span>));
+        <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Expression</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Status</span> == <span class="text-yellow-400">OrderStatus</span>.<span class="text-green-400">Shipped</span>,
+            <span class="text-purple-400">this</span>, <span class="text-orange-400">"Cannot apply discount to shipped orders"</span>);
+
+        <span class="text-green-400">TotalAmount</span> *= (<span class="text-orange-400">1</span> - <span class="text-blue-400">discountPercentage</span> / <span class="text-orange-400">100</span>);
+    }
+}
+
+<span class="text-gray-500">// Service Layer - Complex Business Rules</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">TransferFunds</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">fromAccountId</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">toAccountId</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>)
+{
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">NegativeOrZero</span>(<span class="text-blue-400">amount</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">amount</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Expression</span>(<span class="text-blue-400">x</span> => <span class="text-blue-400">x</span> == <span class="text-blue-400">toAccountId</span>, <span class="text-blue-400">fromAccountId</span>,
+        <span class="text-orange-400">"Cannot transfer to the same account"</span>);
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">fromAccount</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_repository</span>.<span class="text-green-400">GetAsync</span>(<span class="text-blue-400">fromAccountId</span>);
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Null</span>(<span class="text-blue-400">fromAccount</span>, <span class="text-purple-400">nameof</span>(<span class="text-blue-400">fromAccount</span>));
+    <span class="text-yellow-400">Guard</span>.<span class="text-green-400">Against</span>.<span class="text-green-400">Expression</span>(<span class="text-blue-400">a</span> => <span class="text-blue-400">a</span>.<span class="text-green-400">Balance</span> &lt; <span class="text-blue-400">amount</span>, <span class="text-blue-400">fromAccount</span>,
+        <span class="text-orange-400">"Insufficient funds"</span>);
+
+    <span class="text-gray-500">// Perform transfer...</span>
+}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -697,6 +796,168 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Data Operations</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Production-ready examples for complex data scenarios:</p>
+
+                        <!-- Bulk Insert Operations -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Bulk Insert with Validation</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">BulkOperationResult</span>&gt; <span class="text-green-400">ImportProductsAsync</span>(<span class="text-yellow-400">List</span>&lt;<span class="text-yellow-400">Product</span>&gt; <span class="text-blue-400">products</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">wrappedConn</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">WithExceptionTranslation</span>();
+    <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">BulkOperationResult</span>();
+
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+    <span class="text-purple-400">try</span>
+    {
+        <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">product</span> <span class="text-purple-400">in</span> <span class="text-blue-400">products</span>)
+        {
+            <span class="text-purple-400">try</span>
+            {
+                <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">product</span>, <span class="text-blue-400">transaction</span>);
+                <span class="text-blue-400">result</span>.<span class="text-green-400">SuccessCount</span>++;
+            }
+            <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>)
+            {
+                <span class="text-blue-400">result</span>.<span class="text-green-400">Errors</span>.<span class="text-green-400">Add</span>(<span class="text-orange-400">$"Duplicate SKU: </span>{<span class="text-blue-400">product</span>.<span class="text-green-400">SKU</span>}<span class="text-orange-400">"</span>);
+                <span class="text-blue-400">result</span>.<span class="text-green-400">FailureCount</span>++;
+            }
+            <span class="text-purple-400">catch</span> (<span class="text-yellow-400">MaxLengthExceededException</span> <span class="text-blue-400">ex</span>)
+            {
+                <span class="text-blue-400">result</span>.<span class="text-green-400">Errors</span>.<span class="text-green-400">Add</span>(<span class="text-orange-400">$"</span>{<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}<span class="text-orange-400"> exceeds max length: </span>{<span class="text-blue-400">product</span>.<span class="text-green-400">Name</span>}<span class="text-orange-400">"</span>);
+                <span class="text-blue-400">result</span>.<span class="text-green-400">FailureCount</span>++;
+            }
+        }
+
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+        <span class="text-purple-400">return</span> <span class="text-blue-400">result</span>;
+    }
+    <span class="text-purple-400">catch</span>
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">throw</span>;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Complex Query with Joins -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Complex Queries with Aggregations</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">CustomerOrderSummary</span>&gt;&gt; <span class="text-green-400">GetTopCustomersAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">topN</span>)
+{
+    <span class="text-purple-400">const</span> <span class="text-purple-400">string</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+        SELECT
+            c.Id,
+            c.Name,
+            c.Email,
+            COUNT(o.Id) AS TotalOrders,
+            SUM(o.TotalAmount) AS TotalRevenue,
+            AVG(o.TotalAmount) AS AverageOrderValue,
+            MAX(o.OrderDate) AS LastOrderDate
+        FROM Customers c
+        INNER JOIN Orders o ON c.Id = o.CustomerId
+        WHERE o.OrderDate >= DATEADD(YEAR, -1, GETDATE())
+            AND o.Status = 'Completed'
+        GROUP BY c.Id, c.Name, c.Email
+        HAVING COUNT(o.Id) >= 5
+        ORDER BY TotalRevenue DESC
+        OFFSET 0 ROWS FETCH NEXT @TopN ROWS ONLY"</span>;
+
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">CustomerOrderSummary</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">TopN</span> = <span class="text-blue-400">topN</span> });
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Multi-Step Transaction with Error Recovery -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Multi-Step Transaction with Audit Trail</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">Result</span>&gt; <span class="text-green-400">ProcessOrderAsync</span>(<span class="text-yellow-400">Order</span> <span class="text-blue-400">order</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">wrappedConn</span> = <span class="text-blue-400">_connection</span>
+        .<span class="text-green-400">WithExceptionTranslation</span>()
+        .<span class="text-green-400">WithRetryPolicy</span>(<span class="text-blue-400">_retryPolicy</span>);
+
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+    <span class="text-purple-400">try</span>
+    {
+        <span class="text-gray-500">// 1. Insert order</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">orderId</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">order</span>, <span class="text-blue-400">transaction</span>);
+
+        <span class="text-gray-500">// 2. Update inventory</span>
+        <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">item</span> <span class="text-purple-400">in</span> <span class="text-blue-400">order</span>.<span class="text-green-400">Items</span>)
+        {
+            <span class="text-purple-400">var</span> <span class="text-blue-400">rowsAffected</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">ExecuteAsync</span>(
+                <span class="text-orange-400">"UPDATE Products SET Stock = Stock - @Quantity WHERE Id = @ProductId AND Stock >= @Quantity"</span>,
+                <span class="text-purple-400">new</span> { <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>, <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span> }, <span class="text-blue-400">transaction</span>);
+
+            <span class="text-purple-400">if</span> (<span class="text-blue-400">rowsAffected</span> == <span class="text-purple-400">0</span>)
+                <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">InsufficientStockException</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>);
+        }
+
+        <span class="text-gray-500">// 3. Create audit log</span>
+        <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-purple-400">new</span> <span class="text-yellow-400">AuditLog</span>
+        {
+            <span class="text-green-400">EntityType</span> = <span class="text-orange-400">"Order"</span>,
+            <span class="text-green-400">EntityId</span> = <span class="text-blue-400">orderId</span>,
+            <span class="text-green-400">Action</span> = <span class="text-orange-400">"Created"</span>,
+            <span class="text-green-400">UserId</span> = <span class="text-blue-400">order</span>.<span class="text-green-400">UserId</span>,
+            <span class="text-green-400">Timestamp</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>
+        }, <span class="text-blue-400">transaction</span>);
+
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Success</span>(<span class="text-blue-400">orderId</span>);
+    }
+    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">ReferenceConstraintException</span> <span class="text-blue-400">ex</span>)
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"Invalid customer or product reference"</span>);
+    }
+    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">InsufficientStockException</span> <span class="text-blue-400">ex</span>)
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">$"Insufficient stock for product </span>{<span class="text-blue-400">ex</span>.<span class="text-green-400">ProductId</span>}<span class="text-orange-400">"</span>);
+    }
+    <span class="text-purple-400">catch</span>
+    {
+        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-purple-400">throw</span>;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Performance Optimization -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Performance Optimization Patterns</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Efficient batch operations with QueryMultipleAsync</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">DashboardData</span>&gt; <span class="text-green-400">GetDashboardDataAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">userId</span>)
+{
+    <span class="text-purple-400">const</span> <span class="text-purple-400">string</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+        SELECT * FROM Users WHERE Id = @UserId;
+        SELECT * FROM Orders WHERE UserId = @UserId ORDER BY OrderDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
+        SELECT COUNT(*) FROM Orders WHERE UserId = @UserId;
+        SELECT SUM(TotalAmount) FROM Orders WHERE UserId = @UserId AND Status = 'Completed';"</span>;
+
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">multi</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryMultipleAsync</span>(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">UserId</span> = <span class="text-blue-400">userId</span> });
+
+    <span class="text-purple-400">return</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">DashboardData</span>
+    {
+        <span class="text-green-400">User</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(),
+        <span class="text-green-400">RecentOrders</span> = (<span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadAsync</span>&lt;<span class="text-yellow-400">Order</span>&gt;()).<span class="text-green-400">ToList</span>(),
+        <span class="text-green-400">TotalOrders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstAsync</span>&lt;<span class="text-purple-400">int</span>&gt;(),
+        <span class="text-green-400">TotalRevenue</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstOrDefaultAsync</span>&lt;<span class="text-purple-400">decimal</span>?&gt;() ?? <span class="text-purple-400">0</span>
+    };
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                  Add similar sections for other components 
@@ -877,6 +1138,222 @@
         <span class="text-purple-400">return</span> <span class="text-green-400">Ok</span>(<span class="text-blue-400">DeleteProduct</span>(<span class="text-blue-400">id</span>));
     }
 }</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Authentication Flows</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Production-ready authentication patterns for secure applications:</p>
+
+                        <!-- Complete OAuth Flow with Error Handling -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Complete OAuth Flow with Error Handling</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Pages/Auth/Login.cshtml.cs</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">LoginModel</span> : <span class="text-yellow-400">PageModel</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IOAuthService</span> <span class="text-blue-400">_oauthService</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ILogger</span>&lt;<span class="text-yellow-400">LoginModel</span>&gt; <span class="text-blue-400">_logger</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">LoginModel</span>(<span class="text-yellow-400">IOAuthService</span> <span class="text-blue-400">oauthService</span>, <span class="text-yellow-400">ILogger</span>&lt;<span class="text-yellow-400">LoginModel</span>&gt; <span class="text-blue-400">logger</span>)
+    {
+        <span class="text-blue-400">_oauthService</span> = <span class="text-blue-400">oauthService</span>;
+        <span class="text-blue-400">_logger</span> = <span class="text-blue-400">logger</span>;
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">IActionResult</span> <span class="text-green-400">OnGetAsync</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">provider</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">returnUrl</span> = <span class="text-purple-400">null</span>)
+    {
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// Generate secure state and PKCE parameters</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">authRequest</span> = <span class="text-blue-400">_oauthService</span>.<span class="text-green-400">CreateAuthorizationRequest</span>(
+                <span class="text-blue-400">provider</span>,
+                <span class="text-blue-400">returnUrl</span> ?? <span class="text-orange-400">"/Dashboard"</span>
+            );
+
+            <span class="text-gray-500">// Store state in secure cookie for validation</span>
+            <span class="text-yellow-400">Response</span>.<span class="text-green-400">Cookies</span>.<span class="text-green-400">Append</span>(<span class="text-orange-400">"oauth_state"</span>, <span class="text-blue-400">authRequest</span>.<span class="text-green-400">State</span>, <span class="text-purple-400">new</span> <span class="text-yellow-400">CookieOptions</span>
+            {
+                <span class="text-green-400">HttpOnly</span> = <span class="text-purple-400">true</span>,
+                <span class="text-green-400">Secure</span> = <span class="text-purple-400">true</span>,
+                <span class="text-green-400">SameSite</span> = <span class="text-yellow-400">SameSiteMode</span>.<span class="text-green-400">Lax</span>,
+                <span class="text-green-400">MaxAge</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromMinutes</span>(<span class="text-purple-400">10</span>)
+            });
+
+            <span class="text-purple-400">return</span> <span class="text-green-400">Redirect</span>(<span class="text-blue-400">authRequest</span>.<span class="text-green-400">AuthorizationUrl</span>);
+        }
+        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">Exception</span> <span class="text-blue-400">ex</span>)
+        {
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogError</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"OAuth authorization request failed for provider: {Provider}"</span>, <span class="text-blue-400">provider</span>);
+            <span class="text-yellow-400">TempData</span>[<span class="text-orange-400">"Error"</span>] = <span class="text-orange-400">"Authentication initialization failed"</span>;
+            <span class="text-purple-400">return</span> <span class="text-green-400">RedirectToPage</span>(<span class="text-orange-400">"/Error"</span>);
+        }
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IActionResult</span>&gt; <span class="text-green-400">OnGetCallbackAsync</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">code</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">state</span>)
+    {
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// Validate state to prevent CSRF</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">savedState</span> = <span class="text-yellow-400">Request</span>.<span class="text-green-400">Cookies</span>[<span class="text-orange-400">"oauth_state"</span>];
+            <span class="text-purple-400">if</span> (<span class="text-blue-400">savedState</span> != <span class="text-blue-400">state</span>)
+            {
+                <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogWarning</span>(<span class="text-orange-400">"OAuth state mismatch - possible CSRF attack"</span>);
+                <span class="text-purple-400">return</span> <span class="text-green-400">RedirectToPage</span>(<span class="text-orange-400">"/Error"</span>);
+            }
+
+            <span class="text-gray-500">// Exchange code for tokens</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">tokenResponse</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_oauthService</span>.<span class="text-green-400">ExchangeCodeForTokensAsync</span>(<span class="text-blue-400">code</span>, <span class="text-blue-400">state</span>);
+
+            <span class="text-gray-500">// Create user session with JWT</span>
+            <span class="text-purple-400">await</span> <span class="text-green-400">SignInUserAsync</span>(<span class="text-blue-400">tokenResponse</span>);
+
+            <span class="text-gray-500">// Clean up state cookie</span>
+            <span class="text-yellow-400">Response</span>.<span class="text-green-400">Cookies</span>.<span class="text-green-400">Delete</span>(<span class="text-orange-400">"oauth_state"</span>);
+
+            <span class="text-purple-400">return</span> <span class="text-green-400">Redirect</span>(<span class="text-blue-400">tokenResponse</span>.<span class="text-green-400">ReturnUrl</span> ?? <span class="text-orange-400">"/Dashboard"</span>);
+        }
+        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">OAuthException</span> <span class="text-blue-400">ex</span>)
+        {
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogError</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"OAuth callback failed: {Error}"</span>, <span class="text-blue-400">ex</span>.<span class="text-green-400">Message</span>);
+            <span class="text-yellow-400">TempData</span>[<span class="text-orange-400">"Error"</span>] = <span class="text-orange-400">"Authentication failed. Please try again."</span>;
+            <span class="text-purple-400">return</span> <span class="text-green-400">RedirectToPage</span>(<span class="text-orange-400">"/Auth/Login"</span>);
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- JWT Token Management with Refresh -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">JWT Token Management with Auto-Refresh</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Middleware/TokenRefreshMiddleware.cs</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">TokenRefreshMiddleware</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">RequestDelegate</span> <span class="text-blue-400">_next</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ILogger</span>&lt;<span class="text-yellow-400">TokenRefreshMiddleware</span>&gt; <span class="text-blue-400">_logger</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">InvokeAsync</span>(
+        <span class="text-yellow-400">HttpContext</span> <span class="text-blue-400">context</span>,
+        <span class="text-yellow-400">ITokenService</span> <span class="text-blue-400">tokenService</span>)
+    {
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">context</span>.<span class="text-green-400">User</span>.<span class="text-green-400">Identity</span>?.<span class="text-green-400">IsAuthenticated</span> == <span class="text-purple-400">true</span>)
+        {
+            <span class="text-gray-500">// Check token expiration</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">expClaim</span> = <span class="text-blue-400">context</span>.<span class="text-green-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"exp"</span>)?.<span class="text-green-400">Value</span>;
+            <span class="text-purple-400">if</span> (<span class="text-purple-400">long</span>.<span class="text-green-400">TryParse</span>(<span class="text-blue-400">expClaim</span>, <span class="text-purple-400">out</span> <span class="text-purple-400">var</span> <span class="text-blue-400">exp</span>))
+            {
+                <span class="text-purple-400">var</span> <span class="text-blue-400">expiryTime</span> = <span class="text-yellow-400">DateTimeOffset</span>.<span class="text-green-400">FromUnixTimeSeconds</span>(<span class="text-blue-400">exp</span>);
+                <span class="text-purple-400">var</span> <span class="text-blue-400">timeUntilExpiry</span> = <span class="text-blue-400">expiryTime</span> - <span class="text-yellow-400">DateTimeOffset</span>.<span class="text-green-400">UtcNow</span>;
+
+                <span class="text-gray-500">// Refresh if within 5 minutes of expiry</span>
+                <span class="text-purple-400">if</span> (<span class="text-blue-400">timeUntilExpiry</span>.<span class="text-green-400">TotalMinutes</span> &lt; <span class="text-purple-400">5</span>)
+                {
+                    <span class="text-purple-400">try</span>
+                    {
+                        <span class="text-purple-400">var</span> <span class="text-blue-400">refreshToken</span> = <span class="text-blue-400">context</span>.<span class="text-green-400">Request</span>.<span class="text-green-400">Cookies</span>[<span class="text-orange-400">"refresh_token"</span>];
+                        <span class="text-purple-400">if</span> (!<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">refreshToken</span>))
+                        {
+                            <span class="text-purple-400">var</span> <span class="text-blue-400">newTokens</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">tokenService</span>.<span class="text-green-400">RefreshTokensAsync</span>(<span class="text-blue-400">refreshToken</span>);
+
+                            <span class="text-gray-500">// Update access token cookie</span>
+                            <span class="text-blue-400">context</span>.<span class="text-green-400">Response</span>.<span class="text-green-400">Cookies</span>.<span class="text-green-400">Append</span>(<span class="text-orange-400">"access_token"</span>, <span class="text-blue-400">newTokens</span>.<span class="text-green-400">AccessToken</span>,
+                                <span class="text-purple-400">new</span> <span class="text-yellow-400">CookieOptions</span>
+                                {
+                                    <span class="text-green-400">HttpOnly</span> = <span class="text-purple-400">true</span>,
+                                    <span class="text-green-400">Secure</span> = <span class="text-purple-400">true</span>,
+                                    <span class="text-green-400">SameSite</span> = <span class="text-yellow-400">SameSiteMode</span>.<span class="text-green-400">Strict</span>,
+                                    <span class="text-green-400">MaxAge</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromHours</span>(<span class="text-purple-400">1</span>)
+                                });
+
+                            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogInformation</span>(<span class="text-orange-400">"Access token refreshed for user: {UserId}"</span>,
+                                <span class="text-blue-400">context</span>.<span class="text-green-400">User</span>.<span class="text-green-400">FindFirst</span>(<span class="text-orange-400">"sub"</span>)?.<span class="text-green-400">Value</span>);
+                        }
+                    }
+                    <span class="text-purple-400">catch</span> (<span class="text-yellow-400">Exception</span> <span class="text-blue-400">ex</span>)
+                    {
+                        <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogError</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"Token refresh failed"</span>);
+                        <span class="text-gray-500">// Allow request to continue - user will need to re-authenticate</span>
+                    }
+                }
+            }
+        }
+
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_next</span>(<span class="text-blue-400">context</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Secure API Client with Bearer Token -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Secure API Client Authentication</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Services/AuthenticatedApiClient.cs</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">AuthenticatedApiClient</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">HttpClient</span> <span class="text-blue-400">_httpClient</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ITokenService</span> <span class="text-blue-400">_tokenService</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IHttpContextAccessor</span> <span class="text-blue-400">_httpContextAccessor</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">T</span>&gt; <span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">T</span>&gt;(<span class="text-purple-400">string</span> <span class="text-blue-400">url</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">token</span> = <span class="text-purple-400">await</span> <span class="text-green-400">GetValidTokenAsync</span>();
+        <span class="text-blue-400">_httpClient</span>.<span class="text-green-400">DefaultRequestHeaders</span>.<span class="text-green-400">Authorization</span> =
+            <span class="text-purple-400">new</span> <span class="text-yellow-400">AuthenticationHeaderValue</span>(<span class="text-orange-400">"Bearer"</span>, <span class="text-blue-400">token</span>);
+
+        <span class="text-purple-400">var</span> <span class="text-blue-400">response</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_httpClient</span>.<span class="text-green-400">GetAsync</span>(<span class="text-blue-400">url</span>);
+
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">response</span>.<span class="text-green-400">StatusCode</span> == <span class="text-yellow-400">HttpStatusCode</span>.<span class="text-green-400">Unauthorized</span>)
+        {
+            <span class="text-gray-500">// Attempt token refresh on 401</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">refreshedToken</span> = <span class="text-purple-400">await</span> <span class="text-green-400">RefreshAndGetTokenAsync</span>();
+            <span class="text-purple-400">if</span> (<span class="text-blue-400">refreshedToken</span> != <span class="text-purple-400">null</span>)
+            {
+                <span class="text-blue-400">_httpClient</span>.<span class="text-green-400">DefaultRequestHeaders</span>.<span class="text-green-400">Authorization</span> =
+                    <span class="text-purple-400">new</span> <span class="text-yellow-400">AuthenticationHeaderValue</span>(<span class="text-orange-400">"Bearer"</span>, <span class="text-blue-400">refreshedToken</span>);
+                <span class="text-blue-400">response</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_httpClient</span>.<span class="text-green-400">GetAsync</span>(<span class="text-blue-400">url</span>);
+            }
+        }
+
+        <span class="text-blue-400">response</span>.<span class="text-green-400">EnsureSuccessStatusCode</span>();
+        <span class="text-purple-400">var</span> <span class="text-blue-400">content</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">response</span>.<span class="text-green-400">Content</span>.<span class="text-green-400">ReadAsStringAsync</span>();
+        <span class="text-purple-400">return</span> <span class="text-yellow-400">JsonSerializer</span>.<span class="text-green-400">Deserialize</span>&lt;<span class="text-yellow-400">T</span>&gt;(<span class="text-blue-400">content</span>);
+    }
+
+    <span class="text-purple-400">private</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">string</span>&gt; <span class="text-green-400">GetValidTokenAsync</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">context</span> = <span class="text-blue-400">_httpContextAccessor</span>.<span class="text-green-400">HttpContext</span>;
+        <span class="text-purple-400">var</span> <span class="text-blue-400">token</span> = <span class="text-blue-400">context</span>?.<span class="text-green-400">Request</span>.<span class="text-green-400">Cookies</span>[<span class="text-orange-400">"access_token"</span>];
+
+        <span class="text-gray-500">// Validate token expiration</span>
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">_tokenService</span>.<span class="text-green-400">IsTokenExpired</span>(<span class="text-blue-400">token</span>))
+        {
+            <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-green-400">RefreshAndGetTokenAsync</span>();
+        }
+
+        <span class="text-purple-400">return</span> <span class="text-blue-400">token</span>;
+    }
+
+    <span class="text-purple-400">private</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">string</span>&gt; <span class="text-green-400">RefreshAndGetTokenAsync</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">context</span> = <span class="text-blue-400">_httpContextAccessor</span>.<span class="text-green-400">HttpContext</span>;
+        <span class="text-purple-400">var</span> <span class="text-blue-400">refreshToken</span> = <span class="text-blue-400">context</span>?.<span class="text-green-400">Request</span>.<span class="text-green-400">Cookies</span>[<span class="text-orange-400">"refresh_token"</span>];
+
+        <span class="text-purple-400">if</span> (<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">refreshToken</span>))
+            <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">UnauthorizedException</span>(<span class="text-orange-400">"No refresh token available"</span>);
+
+        <span class="text-purple-400">var</span> <span class="text-blue-400">newTokens</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_tokenService</span>.<span class="text-green-400">RefreshTokensAsync</span>(<span class="text-blue-400">refreshToken</span>);
+
+        <span class="text-gray-500">// Update cookies</span>
+        <span class="text-blue-400">context</span>.<span class="text-green-400">Response</span>.<span class="text-green-400">Cookies</span>.<span class="text-green-400">Append</span>(<span class="text-orange-400">"access_token"</span>, <span class="text-blue-400">newTokens</span>.<span class="text-green-400">AccessToken</span>,
+            <span class="text-purple-400">new</span> <span class="text-yellow-400">CookieOptions</span> { <span class="text-green-400">HttpOnly</span> = <span class="text-purple-400">true</span>, <span class="text-green-400">Secure</span> = <span class="text-purple-400">true</span> });
+
+        <span class="text-purple-400">return</span> <span class="text-blue-400">newTokens</span>.<span class="text-green-400">AccessToken</span>;
+    }
+}</code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1290,6 +1767,238 @@
     <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
     <span class="text-blue-400">options</span>.<span class="text-green-400">RequireEncryption</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsProduction</span>();
 });</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Encryption Scenarios</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Production-ready patterns for secure secret management:</p>
+
+                        <!-- CI/CD Pipeline Encryption -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">CI/CD Pipeline Secret Management</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># .github/workflows/deploy.yml</span>
+<span class="text-green-400">name</span>: <span class="text-orange-400">Deploy to Production</span>
+
+<span class="text-green-400">on</span>:
+  <span class="text-green-400">push</span>:
+    <span class="text-green-400">branches</span>: [<span class="text-orange-400">main</span>]
+
+<span class="text-green-400">jobs</span>:
+  <span class="text-green-400">deploy</span>:
+    <span class="text-green-400">runs-on</span>: <span class="text-orange-400">ubuntu-latest</span>
+    <span class="text-green-400">steps</span>:
+      - <span class="text-green-400">uses</span>: <span class="text-orange-400">actions/checkout@v3</span>
+
+      <span class="text-gray-500"># Store encryption key in GitHub Secrets</span>
+      - <span class="text-green-400">name</span>: <span class="text-orange-400">Setup environment</span>
+        <span class="text-green-400">env</span>:
+          <span class="text-green-400">DOTENVX_KEY</span>: <span class="text-orange-400">${{ secrets.DOTENVX_ENCRYPTION_KEY }}</span>
+        <span class="text-green-400">run</span>: |
+          <span class="text-gray-500"># Encrypt production secrets</span>
+          <span class="text-purple-400">dotnet</span> tool install -g Noundry.DotEnvX.Cli
+          <span class="text-purple-400">dotenvx</span> encrypt --file .env.production --key $DOTENVX_KEY
+
+          <span class="text-gray-500"># Verify encrypted values</span>
+          <span class="text-purple-400">dotenvx</span> validate --file .env.production
+
+      - <span class="text-green-400">name</span>: <span class="text-orange-400">Deploy application</span>
+        <span class="text-green-400">run</span>: |
+          <span class="text-purple-400">dotnet</span> publish -c Release
+          <span class="text-purple-400">dotnet</span> deploy --environment production</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Multi-Environment Strategy -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Multi-Environment Encryption Strategy</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Services/EnvironmentSecretManager.cs</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">EnvironmentSecretManager</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IConfiguration</span> <span class="text-blue-400">_configuration</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IWebHostEnvironment</span> <span class="text-blue-400">_environment</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">EnvironmentSecretManager</span>(
+        <span class="text-yellow-400">IConfiguration</span> <span class="text-blue-400">configuration</span>,
+        <span class="text-yellow-400">IWebHostEnvironment</span> <span class="text-blue-400">environment</span>)
+    {
+        <span class="text-blue-400">_configuration</span> = <span class="text-blue-400">configuration</span>;
+        <span class="text-blue-400">_environment</span> = <span class="text-blue-400">environment</span>;
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">GetSecret</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">key</span>)
+    {
+        <span class="text-gray-500">// Development: Use plain text secrets from .env.development</span>
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">_environment</span>.<span class="text-green-400">IsDevelopment</span>())
+        {
+            <span class="text-purple-400">return</span> <span class="text-blue-400">_configuration</span>[<span class="text-blue-400">key</span>] ?? <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">InvalidOperationException</span>(
+                <span class="text-orange-400">$"Secret '{</span><span class="text-blue-400">key</span><span class="text-orange-400">}' not found in .env.development"</span>);
+        }
+
+        <span class="text-gray-500">// Staging: Use encrypted secrets from .env.staging</span>
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">_environment</span>.<span class="text-green-400">IsStaging</span>())
+        {
+            <span class="text-purple-400">var</span> <span class="text-blue-400">stagingValue</span> = <span class="text-blue-400">_configuration</span>[<span class="text-orange-400">$"STAGING_{</span><span class="text-blue-400">key</span><span class="text-orange-400">}"</span>] ?? <span class="text-blue-400">_configuration</span>[<span class="text-blue-400">key</span>];
+            <span class="text-purple-400">return</span> <span class="text-blue-400">stagingValue</span> ?? <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">InvalidOperationException</span>(
+                <span class="text-orange-400">$"Secret '{</span><span class="text-blue-400">key</span><span class="text-orange-400">}' not found in .env.staging"</span>);
+        }
+
+        <span class="text-gray-500">// Production: Use encrypted secrets with fallback to system environment</span>
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">_environment</span>.<span class="text-green-400">IsProduction</span>())
+        {
+            <span class="text-purple-400">var</span> <span class="text-blue-400">prodValue</span> = <span class="text-blue-400">_configuration</span>[<span class="text-orange-400">$"PROD_{</span><span class="text-blue-400">key</span><span class="text-orange-400">}"</span>]
+                          ?? <span class="text-blue-400">_configuration</span>[<span class="text-blue-400">key</span>]
+                          ?? <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-blue-400">key</span>);
+
+            <span class="text-purple-400">if</span> (<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">prodValue</span>))
+            {
+                <span class="text-gray-500">// Log security event</span>
+                <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">SecurityException</span>(
+                    <span class="text-orange-400">$"Required production secret '{</span><span class="text-blue-400">key</span><span class="text-orange-400">}' not found. Application cannot start."</span>);
+            }
+
+            <span class="text-purple-400">return</span> <span class="text-blue-400">prodValue</span>;
+        }
+
+        <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">InvalidOperationException</span>(<span class="text-orange-400">"Unknown environment"</span>);
+    }
+}
+
+<span class="text-gray-500">// Program.cs - Setup</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-gray-500">// Load environment-specific file</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">env</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">EnvironmentName</span>.<span class="text-green-400">ToLower</span>();
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Files</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">".env"</span>, <span class="text-orange-400">$".env.{</span><span class="text-blue-400">env</span><span class="text-orange-400">}"</span> };
+
+    <span class="text-gray-500">// Get encryption key from system environment (set by deployment platform)</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+
+    <span class="text-gray-500">// Require encryption in production</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">RequireEncryption</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsProduction</span>();
+});</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Key Rotation Strategy -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Encryption Key Rotation</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Services/KeyRotationService.cs</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">KeyRotationService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ILogger</span>&lt;<span class="text-yellow-400">KeyRotationService</span>&gt; <span class="text-blue-400">_logger</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">RotateEncryptionKeyAsync</span>(
+        <span class="text-purple-400">string</span> <span class="text-blue-400">envFilePath</span>,
+        <span class="text-purple-400">string</span> <span class="text-blue-400">oldKey</span>,
+        <span class="text-purple-400">string</span> <span class="text-blue-400">newKey</span>)
+    {
+        <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogInformation</span>(<span class="text-orange-400">"Starting encryption key rotation for {FilePath}"</span>, <span class="text-blue-400">envFilePath</span>);
+
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// 1. Read encrypted file with old key</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">oldEncryptor</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">DotEnvXEncryptor</span>(<span class="text-blue-400">oldKey</span>);
+            <span class="text-purple-400">var</span> <span class="text-blue-400">envVariables</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">File</span>.<span class="text-green-400">ReadAllLinesAsync</span>(<span class="text-blue-400">envFilePath</span>);
+
+            <span class="text-gray-500">// 2. Decrypt all encrypted values</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">decryptedValues</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Dictionary</span>&lt;<span class="text-purple-400">string</span>, <span class="text-purple-400">string</span>&gt;();
+            <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">line</span> <span class="text-purple-400">in</span> <span class="text-blue-400">envVariables</span>)
+            {
+                <span class="text-purple-400">if</span> (<span class="text-blue-400">line</span>.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"encrypted:"</span>))
+                {
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">parts</span> = <span class="text-blue-400">line</span>.<span class="text-green-400">Split</span>(<span class="text-orange-400">'='</span>, <span class="text-purple-400">2</span>);
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">key</span> = <span class="text-blue-400">parts</span>[<span class="text-purple-400">0</span>].<span class="text-green-400">Trim</span>();
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">encryptedValue</span> = <span class="text-blue-400">parts</span>[<span class="text-purple-400">1</span>].<span class="text-green-400">Replace</span>(<span class="text-orange-400">"encrypted:"</span>, <span class="text-orange-400">""</span>).<span class="text-green-400">Trim</span>();
+
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">decrypted</span> = <span class="text-blue-400">oldEncryptor</span>.<span class="text-green-400">Decrypt</span>(<span class="text-blue-400">encryptedValue</span>);
+                    <span class="text-blue-400">decryptedValues</span>[<span class="text-blue-400">key</span>] = <span class="text-blue-400">decrypted</span>;
+                }
+            }
+
+            <span class="text-gray-500">// 3. Re-encrypt with new key</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">newEncryptor</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">DotEnvXEncryptor</span>(<span class="text-blue-400">newKey</span>);
+            <span class="text-purple-400">var</span> <span class="text-blue-400">newLines</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">List</span>&lt;<span class="text-purple-400">string</span>&gt;();
+
+            <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">line</span> <span class="text-purple-400">in</span> <span class="text-blue-400">envVariables</span>)
+            {
+                <span class="text-purple-400">if</span> (<span class="text-blue-400">line</span>.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"encrypted:"</span>))
+                {
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">key</span> = <span class="text-blue-400">line</span>.<span class="text-green-400">Split</span>(<span class="text-orange-400">'='</span>)[<span class="text-purple-400">0</span>].<span class="text-green-400">Trim</span>();
+                    <span class="text-purple-400">var</span> <span class="text-blue-400">reencrypted</span> = <span class="text-blue-400">newEncryptor</span>.<span class="text-green-400">Encrypt</span>(<span class="text-blue-400">decryptedValues</span>[<span class="text-blue-400">key</span>]);
+                    <span class="text-blue-400">newLines</span>.<span class="text-green-400">Add</span>(<span class="text-orange-400">$"{</span><span class="text-blue-400">key</span><span class="text-orange-400">}=encrypted:{</span><span class="text-blue-400">reencrypted</span><span class="text-orange-400">}"</span>);
+                }
+                <span class="text-purple-400">else</span>
+                {
+                    <span class="text-blue-400">newLines</span>.<span class="text-green-400">Add</span>(<span class="text-blue-400">line</span>);
+                }
+            }
+
+            <span class="text-gray-500">// 4. Backup old file</span>
+            <span class="text-purple-400">var</span> <span class="text-blue-400">backupPath</span> = <span class="text-orange-400">$"{</span><span class="text-blue-400">envFilePath</span><span class="text-orange-400">}.backup.{</span><span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>:<span class="text-orange-400">yyyyMMddHHmmss</span><span class="text-orange-400">}"</span>;
+            <span class="text-yellow-400">File</span>.<span class="text-green-400">Copy</span>(<span class="text-blue-400">envFilePath</span>, <span class="text-blue-400">backupPath</span>);
+
+            <span class="text-gray-500">// 5. Write new encrypted file</span>
+            <span class="text-purple-400">await</span> <span class="text-yellow-400">File</span>.<span class="text-green-400">WriteAllLinesAsync</span>(<span class="text-blue-400">envFilePath</span>, <span class="text-blue-400">newLines</span>);
+
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogInformation</span>(<span class="text-orange-400">"Key rotation completed successfully. Backup saved to {BackupPath}"</span>, <span class="text-blue-400">backupPath</span>);
+        }
+        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">Exception</span> <span class="text-blue-400">ex</span>)
+        {
+            <span class="text-blue-400">_logger</span>.<span class="text-green-400">LogError</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"Key rotation failed"</span>);
+            <span class="text-purple-400">throw</span>;
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Secure Local Development -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Secure Local Development Workflow</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># .env.example (checked into git - no secrets)</span>
+<span class="text-green-400">APP_NAME</span>=<span class="text-orange-400">MyApp</span>
+<span class="text-green-400">DATABASE_HOST</span>=<span class="text-orange-400">localhost</span>
+<span class="text-green-400">DATABASE_PORT</span>=<span class="text-orange-400">5432</span>
+<span class="text-green-400">DATABASE_NAME</span>=<span class="text-orange-400">myapp_dev</span>
+
+<span class="text-gray-500"># Placeholders for required secrets</span>
+<span class="text-green-400">DATABASE_PASSWORD</span>=<span class="text-orange-400">&lt;your-local-db-password&gt;</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">&lt;generate-32-char-secret&gt;</span>
+<span class="text-green-400">OAUTH_CLIENT_SECRET</span>=<span class="text-orange-400">&lt;get-from-google-console&gt;</span>
+
+<span class="text-gray-500"># .env.local (NOT checked into git - actual secrets)</span>
+<span class="text-green-400">DATABASE_PASSWORD</span>=<span class="text-orange-400">my-local-password-123</span>
+<span class="text-green-400">JWT_SECRET</span>=<span class="text-orange-400">abcdef1234567890abcdef1234567890</span>
+<span class="text-green-400">OAUTH_CLIENT_SECRET</span>=<span class="text-orange-400">actual-oauth-secret-from-google</span>
+
+<span class="text-gray-500"># .gitignore</span>
+<span class="text-orange-400">.env.local</span>
+<span class="text-orange-400">.env.*.local</span>
+<span class="text-orange-400">.env.production</span>
+
+<span class="text-gray-500"># Setup script for new developers</span>
+<span class="text-gray-500"># scripts/setup-env.sh</span>
+<span class="text-purple-400">#!/bin/bash</span>
+
+<span class="text-purple-400">if</span> [ ! -f .env.local ]; <span class="text-purple-400">then</span>
+    <span class="text-purple-400">echo</span> <span class="text-orange-400">"Creating .env.local from .env.example..."</span>
+    <span class="text-purple-400">cp</span> .env.example .env.local
+
+    <span class="text-gray-500"># Generate secure JWT secret</span>
+    <span class="text-purple-400">JWT_SECRET</span>=$(<span class="text-purple-400">openssl</span> rand -base64 32)
+    <span class="text-purple-400">sed</span> -i <span class="text-orange-400">"s/&lt;generate-32-char-secret&gt;/$JWT_SECRET/"</span> .env.local
+
+    <span class="text-purple-400">echo</span> <span class="text-orange-400">"✅ .env.local created successfully"</span>
+    <span class="text-purple-400">echo</span> <span class="text-orange-400">"⚠️  Please update remaining placeholders in .env.local"</span>
+<span class="text-purple-400">else</span>
+    <span class="text-purple-400">echo</span> <span class="text-orange-400">".env.local already exists"</span>
+<span class="text-purple-400">fi</span></code></pre>
+                            </div>
                         </div>
                     </div>
                 </div>
