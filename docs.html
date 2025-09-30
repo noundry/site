@@ -844,32 +844,175 @@
                             </div>
                         </div>
 
-                        <!-- Complex Query with Joins -->
+                        <!-- Strongly-Typed Entity Operations -->
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Complex Queries with Aggregations</h3>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Strongly-Typed Entity Operations</h3>
                             <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">CustomerOrderSummary</span>&gt;&gt; <span class="text-green-400">GetTopCustomersAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">topN</span>)
-{
-    <span class="text-purple-400">const</span> <span class="text-purple-400">string</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
-        SELECT
-            c.Id,
-            c.Name,
-            c.Email,
-            COUNT(o.Id) AS TotalOrders,
-            SUM(o.TotalAmount) AS TotalRevenue,
-            AVG(o.TotalAmount) AS AverageOrderValue,
-            MAX(o.OrderDate) AS LastOrderDate
-        FROM Customers c
-        INNER JOIN Orders o ON c.Id = o.CustomerId
-        WHERE o.OrderDate >= DATEADD(YEAR, -1, GETDATE())
-            AND o.Status = 'Completed'
-        GROUP BY c.Id, c.Name, c.Email
-        HAVING COUNT(o.Id) >= 5
-        ORDER BY TotalRevenue DESC
-        OFFSET 0 ROWS FETCH NEXT @TopN ROWS ONLY"</span>;
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Contrib</span>; <span class="text-gray-500">// Entity extensions</span>
 
-    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">CustomerOrderSummary</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">TopN</span> = <span class="text-blue-400">topN</span> });
+<span class="text-gray-500">// Get entity by ID</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-orange-400">123</span>);
+
+<span class="text-gray-500">// Get all entities</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">allProducts</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAllAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;();
+
+<span class="text-gray-500">// Insert entity and get generated ID</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">newProduct</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Product</span>
+{
+    <span class="text-green-400">Name</span> = <span class="text-orange-400">"Laptop"</span>,
+    <span class="text-green-400">Price</span> = <span class="text-orange-400">999.99m</span>,
+    <span class="text-green-400">Category</span> = <span class="text-orange-400">"Electronics"</span>,
+    <span class="text-green-400">Stock</span> = <span class="text-orange-400">50</span>
+};
+<span class="text-purple-400">var</span> <span class="text-blue-400">productId</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">newProduct</span>);
+
+<span class="text-gray-500">// Update entire entity</span>
+<span class="text-blue-400">product</span>.<span class="text-green-400">Price</span> = <span class="text-orange-400">899.99m</span>;
+<span class="text-blue-400">product</span>.<span class="text-green-400">Stock</span> = <span class="text-orange-400">45</span>;
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>);
+
+<span class="text-gray-500">// Partial update - only specific properties</span>
+<span class="text-blue-400">product</span>.<span class="text-green-400">Price</span> = <span class="text-orange-400">849.99m</span>;
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>,
+    <span class="text-green-400">propertiesToUpdate</span>: <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"Price"</span> });
+
+<span class="text-gray-500">// Update by key values (no need to fetch first)</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
+    <span class="text-green-400">keyValues</span>: <span class="text-purple-400">new</span> { <span class="text-green-400">Id</span> = <span class="text-orange-400">123</span> },
+    <span class="text-green-400">updateValues</span>: <span class="text-purple-400">new</span> { <span class="text-green-400">Stock</span> = <span class="text-orange-400">40</span>, <span class="text-green-400">LastModified</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span> });
+
+<span class="text-gray-500">// Delete entity</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>(<span class="text-blue-400">product</span>);
+
+<span class="text-gray-500">// Delete all entities of type</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAllAsync</span>&lt;<span class="text-yellow-400">TempProduct</span>&gt;();</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- QueryBuilder with LINQ Expressions -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Dynamic QueryBuilder with LINQ Expressions</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.QueryBuilder</span>;
+
+<span class="text-gray-500">// Basic query with strongly-typed expressions</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">electronics</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span> == <span class="text-orange-400">"Electronics"</span>)
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> > <span class="text-orange-400">100</span>)
+    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>)
+    .<span class="text-green-400">Take</span>(<span class="text-orange-400">10</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// WhereIn for multiple values</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">categoryIds</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">1</span>, <span class="text-orange-400">2</span>, <span class="text-orange-400">3</span>, <span class="text-orange-400">4</span> };
+<span class="text-purple-400">var</span> <span class="text-blue-400">filtered</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">WhereIn</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>, <span class="text-blue-400">categoryIds</span>)
+    .<span class="text-green-400">WhereNotIn</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">StatusId</span>, <span class="text-purple-400">new</span>[] { <span class="text-orange-400">99</span>, <span class="text-orange-400">100</span> })
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// WhereBetween for range queries</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">priceRange</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">WhereBetween</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>, <span class="text-orange-400">10.00m</span>, <span class="text-orange-400">99.99m</span>)
+    .<span class="text-green-400">WhereBetween</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CreatedDate</span>, <span class="text-blue-400">startDate</span>, <span class="text-blue-400">endDate</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// NULL checks</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">withDescription</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">WhereNotNull</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Description</span>)
+    .<span class="text-green-400">WhereNull</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">DeletedAt</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// Complex boolean logic with AND/OR</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">complex</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span> == <span class="text-orange-400">"Electronics"</span>)
+    .<span class="text-green-400">Or</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Featured</span> == <span class="text-purple-400">true</span>)
+    .<span class="text-green-400">And</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">InStock</span> == <span class="text-purple-400">true</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Query Building -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Dynamic Query Building for Search/Filters</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">SearchProductsAsync</span>(
+    <span class="text-purple-400">string</span> <span class="text-blue-400">searchTerm</span>,
+    <span class="text-purple-400">decimal</span>? <span class="text-blue-400">minPrice</span>,
+    <span class="text-purple-400">decimal</span>? <span class="text-blue-400">maxPrice</span>,
+    <span class="text-purple-400">int</span>[] <span class="text-blue-400">categoryIds</span>,
+    <span class="text-purple-400">bool</span>? <span class="text-blue-400">inStockOnly</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">page</span> = <span class="text-orange-400">0</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span> = <span class="text-orange-400">20</span>)
+{
+    <span class="text-gray-500">// Build query dynamically based on provided filters</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;();
+
+    <span class="text-gray-500">// Add search term if provided</span>
+    <span class="text-purple-400">if</span> (!<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">searchTerm</span>))
+        <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-orange-400">"Name LIKE @searchTerm OR Description LIKE @searchTerm"</span>,
+            <span class="text-purple-400">new</span> { <span class="text-green-400">searchTerm</span> = <span class="text-orange-400">$"%{</span><span class="text-blue-400">searchTerm</span><span class="text-orange-400">}%"</span> });
+
+    <span class="text-gray-500">// Add price range filters</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">minPrice</span>.<span class="text-green-400">HasValue</span>)
+        <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> >= <span class="text-blue-400">minPrice</span>.<span class="text-green-400">Value</span>);
+
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">maxPrice</span>.<span class="text-green-400">HasValue</span>)
+        <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> <= <span class="text-blue-400">maxPrice</span>.<span class="text-green-400">Value</span>);
+
+    <span class="text-gray-500">// Add category filter</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">categoryIds</span>?.<span class="text-green-400">Any</span>() == <span class="text-purple-400">true</span>)
+        <span class="text-blue-400">query</span>.<span class="text-green-400">WhereIn</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>, <span class="text-blue-400">categoryIds</span>);
+
+    <span class="text-gray-500">// Add stock filter</span>
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">inStockOnly</span> == <span class="text-purple-400">true</span>)
+        <span class="text-blue-400">query</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Stock</span> > <span class="text-orange-400">0</span>);
+
+    <span class="text-gray-500">// Apply sorting and pagination</span>
+    <span class="text-blue-400">query</span>.<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
+         .<span class="text-green-400">Skip</span>(<span class="text-blue-400">page</span> * <span class="text-blue-400">pageSize</span>)
+         .<span class="text-green-400">Take</span>(<span class="text-blue-400">pageSize</span>);
+
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>.<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
 }</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Joins and Aggregations with QueryBuilder -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Joins and Aggregations with QueryBuilder</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// INNER JOIN with type-safe expressions</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">productsWithCategories</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">InnerJoin</span>&lt;<span class="text-yellow-400">Category</span>&gt;((<span class="text-blue-400">p</span>, <span class="text-blue-400">c</span>) => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> > <span class="text-orange-400">50</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-orange-400">"p.*, c.Name as CategoryName"</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// LEFT JOIN to include products without categories</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">allProductsWithOptionalCategory</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">LeftJoin</span>&lt;<span class="text-yellow-400">Category</span>&gt;((<span class="text-blue-400">p</span>, <span class="text-blue-400">c</span>) => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// Multiple JOINs for complex queries</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">orderDetails</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
+    .<span class="text-green-400">InnerJoin</span>&lt;<span class="text-yellow-400">Customer</span>&gt;((<span class="text-blue-400">o</span>, <span class="text-blue-400">c</span>) => <span class="text-blue-400">o</span>.<span class="text-green-400">CustomerId</span> == <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">InnerJoin</span>&lt;<span class="text-yellow-400">Product</span>&gt;((<span class="text-blue-400">o</span>, <span class="text-blue-400">p</span>) => <span class="text-blue-400">o</span>.<span class="text-green-400">ProductId</span> == <span class="text-blue-400">p</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">WhereBetween</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">OrderDate</span>, <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">Today</span>.<span class="text-green-400">AddDays</span>(-<span class="text-orange-400">30</span>), <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">Today</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-orange-400">"o.*, c.Name as CustomerName, p.Name as ProductName"</span>)
+    .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// COUNT aggregation</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">activeProductCount</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Active</span> == <span class="text-purple-400">true</span>)
+    .<span class="text-green-400">CountAsync</span>(<span class="text-blue-400">_connection</span>);
+
+<span class="text-gray-500">// GROUP BY with aggregations</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">categoryStats</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span>)
+    .<span class="text-green-400">Having</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span> > <span class="text-orange-400">10</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-orange-400">"Category, COUNT(*) as Count, AVG(Price) as AvgPrice, MAX(Price) as MaxPrice"</span>)
+    .<span class="text-green-400">ToListAsync</span>&lt;<span class="text-yellow-400">CategoryStats</span>&gt;(<span class="text-blue-400">_connection</span>);</code></pre>
                             </div>
                         </div>
 
@@ -932,27 +1075,70 @@
                             </div>
                         </div>
 
-                        <!-- Performance Optimization -->
+                        <!-- Performance Optimization with Entity Extensions + QueryBuilder -->
                         <div class="mb-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Performance Optimization Patterns</h3>
                             <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                                <pre><code><span class="text-gray-500">// Efficient batch operations with QueryMultipleAsync</span>
+                                <pre><code><span class="text-gray-500">// Combine entity extensions with QueryBuilder for optimal performance</span>
 <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">DashboardData</span>&gt; <span class="text-green-400">GetDashboardDataAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">userId</span>)
 {
-    <span class="text-purple-400">const</span> <span class="text-purple-400">string</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
-        SELECT * FROM Users WHERE Id = @UserId;
-        SELECT * FROM Orders WHERE UserId = @UserId ORDER BY OrderDate DESC OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY;
-        SELECT COUNT(*) FROM Orders WHERE UserId = @UserId;
-        SELECT SUM(TotalAmount) FROM Orders WHERE UserId = @UserId AND Status = 'Completed';"</span>;
+    <span class="text-gray-500">// 1. Get user by ID (strongly-typed)</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">user</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">userId</span>);
 
-    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">multi</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryMultipleAsync</span>(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">UserId</span> = <span class="text-blue-400">userId</span> });
+    <span class="text-gray-500">// 2. Get recent orders with QueryBuilder (filtered and paginated)</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">recentOrders</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">UserId</span> == <span class="text-blue-400">userId</span>)
+        .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">OrderDate</span>)
+        .<span class="text-green-400">Take</span>(<span class="text-orange-400">10</span>)
+        .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+    <span class="text-gray-500">// 3. Get order count</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">totalOrders</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">UserId</span> == <span class="text-blue-400">userId</span>)
+        .<span class="text-green-400">CountAsync</span>(<span class="text-blue-400">_connection</span>);
+
+    <span class="text-gray-500">// 4. Calculate total revenue with QueryBuilder aggregation</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">totalRevenue</span> = <span class="text-purple-400">await</span> <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Order</span>&gt;()
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">UserId</span> == <span class="text-blue-400">userId</span>)
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Status</span> == <span class="text-orange-400">"Completed"</span>)
+        .<span class="text-green-400">Sum</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">TotalAmount</span>);
 
     <span class="text-purple-400">return</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">DashboardData</span>
     {
-        <span class="text-green-400">User</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(),
-        <span class="text-green-400">RecentOrders</span> = (<span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadAsync</span>&lt;<span class="text-yellow-400">Order</span>&gt;()).<span class="text-green-400">ToList</span>(),
-        <span class="text-green-400">TotalOrders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstAsync</span>&lt;<span class="text-purple-400">int</span>&gt;(),
-        <span class="text-green-400">TotalRevenue</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">multi</span>.<span class="text-green-400">ReadFirstOrDefaultAsync</span>&lt;<span class="text-purple-400">decimal</span>?&gt;() ?? <span class="text-purple-400">0</span>
+        <span class="text-green-400">User</span> = <span class="text-blue-400">user</span>,
+        <span class="text-green-400">RecentOrders</span> = <span class="text-blue-400">recentOrders</span>,
+        <span class="text-green-400">TotalOrders</span> = <span class="text-blue-400">totalOrders</span>,
+        <span class="text-green-400">TotalRevenue</span> = <span class="text-blue-400">totalRevenue</span>
+    };
+}
+
+<span class="text-gray-500">// Efficient pagination with total count</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetPagedProductsAsync</span>(
+    <span class="text-purple-400">string</span> <span class="text-blue-400">category</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">page</span>,
+    <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span>)
+{
+    <span class="text-gray-500">// Build base query</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-yellow-400">QueryBuilder</span>.<span class="text-green-400">Query</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span> == <span class="text-blue-400">category</span>)
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Active</span> == <span class="text-purple-400">true</span>);
+
+    <span class="text-gray-500">// Get total count (before pagination)</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">totalCount</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>.<span class="text-green-400">CountAsync</span>(<span class="text-blue-400">_connection</span>);
+
+    <span class="text-gray-500">// Get paginated results</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">products</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>
+        .<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
+        .<span class="text-green-400">Skip</span>(<span class="text-blue-400">page</span> * <span class="text-blue-400">pageSize</span>)
+        .<span class="text-green-400">Take</span>(<span class="text-blue-400">pageSize</span>)
+        .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+
+    <span class="text-purple-400">return</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">Product</span>&gt;
+    {
+        <span class="text-green-400">Items</span> = <span class="text-blue-400">products</span>,
+        <span class="text-green-400">TotalCount</span> = <span class="text-blue-400">totalCount</span>,
+        <span class="text-green-400">Page</span> = <span class="text-blue-400">page</span>,
+        <span class="text-green-400">PageSize</span> = <span class="text-blue-400">pageSize</span>
     };
 }</code></pre>
                             </div>
