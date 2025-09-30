@@ -712,11 +712,271 @@ noundry-connector diff \
         </div>
     </section>
 
+    <!-- Manual Library Usage Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Programmatic Library Usage</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Use Noundry.Connector directly without the CLI generator</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Manual Setup -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Manual Setup</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Define your models and Refit interface manually for full control:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-gray-500">// 1. Define your model</span>
+<span class="text-purple-400">public class</span> <span class="text-yellow-400">User</span>
+{
+    [<span class="text-yellow-400">JsonPropertyName</span>(<span class="text-orange-400">"id"</span>)]
+    <span class="text-purple-400">public int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    [<span class="text-yellow-400">JsonPropertyName</span>(<span class="text-orange-400">"email"</span>)]
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    [<span class="text-yellow-400">JsonPropertyName</span>(<span class="text-orange-400">"name"</span>)]
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// 2. Define Refit interface</span>
+<span class="text-purple-400">public interface</span> <span class="text-yellow-400">IUserApi</span>
+{
+    [<span class="text-yellow-400">Get</span>(<span class="text-orange-400">"/users"</span>)]
+    <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersAsync</span>(<span class="text-yellow-400">CancellationToken</span> <span class="text-blue-400">cancellationToken</span> = <span class="text-purple-400">default</span>);
+
+    [<span class="text-yellow-400">Get</span>(<span class="text-orange-400">"/users/{id}"</span>)]
+    <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">User</span>&gt; <span class="text-green-400">GetUserAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>, <span class="text-yellow-400">CancellationToken</span> <span class="text-blue-400">cancellationToken</span> = <span class="text-purple-400">default</span>);
+
+    [<span class="text-yellow-400">Post</span>(<span class="text-orange-400">"/users"</span>)]
+    <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">User</span>&gt; <span class="text-green-400">CreateUserAsync</span>([<span class="text-yellow-400">Body</span>] <span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>);
+}
+
+<span class="text-gray-500">// 3. Register in DI</span>
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddConnector</span>&lt;<span class="text-yellow-400">IUserApi</span>&gt;(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">BaseUrl</span> = <span class="text-orange-400">"https://api.example.com"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Timeout</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
+});</code></pre>
+                    </div>
+                </div>
+
+                <!-- Token Authentication -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Token Authentication</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Add bearer token or API key authentication:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-gray-500">// Bearer Token Authentication</span>
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddTokenAuthentication</span>(<span class="text-orange-400">"your-api-token"</span>);
+
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddConnector</span>&lt;<span class="text-yellow-400">IYourApi</span>&gt;(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">BaseUrl</span> = <span class="text-orange-400">"https://api.example.com"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">DefaultHeaders</span>[<span class="text-orange-400">"User-Agent"</span>] = <span class="text-orange-400">"MyApp/1.0.0"</span>;
+});
+
+<span class="text-gray-500">// Inject and use</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">api</span> = <span class="text-purple-400">serviceProvider</span>.<span class="text-green-400">GetRequiredService</span>&lt;<span class="text-yellow-400">IYourApi</span>&gt;();
+<span class="text-purple-400">var</span> <span class="text-blue-400">data</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">api</span>.<span class="text-green-400">GetDataAsync</span>();</code></pre>
+                    </div>
+                </div>
+
+                <!-- OAuth 2.0 Authentication -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">OAuth 2.0 Authentication</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Configure OAuth 2.0 with automatic token refresh:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-gray-500">// Configure OAuth 2.0 for GitHub API</span>
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddOAuthAuthentication</span>(<span class="text-blue-400">config</span> =>
+{
+    <span class="text-blue-400">config</span>.<span class="text-green-400">ClientId</span> = <span class="text-purple-400">configuration</span>[<span class="text-orange-400">"GitHub:ClientId"</span>];
+    <span class="text-blue-400">config</span>.<span class="text-green-400">ClientSecret</span> = <span class="text-purple-400">configuration</span>[<span class="text-orange-400">"GitHub:ClientSecret"</span>];
+    <span class="text-blue-400">config</span>.<span class="text-green-400">TokenEndpoint</span> = <span class="text-orange-400">"https://github.com/login/oauth/access_token"</span>;
+    <span class="text-blue-400">config</span>.<span class="text-green-400">Scope</span> = <span class="text-orange-400">"repo user:email"</span>;
+});
+
+<span class="text-gray-500">// Configure GitHub API client</span>
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddConnector</span>&lt;<span class="text-yellow-400">IGitHubApi</span>&gt;(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">BaseUrl</span> = <span class="text-orange-400">"https://api.github.com"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">DefaultHeaders</span>[<span class="text-orange-400">"Accept"</span>] = <span class="text-orange-400">"application/vnd.github.v3+json"</span>;
+});</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced LINQ Queries Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Advanced LINQ Querying</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Query API responses like in-memory collections with full LINQ support</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Complex Filtering -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Complex Filtering & Aggregation</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-gray-500">// Get all orders and perform complex analysis</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">orders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">orderClient</span>.<span class="text-green-400">GetOrdersAsync</span>();
+
+<span class="text-gray-500">// Find high-value customers</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">vipCustomers</span> = <span class="text-blue-400">orders</span>
+    .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">CustomerId</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-blue-400">g</span> => <span class="text-purple-400">new</span> {
+        <span class="text-blue-400">CustomerId</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Key</span>,
+        <span class="text-blue-400">TotalSpent</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Sum</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">TotalAmount</span>),
+        <span class="text-blue-400">OrderCount</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Count</span>(),
+        <span class="text-blue-400">AverageOrderValue</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Average</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">TotalAmount</span>),
+        <span class="text-blue-400">LastOrderDate</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Max</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">CreatedAt</span>)
+    })
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">TotalSpent</span> > <span class="text-orange-400">10000</span> || <span class="text-blue-400">c</span>.<span class="text-green-400">OrderCount</span> > <span class="text-orange-400">50</span>)
+    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">TotalSpent</span>)
+    .<span class="text-green-400">ToList</span>();
+
+<span class="text-gray-500">// Analyze product performance</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">productStats</span> = <span class="text-blue-400">orders</span>
+    .<span class="text-green-400">SelectMany</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Items</span>)
+    .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-blue-400">g</span> => <span class="text-purple-400">new</span> {
+        <span class="text-blue-400">ProductId</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Key</span>,
+        <span class="text-blue-400">TotalQuantitySold</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Sum</span>(<span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>),
+        <span class="text-blue-400">TotalRevenue</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Sum</span>(<span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">Price</span> * <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>),
+        <span class="text-blue-400">AveragePrice</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Average</span>(<span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">Price</span>)
+    })
+    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">ps</span> => <span class="text-blue-400">ps</span>.<span class="text-green-400">TotalRevenue</span>)
+    .<span class="text-green-400">ToList</span>();</code></pre>
+                    </div>
+                </div>
+
+                <!-- Cross-Entity Relationships -->
+                <div class="bg-white dark:bg-gray-900 p-8 rounded-xl border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Cross-Entity Relationships</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-gray-500">// Get data from multiple endpoints</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">users</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">userClient</span>.<span class="text-green-400">GetUsersAsync</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">posts</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">postClient</span>.<span class="text-green-400">GetPostsAsync</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">comments</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">commentClient</span>.<span class="text-green-400">GetCommentsAsync</span>();
+
+<span class="text-gray-500">// Analyze user engagement across entities</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">userEngagement</span> = <span class="text-blue-400">users</span>
+    .<span class="text-green-400">Select</span>(<span class="text-blue-400">u</span> => <span class="text-purple-400">new</span> {
+        <span class="text-blue-400">User</span> = <span class="text-blue-400">u</span>,
+        <span class="text-blue-400">PostCount</span> = <span class="text-blue-400">posts</span>.<span class="text-green-400">Count</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">AuthorId</span> == <span class="text-blue-400">u</span>.<span class="text-green-400">Id</span>),
+        <span class="text-blue-400">CommentCount</span> = <span class="text-blue-400">comments</span>.<span class="text-green-400">Count</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">AuthorId</span> == <span class="text-blue-400">u</span>.<span class="text-green-400">Id</span>),
+        <span class="text-blue-400">PostsWithComments</span> = <span class="text-blue-400">posts</span>
+            .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">AuthorId</span> == <span class="text-blue-400">u</span>.<span class="text-green-400">Id</span>)
+            .<span class="text-green-400">Count</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">comments</span>.<span class="text-green-400">Any</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">PostId</span> == <span class="text-blue-400">p</span>.<span class="text-green-400">Id</span>))
+    })
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">ue</span> => <span class="text-blue-400">ue</span>.<span class="text-green-400">PostCount</span> > <span class="text-orange-400">0</span>) <span class="text-gray-500">// Only active users</span>
+    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">ue</span> => <span class="text-blue-400">ue</span>.<span class="text-green-400">PostCount</span> + <span class="text-blue-400">ue</span>.<span class="text-green-400">CommentCount</span>)
+    .<span class="text-green-400">ToList</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real-World Examples Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Real-World Use Cases</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Production-ready examples for common scenarios</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- E-Commerce Platform -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">E-Commerce Platform Integration</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Personalized recommendations and inventory management:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-purple-400">public class</span> <span class="text-yellow-400">ECommerceService</span>
+{
+    <span class="text-purple-400">private readonly</span> <span class="text-yellow-400">IProductApi</span> <span class="text-blue-400">_productApi</span>;
+    <span class="text-purple-400">private readonly</span> <span class="text-yellow-400">IOrderApi</span> <span class="text-blue-400">_orderApi</span>;
+
+    <span class="text-purple-400">public async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">List</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetPersonalizedRecommendationsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">customerId</span>)
+    {
+        <span class="text-gray-500">// Get customer order history</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">orders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_orderApi</span>.<span class="text-green-400">GetCustomerOrdersAsync</span>(<span class="text-blue-400">customerId</span>);
+        <span class="text-purple-400">var</span> <span class="text-blue-400">allProducts</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_productApi</span>.<span class="text-green-400">GetProductsAsync</span>();
+
+        <span class="text-gray-500">// Analyze purchase patterns</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">purchasedProductIds</span> = <span class="text-blue-400">orders</span>
+            .<span class="text-green-400">SelectMany</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Items</span>)
+            .<span class="text-green-400">Select</span>(<span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>)
+            .<span class="text-green-400">Distinct</span>()
+            .<span class="text-green-400">ToHashSet</span>();
+
+        <span class="text-purple-400">var</span> <span class="text-blue-400">preferredCategories</span> = <span class="text-blue-400">orders</span>
+            .<span class="text-green-400">SelectMany</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Items</span>)
+            .<span class="text-green-400">Join</span>(<span class="text-blue-400">allProducts</span>, <span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>, <span class="text-blue-400">product</span> => <span class="text-blue-400">product</span>.<span class="text-green-400">Id</span>,
+                  (<span class="text-blue-400">item</span>, <span class="text-blue-400">product</span>) => <span class="text-blue-400">product</span>.<span class="text-green-400">CategoryId</span>)
+            .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">categoryId</span> => <span class="text-blue-400">categoryId</span>)
+            .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">g</span> => <span class="text-blue-400">g</span>.<span class="text-green-400">Count</span>())
+            .<span class="text-green-400">Take</span>(<span class="text-orange-400">3</span>)
+            .<span class="text-green-400">Select</span>(<span class="text-blue-400">g</span> => <span class="text-blue-400">g</span>.<span class="text-green-400">Key</span>)
+            .<span class="text-green-400">ToList</span>();
+
+        <span class="text-gray-500">// Generate recommendations</span>
+        <span class="text-purple-400">return</span> <span class="text-blue-400">allProducts</span>
+            .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => !<span class="text-blue-400">purchasedProductIds</span>.<span class="text-green-400">Contains</span>(<span class="text-blue-400">p</span>.<span class="text-green-400">Id</span>))
+            .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">preferredCategories</span>.<span class="text-green-400">Contains</span>(<span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>))
+            .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Rating</span>)
+            .<span class="text-green-400">Take</span>(<span class="text-orange-400">10</span>)
+            .<span class="text-green-400">ToList</span>();
+    }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Social Media Analytics -->
+                <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Social Media Analytics</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Analyze viral content and engagement patterns:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 p-6 rounded-lg overflow-x-auto">
+                        <pre class="text-green-400 font-mono text-sm"><code><span class="text-purple-400">public async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">ViralContentReport</span>&gt; <span class="text-green-400">AnalyzeViralContentAsync</span>(<span class="text-yellow-400">DateTime</span> <span class="text-blue-400">startDate</span>, <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">endDate</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">posts</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_postApi</span>.<span class="text-green-400">GetPostsByDateRangeAsync</span>(<span class="text-blue-400">startDate</span>, <span class="text-blue-400">endDate</span>);
+    <span class="text-purple-400">var</span> <span class="text-blue-400">engagements</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_engagementApi</span>.<span class="text-green-400">GetEngagementsByDateRangeAsync</span>(<span class="text-blue-400">startDate</span>, <span class="text-blue-400">endDate</span>);
+
+    <span class="text-gray-500">// Identify viral content</span>
+    <span class="text-purple-400">var</span> <span class="text-blue-400">viralPosts</span> = <span class="text-blue-400">posts</span>
+        .<span class="text-green-400">Select</span>(<span class="text-blue-400">post</span> => <span class="text-purple-400">new</span> {
+            <span class="text-blue-400">Post</span> = <span class="text-blue-400">post</span>,
+            <span class="text-blue-400">TotalEngagements</span> = <span class="text-blue-400">engagements</span>
+                .<span class="text-green-400">Where</span>(<span class="text-blue-400">e</span> => <span class="text-blue-400">e</span>.<span class="text-green-400">PostId</span> == <span class="text-blue-400">post</span>.<span class="text-green-400">Id</span>)
+                .<span class="text-green-400">Sum</span>(<span class="text-blue-400">e</span> => <span class="text-blue-400">e</span>.<span class="text-green-400">Count</span>),
+            <span class="text-blue-400">EngagementRate</span> = <span class="text-blue-400">engagements</span>
+                .<span class="text-green-400">Where</span>(<span class="text-blue-400">e</span> => <span class="text-blue-400">e</span>.<span class="text-green-400">PostId</span> == <span class="text-blue-400">post</span>.<span class="text-green-400">Id</span>)
+                .<span class="text-green-400">Sum</span>(<span class="text-blue-400">e</span> => <span class="text-blue-400">e</span>.<span class="text-green-400">Count</span>) / (<span class="text-purple-400">double</span>)<span class="text-blue-400">post</span>.<span class="text-green-400">ViewCount</span>
+        })
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">TotalEngagements</span> > <span class="text-orange-400">1000</span> && <span class="text-blue-400">p</span>.<span class="text-green-400">EngagementRate</span> > <span class="text-orange-400">0.05</span>)
+        .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">TotalEngagements</span>)
+        .<span class="text-green-400">Take</span>(<span class="text-orange-400">50</span>)
+        .<span class="text-green-400">ToList</span>();
+
+    <span class="text-purple-400">return new</span> <span class="text-yellow-400">ViralContentReport</span>
+    {
+        <span class="text-blue-400">ViralPosts</span> = <span class="text-blue-400">viralPosts</span>.<span class="text-green-400">Select</span>(<span class="text-blue-400">vp</span> => <span class="text-blue-400">vp</span>.<span class="text-green-400">Post</span>).<span class="text-green-400">ToList</span>(),
+        <span class="text-blue-400">AverageEngagementRate</span> = <span class="text-blue-400">viralPosts</span>.<span class="text-green-400">Average</span>(<span class="text-blue-400">vp</span> => <span class="text-blue-400">vp</span>.<span class="text-green-400">EngagementRate</span>)
+    };
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Usage Examples Section -->
     <section class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Usage Examples</h2>
+                <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">Quick Usage Examples</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300">See how easy it is to work with generated API clients</p>
             </div>
 
