@@ -680,11 +680,14 @@
                     <div class="mb-8">
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic CRUD Operations</h2>
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                            <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">UserService</span>
-{
-    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ITuxedoConnection</span> <span class="text-blue-400">_connection</span>;
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.Data</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Contrib</span>; <span class="text-gray-500">// For GetAsync, InsertAsync, etc.</span>
 
-    <span class="text-purple-400">public</span> <span class="text-green-400">UserService</span>(<span class="text-yellow-400">ITuxedoConnection</span> <span class="text-blue-400">connection</span>)
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">UserService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">UserService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
     {
         <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
     }
@@ -732,29 +735,36 @@
     <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">IsActive</span> = <span class="text-purple-400">true</span> });
 }
 
-<span class="text-gray-500">// Paged results</span>
-<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersPagedAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">page</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span>)
+<span class="text-gray-500">// Multi-table join query</span>
+<span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">OrderWithCustomer</span>&gt;&gt; <span class="text-green-400">GetOrdersWithCustomersAsync</span>()
 {
-    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetPagedAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">page</span>, <span class="text-blue-400">pageSize</span>);
+    <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"SELECT o.*, c.*
+        FROM Orders o
+        INNER JOIN Customers c ON o.CustomerId = c.Id
+        WHERE o.Status = @Status"</span>;
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">OrderWithCustomer</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">Status</span> = <span class="text-orange-400">"Active"</span> });
 }
 
 <span class="text-gray-500">// Transactions</span>
 <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">TransferFundsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">fromId</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">toId</span>, <span class="text-purple-400">decimal</span> <span class="text-blue-400">amount</span>)
 {
-    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BeginTransactionAsync</span>();
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">_connection</span>.<span class="text-green-400">State</span> != <span class="text-yellow-400">ConnectionState</span>.<span class="text-green-400">Open</span>)
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">OpenAsync</span>();
+
+    <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">transaction</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">BeginTransaction</span>();
     <span class="text-purple-400">try</span>
     {
-        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance - @Amount WHERE Id = @Id"</span>, 
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance - @Amount WHERE Id = @Id"</span>,
             <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">fromId</span> }, <span class="text-blue-400">transaction</span>);
-        
-        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance + @Amount WHERE Id = @Id"</span>, 
+
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(<span class="text-orange-400">"UPDATE Accounts SET Balance = Balance + @Amount WHERE Id = @Id"</span>,
             <span class="text-purple-400">new</span> { <span class="text-green-400">Amount</span> = <span class="text-blue-400">amount</span>, <span class="text-green-400">Id</span> = <span class="text-blue-400">toId</span> }, <span class="text-blue-400">transaction</span>);
-        
-        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">CommitAsync</span>();
+
+        <span class="text-blue-400">transaction</span>.<span class="text-green-400">Commit</span>();
     }
     <span class="text-purple-400">catch</span>
     {
-        <span class="text-purple-400">await</span> <span class="text-blue-400">transaction</span>.<span class="text-green-400">RollbackAsync</span>();
+        <span class="text-blue-400">transaction</span>.<span class="text-green-400">Rollback</span>();
         <span class="text-purple-400">throw</span>;
     }
 }</code></pre>
@@ -1538,6 +1548,231 @@
             <span class="text-purple-400">new</span> <span class="text-yellow-400">CookieOptions</span> { <span class="text-green-400">HttpOnly</span> = <span class="text-purple-400">true</span>, <span class="text-green-400">Secure</span> = <span class="text-purple-400">true</span> });
 
         <span class="text-purple-400">return</span> <span class="text-blue-400">newTokens</span>.<span class="text-green-400">AccessToken</span>;
+    }
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Patterns -->
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced Patterns</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Production-ready patterns for enterprise applications:</p>
+
+                        <!-- Repository Pattern -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Repository Pattern with IDbConnection</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.Data</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Patterns</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">TuxedoRepository</span>&lt;<span class="text-yellow-400">Product</span>&gt; <span class="text-blue-400">_productRepo</span>;
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">ProductService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+        <span class="text-blue-400">_productRepo</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">TuxedoRepository</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">connection</span>);
+    }
+
+    <span class="text-gray-500">// Find with LINQ expressions</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetLowStockProductsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">threshold</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_productRepo</span>.<span class="text-green-400">FindAsync</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Stock</span> &lt; <span class="text-blue-400">threshold</span> && !<span class="text-blue-400">p</span>.<span class="text-green-400">Discontinued</span>);
+    }
+
+    <span class="text-gray-500">// Count with predicate</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">GetActiveProductCountAsync</span>()
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_productRepo</span>.<span class="text-green-400">CountAsync</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>);
+    }
+
+    <span class="text-gray-500">// Paginated results</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetProductsPagedAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">page</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">size</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_productRepo</span>.<span class="text-green-400">GetPagedAsync</span>(<span class="text-blue-400">page</span>, <span class="text-blue-400">size</span>, <span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- QueryBuilder Pattern -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">QueryBuilder with IDbConnection</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.Data</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.QueryBuilder</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.DependencyInjection</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ProductSearchService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">ProductSearchService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">SearchAsync</span>(<span class="text-yellow-400">SearchCriteria</span> <span class="text-blue-400">criteria</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-yellow-400">TuxedoDialect</span>.<span class="text-green-400">SqlServer</span>);
+
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">SelectAll</span>();
+
+        <span class="text-purple-400">if</span> (!<span class="text-purple-400">string</span>.<span class="text-green-400">IsNullOrEmpty</span>(<span class="text-blue-400">criteria</span>.<span class="text-green-400">Category</span>))
+            <span class="text-blue-400">builder</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Category</span> == <span class="text-blue-400">criteria</span>.<span class="text-green-400">Category</span>);
+
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">criteria</span>.<span class="text-green-400">MinPrice</span>.<span class="text-green-400">HasValue</span> && <span class="text-blue-400">criteria</span>.<span class="text-green-400">MaxPrice</span>.<span class="text-green-400">HasValue</span>)
+            <span class="text-blue-400">builder</span>.<span class="text-green-400">WhereBetween</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>, <span class="text-blue-400">criteria</span>.<span class="text-green-400">MinPrice</span>.<span class="text-green-400">Value</span>, <span class="text-blue-400">criteria</span>.<span class="text-green-400">MaxPrice</span>.<span class="text-green-400">Value</span>);
+
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">criteria</span>.<span class="text-green-400">Tags</span>?.<span class="text-green-400">Any</span>() == <span class="text-purple-400">true</span>)
+            <span class="text-blue-400">builder</span>.<span class="text-green-400">WhereIn</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">TagId</span>, <span class="text-blue-400">criteria</span>.<span class="text-green-400">Tags</span>);
+
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>);
+
+        <span class="text-purple-400">if</span> (<span class="text-blue-400">criteria</span>.<span class="text-green-400">PageSize</span> > <span class="text-purple-400">0</span>)
+        {
+            <span class="text-blue-400">builder</span>.<span class="text-green-400">Skip</span>(<span class="text-blue-400">criteria</span>.<span class="text-green-400">Page</span> * <span class="text-blue-400">criteria</span>.<span class="text-green-400">PageSize</span>);
+            <span class="text-blue-400">builder</span>.<span class="text-green-400">Take</span>(<span class="text-blue-400">criteria</span>.<span class="text-green-400">PageSize</span>);
+        }
+
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">builder</span>.<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Unit of Work Pattern -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Unit of Work Pattern with Transactions</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.Data</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Patterns</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">OrderService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">OrderService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">Order</span>&gt; <span class="text-green-400">CreateOrderAsync</span>(<span class="text-yellow-400">Order</span> <span class="text-blue-400">order</span>)
+    {
+        <span class="text-purple-400">using</span> <span class="text-purple-400">var</span> <span class="text-blue-400">uow</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">UnitOfWork</span>(<span class="text-blue-400">_connection</span>);
+
+        <span class="text-gray-500">// Create repositories within the same transaction</span>
+        <span class="text-purple-400">var</span> <span class="text-blue-400">orderRepo</span> = <span class="text-blue-400">uow</span>.<span class="text-green-400">GetRepository</span>&lt;<span class="text-yellow-400">Order</span>&gt;();
+        <span class="text-purple-400">var</span> <span class="text-blue-400">productRepo</span> = <span class="text-blue-400">uow</span>.<span class="text-green-400">GetRepository</span>&lt;<span class="text-yellow-400">Product</span>&gt;();
+        <span class="text-purple-400">var</span> <span class="text-blue-400">inventoryRepo</span> = <span class="text-blue-400">uow</span>.<span class="text-green-400">GetRepository</span>&lt;<span class="text-yellow-400">InventoryLog</span>&gt;();
+
+        <span class="text-purple-400">try</span>
+        {
+            <span class="text-gray-500">// 1. Create order</span>
+            <span class="text-purple-400">await</span> <span class="text-blue-400">orderRepo</span>.<span class="text-green-400">AddAsync</span>(<span class="text-blue-400">order</span>);
+
+            <span class="text-gray-500">// 2. Reduce inventory for each item</span>
+            <span class="text-purple-400">foreach</span> (<span class="text-purple-400">var</span> <span class="text-blue-400">item</span> <span class="text-purple-400">in</span> <span class="text-blue-400">order</span>.<span class="text-green-400">Items</span>)
+            {
+                <span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">productRepo</span>.<span class="text-green-400">GetByIdAsync</span>(<span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>);
+
+                <span class="text-purple-400">if</span> (<span class="text-blue-400">product</span>.<span class="text-green-400">Stock</span> &lt; <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>)
+                    <span class="text-purple-400">throw</span> <span class="text-purple-400">new</span> <span class="text-yellow-400">InvalidOperationException</span>(<span class="text-orange-400">$"Insufficient stock for {<span class="text-blue-400">product</span>.<span class="text-green-400">Name</span>}"</span>);
+
+                <span class="text-blue-400">product</span>.<span class="text-green-400">Stock</span> -= <span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>;
+                <span class="text-purple-400">await</span> <span class="text-blue-400">productRepo</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>);
+
+                <span class="text-gray-500">// 3. Log inventory change</span>
+                <span class="text-purple-400">await</span> <span class="text-blue-400">inventoryRepo</span>.<span class="text-green-400">AddAsync</span>(<span class="text-purple-400">new</span> <span class="text-yellow-400">InventoryLog</span>
+                {
+                    <span class="text-green-400">ProductId</span> = <span class="text-blue-400">product</span>.<span class="text-green-400">Id</span>,
+                    <span class="text-green-400">Change</span> = -<span class="text-blue-400">item</span>.<span class="text-green-400">Quantity</span>,
+                    <span class="text-green-400">Reason</span> = <span class="text-orange-400">$"Order {<span class="text-blue-400">order</span>.<span class="text-green-400">Id</span>}"</span>,
+                    <span class="text-green-400">Timestamp</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">UtcNow</span>
+                });
+            }
+
+            <span class="text-gray-500">// Commit all changes atomically</span>
+            <span class="text-purple-400">await</span> <span class="text-blue-400">uow</span>.<span class="text-green-400">CommitAsync</span>();
+            <span class="text-purple-400">return</span> <span class="text-blue-400">order</span>;
+        }
+        <span class="text-purple-400">catch</span>
+        {
+            <span class="text-purple-400">await</span> <span class="text-blue-400">uow</span>.<span class="text-green-400">RollbackAsync</span>();
+            <span class="text-purple-400">throw</span>;
+        }
+    }
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <!-- Direct Query with IDbConnection -->
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Direct Queries with IDbConnection</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">System.Data</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo</span>;
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">ReportService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">_connection</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">ReportService</span>(<span class="text-yellow-400">IDbConnection</span> <span class="text-blue-400">connection</span>)
+    {
+        <span class="text-blue-400">_connection</span> = <span class="text-blue-400">connection</span>;
+    }
+
+    <span class="text-gray-500">// Complex aggregation query</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">SalesReport</span>&gt;&gt; <span class="text-green-400">GetMonthlySalesAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">year</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+            SELECT
+                MONTH(OrderDate) AS Month,
+                COUNT(*) AS OrderCount,
+                SUM(TotalAmount) AS TotalSales,
+                AVG(TotalAmount) AS AverageSale
+            FROM Orders
+            WHERE YEAR(OrderDate) = @Year
+            GROUP BY MONTH(OrderDate)
+            ORDER BY Month"</span>;
+
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">SalesReport</span>&gt;(<span class="text-blue-400">sql</span>, <span class="text-purple-400">new</span> { <span class="text-green-400">Year</span> = <span class="text-blue-400">year</span> });
+    }
+
+    <span class="text-gray-500">// Multi-mapping for complex objects</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">OrderWithDetails</span>&gt;&gt; <span class="text-green-400">GetOrdersWithCustomerAsync</span>()
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">sql</span> = <span class="text-orange-400">@"
+            SELECT o.*, c.*
+            FROM Orders o
+            INNER JOIN Customers c ON o.CustomerId = c.Id
+            WHERE o.Status = @Status"</span>;
+
+        <span class="text-purple-400">var</span> <span class="text-blue-400">orders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryAsync</span>&lt;<span class="text-yellow-400">Order</span>, <span class="text-yellow-400">Customer</span>, <span class="text-yellow-400">OrderWithDetails</span>&gt;(
+            <span class="text-blue-400">sql</span>,
+            (<span class="text-blue-400">order</span>, <span class="text-blue-400">customer</span>) => <span class="text-purple-400">new</span> <span class="text-yellow-400">OrderWithDetails</span>
+            {
+                <span class="text-green-400">Order</span> = <span class="text-blue-400">order</span>,
+                <span class="text-green-400">Customer</span> = <span class="text-blue-400">customer</span>
+            },
+            <span class="text-purple-400">new</span> { <span class="text-green-400">Status</span> = <span class="text-orange-400">"Active"</span> },
+            <span class="text-green-400">splitOn</span>: <span class="text-orange-400">"Id"</span>
+        );
+
+        <span class="text-purple-400">return</span> <span class="text-blue-400">orders</span>;
+    }
+
+    <span class="text-gray-500">// Stored procedure execution</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">int</span>&gt; <span class="text-green-400">ArchiveOldOrdersAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">daysOld</span>)
+    {
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">ExecuteAsync</span>(
+            <span class="text-orange-400">"sp_ArchiveOrders"</span>,
+            <span class="text-purple-400">new</span> { <span class="text-green-400">DaysOld</span> = <span class="text-blue-400">daysOld</span> },
+            <span class="text-green-400">commandType</span>: <span class="text-yellow-400">CommandType</span>.<span class="text-green-400">StoredProcedure</span>
+        );
     }
 }</code></pre>
                             </div>
