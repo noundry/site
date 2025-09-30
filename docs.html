@@ -660,6 +660,43 @@
 }</code></pre>
                         </div>
                     </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Exception Translation (NEW)</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">Strongly-typed database exceptions for precise error handling:</p>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Exceptions</span>;
+
+<span class="text-gray-500">// Wrap connection with exception translation</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">wrappedConn</span> = <span class="text-blue-400">connection</span>.<span class="text-green-400">WithExceptionTranslation</span>();
+
+<span class="text-purple-400">try</span>
+{
+    <span class="text-purple-400">await</span> <span class="text-blue-400">wrappedConn</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">user</span>);
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-gray-500">// Handle duplicate email</span>
+    <span class="text-purple-400">return</span> <span class="text-orange-400">"Email already registered"</span>;
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">CannotInsertNullException</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-purple-400">return</span> <span class="text-orange-400">$"</span>{<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}<span class="text-orange-400"> is required"</span>;
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">ReferenceConstraintException</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-purple-400">return</span> <span class="text-orange-400">"Invalid foreign key reference"</span>;
+}</code></pre>
+                        </div>
+                        <div class="mt-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+                            <p class="text-sm text-gray-600 dark:text-gray-300">
+                                <strong>Install:</strong> <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">dotnet add package Noundry.Tuxedo.Exceptions</code>
+                            </p>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">
+                                Supports: UniqueConstraintException, ReferenceConstraintException, CannotInsertNullException, MaxLengthExceededException, NumericOverflowException
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                  Add similar sections for other components 
