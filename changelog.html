@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, filter: 'all' }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <title>Changelog - Noundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-white dark:bg-gray-900">
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html"><img x-show="!darkMode" src="assets/nd-logo-sm.png" class="h-8"><img x-show="darkMode" src="assets/wh-nd-logo-sm.png" class="h-8"></a>
+        </div>
+    </nav>
+    <div class="pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4 text-center">Changelog</h1>
+            <p class="text-center text-gray-600 dark:text-gray-300 mb-12">All notable changes to the Noundry platform</p>
+            
+            <div class="space-y-8">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 border-l-4 border-blue-600">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.4.0</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2025-09-30</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ Added</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li><strong>Noundry.Tuxedo.Exceptions</strong> - Strongly-typed database exception translation</li>
+                                <li><strong>Noundry.Tuxedo.Auditor</strong> - Automatic CRUD audit logging</li>
+                                <li>Pipeline Pattern for composable connection wrappers</li>
+                                <li>5 exception types: UniqueConstraint, ReferenceConstraint, CannotInsertNull, MaxLengthExceeded, NumericOverflow</li>
+                                <li>3 user providers: Static, Delegate, HttpContext</li>
+                                <li>Soft delete detection (IsDeleted + DeletedAt)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.3.0</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2025-08-28</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ Added</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>Query Caching with tag-based invalidation</li>
+                                <li>Advanced Query Builder with LINQ-style syntax</li>
+                                <li>Bulk Operations (Insert, Update, Delete, Merge)</li>
+                                <li>Resiliency & Circuit Breakers via Polly</li>
+                                <li>Repository Pattern with specifications</li>
+                                <li>Unit of Work Pattern</li>
+                                <li>300+ unit tests</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.2.0</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2025-08-26</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ Added</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>SQL-aligned Select method aliases</li>
+                                <li>Complete SQL verb alignment (Select, Insert, Update, Delete)</li>
+                                <li>Multi-mapping Select variants (2-7 type parameters)</li>
+                                <li>Async versions of all Select methods</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.1.0</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2025-08-25</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ Added</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>Initial release of Noundry.Tuxedo</li>
+                                <li>Merged Dapper and Dapper.Contrib into unified package</li>
+                                <li>Multi-targeting for .NET 6.0, 8.0, and 9.0</li>
+                                <li>Built-in adapters for SQL Server, PostgreSQL, MySQL</li>
+                                <li>Nullable reference types support</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

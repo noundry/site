@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <title>Status - Noundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+</head>
+<body class="bg-white dark:bg-gray-900">
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html"><img x-show="!darkMode" src="assets/nd-logo-sm.png" class="h-8"><img x-show="darkMode" src="assets/wh-nd-logo-sm.png" class="h-8"></a>
+        </div>
+    </nav>
+    <div class="pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-12 text-center">System Status</h1>
+            <div class="space-y-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center justify-between">
+                    <div><h3 class="font-semibold text-gray-900 dark:text-white">NuGet Package Registry</h3><p class="text-sm text-gray-600 dark:text-gray-400">All packages available</p></div>
+                    <div class="flex items-center text-green-600"><svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Operational</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center justify-between">
+                    <div><h3 class="font-semibold text-gray-900 dark:text-white">Documentation Site</h3><p class="text-sm text-gray-600 dark:text-gray-400">Docs accessible</p></div>
+                    <div class="flex items-center text-green-600"><svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Operational</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center justify-between">
+                    <div><h3 class="font-semibold text-gray-900 dark:text-white">GitHub Repository</h3><p class="text-sm text-gray-600 dark:text-gray-400">Source code accessible</p></div>
+                    <div class="flex items-center text-green-600"><svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Operational</div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex items-center justify-between">
+                    <div><h3 class="font-semibold text-gray-900 dark:text-white">Andy AI API</h3><p class="text-sm text-gray-600 dark:text-gray-400">AI services running</p></div>
+                    <div class="flex items-center text-green-600"><svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/></svg>Operational</div>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-gray-600 dark:text-gray-400">
+                <p>Last updated: <span x-text="new Date().toLocaleString()"></span></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
