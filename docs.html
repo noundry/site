@@ -159,6 +159,11 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🚀 Noundry.Slurp
                             </button>
+                            <button @click="activeComponent = 'connector'"
+                                    :class="activeComponent === 'connector' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔌 Noundry.Connector
+                            </button>
                         </div>
                     </div>
 
@@ -2270,6 +2275,191 @@
                                 <p class="text-sm text-purple-800 dark:text-purple-200">
                                     Supports various CSV formats with configurable delimiters, quotes, escape characters, and encoding options.
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div x-show="activeComponent === 'connector'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Connector</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Powerful API connector library for .NET that provides strongly-typed HTTP clients with automatic authentication, LINQ querying, and comprehensive code generation capabilities.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🚀 CLI Code Generator</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Interactive wizard to generate strongly-typed C# models and Refit interfaces from REST APIs</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🔐 Automatic Authentication</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Built-in authentication with support for Bearer tokens, API keys, and OAuth 2.0</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🎯 Type-Safe API Clients</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Compile-time safety with strongly-typed models and enhanced IntelliSense</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">🔍 Advanced LINQ Support</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Query API responses like in-memory collections with full LINQ integration</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">CLI Tool</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                    <div class="text-accent-500">$ dotnet tool install -g Noundry.Connector.Generator</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Core Library</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                    <div class="text-accent-500">$ dotnet add package Noundry.Connector</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start with CLI Generator</h2>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Generate JSONPlaceholder Client</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500"># Start the interactive generator</span>
+<span class="text-accent-500">$ noundry-connector generate</span>
+
+<span class="text-gray-500"># Or use command line options:</span>
+<span class="text-accent-500">$ noundry-connector generate \
+  --url "https://jsonplaceholder.typicode.com" \
+  --client-name "JsonPlaceholderClient" \
+  --namespace "MyApp.ApiClients"</span></code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Register and Use Generated Client</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Register in DI</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddJsonPlaceholderClient</span>(<span class="text-orange-400">"https://jsonplaceholder.typicode.com"</span>);
+
+<span class="text-gray-500">// Inject and use</span>
+<span class="text-purple-400">public async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">Post</span>&gt;&gt; <span class="text-green-400">GetRecentPostsAsync</span>()
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">posts</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_client</span>.<span class="text-green-400">GetAllPostsAsync</span>();
+    <span class="text-purple-400">return</span> <span class="text-blue-400">posts</span>.<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">UserId</span> &lt;= <span class="text-orange-400">5</span>)
+                    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Id</span>)
+                    .<span class="text-green-400">Take</span>(<span class="text-orange-400">10</span>);
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Manual Setup (Without CLI)</h2>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Define Models and Interfaces</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// 1. Define your model</span>
+<span class="text-purple-400">public class</span> <span class="text-yellow-400">User</span>
+{
+    [<span class="text-yellow-400">JsonPropertyName</span>(<span class="text-orange-400">"id"</span>)]
+    <span class="text-purple-400">public int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+
+    [<span class="text-yellow-400">JsonPropertyName</span>(<span class="text-orange-400">"email"</span>)]
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// 2. Define Refit interface</span>
+<span class="text-purple-400">public interface</span> <span class="text-yellow-400">IUserApi</span>
+{
+    [<span class="text-yellow-400">Get</span>(<span class="text-orange-400">"/users"</span>)]
+    <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">IEnumerable</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersAsync</span>();
+
+    [<span class="text-yellow-400">Post</span>(<span class="text-orange-400">"/users"</span>)]
+    <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">User</span>&gt; <span class="text-green-400">CreateUserAsync</span>([<span class="text-yellow-400">Body</span>] <span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>);
+}
+
+<span class="text-gray-500">// 3. Register in DI</span>
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddConnector</span>&lt;<span class="text-yellow-400">IUserApi</span>&gt;(<span class="text-blue-400">options</span> =>
+{
+    <span class="text-blue-400">options</span>.<span class="text-green-400">BaseUrl</span> = <span class="text-orange-400">"https://api.example.com"</span>;
+});</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Authentication</h2>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Bearer Token</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">services</span>.<span class="text-green-400">AddTokenAuthentication</span>(<span class="text-orange-400">"your-api-token"</span>);
+<span class="text-purple-400">services</span>.<span class="text-green-400">AddConnector</span>&lt;<span class="text-yellow-400">IYourApi</span>&gt;(<span class="text-blue-400">opt</span> => <span class="text-blue-400">opt</span>.<span class="text-green-400">BaseUrl</span> = <span class="text-orange-400">"https://api.example.com"</span>);</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">OAuth 2.0</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">services</span>.<span class="text-green-400">AddOAuthAuthentication</span>(<span class="text-blue-400">config</span> =>
+{
+    <span class="text-blue-400">config</span>.<span class="text-green-400">ClientId</span> = <span class="text-purple-400">configuration</span>[<span class="text-orange-400">"GitHub:ClientId"</span>];
+    <span class="text-blue-400">config</span>.<span class="text-green-400">ClientSecret</span> = <span class="text-purple-400">configuration</span>[<span class="text-orange-400">"GitHub:ClientSecret"</span>];
+    <span class="text-blue-400">config</span>.<span class="text-green-400">TokenEndpoint</span> = <span class="text-orange-400">"https://github.com/login/oauth/access_token"</span>;
+});</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced LINQ Querying</h2>
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Complex Filtering</h3>
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">orders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">orderClient</span>.<span class="text-green-400">GetOrdersAsync</span>();
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">vipCustomers</span> = <span class="text-blue-400">orders</span>
+    .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">CustomerId</span>)
+    .<span class="text-green-400">Select</span>(<span class="text-blue-400">g</span> => <span class="text-purple-400">new</span> {
+        <span class="text-blue-400">CustomerId</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Key</span>,
+        <span class="text-blue-400">TotalSpent</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Sum</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">TotalAmount</span>),
+        <span class="text-blue-400">OrderCount</span> = <span class="text-blue-400">g</span>.<span class="text-green-400">Count</span>()
+    })
+    .<span class="text-green-400">Where</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">TotalSpent</span> > <span class="text-orange-400">10000</span>)
+    .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">TotalSpent</span>);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Real-World Example: E-Commerce Recommendations</h2>
+                        <div class="mb-6">
+                            <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-purple-400">public async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">List</span>&lt;<span class="text-yellow-400">Product</span>&gt;&gt; <span class="text-green-400">GetRecommendationsAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">customerId</span>)
+{
+    <span class="text-purple-400">var</span> <span class="text-blue-400">orders</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_orderApi</span>.<span class="text-green-400">GetCustomerOrdersAsync</span>(<span class="text-blue-400">customerId</span>);
+    <span class="text-purple-400">var</span> <span class="text-blue-400">products</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_productApi</span>.<span class="text-green-400">GetProductsAsync</span>();
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">preferredCategories</span> = <span class="text-blue-400">orders</span>
+        .<span class="text-green-400">SelectMany</span>(<span class="text-blue-400">o</span> => <span class="text-blue-400">o</span>.<span class="text-green-400">Items</span>)
+        .<span class="text-green-400">Join</span>(<span class="text-blue-400">products</span>, <span class="text-blue-400">item</span> => <span class="text-blue-400">item</span>.<span class="text-green-400">ProductId</span>, <span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Id</span>, (<span class="text-blue-400">i</span>, <span class="text-blue-400">p</span>) => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>)
+        .<span class="text-green-400">GroupBy</span>(<span class="text-blue-400">cat</span> => <span class="text-blue-400">cat</span>)
+        .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">g</span> => <span class="text-blue-400">g</span>.<span class="text-green-400">Count</span>())
+        .<span class="text-green-400">Take</span>(<span class="text-orange-400">3</span>);
+
+    <span class="text-purple-400">return</span> <span class="text-blue-400">products</span>
+        .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">preferredCategories</span>.<span class="text-green-400">Contains</span>(<span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>))
+        .<span class="text-green-400">OrderByDescending</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Rating</span>)
+        .<span class="text-green-400">Take</span>(<span class="text-orange-400">10</span>)
+        .<span class="text-green-400">ToList</span>();
+}</code></pre>
                             </div>
                         </div>
                     </div>
