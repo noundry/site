@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Noundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html">
+                <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8">
+                <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8">
+            </a>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">Terms of Service</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-12">Last updated: January 1, 2025</p>
+
+            <div class="prose prose-lg dark:prose-invert max-w-none space-y-8">
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Acceptance of Terms</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">By accessing and using Noundry services, you accept and agree to be bound by these Terms of Service.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">License Grant</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">Subject to your compliance with these terms and payment of applicable fees, we grant you a limited, non-exclusive, non-transferable license to:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Use Noundry libraries in your applications</li>
+                        <li>Access documentation and support resources</li>
+                        <li>Receive updates and improvements</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Restrictions</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">You may not:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Redistribute or resell Noundry components</li>
+                        <li>Remove or modify any copyright notices</li>
+                        <li>Use the platform to violate any laws</li>
+                        <li>Reverse engineer or attempt to extract source code</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Payment Terms</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">Subscription fees are billed in advance on a monthly or annual basis. All fees are non-refundable except as required by law or as specified in our 30-day money-back guarantee.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Intellectual Property</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">Noundry and its components are protected by copyright and other intellectual property laws. We retain all rights, title, and interest in our platform.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Warranty Disclaimer</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">THE PLATFORM IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Limitation of Liability</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">IN NO EVENT SHALL NOUNDRY BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF OR RELATED TO YOUR USE OF THE PLATFORM.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Termination</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">We may terminate or suspend your access to the platform at any time for violation of these terms or for any other reason at our discretion.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Contact</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">For questions about these Terms, contact us at <a href="mailto:legal@noundry.com" class="text-blue-600 dark:text-blue-400 hover:underline">legal@noundry.com</a></p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 dark:bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 Noundry. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy - Noundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html">
+                <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8">
+                <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8">
+            </a>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="pt-32 pb-20">
+        <div class="max-w-4xl mx-auto px-4">
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-4">Cookie Policy</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-12">Last updated: January 1, 2025</p>
+
+            <div class="prose prose-lg dark:prose-invert max-w-none space-y-8">
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">What Are Cookies</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">Cookies are small text files that are placed on your device when you visit our website. They help us provide you with a better experience by remembering your preferences and understanding how you use our site.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Types of Cookies We Use</h2>
+
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3">Essential Cookies</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">These cookies are necessary for the website to function properly. They enable core functionality such as:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Security and authentication</li>
+                        <li>Session management</li>
+                        <li>Load balancing</li>
+                        <li>Dark mode preferences</li>
+                    </ul>
+
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3">Analytics Cookies</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">We use analytics cookies to understand how visitors interact with our website. This helps us:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Analyze site traffic and usage patterns</li>
+                        <li>Improve website performance</li>
+                        <li>Identify popular content</li>
+                        <li>Understand user journey and behavior</li>
+                    </ul>
+
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3">Marketing Cookies</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">Marketing cookies track your online activity to help us:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Deliver relevant advertisements</li>
+                        <li>Measure advertising campaign effectiveness</li>
+                        <li>Limit the number of times you see an ad</li>
+                        <li>Understand which marketing channels work best</li>
+                    </ul>
+
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mt-6 mb-3">Preference Cookies</h3>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">These cookies remember your preferences and settings, including language, region, and display options to provide a personalized experience.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Managing Cookies</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">You have the right to accept or decline cookies. You can control cookies through:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li><strong>Browser Settings:</strong> Most web browsers automatically accept cookies, but you can modify your browser settings to decline cookies if you prefer</li>
+                        <li><strong>Cookie Banner:</strong> Use our cookie consent banner to manage your preferences when you first visit our site</li>
+                        <li><strong>Opt-Out Links:</strong> Some third-party services provide direct opt-out mechanisms</li>
+                    </ul>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">Please note that blocking certain cookies may impact your experience and limit some functionality on our website.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Third-Party Cookies</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">We may use third-party services that set cookies on our behalf, including:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li>Google Analytics for website analytics</li>
+                        <li>Social media platforms for sharing functionality</li>
+                        <li>Content delivery networks (CDNs) for performance</li>
+                        <li>Payment processors for secure transactions</li>
+                    </ul>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">These third parties have their own privacy policies and cookie policies, which we encourage you to review.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Cookie Duration</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-4">We use both session cookies and persistent cookies:</p>
+                    <ul class="list-disc pl-6 mb-6 space-y-2 text-gray-700 dark:text-gray-300">
+                        <li><strong>Session Cookies:</strong> Temporary cookies that expire when you close your browser</li>
+                        <li><strong>Persistent Cookies:</strong> Cookies that remain on your device for a set period or until you delete them</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Updates to This Policy</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">We may update this Cookie Policy from time to time to reflect changes in our practices or for legal and regulatory reasons. We will notify you of any material changes by posting the new policy on this page with an updated "Last updated" date.</p>
+                </section>
+
+                <section>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4">Contact Us</h2>
+                    <p class="text-gray-700 dark:text-gray-300 mb-6">If you have questions about our use of cookies, please contact us at <a href="mailto:privacy@noundry.com" class="text-blue-600 dark:text-blue-400 hover:underline">privacy@noundry.com</a></p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-900 dark:bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 Noundry. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 mt-4">
+                <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
