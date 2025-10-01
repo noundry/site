@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, emailSubmitted: false }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'; $watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false, emailSubmitted: false, showPricingPoll: false, pollSubmitted: false }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'; $watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -82,7 +82,7 @@
                 <!-- Email Signup Form -->
                 <div class="max-w-xl mx-auto mb-12">
                     <div x-show="!emailSubmitted" x-transition>
-                        <form name="waitlist-hero" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => emailSubmitted = true).catch(() => emailSubmitted = true)" netlify>
+                        <form name="waitlist-hero" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; showPricingPoll = true; }).catch(() => { emailSubmitted = true; showPricingPoll = true; })" netlify>
                             <input type="hidden" name="form-name" value="waitlist-hero">
                             <input type="hidden" name="bot-field">
                             <input
@@ -103,6 +103,55 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
                             <span class="font-semibold">Thanks! We'll notify you when Noundry launches.</span>
+                        </div>
+                    </div>
+
+                    <!-- Pricing Poll -->
+                    <div x-show="showPricingPoll && !pollSubmitted" x-transition class="mt-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-700 rounded-xl px-8 py-8">
+                            <div class="text-center mb-6">
+                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Help us build in public!</h3>
+                                <p class="text-gray-600 dark:text-gray-300">What would you pay for Noundry per developer per year?</p>
+                            </div>
+                            <form name="pricing-poll" method="POST" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => pollSubmitted = true).catch(() => pollSubmitted = true)" netlify>
+                                <input type="hidden" name="form-name" value="pricing-poll">
+                                <input type="hidden" name="bot-field">
+                                <div class="space-y-3">
+                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="price" value="$99" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$99 / developer / year</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="price" value="$199" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$199 / developer / year</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="price" value="$299" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$299 / developer / year</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="price" value="$399" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$399 / developer / year</span>
+                                    </label>
+                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="price" value="$499+" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$499+ / developer / year</span>
+                                    </label>
+                                </div>
+                                <button type="submit" class="w-full mt-6 bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg text-lg font-semibold transition-colors">
+                                    Submit Vote
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Poll Thank You -->
+                    <div x-show="pollSubmitted" x-transition class="mt-8 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500 rounded-lg px-6 py-4">
+                        <div class="flex items-center justify-center text-blue-800 dark:text-blue-300">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span class="font-semibold">Thanks for your feedback! This helps us price Noundry fairly.</span>
                         </div>
                     </div>
                 </div>
@@ -1085,9 +1134,9 @@
             </p>
 
             <!-- Email Signup Form -->
-            <div class="max-w-xl mx-auto mb-8" x-data="{ submitted: false }">
-                <div x-show="!submitted" x-transition>
-                    <form name="waitlist-cta" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => submitted = true).catch(() => submitted = true)" netlify>
+            <div class="max-w-xl mx-auto mb-8">
+                <div x-show="!emailSubmitted" x-transition>
+                    <form name="waitlist-cta" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; showPricingPoll = true; window.scrollTo({top: 0, behavior: 'smooth'}); }).catch(() => { emailSubmitted = true; showPricingPoll = true; window.scrollTo({top: 0, behavior: 'smooth'}); })" netlify>
                         <input type="hidden" name="form-name" value="waitlist-cta">
                         <input type="hidden" name="bot-field">
                         <input
@@ -1101,12 +1150,12 @@
                         </button>
                     </form>
                 </div>
-                <div x-show="submitted" x-transition class="bg-white/20 backdrop-blur border-2 border-white rounded-lg px-6 py-4">
+                <div x-show="emailSubmitted" x-transition class="bg-white/20 backdrop-blur border-2 border-white rounded-lg px-6 py-4">
                     <div class="flex items-center justify-center text-white">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                        <span class="font-semibold">You're on the list! We'll email you when Noundry launches.</span>
+                        <span class="font-semibold">You're on the list! Scroll up to answer our quick pricing poll.</span>
                     </div>
                 </div>
             </div>
