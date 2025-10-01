@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, emailSubmitted: false, showPricingPoll: false, pollSubmitted: false }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'; $watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false, emailSubmitted: $persist(false), pollSubmitted: $persist(false), userEmail: $persist('') }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'; $watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noundry - Modern .NET Development Platform | Coming Soon</title>
     <meta name="description" content="Complete .NET development platform with libraries, UI components, AI code generation, and multi-cloud deployment tools. Join the waitlist.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         tailwind.config = {
@@ -79,79 +80,82 @@
                     Complete .NET development platform with production-ready libraries, beautiful UI components, AI-powered code generation, and seamless multi-cloud deployment.
                 </p>
 
-                <!-- Email Signup Form -->
-                <div class="max-w-xl mx-auto mb-12">
-                    <div x-show="!emailSubmitted" x-transition>
-                        <form name="waitlist-hero" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; showPricingPoll = true; }).catch(() => { emailSubmitted = true; showPricingPoll = true; })" netlify>
-                            <input type="hidden" name="form-name" value="waitlist-hero">
+                <!-- Combined Email Signup + Pricing Poll Form -->
+                <div class="max-w-2xl mx-auto mb-12">
+                    <div x-show="!emailSubmitted || !pollSubmitted" x-transition>
+                        <form name="pricing-poll" method="POST" class="space-y-6" @submit.prevent="userEmail = $event.target.email.value; fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; pollSubmitted = true; }).catch(() => { emailSubmitted = true; pollSubmitted = true; })" netlify>
+                            <input type="hidden" name="form-name" value="pricing-poll">
                             <input type="hidden" name="bot-field">
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                placeholder="Enter your email for early access"
-                                class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-600 dark:focus:border-primary-400 text-lg">
-                            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors whitespace-nowrap">
-                                Join Waitlist
-                            </button>
-                        </form>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Be the first to know when Noundry launches</p>
-                    </div>
-                    <div x-show="emailSubmitted" x-transition class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-6 py-4">
-                        <div class="flex items-center justify-center text-green-800 dark:text-green-300">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span class="font-semibold">Thanks! We'll notify you when Noundry launches.</span>
-                        </div>
-                    </div>
 
-                    <!-- Pricing Poll -->
-                    <div x-show="showPricingPoll && !pollSubmitted" x-transition class="mt-8">
-                        <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-700 rounded-xl px-8 py-8">
-                            <div class="text-center mb-6">
-                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Help us build in public!</h3>
-                                <p class="text-gray-600 dark:text-gray-300">What would you pay for Noundry per developer per year?</p>
+                            <!-- Email Input -->
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    x-model="userEmail"
+                                    placeholder="Enter your email for early access"
+                                    class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-600 dark:focus:border-primary-400 text-lg">
                             </div>
-                            <form name="pricing-poll" method="POST" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => pollSubmitted = true).catch(() => pollSubmitted = true)" netlify>
-                                <input type="hidden" name="form-name" value="pricing-poll">
-                                <input type="hidden" name="bot-field">
-                                <div class="space-y-3">
-                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
-                                        <input type="radio" name="price" value="$99" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
-                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$99 / developer / year</span>
+
+                            <!-- Pricing Poll Section -->
+                            <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 border-2 border-primary-200 dark:border-primary-700 rounded-xl px-6 py-6">
+                                <div class="text-center mb-4">
+                                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Help us build in public!</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">What would you pay per developer per year?</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="Free" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">Free</span>
                                     </label>
-                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
-                                        <input type="radio" name="price" value="$199" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
-                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$199 / developer / year</span>
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$99" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">$99 / developer / year</span>
                                     </label>
-                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
-                                        <input type="radio" name="price" value="$299" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
-                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$299 / developer / year</span>
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$199" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">$199 / developer / year</span>
                                     </label>
-                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
-                                        <input type="radio" name="price" value="$399" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
-                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$399 / developer / year</span>
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$299" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">$299 / developer / year</span>
                                     </label>
-                                    <label class="flex items-center p-4 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
-                                        <input type="radio" name="price" value="$499+" required class="w-5 h-5 text-primary-600 focus:ring-primary-500">
-                                        <span class="ml-4 text-lg font-medium text-gray-900 dark:text-white">$499+ / developer / year</span>
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$399" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">$399 / developer / year</span>
+                                    </label>
+                                    <label class="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-gray-200 dark:border-gray-600 hover:border-primary-500 dark:hover:border-primary-500 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$499+" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-3 text-base font-medium text-gray-900 dark:text-white">$499+ / developer / year</span>
                                     </label>
                                 </div>
-                                <button type="submit" class="w-full mt-6 bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg text-lg font-semibold transition-colors">
-                                    Submit Vote
-                                </button>
-                            </form>
-                        </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                                Join Waitlist & Submit Vote
+                            </button>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">Be the first to know when Noundry launches</p>
+                        </form>
                     </div>
 
-                    <!-- Poll Thank You -->
-                    <div x-show="pollSubmitted" x-transition class="mt-8 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500 rounded-lg px-6 py-4">
-                        <div class="flex items-center justify-center text-blue-800 dark:text-blue-300">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <span class="font-semibold">Thanks for your feedback! This helps us price Noundry fairly.</span>
+                    <!-- Thank You Message -->
+                    <div x-show="emailSubmitted && pollSubmitted" x-transition class="space-y-4">
+                        <div class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-6 py-4">
+                            <div class="flex items-center justify-center text-green-800 dark:text-green-300">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="font-semibold">Thanks! We'll notify you when Noundry launches.</span>
+                            </div>
+                        </div>
+                        <div class="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-500 rounded-lg px-6 py-4">
+                            <div class="flex items-center justify-center text-blue-800 dark:text-blue-300">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <span class="font-semibold">Your feedback helps us price Noundry fairly. Thank you!</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1134,28 +1138,65 @@
             </p>
 
             <!-- Email Signup Form -->
-            <div class="max-w-xl mx-auto mb-8">
-                <div x-show="!emailSubmitted" x-transition>
-                    <form name="waitlist-cta" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; showPricingPoll = true; window.scrollTo({top: 0, behavior: 'smooth'}); }).catch(() => { emailSubmitted = true; showPricingPoll = true; window.scrollTo({top: 0, behavior: 'smooth'}); })" netlify>
-                        <input type="hidden" name="form-name" value="waitlist-cta">
+            <div class="max-w-2xl mx-auto mb-8">
+                <div x-show="!emailSubmitted || !pollSubmitted" x-transition>
+                    <form name="pricing-poll-cta" method="POST" class="space-y-4" @submit.prevent="userEmail = $event.target.email.value; fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; pollSubmitted = true; window.scrollTo({top: 0, behavior: 'smooth'}); }).catch(() => { emailSubmitted = true; pollSubmitted = true; window.scrollTo({top: 0, behavior: 'smooth'}); })" netlify>
+                        <input type="hidden" name="form-name" value="pricing-poll-cta">
                         <input type="hidden" name="bot-field">
-                        <input
-                            type="email"
-                            name="email"
-                            required
-                            placeholder="Your email address"
-                            class="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white/50 text-lg">
-                        <button type="submit" class="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap">
-                            Get Early Access
+
+                        <!-- Email Input -->
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                x-model="userEmail"
+                                placeholder="Your email address"
+                                class="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white/50 text-lg">
+                        </div>
+
+                        <!-- Compact Pricing Poll -->
+                        <div class="bg-white/10 backdrop-blur border-2 border-white/30 rounded-xl px-4 py-4">
+                            <p class="text-white text-sm font-semibold mb-3 text-center">What would you pay per developer/year?</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="Free" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">Free</span>
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="$99" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">$99</span>
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="$199" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">$199</span>
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="$299" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">$299</span>
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="$399" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">$399</span>
+                                </label>
+                                <label class="flex items-center justify-center p-2 bg-white/90 rounded-lg border-2 border-transparent hover:border-primary-600 cursor-pointer transition-colors">
+                                    <input type="radio" name="poll_vote" value="$499+" required class="w-3 h-3 text-primary-600 focus:ring-primary-500">
+                                    <span class="ml-2 text-sm font-medium text-gray-900">$499+</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors">
+                            Join Waitlist & Vote
                         </button>
                     </form>
                 </div>
-                <div x-show="emailSubmitted" x-transition class="bg-white/20 backdrop-blur border-2 border-white rounded-lg px-6 py-4">
+                <div x-show="emailSubmitted && pollSubmitted" x-transition class="bg-white/20 backdrop-blur border-2 border-white rounded-lg px-6 py-4">
                     <div class="flex items-center justify-center text-white">
                         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                         </svg>
-                        <span class="font-semibold">You're on the list! Scroll up to answer our quick pricing poll.</span>
+                        <span class="font-semibold">You're already on the list! Thanks for your feedback!</span>
                     </div>
                 </div>
             </div>
