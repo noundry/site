@@ -82,7 +82,7 @@
                 <!-- Email Signup Form -->
                 <div class="max-w-xl mx-auto mb-12">
                     <div x-show="!emailSubmitted" x-transition>
-                        <form name="waitlist-hero" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => emailSubmitted = true).catch(() => emailSubmitted = true)" netlify>
+                        <form name="waitlist-hero" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => emailSubmitted = true).catch(() => emailSubmitted = true)" netlify>
                             <input type="hidden" name="form-name" value="waitlist-hero">
                             <input type="hidden" name="bot-field">
                             <input
@@ -1087,7 +1087,7 @@
             <!-- Email Signup Form -->
             <div class="max-w-xl mx-auto mb-8" x-data="{ submitted: false }">
                 <div x-show="!submitted" x-transition>
-                    <form name="waitlist-cta" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => submitted = true).catch(() => submitted = true)" netlify>
+                    <form name="waitlist-cta" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => submitted = true).catch(() => submitted = true)" netlify>
                         <input type="hidden" name="form-name" value="waitlist-cta">
                         <input type="hidden" name="bot-field">
                         <input
