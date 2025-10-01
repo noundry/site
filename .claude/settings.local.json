@@ -1,15 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet build)",
-      "WebFetch(domain:github.com)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(python:*)",
-      "Bash(for file in *.html)",
-      "Bash(do)",
-      "Bash(done)"
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

@@ -114,7 +114,7 @@
                         <div class="text-gray-600 dark:text-gray-400">Core Libraries</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-4xl font-bold text-accent-600 dark:text-accent-400">50+</div>
+                        <div class="text-4xl font-bold text-accent-600 dark:text-accent-400">60+</div>
                         <div class="text-gray-600 dark:text-gray-400">UI Components</div>
                     </div>
                     <div class="text-center">
@@ -143,7 +143,7 @@
             <!-- Tuxedo ORM -->
             <div class="mb-20">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
+                    <div class="lg:pl-6">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,80 +175,189 @@
                                 <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                <span class="text-gray-700 dark:text-gray-300">Transaction support</span>
+                                <span class="text-gray-700 dark:text-gray-300">Resiliency &amp; Transaction support</span>
                             </li>
                             <li class="flex items-start">
                                 <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                <span class="text-gray-700 dark:text-gray-300">Custom Exceptions &amp; Auditing </span>
+                                <span class="text-gray-700 dark:text-gray-300">Database-Specific Custom Exceptions  </span>
                             </li>
                             <li class="flex items-start">
                                 <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                <span class="text-gray-700 dark:text-gray-300">Code first, entity to database sync with attributes</span>
+                                <span class="text-gray-700 dark:text-gray-300">Entity Change Auditing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Clean POCOs with attributes</span>
                             </li>
                         </ul>
                     </div>
-                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
-<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddTuxedoSqlServer</span><span class="text-gray-300">(connectionString);</span>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">ProductService.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
+<span class="text-gray-200">builder.Services.</span><span class="text-green-400">AddTuxedoSqlServer</span><span class="text-gray-200">(connectionString);</span>
 
 <span class="text-gray-500">// Use in your services</span>
 <span class="text-purple-400">public class</span> <span class="text-blue-400">ProductService</span>
-<span class="text-gray-300">{</span>
-    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IDbConnection</span> <span class="text-gray-300">_connection;</span>
+<span class="text-gray-200">{</span>
+    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IDbConnection</span> <span class="text-gray-200">_connection;</span>
 
-    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id)</span>
-    <span class="text-gray-300">{</span>
-        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">GetAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;(id);</span>
-    <span class="text-gray-300">}</span>
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-200">(</span><span class="text-purple-400">int</span> <span class="text-gray-200">id)</span>
+    <span class="text-gray-200">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-200">_connection.</span><span class="text-green-400">GetAsync</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;(id);</span>
+    <span class="text-gray-200">}</span>
 
-    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-purple-400">int</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">CreateProductAsync</span><span class="text-gray-300">(</span><span class="text-blue-400">Product</span> <span class="text-gray-300">product)</span>
-    <span class="text-gray-300">{</span>
-        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">InsertAsync</span><span class="text-gray-300">(product);</span>
-    <span class="text-gray-300">}</span>
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-200">&lt;</span><span class="text-purple-400">int</span><span class="text-gray-200">&gt;</span> <span class="text-yellow-400">CreateProductAsync</span><span class="text-gray-200">(</span><span class="text-blue-400">Product</span> <span class="text-gray-200">product)</span>
+    <span class="text-gray-200">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-200">_connection.</span><span class="text-green-400">InsertAsync</span><span class="text-gray-200">(product);</span>
+    <span class="text-gray-200">}</span>
 
-    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">IEnumerable</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;&gt;</span> <span class="text-yellow-400">GetAllAsync</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">{</span>
-        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">GetAllAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;();</span>
-    <span class="text-gray-300">}</span>
-<span class="text-gray-300">}</span></code></pre>
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">IEnumerable</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;&gt;</span> <span class="text-yellow-400">GetAllAsync</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-200">_connection.</span><span class="text-green-400">GetAllAsync</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;();</span>
+    <span class="text-gray-200">}</span>
+<span class="text-gray-200">}</span></code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
 
+
+            <!-- Bowtie -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="lg:pl-6">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-indigo-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Tuxedo.Bowtie</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Schema Synchronization</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            Database schema synchronization for Tuxedo. Define schema directly in POCO model classes with attributes, and Bowtie keeps your database in perfect sync.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Model-first schema sync</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Attribute-driven configuration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Indexes, constraints, relationships</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">Product.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure services</span>
+<span class="text-gray-200">builder.Services.</span><span class="text-green-400">AddTuxedoSqlServer</span><span class="text-gray-200">(connectionString);</span>
+<span class="text-gray-200">builder.Services.</span><span class="text-green-400">AddNoundryTuxedoBowtie</span><span class="text-gray-200">();</span>
+
+<span class="text-gray-500">// Sync database on startup</span>
+<span class="text-purple-400">await</span> <span class="text-gray-200">app.Services.</span><span class="text-green-400">SynchronizeDatabaseAsync</span><span class="text-gray-200">();</span>
+
+<span class="text-gray-500">// Define schema with attributes</span>
+<span class="text-blue-400">[Table("Products")]</span>
+<span class="text-purple-400">public class</span> <span class="text-blue-400">Product</span>
+<span class="text-gray-200">{</span>
+    <span class="text-blue-400">[Key]</span>
+    <span class="text-purple-400">public int</span> <span class="text-gray-200">Id { </span><span class="text-purple-400">get</span><span class="text-gray-200">; </span><span class="text-purple-400">set</span><span class="text-gray-200">; }</span>
+
+    <span class="text-blue-400">[Column(MaxLength = 100)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Name")]</span>
+    <span class="text-purple-400">public string</span> <span class="text-gray-200">Name { </span><span class="text-purple-400">get</span><span class="text-gray-200">; </span><span class="text-purple-400">set</span><span class="text-gray-200">; }</span>
+
+    <span class="text-blue-400">[CheckConstraint("Price > 0")]</span>
+    <span class="text-purple-400">public decimal</span> <span class="text-gray-200">Price { </span><span class="text-purple-400">get</span><span class="text-gray-200">; </span><span class="text-purple-400">set</span><span class="text-gray-200">; }</span>
+
+    <span class="text-blue-400">[ForeignKey("Categories", "Id")]</span>
+    <span class="text-purple-400">public int</span> <span class="text-gray-200">CategoryId { </span><span class="text-purple-400">get</span><span class="text-gray-200">; </span><span class="text-purple-400">set</span><span class="text-gray-200">; }</span>
+<span class="text-gray-200">}</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
             <!-- Authnz -->
             <div class="mb-20">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="order-2 lg:order-1 bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure OAuth providers</span>
-<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddAuthnz</span><span class="text-gray-300">(options </span><span class="text-purple-400">=></span>
-<span class="text-gray-300">{</span>
-    <span class="text-gray-300">options.</span><span class="text-green-400">AddGoogle</span><span class="text-gray-300">(clientId, clientSecret);</span>
-    <span class="text-gray-300">options.</span><span class="text-green-400">AddMicrosoft</span><span class="text-gray-300">(clientId, clientSecret);</span>
-    <span class="text-gray-300">options.</span><span class="text-green-400">AddGitHub</span><span class="text-gray-300">(clientId, clientSecret);</span>
-    <span class="text-gray-300">options.JwtSecret = jwtSecret;</span>
-<span class="text-gray-300">});</span>
+                    <div class="order-2 lg:order-1 lg:pr-6 bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">AuthController.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure OAuth providers</span>
+<span class="text-gray-200">builder.Services.</span><span class="text-green-400">AddAuthnz</span><span class="text-gray-200">(options </span><span class="text-purple-400">=></span>
+<span class="text-gray-200">{</span>
+    <span class="text-gray-200">options.</span><span class="text-green-400">AddGoogle</span><span class="text-gray-200">(clientId, clientSecret);</span>
+    <span class="text-gray-200">options.</span><span class="text-green-400">AddMicrosoft</span><span class="text-gray-200">(clientId, clientSecret);</span>
+    <span class="text-gray-200">options.</span><span class="text-green-400">AddGitHub</span><span class="text-gray-200">(clientId, clientSecret);</span>
+    <span class="text-gray-200">options.JwtSecret = jwtSecret;</span>
+<span class="text-gray-200">});</span>
 
 <span class="text-gray-500">// Use in controllers</span>
-<span class="text-gray-300">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-300">(</span><span class="text-orange-400">"/auth/google"</span><span class="text-gray-300">)]</span>
-<span class="text-purple-400">public</span> <span class="text-blue-400">IActionResult</span> <span class="text-yellow-400">GoogleLogin</span><span class="text-gray-300">()</span>
-<span class="text-gray-300">{</span>
-    <span class="text-purple-400">var</span> <span class="text-gray-300">url = _authnz.</span><span class="text-green-400">GetAuthorizationUrl</span><span class="text-gray-300">(</span><span class="text-orange-400">"google"</span><span class="text-gray-300">);</span>
-    <span class="text-purple-400">return</span> <span class="text-yellow-400">Redirect</span><span class="text-gray-300">(url);</span>
-<span class="text-gray-300">}</span>
+<span class="text-gray-200">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-200">(</span><span class="text-orange-400">"/auth/google"</span><span class="text-gray-200">)]</span>
+<span class="text-purple-400">public</span> <span class="text-blue-400">IActionResult</span> <span class="text-yellow-400">GoogleLogin</span><span class="text-gray-200">()</span>
+<span class="text-gray-200">{</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-200">url = _authnz.</span><span class="text-green-400">GetAuthorizationUrl</span><span class="text-gray-200">(</span><span class="text-orange-400">"google"</span><span class="text-gray-200">);</span>
+    <span class="text-purple-400">return</span> <span class="text-yellow-400">Redirect</span><span class="text-gray-200">(url);</span>
+<span class="text-gray-200">}</span>
 
-<span class="text-gray-300">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-300">(</span><span class="text-orange-400">"/auth/callback"</span><span class="text-gray-300">)]</span>
-<span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">IActionResult</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">Callback</span><span class="text-gray-300">(</span><span class="text-purple-400">string</span> <span class="text-gray-300">code)</span>
-<span class="text-gray-300">{</span>
-    <span class="text-purple-400">var</span> <span class="text-gray-300">result = </span><span class="text-purple-400">await</span> <span class="text-gray-300">_authnz.</span><span class="text-green-400">ExchangeCodeAsync</span><span class="text-gray-300">(code);</span>
-    <span class="text-purple-400">var</span> <span class="text-gray-300">jwt = _authnz.</span><span class="text-green-400">GenerateJwtToken</span><span class="text-gray-300">(result.User);</span>
-    <span class="text-purple-400">return</span> <span class="text-yellow-400">Ok</span><span class="text-gray-300">(</span><span class="text-purple-400">new</span> <span class="text-gray-300">{ Token = jwt });</span>
-<span class="text-gray-300">}</span></code></pre>
+<span class="text-gray-200">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-200">(</span><span class="text-orange-400">"/auth/callback"</span><span class="text-gray-200">)]</span>
+<span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">IActionResult</span><span class="text-gray-200">&gt;</span> <span class="text-yellow-400">Callback</span><span class="text-gray-200">(</span><span class="text-purple-400">string</span> <span class="text-gray-200">code)</span>
+<span class="text-gray-200">{</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-200">result = </span><span class="text-purple-400">await</span> <span class="text-gray-200">_authnz.</span><span class="text-green-400">ExchangeCodeAsync</span><span class="text-gray-200">(code);</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-200">jwt = _authnz.</span><span class="text-green-400">GenerateJwtToken</span><span class="text-gray-200">(result.User);</span>
+    <span class="text-purple-400">return</span> <span class="text-yellow-400">Ok</span><span class="text-gray-200">(</span><span class="text-purple-400">new</span> <span class="text-gray-200">{ Token = jwt });</span>
+<span class="text-gray-200">}</span></code></pre>
+                        </div>
                     </div>
-                    <div class="order-1 lg:order-2">
+                    <div class="order-1 lg:order-2 lg:pl-6">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -290,7 +399,7 @@
             <!-- Assertive -->
             <div class="mb-20">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
+                    <div class="lg:pl-6">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -326,33 +435,44 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// String assertions</span>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">ProductTests.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// String assertions</span>
 <span class="text-orange-400">"Hello, World!"</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">StartsWith</span><span class="text-gray-300">(</span><span class="text-orange-400">"Hello"</span><span class="text-gray-300">)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">Contains</span><span class="text-gray-300">(</span><span class="text-orange-400">"World"</span><span class="text-gray-300">);</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">Assert</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">StartsWith</span><span class="text-gray-200">(</span><span class="text-orange-400">"Hello"</span><span class="text-gray-200">)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">Contains</span><span class="text-gray-200">(</span><span class="text-orange-400">"World"</span><span class="text-gray-200">);</span>
 
 <span class="text-gray-500">// Numeric assertions</span>
-<span class="text-blue-400">42</span><span class="text-gray-300">.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsGreaterThan</span><span class="text-gray-300">(</span><span class="text-blue-400">0</span><span class="text-gray-300">)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsLessThan</span><span class="text-gray-300">(</span><span class="text-blue-400">100</span><span class="text-gray-300">)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsEqualTo</span><span class="text-gray-300">(</span><span class="text-blue-400">42</span><span class="text-gray-300">);</span>
+<span class="text-blue-400">42</span><span class="text-gray-200">.</span><span class="text-green-400">Assert</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsGreaterThan</span><span class="text-gray-200">(</span><span class="text-blue-400">0</span><span class="text-gray-200">)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsLessThan</span><span class="text-gray-200">(</span><span class="text-blue-400">100</span><span class="text-gray-200">)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsEqualTo</span><span class="text-gray-200">(</span><span class="text-blue-400">42</span><span class="text-gray-200">);</span>
 
 <span class="text-gray-500">// Collection assertions</span>
-<span class="text-gray-300">list.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">HasCount</span><span class="text-gray-300">(</span><span class="text-blue-400">5</span><span class="text-gray-300">)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">Contains</span><span class="text-gray-300">(item)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">AllSatisfy</span><span class="text-gray-300">(x </span><span class="text-purple-400">=></span> <span class="text-gray-300">x.IsValid);</span>
+<span class="text-gray-200">list.</span><span class="text-green-400">Assert</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">HasCount</span><span class="text-gray-200">(</span><span class="text-blue-400">5</span><span class="text-gray-200">)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">Contains</span><span class="text-gray-200">(item)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">AllSatisfy</span><span class="text-gray-200">(x </span><span class="text-purple-400">=></span> <span class="text-gray-200">x.IsValid);</span>
 
 <span class="text-gray-500">// Object assertions</span>
-<span class="text-gray-300">result.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-300">()</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">HasProperty</span><span class="text-gray-300">(x </span><span class="text-purple-400">=></span> <span class="text-gray-300">x.Name)</span>
-    <span class="text-gray-300">.</span><span class="text-green-400">IsOfType</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;();</span></code></pre>
+<span class="text-gray-200">result.</span><span class="text-green-400">Assert</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-200">()</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">HasProperty</span><span class="text-gray-200">(x </span><span class="text-purple-400">=></span> <span class="text-gray-200">x.Name)</span>
+    <span class="text-gray-200">.</span><span class="text-green-400">IsOfType</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;();</span></code></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -360,36 +480,47 @@
             <!-- Guardian -->
             <div class="mb-20">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div class="order-2 lg:order-1 bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                        <pre class="text-sm font-mono"><code><span class="text-purple-400">public class</span> <span class="text-blue-400">UserService</span>
-<span class="text-gray-300">{</span>
-    <span class="text-purple-400">public</span> <span class="text-blue-400">User</span> <span class="text-yellow-400">CreateUser</span><span class="text-gray-300">(</span><span class="text-purple-400">string</span> <span class="text-gray-300">email, </span><span class="text-purple-400">int</span> <span class="text-gray-300">age)</span>
-    <span class="text-gray-300">{</span>
+                    <div class="order-2 lg:order-1 lg:pr-6 bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">UserService.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-purple-400">public class</span> <span class="text-blue-400">UserService</span>
+<span class="text-gray-200">{</span>
+    <span class="text-purple-400">public</span> <span class="text-blue-400">User</span> <span class="text-yellow-400">CreateUser</span><span class="text-gray-200">(</span><span class="text-purple-400">string</span> <span class="text-gray-200">email, </span><span class="text-purple-400">int</span> <span class="text-gray-200">age)</span>
+    <span class="text-gray-200">{</span>
         <span class="text-gray-500">// Guard against null or empty</span>
-        <span class="text-gray-300">email.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNullOrEmpty</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(email));</span>
+        <span class="text-gray-200">email.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNullOrEmpty</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(email));</span>
 
         <span class="text-gray-500">// Guard against invalid email</span>
-        <span class="text-gray-300">email.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">Email</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(email));</span>
+        <span class="text-gray-200">email.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">Email</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(email));</span>
 
         <span class="text-gray-500">// Guard against invalid range</span>
-        <span class="text-gray-300">age.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">InRange</span><span class="text-gray-300">(</span><span class="text-blue-400">18</span><span class="text-gray-300">, </span><span class="text-blue-400">120</span><span class="text-gray-300">, </span><span class="text-purple-400">nameof</span><span class="text-gray-300">(age));</span>
+        <span class="text-gray-200">age.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">InRange</span><span class="text-gray-200">(</span><span class="text-blue-400">18</span><span class="text-gray-200">, </span><span class="text-blue-400">120</span><span class="text-gray-200">, </span><span class="text-purple-400">nameof</span><span class="text-gray-200">(age));</span>
 
-        <span class="text-purple-400">return new</span> <span class="text-blue-400">User</span> <span class="text-gray-300">{ Email = email, Age = age };</span>
-    <span class="text-gray-300">}</span>
+        <span class="text-purple-400">return new</span> <span class="text-blue-400">User</span> <span class="text-gray-200">{ Email = email, Age = age };</span>
+    <span class="text-gray-200">}</span>
 
-    <span class="text-purple-400">public</span> <span class="text-blue-400">Product</span> <span class="text-yellow-400">GetProduct</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id, </span><span class="text-blue-400">Product</span> <span class="text-gray-300">product)</span>
-    <span class="text-gray-300">{</span>
+    <span class="text-purple-400">public</span> <span class="text-blue-400">Product</span> <span class="text-yellow-400">GetProduct</span><span class="text-gray-200">(</span><span class="text-purple-400">int</span> <span class="text-gray-200">id, </span><span class="text-blue-400">Product</span> <span class="text-gray-200">product)</span>
+    <span class="text-gray-200">{</span>
         <span class="text-gray-500">// Guard against negative values</span>
-        <span class="text-gray-300">id.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNegative</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(id));</span>
+        <span class="text-gray-200">id.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNegative</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(id));</span>
 
         <span class="text-gray-500">// Guard against null objects</span>
-        <span class="text-gray-300">product.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNull</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(product));</span>
+        <span class="text-gray-200">product.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNull</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(product));</span>
 
-        <span class="text-purple-400">return</span> <span class="text-gray-300">product;</span>
-    <span class="text-gray-300">}</span>
-<span class="text-gray-300">}</span></code></pre>
+        <span class="text-purple-400">return</span> <span class="text-gray-200">product;</span>
+    <span class="text-gray-200">}</span>
+<span class="text-gray-200">}</span></code></pre>
+                        </div>
                     </div>
-                    <div class="order-1 lg:order-2">
+                    <div class="order-1 lg:order-2 lg:pl-6">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -431,7 +562,7 @@
             <!-- Connector -->
             <div class="mb-20">
                 <div class="grid lg:grid-cols-2 gap-12 items-center">
-                    <div>
+                    <div class="lg:pl-6">
                         <div class="flex items-center mb-6">
                             <div class="w-16 h-16 bg-cyan-600 rounded-lg flex items-center justify-center mr-4">
                                 <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -467,32 +598,193 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
-<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddConnector</span><span class="text-gray-300">(</span><span class="text-orange-400">"ApiClient"</span><span class="text-gray-300">, options </span><span class="text-purple-400">=></span>
-<span class="text-gray-300">{</span>
-    <span class="text-gray-300">options.BaseUrl = </span><span class="text-orange-400">"https://api.example.com"</span><span class="text-gray-300">;</span>
-    <span class="text-gray-300">options.RetryCount = </span><span class="text-blue-400">3</span><span class="text-gray-300">;</span>
-    <span class="text-gray-300">options.TimeoutSeconds = </span><span class="text-blue-400">30</span><span class="text-gray-300">;</span>
-    <span class="text-gray-300">options.CircuitBreakerThreshold = </span><span class="text-blue-400">5</span><span class="text-gray-300">;</span>
-<span class="text-gray-300">});</span>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">ExternalApiService.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
+<span class="text-gray-200">builder.Services.</span><span class="text-green-400">AddConnector</span><span class="text-gray-200">(</span><span class="text-orange-400">"ApiClient"</span><span class="text-gray-200">, options </span><span class="text-purple-400">=></span>
+<span class="text-gray-200">{</span>
+    <span class="text-gray-200">options.BaseUrl = </span><span class="text-orange-400">"https://api.example.com"</span><span class="text-gray-200">;</span>
+    <span class="text-gray-200">options.RetryCount = </span><span class="text-blue-400">3</span><span class="text-gray-200">;</span>
+    <span class="text-gray-200">options.TimeoutSeconds = </span><span class="text-blue-400">30</span><span class="text-gray-200">;</span>
+    <span class="text-gray-200">options.CircuitBreakerThreshold = </span><span class="text-blue-400">5</span><span class="text-gray-200">;</span>
+<span class="text-gray-200">});</span>
 
 <span class="text-gray-500">// Use in services</span>
 <span class="text-purple-400">public class</span> <span class="text-blue-400">ExternalApiService</span>
-<span class="text-gray-300">{</span>
-    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IConnector</span> <span class="text-gray-300">_connector;</span>
+<span class="text-gray-200">{</span>
+    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IConnector</span> <span class="text-gray-200">_connector;</span>
 
-    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id)</span>
-    <span class="text-gray-300">{</span>
-        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connector</span>
-            <span class="text-gray-300">.</span><span class="text-green-400">GetAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;(</span><span class="text-orange-400">$"/products/</span><span class="text-gray-300">{id}</span><span class="text-orange-400">"</span><span class="text-gray-300">);</span>
-    <span class="text-gray-300">}</span>
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-200">(</span><span class="text-purple-400">int</span> <span class="text-gray-200">id)</span>
+    <span class="text-gray-200">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-200">_connector</span>
+            <span class="text-gray-200">.</span><span class="text-green-400">GetAsync</span><span class="text-gray-200">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-200">&gt;(</span><span class="text-orange-400">$"/products/</span><span class="text-gray-200">{id}</span><span class="text-orange-400">"</span><span class="text-gray-200">);</span>
+    <span class="text-gray-200">}</span>
 
-    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span> <span class="text-yellow-400">CreateOrderAsync</span><span class="text-gray-300">(</span><span class="text-blue-400">Order</span> <span class="text-gray-300">order)</span>
-    <span class="text-gray-300">{</span>
-        <span class="text-purple-400">await</span> <span class="text-gray-300">_connector.</span><span class="text-green-400">PostAsync</span><span class="text-gray-300">(</span><span class="text-orange-400">"/orders"</span><span class="text-gray-300">, order);</span>
-    <span class="text-gray-300">}</span>
-<span class="text-gray-300">}</span></code></pre>
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span> <span class="text-yellow-400">CreateOrderAsync</span><span class="text-gray-200">(</span><span class="text-blue-400">Order</span> <span class="text-gray-200">order)</span>
+    <span class="text-gray-200">{</span>
+        <span class="text-purple-400">await</span> <span class="text-gray-200">_connector.</span><span class="text-green-400">PostAsync</span><span class="text-gray-200">(</span><span class="text-orange-400">"/orders"</span><span class="text-gray-200">, order);</span>
+    <span class="text-gray-200">}</span>
+<span class="text-gray-200">}</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slurp -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 lg:pr-6 bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">Terminal</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Interactive CLI mode</span>
+<span class="text-gray-200">$ slurp data.csv</span>
+
+<span class="text-gray-400">? Select database provider: </span>
+  <span class="text-blue-400">❯ PostgreSQL</span>
+<span class="text-blue-400">    SQL Server
+    MySQL
+    SQLite</span>
+
+<span class="text-gray-400">? Enter server: </span><span class="text-yellow-400">localhost</span>
+<span class="text-gray-400">? Enter database: </span><span class="text-yellow-400">mydb</span>
+
+<span class="text-green-400">✓ Ingested 1,234,567 rows in 12.34 seconds</span>
+
+<span class="text-gray-500">// Or use programmatically</span>
+<span class="text-purple-400">var</span> <span class="text-gray-200">slurper = </span><span class="text-purple-400">new</span> <span class="text-blue-400">Slurper</span><span class="text-gray-200">(connectionString);</span>
+<span class="text-purple-400">await</span> <span class="text-gray-200">slurper.</span><span class="text-green-400">IngestAsync</span><span class="text-gray-200">(</span>
+    <span class="text-orange-400">"products.csv"</span><span class="text-gray-200">, </span>
+    <span class="text-orange-400">"Products"</span>
+<span class="text-gray-200">);</span></code></pre>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2 lg:pl-6">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-emerald-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Slurp</h3>
+                                <p class="text-gray-600 dark:text-gray-400">CSV to Database Ingestion</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            High-performance CSV ingestion tool that processes millions of rows in seconds with zero-allocation parsing and intelligent schema inference.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">100K+ rows per second</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Zero-allocation CSV parsing</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Smart schema inference</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DotEnvX -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 lg:pr-6 bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                        
+                        <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-xs font-mono">Program.cs</div>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.DotEnvX.Core.Extensions</span><span class="text-gray-200">;</span>
+
+<span class="text-purple-400">var</span> <span class="text-gray-200">builder = WebApplication.</span><span class="text-green-400">CreateBuilder</span><span class="text-gray-200">(args);</span>
+
+<span class="text-gray-500">// Load .env with encryption & validation</span>
+<span class="text-gray-200">builder.Configuration.</span><span class="text-green-400">AddDotEnvX</span><span class="text-gray-200">(options </span><span class="text-purple-400">=></span>
+<span class="text-gray-200">{</span>
+    <span class="text-gray-200">options.Path = </span><span class="text-orange-400">".env"</span><span class="text-gray-200">;</span>
+    <span class="text-gray-200">options.EnvironmentSpecific = </span><span class="text-purple-400">true</span><span class="text-gray-200">;</span>
+    <span class="text-gray-200">options.Required = </span><span class="text-purple-400">new</span><span class="text-gray-200">[] { </span>
+        <span class="text-orange-400">"DATABASE_URL"</span><span class="text-gray-200">, </span>
+        <span class="text-orange-400">"JWT_SECRET"</span>
+    <span class="text-gray-200">};</span>
+    <span class="text-gray-200">options.EncryptionKey = </span>
+        <span class="text-gray-200">Environment.</span><span class="text-green-400">GetEnvironmentVariable</span><span class="text-gray-200">(</span><span class="text-orange-400">"DOTENVX_KEY"</span><span class="text-gray-200">);</span>
+<span class="text-gray-200">});</span>
+
+<span class="text-gray-500">// Use configuration values</span>
+<span class="text-purple-400">var</span> <span class="text-gray-200">jwtSecret = builder.Configuration[</span><span class="text-orange-400">"JWT_SECRET"</span><span class="text-gray-200">];</span></code></pre>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2 lg:pl-6">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-yellow-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.DotEnvX</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Environment Variable Management</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            Enhanced .env file support with AES-256 encryption, validation, and environment-specific configurations. Secure your secrets while maintaining developer productivity.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">AES-256 encryption for secrets</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Environment-specific files (.env.development, .env.production)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Required variable validation</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -526,7 +818,7 @@
                             <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                             </svg>
-                            50+ UI components
+                            60+ UI components
                         </li>
                         <li class="flex items-center text-gray-600 dark:text-gray-300">
                             <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -610,9 +902,17 @@
 
             <!-- UI Code Sample -->
             <div class="max-w-5xl mx-auto">
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
-                    <div class="text-gray-400 text-sm mb-4 font-mono">Example: Contact Form with Noundry.UI TagHelpers</div>
-                    <pre class="text-sm font-mono"><code><span class="text-blue-400">&lt;noundry-card</span> <span class="text-yellow-400">title</span>=<span class="text-orange-400">"Contact Us"</span><span class="text-blue-400">&gt;</span>
+                <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl border border-gray-700 dark:border-gray-600 overflow-hidden">
+                    <div class="flex items-center px-4 py-3 bg-gray-800 dark:bg-gray-900 border-b border-gray-700">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-xs font-mono">Contact.cshtml</div>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-blue-400">&lt;noundry-card</span> <span class="text-yellow-400">title</span>=<span class="text-orange-400">"Contact Us"</span><span class="text-blue-400">&gt;</span>
     <span class="text-blue-400">&lt;form</span> <span class="text-yellow-400">method</span>=<span class="text-orange-400">"post"</span><span class="text-blue-400">&gt;</span>
         <span class="text-blue-400">&lt;noundry-text-input</span>
             <span class="text-yellow-400">asp-for</span>=<span class="text-orange-400">"FirstName"</span>
@@ -636,7 +936,8 @@
         <span class="text-blue-400">&lt;/noundry-button&gt;</span>
     <span class="text-blue-400">&lt;/form&gt;</span>
 <span class="text-blue-400">&lt;/noundry-card&gt;</span></code></pre>
-                </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </section>
