@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, category: 'all' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprints - Noundry Code Templates</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' },
+                        accent: { 500: '#10b981', 600: '#059669' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900">
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <a href="index.html">
+                <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8">
+                <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8">
+            </a>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                </svg>
+                <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="pt-32 pb-16 bg-gradient-to-br from-cyan-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">Code Blueprints</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                Production-ready code templates and architectural patterns for .NET applications
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-center gap-4 mb-12 flex-wrap">
+                <button @click="category = 'all'" :class="category === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">All</button>
+                <button @click="category = 'api'" :class="category === 'api' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">APIs</button>
+                <button @click="category = 'web'" :class="category === 'web' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Web Apps</button>
+                <button @click="category = 'data'" :class="category === 'data' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Data Access</button>
+                <button @click="category = 'patterns'" :class="category === 'patterns' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Patterns</button>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- REST API Blueprint -->
+                <div x-show="category === 'all' || category === 'api'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">REST API Template</h3>
+                        <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Complete REST API with CRUD operations, validation, error handling, and Swagger documentation.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>[ApiController]
+[Route("api/[controller]")]
+public class ProductsController : ControllerBase
+{
+    private readonly IRepository&lt;Product&gt; _repository;
+
+    [HttpGet]
+    public async Task&lt;ActionResult&lt;IEnumerable&lt;Product&gt;&gt;&gt; GetAll()
+    {
+        var products = await _repository.GetAllAsync();
+        return Ok(products);
+    }
+
+    [HttpPost]
+    public async Task&lt;ActionResult&lt;Product&gt;&gt; Create(Product product)
+    {
+        await _repository.AddAsync(product);
+        return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
+    }
+}</code></pre>
+                    </div>
+                    <a href="getting-started.html#rest-api" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+
+                <!-- Repository Pattern -->
+                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Repository Pattern</h3>
+                        <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Generic repository with specifications, unit of work, and Tuxedo ORM integration.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>public class Repository&lt;T&gt; : IRepository&lt;T&gt; where T : class
+{
+    private readonly IDbConnection _connection;
+
+    public async Task&lt;T&gt; GetByIdAsync(int id)
+    {
+        return await _connection.GetAsync&lt;T&gt;(id);
+    }
+
+    public async Task&lt;IEnumerable&lt;T&gt;&gt; FindAsync(ISpecification&lt;T&gt; spec)
+    {
+        return await _connection.QueryAsync&lt;T&gt;(spec.ToSql(), spec.Parameters);
+    }
+}</code></pre>
+                    </div>
+                    <a href="getting-started.html#repository" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+
+                <!-- Razor Pages Blueprint -->
+                <div x-show="category === 'all' || category === 'web'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Razor Pages App</h3>
+                        <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Full Razor Pages application with authentication, authorization, and form handling.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>public class IndexModel : PageModel
+{
+    [BindProperty]
+    public ContactForm Form { get; set; }
+
+    public async Task&lt;IActionResult&gt; OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+            return Page();
+
+        await _emailService.SendAsync(Form);
+        return RedirectToPage("Success");
+    }
+}</code></pre>
+                    </div>
+                    <a href="getting-started.html#razor-pages" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+
+                <!-- CQRS Pattern -->
+                <div x-show="category === 'all' || category === 'patterns'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">CQRS + MediatR</h3>
+                        <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Command Query Responsibility Segregation pattern with MediatR and validation pipeline.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>public record CreateProductCommand(string Name, decimal Price) : IRequest&lt;int&gt;;
+
+public class CreateProductHandler : IRequestHandler&lt;CreateProductCommand, int&gt;
+{
+    public async Task&lt;int&gt; Handle(CreateProductCommand request, CancellationToken ct)
+    {
+        var product = new Product { Name = request.Name, Price = request.Price };
+        await _repository.AddAsync(product);
+        return product.Id;
+    }
+}</code></pre>
+                    </div>
+                    <a href="getting-started.html#cqrs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+
+                <!-- Background Jobs -->
+                <div x-show="category === 'all' || category === 'patterns'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Background Jobs</h3>
+                        <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Hosted services and background workers with scoped dependencies and error handling.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>public class EmailWorker : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            using var scope = _services.CreateScope();
+            var queue = scope.ServiceProvider.GetRequiredService&lt;IEmailQueue&gt;();
+
+            await queue.ProcessPendingEmailsAsync();
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+        }
+    }
+}</code></pre>
+                    </div>
+                    <a href="getting-started.html#background-jobs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+
+                <!-- Minimal API -->
+                <div x-show="category === 'all' || category === 'api'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Minimal API</h3>
+                        <span class="px-3 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded-full text-sm font-medium">C#</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mb-4">
+                        Modern minimal API with route groups, filters, and OpenAPI documentation.
+                    </p>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-100"><code>var app = builder.Build();
+
+var products = app.MapGroup("/api/products")
+    .WithOpenApi()
+    .AddEndpointFilter&lt;ValidationFilter&gt;();
+
+products.MapGet("/", async (IRepository&lt;Product&gt; repo) =>
+    await repo.GetAllAsync());
+
+products.MapPost("/", async (Product product, IRepository&lt;Product&gt; repo) =>
+{
+    await repo.AddAsync(product);
+    return Results.Created($"/api/products/{product.Id}", product);
+});</code></pre>
+                    </div>
+                    <a href="getting-started.html#minimal-api" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Generate Code with Andy AI</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                Use Andy CLI to generate these blueprints and customize them for your needs
+            </p>
+            <a href="andy-ai.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+                Learn About Andy AI
+            </a>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 dark:bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400">© 2025 Noundry. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
