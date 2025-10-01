@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, emailSubmitted: false }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'; $watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry - Modern .NET Development Platform | Coming Soon</title>
+    <meta name="description" content="Complete .NET development platform with libraries, UI components, AI code generation, and multi-cloud deployment tools. Join the waitlist.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' },
+                        accent: { 500: '#10b981', 600: '#059669' },
+                        orange: { 500: '#f97316', 600: '#ea580c' }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .gradient-text { background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </a>
+                    <div class="hidden md:flex ml-10 space-x-8">
+                        <a href="#libraries" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                        <a href="#ui" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI</a>
+                        <a href="#ai" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">AI</a>
+                        <a href="#cloud" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Email Signup -->
+    <section class="pt-32 pb-20 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4">
+                    <span class="bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300 px-4 py-2 rounded-full text-sm font-semibold">
+                        🚀 Coming Soon
+                    </span>
+                </div>
+                <h1 class="text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                    Meet <span class="gradient-text">Noundry</span>
+                </h1>
+                <p class="text-xl lg:text-2xl text-gray-600 dark:text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Complete .NET development platform with production-ready libraries, beautiful UI components, AI-powered code generation, and seamless multi-cloud deployment.
+                </p>
+
+                <!-- Email Signup Form -->
+                <div class="max-w-xl mx-auto mb-12">
+                    <div x-show="!emailSubmitted" x-transition>
+                        <form class="flex flex-col sm:flex-row gap-3" @submit.prevent="emailSubmitted = true">
+                            <input
+                                type="email"
+                                required
+                                placeholder="Enter your email for early access"
+                                class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-600 dark:focus:border-primary-400 text-lg">
+                            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors whitespace-nowrap">
+                                Join Waitlist
+                            </button>
+                        </form>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Be the first to know when Noundry launches</p>
+                    </div>
+                    <div x-show="emailSubmitted" x-transition class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-6 py-4">
+                        <div class="flex items-center justify-center text-green-800 dark:text-green-300">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            <span class="font-semibold">Thanks! We'll notify you when Noundry launches.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">8+</div>
+                        <div class="text-gray-600 dark:text-gray-400">Core Libraries</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-accent-600 dark:text-accent-400">50+</div>
+                        <div class="text-gray-600 dark:text-gray-400">UI Components</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-orange-600 dark:text-orange-400">AI</div>
+                        <div class="text-gray-600 dark:text-gray-400">Code Generation</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-cyan-600 dark:text-cyan-400">3+</div>
+                        <div class="text-gray-600 dark:text-gray-400">Cloud Providers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Libraries Section -->
+    <section id="libraries" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Production-Ready Libraries</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Zero-dependency, high-performance .NET libraries designed for modern application development.
+                </p>
+            </div>
+
+            <!-- Tuxedo ORM -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Tuxedo</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Modern ORM for .NET</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            Built on Dapper's proven performance with CRUD operations for SQL Server, PostgreSQL, MySQL, and SQLite. High-performance, lightweight, and developer-friendly.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Built-in async CRUD operations</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Convention-based mapping</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Transaction support</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Custom Exceptions &amp; Auditing </span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Code first, entity to database sync with attributes</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
+<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddTuxedoSqlServer</span><span class="text-gray-300">(connectionString);</span>
+
+<span class="text-gray-500">// Use in your services</span>
+<span class="text-purple-400">public class</span> <span class="text-blue-400">ProductService</span>
+<span class="text-gray-300">{</span>
+    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IDbConnection</span> <span class="text-gray-300">_connection;</span>
+
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">GetAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;(id);</span>
+    <span class="text-gray-300">}</span>
+
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-purple-400">int</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">CreateProductAsync</span><span class="text-gray-300">(</span><span class="text-blue-400">Product</span> <span class="text-gray-300">product)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">InsertAsync</span><span class="text-gray-300">(product);</span>
+    <span class="text-gray-300">}</span>
+
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">IEnumerable</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;&gt;</span> <span class="text-yellow-400">GetAllAsync</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connection.</span><span class="text-green-400">GetAllAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;();</span>
+    <span class="text-gray-300">}</span>
+<span class="text-gray-300">}</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authnz -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure OAuth providers</span>
+<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddAuthnz</span><span class="text-gray-300">(options </span><span class="text-purple-400">=></span>
+<span class="text-gray-300">{</span>
+    <span class="text-gray-300">options.</span><span class="text-green-400">AddGoogle</span><span class="text-gray-300">(clientId, clientSecret);</span>
+    <span class="text-gray-300">options.</span><span class="text-green-400">AddMicrosoft</span><span class="text-gray-300">(clientId, clientSecret);</span>
+    <span class="text-gray-300">options.</span><span class="text-green-400">AddGitHub</span><span class="text-gray-300">(clientId, clientSecret);</span>
+    <span class="text-gray-300">options.JwtSecret = jwtSecret;</span>
+<span class="text-gray-300">});</span>
+
+<span class="text-gray-500">// Use in controllers</span>
+<span class="text-gray-300">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-300">(</span><span class="text-orange-400">"/auth/google"</span><span class="text-gray-300">)]</span>
+<span class="text-purple-400">public</span> <span class="text-blue-400">IActionResult</span> <span class="text-yellow-400">GoogleLogin</span><span class="text-gray-300">()</span>
+<span class="text-gray-300">{</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-300">url = _authnz.</span><span class="text-green-400">GetAuthorizationUrl</span><span class="text-gray-300">(</span><span class="text-orange-400">"google"</span><span class="text-gray-300">);</span>
+    <span class="text-purple-400">return</span> <span class="text-yellow-400">Redirect</span><span class="text-gray-300">(url);</span>
+<span class="text-gray-300">}</span>
+
+<span class="text-gray-300">[</span><span class="text-yellow-400">HttpGet</span><span class="text-gray-300">(</span><span class="text-orange-400">"/auth/callback"</span><span class="text-gray-300">)]</span>
+<span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">IActionResult</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">Callback</span><span class="text-gray-300">(</span><span class="text-purple-400">string</span> <span class="text-gray-300">code)</span>
+<span class="text-gray-300">{</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-300">result = </span><span class="text-purple-400">await</span> <span class="text-gray-300">_authnz.</span><span class="text-green-400">ExchangeCodeAsync</span><span class="text-gray-300">(code);</span>
+    <span class="text-purple-400">var</span> <span class="text-gray-300">jwt = _authnz.</span><span class="text-green-400">GenerateJwtToken</span><span class="text-gray-300">(result.User);</span>
+    <span class="text-purple-400">return</span> <span class="text-yellow-400">Ok</span><span class="text-gray-300">(</span><span class="text-purple-400">new</span> <span class="text-gray-300">{ Token = jwt });</span>
+<span class="text-gray-300">}</span></code></pre>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Authnz</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Sessionless OAuth 2.0 Authentication</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            JWT-based authentication for multiple OAuth providers. Secure, scalable, and easy to integrate. No server-side sessions required.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-600 dark:text-green-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Google, Microsoft, GitHub, Discord, Twitter</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-600 dark:text-green-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">JWT token generation and validation</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-green-600 dark:text-green-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Sessionless, horizontally scalable</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assertive -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Assertive</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Fluent Assertion Library</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            Make your tests readable, intuitive, and expressive with zero runtime dependencies. Clear error messages that help you debug faster.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Fluent, chainable API</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Zero dependencies</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Comprehensive type support</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// String assertions</span>
+<span class="text-orange-400">"Hello, World!"</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">StartsWith</span><span class="text-gray-300">(</span><span class="text-orange-400">"Hello"</span><span class="text-gray-300">)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">Contains</span><span class="text-gray-300">(</span><span class="text-orange-400">"World"</span><span class="text-gray-300">);</span>
+
+<span class="text-gray-500">// Numeric assertions</span>
+<span class="text-blue-400">42</span><span class="text-gray-300">.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsGreaterThan</span><span class="text-gray-300">(</span><span class="text-blue-400">0</span><span class="text-gray-300">)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsLessThan</span><span class="text-gray-300">(</span><span class="text-blue-400">100</span><span class="text-gray-300">)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsEqualTo</span><span class="text-gray-300">(</span><span class="text-blue-400">42</span><span class="text-gray-300">);</span>
+
+<span class="text-gray-500">// Collection assertions</span>
+<span class="text-gray-300">list.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsNotEmpty</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">HasCount</span><span class="text-gray-300">(</span><span class="text-blue-400">5</span><span class="text-gray-300">)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">Contains</span><span class="text-gray-300">(item)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">AllSatisfy</span><span class="text-gray-300">(x </span><span class="text-purple-400">=></span> <span class="text-gray-300">x.IsValid);</span>
+
+<span class="text-gray-500">// Object assertions</span>
+<span class="text-gray-300">result.</span><span class="text-green-400">Assert</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsNotNull</span><span class="text-gray-300">()</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">HasProperty</span><span class="text-gray-300">(x </span><span class="text-purple-400">=></span> <span class="text-gray-300">x.Name)</span>
+    <span class="text-gray-300">.</span><span class="text-green-400">IsOfType</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;();</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guardian -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-purple-400">public class</span> <span class="text-blue-400">UserService</span>
+<span class="text-gray-300">{</span>
+    <span class="text-purple-400">public</span> <span class="text-blue-400">User</span> <span class="text-yellow-400">CreateUser</span><span class="text-gray-300">(</span><span class="text-purple-400">string</span> <span class="text-gray-300">email, </span><span class="text-purple-400">int</span> <span class="text-gray-300">age)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-gray-500">// Guard against null or empty</span>
+        <span class="text-gray-300">email.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNullOrEmpty</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(email));</span>
+
+        <span class="text-gray-500">// Guard against invalid email</span>
+        <span class="text-gray-300">email.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">Email</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(email));</span>
+
+        <span class="text-gray-500">// Guard against invalid range</span>
+        <span class="text-gray-300">age.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">InRange</span><span class="text-gray-300">(</span><span class="text-blue-400">18</span><span class="text-gray-300">, </span><span class="text-blue-400">120</span><span class="text-gray-300">, </span><span class="text-purple-400">nameof</span><span class="text-gray-300">(age));</span>
+
+        <span class="text-purple-400">return new</span> <span class="text-blue-400">User</span> <span class="text-gray-300">{ Email = email, Age = age };</span>
+    <span class="text-gray-300">}</span>
+
+    <span class="text-purple-400">public</span> <span class="text-blue-400">Product</span> <span class="text-yellow-400">GetProduct</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id, </span><span class="text-blue-400">Product</span> <span class="text-gray-300">product)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-gray-500">// Guard against negative values</span>
+        <span class="text-gray-300">id.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNegative</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(id));</span>
+
+        <span class="text-gray-500">// Guard against null objects</span>
+        <span class="text-gray-300">product.</span><span class="text-green-400">Guard</span><span class="text-gray-300">().</span><span class="text-green-400">NotNull</span><span class="text-gray-300">(</span><span class="text-purple-400">nameof</span><span class="text-gray-300">(product));</span>
+
+        <span class="text-purple-400">return</span> <span class="text-gray-300">product;</span>
+    <span class="text-gray-300">}</span>
+<span class="text-gray-300">}</span></code></pre>
+                    </div>
+                    <div class="order-1 lg:order-2">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-orange-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Guardian</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Guard Clauses for Validation</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            Lightweight guard clauses for defensive programming. Validate method parameters with clean, expressive syntax.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Comprehensive validation methods</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Clear, descriptive exceptions</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-orange-600 dark:text-orange-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Performance optimized</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connector -->
+            <div class="mb-20">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-cyan-600 rounded-lg flex items-center justify-center mr-4">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-3xl font-bold text-gray-900 dark:text-white">Noundry.Connector</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Resilient HTTP Client</p>
+                            </div>
+                        </div>
+                        <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                            HTTP client wrapper with retry policies, circuit breakers, and automatic logging. Build resilient microservices with ease.
+                        </p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Automatic retry with exponential backoff</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Circuit breaker pattern</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Request/response logging</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Configure in Program.cs</span>
+<span class="text-gray-300">builder.Services.</span><span class="text-green-400">AddConnector</span><span class="text-gray-300">(</span><span class="text-orange-400">"ApiClient"</span><span class="text-gray-300">, options </span><span class="text-purple-400">=></span>
+<span class="text-gray-300">{</span>
+    <span class="text-gray-300">options.BaseUrl = </span><span class="text-orange-400">"https://api.example.com"</span><span class="text-gray-300">;</span>
+    <span class="text-gray-300">options.RetryCount = </span><span class="text-blue-400">3</span><span class="text-gray-300">;</span>
+    <span class="text-gray-300">options.TimeoutSeconds = </span><span class="text-blue-400">30</span><span class="text-gray-300">;</span>
+    <span class="text-gray-300">options.CircuitBreakerThreshold = </span><span class="text-blue-400">5</span><span class="text-gray-300">;</span>
+<span class="text-gray-300">});</span>
+
+<span class="text-gray-500">// Use in services</span>
+<span class="text-purple-400">public class</span> <span class="text-blue-400">ExternalApiService</span>
+<span class="text-gray-300">{</span>
+    <span class="text-purple-400">private readonly</span> <span class="text-blue-400">IConnector</span> <span class="text-gray-300">_connector;</span>
+
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;</span> <span class="text-yellow-400">GetProductAsync</span><span class="text-gray-300">(</span><span class="text-purple-400">int</span> <span class="text-gray-300">id)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-purple-400">return await</span> <span class="text-gray-300">_connector</span>
+            <span class="text-gray-300">.</span><span class="text-green-400">GetAsync</span><span class="text-gray-300">&lt;</span><span class="text-blue-400">Product</span><span class="text-gray-300">&gt;(</span><span class="text-orange-400">$"/products/</span><span class="text-gray-300">{id}</span><span class="text-orange-400">"</span><span class="text-gray-300">);</span>
+    <span class="text-gray-300">}</span>
+
+    <span class="text-purple-400">public async</span> <span class="text-blue-400">Task</span> <span class="text-yellow-400">CreateOrderAsync</span><span class="text-gray-300">(</span><span class="text-blue-400">Order</span> <span class="text-gray-300">order)</span>
+    <span class="text-gray-300">{</span>
+        <span class="text-purple-400">await</span> <span class="text-gray-300">_connector.</span><span class="text-green-400">PostAsync</span><span class="text-gray-300">(</span><span class="text-orange-400">"/orders"</span><span class="text-gray-300">, order);</span>
+    <span class="text-gray-300">}</span>
+<span class="text-gray-300">}</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- UI Components Section -->
+    <section id="ui" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Beautiful UI Components</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Pre-built TagHelpers, blocks, and code blueprints for rapid application development.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Noundry.UI &amp; TagHelpers</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        ASP.NET Core TagHelpers with Tailwind CSS styling. Forms, tables, cards, modals, and more.
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            50+ UI components
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Server-side rendering
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Dark mode support
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 12a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1v-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">UI Blocks</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Copy-paste UI blocks for forms, navigation, dashboards, pricing tables, and more.
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Production-ready
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Fully responsive
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Tailwind CSS
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Code Blueprints</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Architectural patterns and code templates for REST APIs, services, and background jobs.
+                    </p>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Data Access &amp; Filtering Patterns
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            REST & Minimal APIs
+                        </li>
+                        <li class="flex items-center text-gray-600 dark:text-gray-300">
+                            <svg class="w-4 h-4 text-accent-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Best practices built-in, ready to deploy to your codebase
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- UI Code Sample -->
+            <div class="max-w-5xl mx-auto">
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 overflow-x-auto">
+                    <div class="text-gray-400 text-sm mb-4 font-mono">Example: Contact Form with Noundry.UI TagHelpers</div>
+                    <pre class="text-sm font-mono"><code><span class="text-blue-400">&lt;noundry-card</span> <span class="text-yellow-400">title</span>=<span class="text-orange-400">"Contact Us"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;form</span> <span class="text-yellow-400">method</span>=<span class="text-orange-400">"post"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-text-input</span>
+            <span class="text-yellow-400">asp-for</span>=<span class="text-orange-400">"FirstName"</span>
+            <span class="text-yellow-400">label</span>=<span class="text-orange-400">"First Name"</span>
+            <span class="text-yellow-400">placeholder</span>=<span class="text-orange-400">"Enter your first name"</span>
+            <span class="text-yellow-400">required</span>=<span class="text-orange-400">"true"</span> <span class="text-blue-400">/&gt;</span>
+
+        <span class="text-blue-400">&lt;noundry-text-input</span>
+            <span class="text-yellow-400">asp-for</span>=<span class="text-orange-400">"Email"</span>
+            <span class="text-yellow-400">type</span>=<span class="text-orange-400">"email"</span>
+            <span class="text-yellow-400">label</span>=<span class="text-orange-400">"Email Address"</span>
+            <span class="text-yellow-400">icon</span>=<span class="text-orange-400">"envelope"</span> <span class="text-blue-400">/&gt;</span>
+
+        <span class="text-blue-400">&lt;noundry-textarea</span>
+            <span class="text-yellow-400">asp-for</span>=<span class="text-orange-400">"Message"</span>
+            <span class="text-yellow-400">label</span>=<span class="text-orange-400">"Message"</span>
+            <span class="text-yellow-400">rows</span>=<span class="text-orange-400">"5"</span> <span class="text-blue-400">/&gt;</span>
+
+        <span class="text-blue-400">&lt;noundry-button</span> <span class="text-yellow-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-yellow-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-yellow-400">size</span>=<span class="text-orange-400">"lg"</span><span class="text-blue-400">&gt;</span>
+            Send Message
+        <span class="text-blue-400">&lt;/noundry-button&gt;</span>
+    <span class="text-blue-400">&lt;/form&gt;</span>
+<span class="text-blue-400">&lt;/noundry-card&gt;</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Code Generation Section -->
+    <section id="ai" class="py-20 bg-gradient-to-br from-orange-50 via-red-50 to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-orange-100 dark:bg-orange-900/30 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Andy AI CLI</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
+                    Generate production-ready code with natural language commands. Powered by CodeLlama-7B with LlamaSharp.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Terminal</div>
+                    </div>
+                    <div class="font-mono text-sm space-y-2">
+                        <div class="text-gray-400"># Install Andy CLI</div>
+                        <div class="text-accent-500">$ dotnet tool install -g Noundry.Andy</div>
+                        <div class="text-gray-400 mt-4"># Generate a service layer</div>
+                        <div class="text-accent-500">$ andy generate "service for managing products with CRUD operations"</div>
+                        <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
+                        <div class="text-green-400 mt-2">✨ Created Services/IProductService.cs</div>
+                        <div class="text-green-400">✨ Created Services/ProductService.cs</div>
+                        <div class="text-blue-400 mt-2">✅ Service layer ready with DI setup!</div>
+                        <div class="text-gray-400 mt-4"># Generate a form UI</div>
+                        <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: name, email, phone"</div>
+                        <div class="text-green-400 mt-2">✨ Created Models/ContactFormModel.cs</div>
+                        <div class="text-green-400">✨ Created Views/Contact/Create.cshtml</div>
+                        <div class="text-blue-400 mt-2">✅ Form ready with validation!</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="text-3xl mb-3">📝</div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2">Form Generation</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Complete forms with validation, TagHelpers, and Tailwind CSS styling.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="text-3xl mb-3">⚙️</div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2">Service Layer</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">CRUD services with interfaces, DI, and async/await patterns.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="text-3xl mb-3">🔌</div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2">API Controllers</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">REST APIs with authentication, proper HTTP verbs, and documentation.</p>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="text-3xl mb-3">💬</div>
+                    <h4 class="font-bold text-gray-900 dark:text-white mb-2">Chat Mode</h4>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Interactive development through conversational AI interface.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cloud Deployment Section -->
+    <section id="cloud" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-cyan-100 dark:bg-cyan-900/30 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                    </svg>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">Noundry Deploy CLI</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Multi-cloud deployment using .NET Aspire for local dev and Terraform for production infrastructure.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                <div class="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-cyan-900/20 rounded-xl p-8">
+                    <div class="w-16 h-16 bg-cyan-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Multi-Cloud</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Deploy to Azure, AWS, Google Cloud, or containers with the same commands.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-blue-900/20 rounded-xl p-8">
+                    <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Infrastructure as Code</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Define infrastructure using C# and .NET patterns with Terraform generation.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-green-900/20 rounded-xl p-8">
+                    <div class="w-16 h-16 bg-green-600 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">Zero Downtime</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Blue-green deployments, health checks, and instant rollbacks built-in.</p>
+                </div>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                <div class="font-mono text-sm space-y-2">
+                    <div class="text-gray-400"># Install Noundry Deploy CLI</div>
+                    <div class="text-accent-500">$ dotnet tool install -g Noundry.Deploy</div>
+                    <div class="text-gray-400 mt-4"># Initialize your project</div>
+                    <div class="text-accent-500">$ ndc init --provider azure</div>
+                    <div class="text-gray-400 mt-4"># Deploy to production with a single command</div>
+                    <div class="text-accent-500">$ ndc deploy --environment production</div>
+                    <div class="text-gray-400 mt-2">🚀 Deploying to Azure...</div>
+                    <div class="text-blue-400 mt-2">✅ Infrastructure provisioned</div>
+                    <div class="text-blue-400">✅ Application deployed</div>
+                    <div class="text-blue-400">✅ Health checks passed</div>
+                    <div class="text-green-400 mt-2">🎉 Deployment successful!</div>
+                    <div class="text-gray-300 mt-2">URL: https://your-app.azurewebsites.net</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section with Email Signup -->
+    <section class="py-20 bg-gradient-to-br from-primary-600 to-purple-600 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl lg:text-5xl font-bold mb-6">Be the First to Experience Noundry</h2>
+            <p class="text-xl mb-12 text-primary-100">
+                Join the waitlist and get exclusive early access when we launch.
+            </p>
+
+            <!-- Email Signup Form -->
+            <div class="max-w-xl mx-auto mb-8" x-data="{ submitted: false }">
+                <div x-show="!submitted" x-transition>
+                    <form class="flex flex-col sm:flex-row gap-3" @submit.prevent="submitted = true">
+                        <input
+                            type="email"
+                            required
+                            placeholder="Your email address"
+                            class="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-white/50 text-lg">
+                        <button type="submit" class="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap">
+                            Get Early Access
+                        </button>
+                    </form>
+                </div>
+                <div x-show="submitted" x-transition class="bg-white/20 backdrop-blur border-2 border-white rounded-lg px-6 py-4">
+                    <div class="flex items-center justify-center text-white">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span class="font-semibold">You're on the list! We'll email you when Noundry launches.</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-sm text-primary-100">
+                No spam. Just important updates about Noundry's launch.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto mx-auto mb-4">
+                <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto mx-auto mb-4">
+                <p class="text-gray-400 max-w-2xl mx-auto">
+                    Modern .NET development platform with production-ready libraries, beautiful UI components, AI-powered code generation, and seamless multi-cloud deployment.
+                </p>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>© 2025 Noundry. All rights reserved. Coming Soon.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
