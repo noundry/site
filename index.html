@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false, billingCycle: 'annual' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -859,9 +859,26 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
                     Get access to the complete Noundry platform, premium training, priority support, and exclusive services.
                 </p>
+
+                <!-- Billing Toggle -->
+                <div class="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    <button
+                        @click="billingCycle = 'monthly'"
+                        :class="billingCycle === 'monthly' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-all">
+                        Monthly
+                    </button>
+                    <button
+                        @click="billingCycle = 'annual'"
+                        :class="billingCycle === 'annual' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
+                        class="px-4 py-2 rounded-md text-sm font-medium transition-all">
+                        Annual
+                        <span class="ml-1 text-xs text-accent-600 dark:text-accent-400 font-semibold">Save 20%</span>
+                    </button>
+                </div>
             </div>
             
             <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -876,10 +893,15 @@
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Solo</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">For indie developers and solopreneurs</p>
                         <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white">$199</span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2">/year</span>
+                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$199' : '$25'"></span>
+                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
                         </div>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Single developer license</p>
+                        <div x-show="billingCycle === 'annual'" class="mt-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
+                                Save $101/year
+                            </span>
+                        </div>
                     </div>
 
                     <ul class="space-y-4 mb-8">
@@ -938,10 +960,15 @@
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Developer</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">Perfect for individual developers and freelancers</p>
                         <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white">$299</span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2">/year</span>
+                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$299' : '$37'"></span>
+                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
                         </div>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Per developer license</p>
+                        <div x-show="billingCycle === 'annual'" class="mt-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
+                                Save $145/year
+                            </span>
+                        </div>
                     </div>
                     
                     <ul class="space-y-4 mb-8">
@@ -963,11 +990,11 @@
                             </svg>
                             <span class="text-gray-700 dark:text-gray-300">Premium Blocks & Blueprints</span>
                         </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI with Full Features</span>
+                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <span class="text-xs text-orange-600 dark:text-orange-400">(additional cost)</span></span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1004,10 +1031,15 @@
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Team</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">Ideal for development teams and organizations</p>
                         <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white">$999</span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2">/year</span>
+                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$999' : '$125'"></span>
+                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
                         </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Up to 5 developers • $99/additional dev</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400" x-text="billingCycle === 'annual' ? 'Up to 5 developers • $99/additional dev' : 'Up to 5 developers • $15/mo per additional dev'"></p>
+                        <div x-show="billingCycle === 'annual'" class="mt-2">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
+                                Save $501/year
+                            </span>
+                        </div>
                     </div>
                     
                     <ul class="space-y-4 mb-8">
