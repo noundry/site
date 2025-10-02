@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Read(//c/Work/Noundry/src/noundry.com/**)",
+      "Read(//c/Work/Noundry/**)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
