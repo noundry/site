@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, activeProvider: 'azure' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false, activeProvider: 'aws' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noundry.Cloud - Multi-Cloud Deployment Platform</title>
+    <title>Noundry Deploy CLI - Multi-Cloud Deployment Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -31,9 +31,7 @@
             }
         }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
@@ -49,7 +47,7 @@
                         <a href="index.html">
                             <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                             <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
-                        </a> 
+                        </a>
                     </div>
                     <div class="hidden md:block ml-10">
                         <div class="flex items-baseline space-x-8">
@@ -89,809 +87,461 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
                     </svg>
                 </div>
+                <div class="inline-block mb-4">
+                    <span class="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-4 py-2 rounded-full text-sm font-semibold">
+                        ✅ Production Ready
+                    </span>
+                </div>
                 <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                     Noundry Deploy CLI <span class="text-cyan-600 dark:text-cyan-400">(NDC)</span>
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-                    Multi-cloud .NET application deployment using .NET Aspire for local development and Terraform for production infrastructure. Create identical developer experiences across AWS, Google Cloud, Azure, and container platforms.
+                    Aspire for local development + deploy API to any cloud platform. Same developer experience across AWS, Google Cloud, Azure, and container platforms.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#quickstart" class="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
                         Quick Start Guide
                     </a>
-                    <a href="#examples" class="border-2 border-cyan-600 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
-                        View Examples
+                    <a href="https://github.com/Noundry/Cloud" target="_blank" class="border-2 border-cyan-600 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View on GitHub
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Platform Support -->
     <section class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose NDC?</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Fully Supported Platforms</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    "Write once, deploy anywhere" for .NET developers. Use .NET Aspire locally, deploy to any cloud with Terraform.
+                    Complete multi-cloud support with identical developer experience
                 </p>
             </div>
-            
-            <div class="grid lg:grid-cols-3 gap-8 mb-16">
-                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+
+            <div class="overflow-x-auto">
+                <table class="w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg">
+                    <thead class="bg-gray-100 dark:bg-gray-700">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Platform</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Service</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Database</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Cache</th>
+                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">Storage</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-gray-900 dark:text-white">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-750">
+                            <td class="px-6 py-4 text-gray-900 dark:text-white font-semibold">AWS</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">App Runner</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">RDS PostgreSQL</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">ElastiCache</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">S3</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 dark:text-green-400 font-semibold">✅ Production</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-750">
+                            <td class="px-6 py-4 text-gray-900 dark:text-white font-semibold">Google Cloud</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Cloud Run</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Cloud SQL</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Memorystore</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Cloud Storage</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 dark:text-green-400 font-semibold">✅ Production</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-750">
+                            <td class="px-6 py-4 text-gray-900 dark:text-white font-semibold">Azure</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Container Apps</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">SQL Database</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Redis Cache</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Blob Storage</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 dark:text-green-400 font-semibold">✅ Production</span></td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-750">
+                            <td class="px-6 py-4 text-gray-900 dark:text-white font-semibold">Container</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Docker/K8s</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">PostgreSQL</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">Redis</td>
+                            <td class="px-6 py-4 text-gray-600 dark:text-gray-300">File/S3</td>
+                            <td class="px-6 py-4 text-center"><span class="text-green-600 dark:text-green-400 font-semibold">✅ Production</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">How NDC Works</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Perfect separation: Aspire for local development, managed cloud services for production
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">🏠 Local Development</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Aspire Orchestration</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Multi-Cloud Ready</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Deploy to Azure, AWS, Google Cloud, or any provider with the same commands and configuration patterns.</p>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Automatically runs PostgreSQL, Redis, MinIO, MailHog in containers</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Service discovery and connection strings auto-configured</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Rich Aspire dashboard for monitoring services</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Hot reload and debugging support</span>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-8 h-8 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">☁️ Production Deployment</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">API Container Only</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Infrastructure as Code</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Define your cloud infrastructure using C# and .NET patterns you already know and love.</p>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Builds and deploys only your API code (lightweight container)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Connects to managed cloud services (databases, cache, storage)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Identical developer experience across all cloud providers</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span>Complete Infrastructure as Code (Terraform)</span>
+                        </li>
+                    </ul>
                 </div>
-                
-                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">AWS</h3>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Zero-Downtime Deployments</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Automated blue-green deployments, health checks, and instant rollbacks ensure maximum uptime.</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">App Runner + RDS + ElastiCache + S3</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Google Cloud</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Cloud Run + Cloud SQL + Memorystore</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white">Azure</h3>
+                    </div>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">Container Apps + SQL DB + Redis</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Quick Start Section -->
-    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+    <section id="quickstart" class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in Minutes</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Install NDC templates and create your first multi-cloud .NET application.
+                    Same workflow, different platforms - choose your cloud provider
                 </p>
             </div>
-            
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+            <!-- Platform Selector -->
+            <div class="flex justify-center mb-12">
+                <div class="inline-flex bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+                    <button @click="activeProvider = 'aws'" :class="activeProvider === 'aws' ? 'bg-white dark:bg-gray-700 shadow' : ''" class="px-6 py-3 rounded-md font-medium text-sm transition-colors">AWS</button>
+                    <button @click="activeProvider = 'gcp'" :class="activeProvider === 'gcp' ? 'bg-white dark:bg-gray-700 shadow' : ''" class="px-6 py-3 rounded-md font-medium text-sm transition-colors">Google Cloud</button>
+                    <button @click="activeProvider = 'azure'" :class="activeProvider === 'azure' ? 'bg-white dark:bg-gray-700 shadow' : ''" class="px-6 py-3 rounded-md font-medium text-sm transition-colors">Azure</button>
+                    <button @click="activeProvider = 'container'" :class="activeProvider === 'container' ? 'bg-white dark:bg-gray-700 shadow' : ''" class="px-6 py-3 rounded-md font-medium text-sm transition-colors">Container</button>
+                </div>
+            </div>
+
+            <!-- AWS Instructions -->
+            <div x-show="activeProvider === 'aws'" x-transition class="max-w-4xl mx-auto">
                 <div class="space-y-6">
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Install Template</h3>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
-                            <div class="text-cyan-500">$ dotnet pack src/NDC.Templates.WebApp/NDC.Templates.WebApp.csproj -o packages/</div>
-                            <div class="text-cyan-500">$ dotnet new install packages/NDC.Templates.WebApp.1.0.0.nupkg</div>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">1</span>
+                            Clone and Choose Platform
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-200">git clone https://github.com/Noundry/Cloud.git</div>
+                            <div class="text-gray-200">cd noundry-cloud-cli</div>
+                            <div class="text-cyan-400">cp -r examples/working-aws-template MyApi</div>
+                            <div class="text-gray-200">cd MyApi</div>
                         </div>
                     </div>
-                    
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Create Project</h3>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
-                            <div class="text-cyan-500">$ ndc create azure --name MyApi</div>
-                            <div class="text-gray-400">✨ Created Aspire project structure</div>
-                            <div class="text-gray-400">📁 Generated Terraform configurations</div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Develop & Deploy</h3>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
-                            <div class="text-cyan-500">$ dotnet run --project src/MyApi.AppHost</div>
-                            <div class="text-gray-400">🎯 Local development with Aspire</div>
-                            <div class="text-cyan-500">$ terraform apply</div>
-                            <div class="text-green-400">🚀 Deploy to cloud with Terraform!</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
-                    <div class="flex items-center mb-4">
-                        <div class="flex space-x-2">
-                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-                        </div>
-                        <div class="ml-4 text-gray-400 text-sm font-mono">Live Deployment Demo</div>
-                    </div>
-                    <div class="font-mono text-sm space-y-2" x-data="{ 
-                        currentStep: 0,
-                        steps: [
-                            { text: '$ ndc create azure --name MyApi', type: 'command' },
-                            { text: '🔧 Creating Aspire project structure...', type: 'info' },
-                            { text: '📦 Generated AppHost and API projects', type: 'info' },
-                            { text: '🗺️ Created Terraform configurations', type: 'info' },
-                            { text: '✨ Ready for local development', type: 'success' },
-                            { text: '$ dotnet run --project src/MyApi.AppHost', type: 'command' },
-                            { text: '🎯 Starting Aspire dashboard...', type: 'info' },
-                            { text: '📦 Orchestrating local services...', type: 'info' },
-                            { text: '$ terraform apply', type: 'command' },
-                            { text: '🚀 Deploying to Azure Container Apps...', type: 'info' },
-                            { text: '✅ Infrastructure deployed!', type: 'success' },
-                            { text: '🌐 https://myapi.azurecontainerapps.io', type: 'url' }
-                        ]
-                    }" x-init="
-                        setInterval(() => {
-                            if (currentStep < steps.length - 1) {
-                                currentStep++;
-                            } else {
-                                currentStep = 0;
-                            }
-                        }, 1500)
-                    ">
-                        <template x-for="(step, index) in steps" :key="index">
-                            <div x-show="index <= currentStep" 
-                                 x-transition:enter="transition ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 transform translate-y-2"
-                                 x-transition:enter-end="opacity-100 transform translate-y-0"
-                                 class="flex items-center">
-                                <span x-text="step.text" 
-                                      :class="{
-                                          'text-cyan-500': step.type === 'command',
-                                          'text-gray-400': step.type === 'info',
-                                          'text-green-400': step.type === 'success',
-                                          'text-blue-400': step.type === 'url'
-                                      }"></span>
-                                <span x-show="index === currentStep && step.type === 'command'" class="animate-pulse text-cyan-500 ml-1">|</span>
-                            </div>
-                        </template>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Cloud Providers Section -->
-    <section class="py-20 bg-white dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Supported Cloud Providers</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Choose your cloud provider and let Noundry.Cloud handle the rest. Same commands, consistent experience everywhere.
-                </p>
-            </div>
-            
-            <!-- Provider Tabs -->
-            <div class="flex justify-center mb-8">
-                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex space-x-1">
-                    <button @click="activeProvider = 'azure'" 
-                            :class="activeProvider === 'azure' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
-                            class="px-6 py-3 rounded-lg font-medium transition-colors">
-                        Azure
-                    </button>
-                    <button @click="activeProvider = 'aws'" 
-                            :class="activeProvider === 'aws' ? 'bg-white dark:bg-gray-700 text-orange-600 dark:text-orange-400' : 'text-gray-600 dark:text-gray-300'"
-                            class="px-6 py-3 rounded-lg font-medium transition-colors">
-                        AWS
-                    </button>
-                    <button @click="activeProvider = 'gcp'" 
-                            :class="activeProvider === 'gcp' ? 'bg-white dark:bg-gray-700 text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-300'"
-                            class="px-6 py-3 rounded-lg font-medium transition-colors">
-                        Google Cloud
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Azure Content -->
-            <div x-show="activeProvider === 'azure'" class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.001 18c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6z"/>
-                        </svg>
-                        Microsoft Azure
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Container Apps</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Deploy containerized .NET APIs with Terraform-managed infrastructure</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">SQL Database</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Managed SQL databases provisioned via Terraform</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Redis Cache</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Redis caching layer for improved performance</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Blob Storage</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Object storage for static assets and file uploads</p>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">2</span>
+                            Local Development with Aspire
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-cyan-400">dotnet run --project src/MyApp.AppHost</div>
+                            <div class="text-green-400 mt-2">✅ API: http://localhost:8080</div>
+                            <div class="text-green-400">✅ Aspire dashboard: https://localhost:17001</div>
                         </div>
                     </div>
-                </div>
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                    <h4 class="text-lg font-semibold text-white mb-4">Azure Deployment Example</h4>
-                    <div class="font-mono text-sm text-gray-300 space-y-2">
-                        <div class="text-cyan-500">$ ndc create azure --name MyApi</div>
-                        <div class="text-gray-400">📋 Creating Azure project template...</div>
-                        <div class="text-cyan-500">$ dotnet run --project src/MyApi.AppHost</div>
-                        <div class="text-gray-400">🎯 Local development with Aspire</div>
-                        <div class="text-cyan-500">$ cd terraform && terraform init</div>
-                        <div class="text-gray-400">🔧 Initialize Terraform backend</div>
-                        <div class="text-cyan-500">$ terraform apply</div>
-                        <div class="text-gray-400">🚀 Deploying to Azure Container Apps...</div>
-                        <div class="text-green-400">✅ Infrastructure deployed successfully!</div>
-                        <div class="text-blue-400">🌐 https://myapi.azurecontainerapps.io</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- AWS Content -->
-            <div x-show="activeProvider === 'aws'" class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                        <svg class="w-8 h-8 text-orange-600 dark:text-orange-400 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M13.527 2.04L20.4 4.11a.76.76 0 01.6.74v14.3a.76.76 0 01-.6.74l-6.873 2.07a.76.76 0 01-.454 0L6.2 19.89a.76.76 0 01-.6-.74V4.85a.76.76 0 01.6-.74l6.873-2.07a.76.76 0 01.454 0z"/>
-                        </svg>
-                        Amazon AWS
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">App Runner</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Deploy containerized .NET APIs with automatic scaling via Terraform</p>
-                        </div>
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">ECR (Container Registry)</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Store and manage Docker container images for deployment</p>
-                        </div>
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">RDS PostgreSQL</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Managed PostgreSQL databases configured through infrastructure as code</p>
-                        </div>
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">ElastiCache & S3</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Redis caching and object storage services</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                    <h4 class="text-lg font-semibold text-white mb-4">AWS Deployment Example</h4>
-                    <div class="font-mono text-sm text-gray-300 space-y-2">
-                        <div class="text-cyan-500">$ ndc create aws --name MyApi</div>
-                        <div class="text-gray-400">📋 Creating AWS project template...</div>
-                        <div class="text-cyan-500">$ dotnet run --project src/MyApi.AppHost</div>
-                        <div class="text-gray-400">🎯 Local development with Aspire</div>
-                        <div class="text-cyan-500">$ cd terraform && terraform init</div>
-                        <div class="text-gray-400">🔧 Configure AWS backend</div>
-                        <div class="text-cyan-500">$ terraform apply</div>
-                        <div class="text-gray-400">🚀 Deploying to AWS App Runner...</div>
-                        <div class="text-green-400">✅ Infrastructure deployed successfully!</div>
-                        <div class="text-blue-400">🌐 https://myapi.apprunner.us-east-1.amazonaws.com</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Google Cloud Content -->
-            <div x-show="activeProvider === 'gcp'" class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                        <svg class="w-8 h-8 text-red-600 dark:text-red-400 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.001 18c-3.309 0-6-2.691-6-6s2.691-6 6-6 6 2.691 6 6-2.691 6-6 6z"/>
-                        </svg>
-                        Google Cloud Platform
-                    </h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Cloud Run</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Deploy containerized .NET APIs with serverless scaling via Terraform</p>
-                        </div>
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Artifact Registry</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Store and manage Docker container images securely</p>
-                        </div>
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Cloud SQL</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Managed PostgreSQL databases provisioned through infrastructure as code</p>
-                        </div>
-                        <div class="border-l-4 border-red-500 pl-4">
-                            <h4 class="font-semibold text-gray-900 dark:text-white">Memorystore & Storage</h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Redis caching and object storage services</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                    <h4 class="text-lg font-semibold text-white mb-4">Google Cloud Deployment Example</h4>
-                    <div class="font-mono text-sm text-gray-300 space-y-2">
-                        <div class="text-cyan-500">$ ndc create gcp --name MyApi</div>
-                        <div class="text-gray-400">📋 Creating GCP project template...</div>
-                        <div class="text-cyan-500">$ dotnet run --project src/MyApi.AppHost</div>
-                        <div class="text-gray-400">🎯 Local development with Aspire</div>
-                        <div class="text-cyan-500">$ cd terraform && terraform init</div>
-                        <div class="text-gray-400">🔧 Configure GCP backend</div>
-                        <div class="text-cyan-500">$ terraform apply</div>
-                        <div class="text-gray-400">🚀 Deploying to Cloud Run...</div>
-                        <div class="text-green-400">✅ Infrastructure deployed successfully!</div>
-                        <div class="text-blue-400">🌐 https://myapi-region-project.a.run.app</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Configuration Section -->
-    <section id="configuration" class="py-20 bg-gray-50 dark:bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Project Structure & Requirements</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    NDC creates a standardized project structure with .NET Aspire for local development and Terraform for cloud deployment.
-                </p>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Requirements -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Prerequisites</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">.NET 9.0 SDK</span>
-                        </div>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Docker Desktop</span>
-                        </div>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Terraform ≥ 1.0</span>
-                        </div>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Cloud CLI (AWS CLI, gcloud, or Azure CLI)</span>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">3</span>
+                            Deploy to AWS
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-500"># Deploy infrastructure</div>
+                            <div class="text-gray-200">cd terraform && terraform init && terraform apply</div>
+                            <div class="text-gray-500 mt-3"># Build and deploy container</div>
+                            <div class="text-gray-200">cd .. && docker build -t myapi .</div>
+                            <div class="text-cyan-400">aws ecr get-login-password | docker login ...</div>
+                            <div class="text-green-400 mt-2">🚀 App Runner auto-deploys!</div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Project Structure -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Generated Project Structure</h3>
-                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                        <pre><code><span class="text-green-400">MyApi/</span>
-├── <span class="text-green-400">src/</span>
-│   ├── <span class="text-blue-400">MyApi.AppHost/</span>          <span class="text-gray-500"># Aspire orchestration</span>
-│   ├── <span class="text-blue-400">MyApi.Api/</span>              <span class="text-gray-500"># Deployable API</span>
-│   └── <span class="text-blue-400">MyApi.ServiceDefaults/</span>  <span class="text-gray-500"># Shared configuration</span>
-├── <span class="text-green-400">terraform/</span>                    <span class="text-gray-500"># Infrastructure as Code</span>
-│   ├── <span class="text-orange-400">main.tf</span>
-│   ├── <span class="text-orange-400">variables.tf</span>
-│   └── <span class="text-orange-400">outputs.tf</span>
-├── <span class="text-green-400">k8s/</span>                        <span class="text-gray-500"># Kubernetes manifests</span>
-├── <span class="text-purple-400">Dockerfile</span>                   <span class="text-gray-500"># Container definition</span>
-├── <span class="text-purple-400">docker-compose.yml</span>           <span class="text-gray-500"># Local orchestration</span>
-└── <span class="text-purple-400">MyApi.sln</span>                   <span class="text-gray-500"># Solution file</span></code></pre>
-                    </div>
-                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Examples Section -->
-    <section id="examples" class="py-20 bg-white dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-World Examples</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Learn from practical examples of deploying different types of .NET applications to the cloud.
-                </p>
-            </div>
-            
-            <div class="space-y-12">
-                <!-- Web API Example -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <div class="grid lg:grid-cols-2 gap-8">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Web API with Database</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-6">Deploy a containerized .NET API with PostgreSQL to Azure Container Apps using Terraform.</p>
-                            
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Aspire-orchestrated local services</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Terraform-managed infrastructure</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Container-based deployment</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Consistent local/cloud experience</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
-                            <div class="font-mono text-sm text-gray-300 space-y-2">
-                                <div class="text-gray-500"># Create Azure project</div>
-                                <div class="text-cyan-500">$ ndc create azure --name ProductApi</div>
-                                <div class="text-gray-400">📦 Created Aspire project structure</div>
-                                <div class="text-gray-400">🗄️ Generated Terraform configs</div>
-                                <div class="text-gray-500"># Start local development</div>
-                                <div class="text-cyan-500">$ dotnet run --project src/ProductApi.AppHost</div>
-                                <div class="text-gray-400">🎯 Aspire dashboard: http://localhost:15888</div>
-                                <div class="text-gray-500"># Deploy to Azure</div>
-                                <div class="text-cyan-500">$ cd terraform && terraform apply</div>
-                                <div class="text-gray-400">🚀 Deploying to Container Apps...</div>
-                                <div class="text-green-400">✅ Infrastructure deployed!</div>
-                                <div class="text-blue-400">🌐 https://productapi.azurecontainerapps.io</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Microservices Example -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <div class="grid lg:grid-cols-2 gap-8">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Container Platform Deployment</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-6">Deploy your .NET API to Docker or Kubernetes with consistent local development using Aspire.</p>
-                            
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Docker Compose for local development</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Kubernetes manifests for production</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Optimized Dockerfile included</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Platform-agnostic deployment</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
-                            <div class="font-mono text-sm text-gray-300 space-y-2">
-                                <div class="text-gray-500"># Create container project</div>
-                                <div class="text-cyan-500">$ ndc create container --name OrderService</div>
-                                <div class="text-gray-400">📦 Created project with Docker configs</div>
-                                <div class="text-gray-400">🐳 Generated Kubernetes manifests</div>
-                                <div class="text-gray-500"># Local development</div>
-                                <div class="text-cyan-500">$ dotnet run --project src/OrderService.AppHost</div>
-                                <div class="text-gray-400">🎯 All services running locally</div>
-                                <div class="text-gray-500"># Build and deploy</div>
-                                <div class="text-cyan-500">$ docker build -t orderservice .</div>
-                                <div class="text-cyan-500">$ kubectl apply -f k8s/</div>
-                                <div class="text-gray-400">🚀 Deploying to Kubernetes...</div>
-                                <div class="text-green-400">✅ Service deployed!</div>
-                                <div class="text-blue-400">🌐 http://orderservice.cluster.local</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Serverless Example -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
-                    <div class="grid lg:grid-cols-2 gap-8">
-                        <div>
-                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Multi-Cloud API Deployment</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-6">Deploy the same .NET API to AWS, Google Cloud, or Azure using identical project structure and workflows.</p>
-                            
-                            <div class="space-y-4">
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Identical developer experience</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Platform-specific Terraform modules</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Consistent local service orchestration</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                    </svg>
-                                    <span class="text-gray-700 dark:text-gray-300">Write once, deploy anywhere</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
-                            <div class="font-mono text-sm text-gray-300 space-y-2">
-                                <div class="text-gray-500"># Same codebase, different clouds</div>
-                                <div class="text-cyan-500">$ ndc create aws --name PaymentApi</div>
-                                <div class="text-cyan-500">$ ndc create gcp --name PaymentApi</div>
-                                <div class="text-cyan-500">$ ndc create azure --name PaymentApi</div>
-                                <div class="text-gray-400">⚡ Three identical project structures</div>
-                                <div class="text-gray-500"># Develop locally with Aspire</div>
-                                <div class="text-cyan-500">$ dotnet run --project src/PaymentApi.AppHost</div>
-                                <div class="text-gray-400">🎯 Consistent local experience</div>
-                                <div class="text-gray-500"># Deploy to any cloud</div>
-                                <div class="text-cyan-500">$ terraform apply # AWS, GCP, or Azure</div>
-                                <div class="text-green-400">✅ Same API, different clouds!</div>
-                                <div class="text-blue-400">🌐 Multi-cloud deployment ready</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CLI Commands Section -->
-    <section class="py-20 bg-gray-50 dark:bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">NDC Workflow</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Simple commands to create, develop locally, and deploy to any cloud platform.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Project Creation -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Project Creation</h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-cyan-500 pl-4">
-                            <div class="font-mono text-sm text-cyan-600 dark:text-cyan-400 mb-1">ndc create aws --name MyApi</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Create new project configured for AWS deployment</p>
-                        </div>
-                        <div class="border-l-4 border-blue-500 pl-4">
-                            <div class="font-mono text-sm text-blue-600 dark:text-blue-400 mb-1">ndc create azure --name MyApi</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Create new project configured for Azure deployment</p>
-                        </div>
-                        <div class="border-l-4 border-green-500 pl-4">
-                            <div class="font-mono text-sm text-green-600 dark:text-green-400 mb-1">ndc create gcp --name MyApi</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Create new project configured for Google Cloud deployment</p>
-                        </div>
-                        <div class="border-l-4 border-purple-500 pl-4">
-                            <div class="font-mono text-sm text-purple-600 dark:text-purple-400 mb-1">ndc create container --name MyApi</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Create new project for Docker/Kubernetes deployment</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Development & Deployment -->
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Development & Deployment</h3>
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-indigo-500 pl-4">
-                            <div class="font-mono text-sm text-indigo-600 dark:text-indigo-400 mb-1">dotnet run --project src/MyApi.AppHost</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Start local development with .NET Aspire orchestration</p>
-                        </div>
-                        <div class="border-l-4 border-yellow-500 pl-4">
-                            <div class="font-mono text-sm text-yellow-600 dark:text-yellow-400 mb-1">terraform init</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Initialize Terraform backend and providers</p>
-                        </div>
-                        <div class="border-l-4 border-pink-500 pl-4">
-                            <div class="font-mono text-sm text-pink-600 dark:text-pink-400 mb-1">terraform plan</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Preview infrastructure changes before deployment</p>
-                        </div>
-                        <div class="border-l-4 border-teal-500 pl-4">
-                            <div class="font-mono text-sm text-teal-600 dark:text-teal-400 mb-1">terraform apply</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Deploy infrastructure and application to cloud</p>
-                        </div>
-                        <div class="border-l-4 border-orange-500 pl-4">
-                            <div class="font-mono text-sm text-orange-600 dark:text-orange-400 mb-1">docker build -t myapi .</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Build container image for deployment</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Integration with Noundry Libraries -->
-    <section class="py-20 bg-white dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Aspire + Terraform Architecture</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Use .NET Aspire for consistent local development and Terraform for production-ready cloud infrastructure.
-                </p>
-            </div>
-            
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Architecture Benefits -->
+            <!-- GCP Instructions -->
+            <div x-show="activeProvider === 'gcp'" x-transition class="max-w-4xl mx-auto">
                 <div class="space-y-6">
-                    <div class="bg-gradient-to-r from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20 rounded-xl p-6">
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg class="w-6 h-6 text-cyan-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-                            </svg>
-                            Local Development
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">1</span>
+                            Clone and Choose Platform
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Use .NET Aspire to orchestrate PostgreSQL, Redis, MinIO, and MailHog locally with the same connection patterns you'll use in production.</p>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-200">git clone https://github.com/Noundry/Cloud.git</div>
+                            <div class="text-gray-200">cd noundry-cloud-cli</div>
+                            <div class="text-cyan-400">cp -r examples/working-gcp-template MyApi</div>
+                            <div class="text-gray-200">cd MyApi</div>
+                        </div>
                     </div>
-                    
-                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6">
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg class="w-6 h-6 text-purple-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                            </svg>
-                            Infrastructure as Code
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">2</span>
+                            Local Development with Aspire
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Generated Terraform configurations manage all cloud resources with consistent, repeatable deployments across environments.</p>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-cyan-400">dotnet run --project src/MyApp.AppHost</div>
+                            <div class="text-green-400 mt-2">✅ API: http://localhost:8080</div>
+                            <div class="text-green-400">✅ Aspire dashboard: https://localhost:17001</div>
+                        </div>
                     </div>
-                    
-                    <div class="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-xl p-6">
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                            <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
-                            </svg>
-                            Multi-Cloud Ready
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">3</span>
+                            Deploy to Google Cloud
                         </h3>
-                        <p class="text-gray-600 dark:text-gray-300">Same project structure works across AWS, Azure, Google Cloud, and container platforms with platform-specific Terraform modules.</p>
-                    </div>
-                </div>
-                
-                <!-- Aspire AppHost Example -->
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                    <h4 class="text-lg font-semibold text-white mb-4">AppHost Configuration Example</h4>
-                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
-                        <pre><code><span class="text-gray-500">// Program.cs - AppHost for local orchestration</span>
-<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">DistributedApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-orange-400">args</span>);
-
-<span class="text-gray-500">// Local services (orchestrated by Aspire)</span>
-<span class="text-purple-400">var</span> <span class="text-blue-400">postgres</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddPostgres</span>(<span class="text-orange-400">"postgres"</span>)
-    .<span class="text-green-400">AddDatabase</span>(<span class="text-orange-400">"myapi-db"</span>);
-
-<span class="text-purple-400">var</span> <span class="text-blue-400">redis</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddRedis</span>(<span class="text-orange-400">"redis"</span>);
-
-<span class="text-purple-400">var</span> <span class="text-blue-400">storage</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">AddMinio</span>(<span class="text-orange-400">"minio"</span>);
-
-<span class="text-gray-500">// API project with service connections</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">AddProject</span>&lt;<span class="text-yellow-400">Projects</span>.<span class="text-yellow-400">MyApi_Api</span>&gt;(<span class="text-orange-400">"myapi-api"</span>)
-    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">postgres</span>)
-    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">redis</span>)
-    .<span class="text-green-400">WithReference</span>(<span class="text-blue-400">storage</span>);
-
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>().<span class="text-green-400">Run</span>();</code></pre>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-500"># Deploy infrastructure</div>
+                            <div class="text-gray-200">cd terraform && terraform init && terraform apply</div>
+                            <div class="text-gray-500 mt-3"># Build and deploy container</div>
+                            <div class="text-gray-200">cd .. && docker build -t myapi .</div>
+                            <div class="text-cyan-400">gcloud auth configure-docker ...</div>
+                            <div class="text-green-400 mt-2">🚀 Cloud Run auto-deploys!</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
+            <!-- Azure Instructions -->
+            <div x-show="activeProvider === 'azure'" x-transition class="max-w-4xl mx-auto">
+                <div class="space-y-6">
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">1</span>
+                            Clone and Choose Platform
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-200">git clone https://github.com/Noundry/Cloud.git</div>
+                            <div class="text-gray-200">cd noundry-cloud-cli</div>
+                            <div class="text-cyan-400">cp -r examples/working-azure-template MyApi</div>
+                            <div class="text-gray-200">cd MyApi</div>
+                        </div>
+                    </div>
 
-    <!-- Getting Started CTA -->
-    <section class="py-20 bg-gradient-to-br from-cyan-600 to-blue-700 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-4xl font-bold mb-4">Ready to Try NDC?</h2>
-            <p class="text-xl text-cyan-100 mb-8 max-w-3xl mx-auto">
-                Create your first multi-cloud .NET application with Aspire local development and Terraform cloud deployment.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="https://github.com/noundry/Cloud" class="bg-white text-cyan-600 hover:bg-cyan-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    View on GitHub
-                </a>
-                <a href="getting-started.html" class="border-2 border-white text-white hover:bg-white hover:text-cyan-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    Getting Started Guide
-                </a>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">2</span>
+                            Local Development with Aspire
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-cyan-400">dotnet run --project src/MyApp.AppHost</div>
+                            <div class="text-green-400 mt-2">✅ API: http://localhost:8080</div>
+                            <div class="text-green-400">✅ Aspire dashboard: https://localhost:17001</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">3</span>
+                            Deploy to Azure
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-500"># Deploy infrastructure</div>
+                            <div class="text-gray-200">cd terraform && terraform init && terraform apply</div>
+                            <div class="text-gray-500 mt-3"># Build and deploy container</div>
+                            <div class="text-gray-200">cd .. && docker build -t myapi .</div>
+                            <div class="text-cyan-400">az acr login ...</div>
+                            <div class="text-green-400 mt-2">🚀 Container Apps auto-deploys!</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container Instructions -->
+            <div x-show="activeProvider === 'container'" x-transition class="max-w-4xl mx-auto">
+                <div class="space-y-6">
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">1</span>
+                            Clone and Choose Platform
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-200">git clone https://github.com/Noundry/Cloud.git</div>
+                            <div class="text-gray-200">cd noundry-cloud-cli</div>
+                            <div class="text-cyan-400">cp -r examples/working-container-template MyApi</div>
+                            <div class="text-gray-200">cd MyApi</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">2</span>
+                            Local Development with Aspire
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-cyan-400">dotnet run --project src/MyApp.AppHost</div>
+                            <div class="text-green-400 mt-2">✅ API: http://localhost:8080</div>
+                            <div class="text-green-400">✅ Aspire dashboard: https://localhost:17001</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="flex items-center justify-center w-8 h-8 bg-cyan-600 text-white rounded-full mr-3">3</span>
+                            Deploy to Container Platform
+                        </h3>
+                        <div class="bg-gray-900 dark:bg-black rounded-lg p-4 font-mono text-sm overflow-x-auto">
+                            <div class="text-gray-500"># Docker Compose</div>
+                            <div class="text-gray-200">docker build -t myapi:latest .</div>
+                            <div class="text-cyan-400">docker-compose up -d</div>
+                            <div class="text-gray-500 mt-3"># Kubernetes</div>
+                            <div class="text-cyan-400">kubectl apply -f k8s/</div>
+                            <div class="text-green-400 mt-2">🚀 Deploy anywhere containers run!</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+    <footer class="bg-gray-900 dark:bg-black text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-4 gap-8">
-                <div class="lg:col-span-2">
-                    <div class="flex items-center mb-6">
-                        <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
-                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
-                    </div>
-                    <p class="text-gray-300 mb-6 max-w-md">
-                        Deploy your .NET applications to any cloud provider with unified tooling, infrastructure as code, and zero-downtime deployments.
-                    </p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-                
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <h3 class="text-lg font-semibold mb-6">Cloud Providers</h3>
-                    <ul class="space-y-3">
-                        <li><a href="#azure" class="text-gray-300 hover:text-white transition-colors">Microsoft Azure</a></li>
-                        <li><a href="#aws" class="text-gray-300 hover:text-white transition-colors">Amazon AWS</a></li>
-                        <li><a href="#gcp" class="text-gray-300 hover:text-white transition-colors">Google Cloud</a></li>
-                        <li><a href="#docker" class="text-gray-300 hover:text-white transition-colors">Docker & Kubernetes</a></li>
+                    <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto mb-4">
+                    <p class="text-gray-400">Modern .NET development platform</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="libraries.html" class="hover:text-white">Libraries</a></li>
+                        <li><a href="ui-components.html" class="hover:text-white">UI Components</a></li>
+                        <li><a href="cloud.html" class="hover:text-white">Cloud Deployment</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
-                    <ul class="space-y-3">
-                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
-                        <li><a href="docs.html#cloud" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
-                        <li><a href="#examples" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
-                        <li><a href="help.html" class="text-gray-300 hover:text-white transition-colors">Support</a></li>
+                    <h4 class="font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="docs.html" class="hover:text-white">Documentation</a></li>
+                        <li><a href="getting-started.html" class="hover:text-white">Getting Started</a></li>
+                        <li><a href="https://github.com/Noundry/Cloud" target="_blank" class="hover:text-white">GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="contact.html" class="hover:text-white">Contact</a></li>
+                        <li><a href="privacy.html" class="hover:text-white">Privacy</a></li>
+                        <li><a href="terms.html" class="hover:text-white">Terms</a></li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">
-                    © 2025 Noundry. All rights reserved.
-                </p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
-                </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Noundry. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
-    <!-- Smooth scrolling script -->
-    <script>
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
