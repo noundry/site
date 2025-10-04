@@ -347,6 +347,34 @@
                         </code>
                     </div>
                 </div>
+
+                <!-- Automation & Scheduling -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Automation & Scheduling</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white"><a href="jobs.html" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Noundry.Jobs</a></h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Job scheduling library with database, file, HTTP/API, and email operations</p>
+                        </div>
+                        <div class="border-l-4 border-orange-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white"><a href="jobs.html" class="hover:text-orange-600 dark:hover:text-orange-400 transition-colors">Noundry.Jobs.Tool (njobs CLI)</a></h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Cross-platform CLI for creating and managing scheduled jobs using Task Scheduler (Windows) or crontab (Linux/macOS)</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <code class="text-sm font-mono text-gray-800 dark:text-gray-200">
+                            dotnet add package Noundry.Jobs<br>
+                            dotnet tool install --global Noundry.Jobs.Tool
+                        </code>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
