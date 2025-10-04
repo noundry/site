@@ -137,10 +137,15 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 📝 Noundry Elements
                             </button>
+                            <button @click="activeComponent = 'blazor'"
+                                    :class="activeComponent === 'blazor' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔷 Noundry.Blazor
+                            </button>
                         </div>
                     </div>
 
-                     Data Access 
+                     Data Access
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Data Access</h3>
                         <div class="space-y-1">
@@ -176,10 +181,22 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🔒 Noundry.DotEnvX
                             </button>
-                            <button @click="activeComponent = 'cloud'" 
+                            <button @click="activeComponent = 'cloud'"
                                     :class="activeComponent === 'cloud' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 ☁️ Noundry.Cloud CLI
+                            </button>
+                        </div>
+                    </div>
+
+                     Automation & Scheduling
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Automation & Scheduling</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'jobs'"
+                                    :class="activeComponent === 'jobs' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                ⏰ Noundry.Jobs
                             </button>
                         </div>
                     </div>
@@ -3054,6 +3071,147 @@
   }
 }</code></pre>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Blazor UI Documentation -->
+                <div x-show="activeComponent === 'blazor'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Blazor</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        60+ production-ready Blazor components built on Tailwind CSS for Blazor WebAssembly and Blazor Server applications.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-purple-500">$ dotnet add package Noundry.Blazor</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Component Categories</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">📐 Layout & Navigation</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">AppShell, Sidebar, Menu, Breadcrumb, Tabs</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">📝 Content Display</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Cards, Accordion, Table, Modal, Slideover</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">🔘 Form Elements</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Button, ProgressButton, Input, Dropdown</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">💬 Feedback & Indicators</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Alert, Toast, Progress, Spinner, Badge</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Example</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">@page</span> <span class="text-orange-400">"/demo"</span>
+<span class="text-purple-400">@using</span> <span class="text-gray-200">Noundry.Blazor.Button</span>
+<span class="text-purple-400">@using</span> <span class="text-gray-200">Noundry.Blazor.Card</span>
+
+&lt;<span class="text-blue-400">Card</span> <span class="text-green-400">Title</span>=<span class="text-orange-400">"Welcome"</span> <span class="text-green-400">ButtonText</span>=<span class="text-orange-400">"Learn More"</span>&gt;
+    Beautiful Blazor components built on Tailwind CSS.
+&lt;/<span class="text-blue-400">Card</span>&gt;
+
+&lt;<span class="text-blue-400">Button</span> <span class="text-green-400">BackgroundColor</span>=<span class="text-orange-400">"bg-purple-600"</span>
+        <span class="text-green-400">OnButtonClick</span>=<span class="text-orange-400">"HandleClick"</span>&gt;
+    Click Me
+&lt;/<span class="text-blue-400">Button</span>&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-600 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">📚 Full Documentation</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            For complete component reference, installation guide, and examples, visit the Blazor UI documentation page.
+                        </p>
+                        <a href="blazor-ui.html" class="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+                            View Complete Blazor UI Docs →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Jobs Documentation -->
+                <div x-show="activeComponent === 'jobs'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Jobs</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Job scheduling library with CLI tool for creating and managing automated tasks across Windows, Linux, and macOS.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Library Package</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                    <div class="text-orange-500">$ dotnet add package Noundry.Jobs</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">CLI Tool</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                                    <div class="text-orange-500">$ dotnet tool install --global Noundry.Jobs.Tool</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Features</h2>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">🗄️ Database Operations</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Execute queries on SQL Server, PostgreSQL, MySQL, SQLite</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">📁 File Operations</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Copy, move, rename, delete files with async support</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">🌐 HTTP/API Client</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Make API calls with Bearer/Basic/API Key authentication</p>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">📧 Email (SMTP)</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">Send emails via SMTP with attachments and HTML support</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Example</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">#!/usr/bin/env dotnet-script</span>
+<span class="text-gray-500">#r "nuget: Noundry.Jobs, 1.0.0"</span>
+
+<span class="text-purple-400">using</span> <span class="text-gray-200">Noundry.Jobs.Database;</span>
+
+<span class="text-purple-400">var</span> <span class="text-gray-200">db =</span> <span class="text-purple-400">new</span> <span class="text-blue-400">JobsDb</span><span class="text-gray-200">(connectionString, DatabaseType.SqlServer);</span>
+
+<span class="text-gray-500">// Clean up old records</span>
+<span class="text-purple-400">await</span> <span class="text-gray-200">db.ExecuteAsync(</span><span class="text-orange-400">"DELETE FROM Logs WHERE CreatedAt &lt; @Date"</span><span class="text-gray-200">,</span>
+    <span class="text-purple-400">new</span> <span class="text-gray-200">{ Date = DateTime.UtcNow.AddDays(-30) });</span>
+
+<span class="text-gray-500">// Schedule with CLI: njobs create DailyCleanup cleanup.csx "0 2 * * *"</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary-50 dark:bg-primary-900/20 border-l-4 border-primary-600 p-6 rounded-lg">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">📚 Full Documentation</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            For complete API reference, CLI commands, and examples, visit the Jobs documentation page.
+                        </p>
+                        <a href="jobs.html" class="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold hover:underline">
+                            View Complete Jobs Docs →
+                        </a>
                     </div>
                 </div>
             </div>
