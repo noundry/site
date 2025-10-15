@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeExample: 'basic', activeTier: 'free' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logably - Multi-Tenant Logging Service | Noundry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            50: '#fffbeb',
+                            100: '#fef3c7',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                            700: '#b45309'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="andy-ai.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">AI</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="pricing.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="pricing.html" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-amber-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-amber-100 dark:bg-amber-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    <span class="text-amber-600 dark:text-amber-400">Logably</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Modern, multi-tenant logging service built with .NET 9.0 and PostgreSQL. Secure, scalable logging with OAuth authentication, subscription tiers, and powerful search capabilities.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#pricing" class="border-2 border-amber-600 text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Pricing
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">Multi-Tenant</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Architecture</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">PostgreSQL</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Database Backend</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">OAuth 2.0</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Authentication</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-amber-600 dark:text-amber-400">.NET 9.0</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Built With</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">What is Logably?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Logably is a comprehensive logging solution consisting of three components that work together to provide enterprise-grade logging capabilities.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Logably.CLI</h3>
+                    <div class="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                        Free & Open Source
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">Powerful command-line tool for searching and filtering logs with full-text search capabilities.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Serilog.Sinks.Logably</h3>
+                    <div class="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                        Free & Open Source
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">Serilog sink for .NET applications to send logs directly to the Logably platform.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Web Platform</h3>
+                    <div class="inline-block bg-amber-100 dark:bg-amber-900 text-amber-700 dark:text-amber-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                        Hosted Service
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">Secure hosted logging service with free tier, web dashboard, and REST API access.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Powerful Logging Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Enterprise-grade logging capabilities designed for modern .NET applications.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Multi-Tenant</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Complete tenant isolation with per-tenant data segregation and access control.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">OAuth Authentication</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Secure authentication with OAuth 2.0 providers including Google, Microsoft, and GitHub.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Full-Text Search</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Powerful CLI tool for searching logs with advanced filtering and query capabilities.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Flexible Retention</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Configurable retention policies from 7 days to custom retention for enterprise needs.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Serilog Integration</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Native Serilog sink for seamless integration with existing .NET applications.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">PostgreSQL Backend</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Reliable, scalable PostgreSQL database for high-performance log storage and retrieval.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-teal-100 dark:bg-teal-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">REST API Access</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Comprehensive REST API for programmatic access to logs and system management.</p>
+                </div>
+
+                <div class="text-center p-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg">
+                    <div class="w-16 h-16 bg-pink-100 dark:bg-pink-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Web Dashboard</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Modern web interface for viewing, searching, and analyzing logs in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install the CLI tool and Serilog sink to start sending logs to Logably.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- CLI Installation -->
+                <div class="space-y-6">
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Install CLI Tool</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center mb-2">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">dotnet tool install --global Logably.CLI</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full">
+                                Free & Open Source
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Add Serilog Sink</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center mb-2">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">dotnet add package Serilog.Sinks.Logably</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full">
+                                Free & Open Source
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Serilog Configuration -->
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog.Sinks.Logably</span>;
+
+<span class="text-gray-500">// Configure Serilog with Logably sink</span>
+<span class="text-yellow-400">Log</span>.<span class="text-green-400">Logger</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">LoggerConfiguration</span>()
+    .<span class="text-green-400">WriteTo</span>.<span class="text-green-400">Console</span>()
+    .<span class="text-green-400">WriteTo</span>.<span class="text-green-400">Logably</span>(<span class="text-blue-400">options</span> =>
+    {
+        <span class="text-blue-400">options</span>.<span class="text-green-400">ApiKey</span> = <span class="text-orange-400">"your-api-key"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">TenantId</span> = <span class="text-orange-400">"your-tenant-id"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">Environment</span> = <span class="text-orange-400">"Production"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">BatchSize</span> = <span class="text-orange-400">100</span>;
+    })
+    .<span class="text-green-400">CreateLogger</span>();
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-blue-400">args</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Host</span>.<span class="text-green-400">UseSerilog</span>();
+
+<span class="text-gray-500">// Your app continues...</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLI Usage Examples -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">CLI Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Powerful command-line interface for searching and analyzing your logs.
+                </p>
+            </div>
+
+            <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl max-w-5xl mx-auto">
+                <div class="space-y-6">
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2 font-mono">Search logs by level</div>
+                        <div class="bg-gray-800 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">logably search --level Error --last 24h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2 font-mono">Search by message content</div>
+                        <div class="bg-gray-800 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">logably search --text "database connection" --last 1h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2 font-mono">Filter by environment and application</div>
+                        <div class="bg-gray-800 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">logably search --env Production --app "MyApi" --last 7d</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2 font-mono">Export logs to file</div>
+                        <div class="bg-gray-800 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">logably search --level Error --export errors.json</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="text-gray-400 text-sm mb-2 font-mono">Tail logs in real-time</div>
+                        <div class="bg-gray-800 dark:bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                            <div class="flex items-center">
+                                <span class="text-gray-500 mr-2">$</span>
+                                <span class="text-green-400">logably tail --follow --env Production</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing/Tiers Section -->
+    <section id="pricing" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Flexible Pricing Plans</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Choose the plan that fits your logging needs. Start free and scale as you grow.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Free Tier -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg border-2 border-gray-200 dark:border-gray-700">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Free</h3>
+                        <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">$0</div>
+                        <div class="text-gray-600 dark:text-gray-400">per month</div>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">7-day log retention</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">1GB storage per month</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Full CLI access</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Web dashboard access</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">REST API access</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Community support</span>
+                        </div>
+                    </div>
+                    <a href="pricing.html" class="block w-full text-center bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Get Started Free
+                    </a>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-8 shadow-xl border-2 border-amber-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <span class="bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-semibold">Most Popular</span>
+                    </div>
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pro</h3>
+                        <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">$49</div>
+                        <div class="text-gray-600 dark:text-gray-400">per month</div>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">30-day log retention</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">50GB storage per month</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">All Free features</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Advanced search filters</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Email alerts</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Priority email support</span>
+                        </div>
+                    </div>
+                    <a href="pricing.html" class="block w-full text-center bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                        Upgrade to Pro
+                    </a>
+                </div>
+
+                <!-- Enterprise Tier -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 shadow-lg border-2 border-gray-200 dark:border-gray-700">
+                    <div class="text-center mb-6">
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Enterprise</h3>
+                        <div class="text-4xl font-bold text-amber-600 dark:text-amber-400 mb-2">Custom</div>
+                        <div class="text-gray-600 dark:text-gray-400">contact us</div>
+                    </div>
+                    <div class="space-y-4 mb-8">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Custom retention period</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Unlimited storage</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">All Pro features</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">SLA guarantees</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">Dedicated support team</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-gray-700 dark:text-gray-300">On-premises option</span>
+                        </div>
+                    </div>
+                    <a href="pricing.html" class="block w-full text-center bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Code Examples Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Configuration Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Multiple ways to configure the Serilog sink for your application.
+                </p>
+            </div>
+
+            <!-- Example Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-900 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeExample = 'basic'"
+                            :class="activeExample === 'basic' ? 'bg-white dark:bg-gray-700 text-amber-600 dark:text-amber-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Basic Setup
+                    </button>
+                    <button @click="activeExample = 'appsettings'"
+                            :class="activeExample === 'appsettings' ? 'bg-white dark:bg-gray-700 text-amber-600 dark:text-amber-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        appsettings.json
+                    </button>
+                    <button @click="activeExample = 'advanced'"
+                            :class="activeExample === 'advanced' ? 'bg-white dark:bg-gray-700 text-amber-600 dark:text-amber-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Advanced Options
+                    </button>
+                </div>
+            </div>
+
+            <!-- Basic Setup Example -->
+            <div x-show="activeExample === 'basic'" class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl max-w-5xl mx-auto">
+                <div class="flex items-center mb-4">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog.Sinks.Logably</span>;
+
+<span class="text-gray-500">// Basic Logably configuration</span>
+<span class="text-yellow-400">Log</span>.<span class="text-green-400">Logger</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">LoggerConfiguration</span>()
+    .<span class="text-green-400">WriteTo</span>.<span class="text-green-400">Logably</span>(<span class="text-blue-400">options</span> =>
+    {
+        <span class="text-blue-400">options</span>.<span class="text-green-400">ApiKey</span> = <span class="text-orange-400">"lgb_1234567890abcdef"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">TenantId</span> = <span class="text-orange-400">"my-company"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">Environment</span> = <span class="text-orange-400">"Production"</span>;
+    })
+    .<span class="text-green-400">CreateLogger</span>();
+
+<span class="text-purple-400">try</span>
+{
+    <span class="text-yellow-400">Log</span>.<span class="text-green-400">Information</span>(<span class="text-orange-400">"Application starting up"</span>);
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-blue-400">args</span>);
+    <span class="text-blue-400">builder</span>.<span class="text-green-400">Host</span>.<span class="text-green-400">UseSerilog</span>();
+
+    <span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+    <span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();
+}
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">Exception</span> <span class="text-blue-400">ex</span>)
+{
+    <span class="text-yellow-400">Log</span>.<span class="text-green-400">Fatal</span>(<span class="text-blue-400">ex</span>, <span class="text-orange-400">"Application failed to start"</span>);
+}
+<span class="text-purple-400">finally</span>
+{
+    <span class="text-yellow-400">Log</span>.<span class="text-green-400">CloseAndFlush</span>();
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- appsettings.json Example -->
+            <div x-show="activeExample === 'appsettings'" class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl max-w-5xl mx-auto">
+                <div class="flex items-center mb-4">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div class="ml-4 text-gray-400 text-sm font-mono">appsettings.json</div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code>{
+  <span class="text-green-400">"Serilog"</span>: {
+    <span class="text-green-400">"Using"</span>: [<span class="text-orange-400">"Serilog.Sinks.Console"</span>, <span class="text-orange-400">"Serilog.Sinks.Logably"</span>],
+    <span class="text-green-400">"MinimumLevel"</span>: {
+      <span class="text-green-400">"Default"</span>: <span class="text-orange-400">"Information"</span>,
+      <span class="text-green-400">"Override"</span>: {
+        <span class="text-green-400">"Microsoft"</span>: <span class="text-orange-400">"Warning"</span>,
+        <span class="text-green-400">"System"</span>: <span class="text-orange-400">"Warning"</span>
+      }
+    },
+    <span class="text-green-400">"WriteTo"</span>: [
+      {
+        <span class="text-green-400">"Name"</span>: <span class="text-orange-400">"Console"</span>
+      },
+      {
+        <span class="text-green-400">"Name"</span>: <span class="text-orange-400">"Logably"</span>,
+        <span class="text-green-400">"Args"</span>: {
+          <span class="text-green-400">"apiKey"</span>: <span class="text-orange-400">"lgb_1234567890abcdef"</span>,
+          <span class="text-green-400">"tenantId"</span>: <span class="text-orange-400">"my-company"</span>,
+          <span class="text-green-400">"environment"</span>: <span class="text-orange-400">"Production"</span>,
+          <span class="text-green-400">"batchSize"</span>: <span class="text-purple-400">100</span>,
+          <span class="text-green-400">"batchPeriod"</span>: <span class="text-orange-400">"00:00:05"</span>
+        }
+      }
+    ],
+    <span class="text-green-400">"Enrich"</span>: [<span class="text-orange-400">"FromLogContext"</span>, <span class="text-orange-400">"WithMachineName"</span>, <span class="text-orange-400">"WithThreadId"</span>]
+  }
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Advanced Options Example -->
+            <div x-show="activeExample === 'advanced'" class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl max-w-5xl mx-auto">
+                <div class="flex items-center mb-4">
+                    <div class="flex space-x-2">
+                        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs - Advanced</div>
+                </div>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Serilog.Sinks.Logably</span>;
+
+<span class="text-gray-500">// Advanced configuration with all options</span>
+<span class="text-yellow-400">Log</span>.<span class="text-green-400">Logger</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">LoggerConfiguration</span>()
+    .<span class="text-green-400">MinimumLevel</span>.<span class="text-green-400">Information</span>()
+    .<span class="text-green-400">Enrich</span>.<span class="text-green-400">FromLogContext</span>()
+    .<span class="text-green-400">Enrich</span>.<span class="text-green-400">WithMachineName</span>()
+    .<span class="text-green-400">Enrich</span>.<span class="text-green-400">WithProperty</span>(<span class="text-orange-400">"Application"</span>, <span class="text-orange-400">"MyApi"</span>)
+    .<span class="text-green-400">WriteTo</span>.<span class="text-green-400">Console</span>()
+    .<span class="text-green-400">WriteTo</span>.<span class="text-green-400">Logably</span>(<span class="text-blue-400">options</span> =>
+    {
+        <span class="text-gray-500">// Required settings</span>
+        <span class="text-blue-400">options</span>.<span class="text-green-400">ApiKey</span> = <span class="text-blue-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"LOGABLY_API_KEY"</span>);
+        <span class="text-blue-400">options</span>.<span class="text-green-400">TenantId</span> = <span class="text-orange-400">"my-company"</span>;
+
+        <span class="text-gray-500">// Optional settings</span>
+        <span class="text-blue-400">options</span>.<span class="text-green-400">Environment</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">EnvironmentName</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">ApplicationName</span> = <span class="text-orange-400">"MyApi"</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">BatchSize</span> = <span class="text-orange-400">250</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">BatchPeriod</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">10</span>);
+        <span class="text-blue-400">options</span>.<span class="text-green-400">MinimumLogLevel</span> = <span class="text-yellow-400">LogEventLevel</span>.<span class="text-green-400">Information</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetries</span> = <span class="text-orange-400">3</span>;
+        <span class="text-blue-400">options</span>.<span class="text-green-400">RetryDelay</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">2</span>);
+
+        <span class="text-gray-500">// Custom properties</span>
+        <span class="text-blue-400">options</span>.<span class="text-green-400">CustomProperties</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Dictionary</span>&lt;<span class="text-purple-400">string</span>, <span class="text-purple-404">object</span>&gt;
+        {
+            [<span class="text-orange-400">"Version"</span>] = <span class="text-orange-400">"1.0.0"</span>,
+            [<span class="text-orange-400">"Region"</span>] = <span class="text-orange-400">"us-east-1"</span>
+        };
+    })
+    .<span class="text-green-400">CreateLogger</span>();</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Getting Started CTA -->
+    <section class="py-20 bg-gradient-to-br from-amber-600 to-orange-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Start Logging?</h2>
+            <p class="text-xl text-amber-100 mb-8 max-w-3xl mx-auto">
+                Get started with Logably today. Free tier available with no credit card required.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="getting-started.html" class="bg-white text-amber-600 hover:bg-amber-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Get Started Free
+                </a>
+                <a href="docs.html#logably" class="border-2 border-white text-white hover:bg-white hover:text-amber-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Documentation
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Logably is part of the Noundry platform - providing modern, multi-tenant logging with powerful search capabilities and flexible pricing for .NET applications.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12.007 0C5.383 0 0 5.383 0 12.007s5.383 12.007 12.007 12.007 12.007-5.383 12.007-12.007S18.631.001 12.007.001zM8.901 18.944H6.634V8.797h2.267v10.147zM7.767 7.824c-.764 0-1.384-.62-1.384-1.384s.62-1.384 1.384-1.384c.765 0 1.384.62 1.384 1.384S8.532 7.824 7.767 7.824zM18.966 18.944h-2.267v-5.259c0-.958-.018-2.188-1.334-2.188-1.335 0-1.539 1.042-1.539 2.118v5.329h-2.267V8.797h2.175v1.387h.031c.303-.574 1.043-1.179 2.148-1.179 2.295 0 2.718 1.509 2.718 3.472v6.467z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Product</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#features" class="text-gray-300 hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#pricing" class="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#quickstart" class="text-gray-300 hover:text-white transition-colors">Quick Start</a></li>
+                        <li><a href="docs.html#logably" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">Libraries</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">GitHub Repository</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Status Page</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth scrolling script -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
