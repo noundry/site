@@ -174,7 +174,18 @@
                             <div class="mt-2 text-gray-500"># Optional: For CSV data import</div>
                             <div class="text-accent-500">dotnet tool install --global Noundry.Slurp.Tool</div>
                         </div>
-                        <p class="text-gray-600 dark:text-gray-300">This creates a new ASP.NET Core web application and installs the essential Noundry components for web development.</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">This creates a new ASP.NET Core web application and installs the essential Noundry components for web development.</p>
+
+                        <!-- Noundry Template Alternative -->
+                        <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2">💡 Use Noundry Templates</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Skip manual package installation! Use our pre-configured web app template:</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-300">
+                                <div class="text-blue-400">noundry templates install NDC.Templates.WebApp</div>
+                                <div class="text-blue-400">dotnet new ndc-webapp -n MyApp</div>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Includes Noundry.UI, Authnz, Tuxedo, and DotEnvX pre-configured!</p>
+                        </div>
                     </div>
                 </div>
 
@@ -403,7 +414,7 @@
                             <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create API Project</h3>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto mb-4">
                                 <div class="text-gray-500"># Create API project</div>
                                 <div class="text-accent-500">dotnet new webapi -n MyApi</div>
                                 <div class="text-accent-500">cd MyApi</div>
@@ -413,6 +424,17 @@
                                 <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
                                 <div class="text-accent-500">dotnet add package Guardian</div>
                                 <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
+                            </div>
+
+                            <!-- Noundry API Template Alternative -->
+                            <div class="mt-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border-l-4 border-blue-500">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">💡 Use Noundry API Template</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Get a fully-configured REST API with Noundry components:</p>
+                                <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-300">
+                                    <div class="text-blue-400">noundry templates install NDC.Templates.Api</div>
+                                    <div class="text-blue-400">dotnet new ndc-api -n MyApi</div>
+                                </div>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Includes Tuxedo, Bowtie, DotEnvX, and Guardian pre-configured!</p>
                             </div>
                         </div>
                     </div>
@@ -449,10 +471,42 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+                    <!-- Step 3 - Bowtie Schema Sync -->
                     <div>
                         <div class="flex items-center mb-6">
                             <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">3</div>
+                            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Synchronize Database Schema with Bowtie</h3>
+                        </div>
+                        <div class="bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 rounded-lg p-6">
+                            <p class="text-gray-700 dark:text-gray-300 mb-4">Bowtie automatically synchronizes your database schema from your C# models. No manual SQL scripts needed!</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
+                                <div class="text-gray-500"># Install Bowtie CLI (one-time)</div>
+                                <div class="text-orange-500">$ dotnet tool install --global Noundry.Tuxedo.Bowtie.Tool</div>
+                                <div class="mt-2 text-gray-500"># Sync schema to database</div>
+                                <div class="text-orange-500">$ bowtie sync --connection "Server=localhost;Database=MyApi;..."</div>
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">✅ Creates Tables</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">From [Table] attributes</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">🔑 Adds Indexes</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">From [Index] attributes</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white mb-1">🛡️ Enforces Constraints</p>
+                                    <p class="text-xs text-gray-600 dark:text-gray-400">From [CheckConstraint] attributes</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-4">Your database is now in sync with your code! Run <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-xs">bowtie sync</code> whenever you modify your models.</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 rounded-full flex items-center justify-center font-bold mr-4">4</div>
                             <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create API Controller</h3>
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
@@ -583,9 +637,9 @@
             <!-- Data Import Path -->
             <div x-show="activeTab === 'data-import'" class="max-w-4xl mx-auto">
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Data Import Quick Start</h2>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Data Import & Generation Quick Start</h2>
                     <p class="text-xl text-gray-600 dark:text-gray-300">
-                        Import massive CSV files into your database in seconds with Noundry.Slurp
+                        Import CSV files with Slurp or generate realistic test data with Cufflink
                     </p>
                 </div>
 
@@ -646,13 +700,77 @@
                         </div>
                     </div>
 
+                    <!-- Cufflink Section -->
+                    <div class="border-t-4 border-purple-600 dark:border-purple-400 pt-12">
+                        <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">Generate Test Data with Cufflink</h3>
+                        <p class="text-center text-gray-600 dark:text-gray-300 mb-8">Need realistic test data? Cufflink generates fake data while automatically maintaining FK/PK relationships!</p>
+
+                        <!-- Cufflink Step 1 -->
+                        <div class="mb-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center font-bold mr-4">1</div>
+                                <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Install Cufflink</h4>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                                    <div class="text-purple-500">$ dotnet tool install --global Noundry.Tuxedo.Cufflink.Tool</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cufflink Step 2 -->
+                        <div class="mb-8">
+                            <div class="flex items-center mb-4">
+                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center font-bold mr-4">2</div>
+                                <h4 class="text-xl font-semibold text-gray-900 dark:text-white">Generate Test Data</h4>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                                <p class="text-gray-600 dark:text-gray-300 mb-4">Generate realistic data for any table with automatic relationship handling:</p>
+                                <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
+                                    <div class="text-gray-500"># Generate 100 customers</div>
+                                    <div class="text-purple-500">$ cufflink generate --table Customers --rows 100</div>
+                                    <div class="mt-2 text-gray-500"># Generate orders (FK to Customers auto-maintained)</div>
+                                    <div class="text-purple-500">$ cufflink generate --table Orders --rows 500</div>
+                                    <div class="mt-2 text-gray-500"># Generate specific data patterns</div>
+                                    <div class="text-purple-500">$ cufflink generate --table Products --rows 50 --pattern Electronics</div>
+                                </div>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">✨ Cufflink automatically detects PK/FK relationships and generates valid references!</p>
+                            </div>
+                        </div>
+
+                        <!-- Cufflink Features -->
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🔗 Smart Relationships</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Automatically maintains FK/PK integrity across tables</p>
+                            </div>
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🎭 Realistic Data</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Built-in generators for names, emails, addresses, and more</p>
+                            </div>
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">🗄️ Multi-Database</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Works with SQL Server, PostgreSQL, MySQL, SQLite</p>
+                            </div>
+                            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">⚡ Fast & Configurable</h4>
+                                <p class="text-gray-600 dark:text-gray-300">Generate thousands of records in seconds with custom patterns</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Next Steps -->
                     <div class="bg-gradient-to-r from-accent-50 to-accent-100 dark:from-accent-900/20 dark:to-accent-800/20 rounded-xl p-8 text-center">
-                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🎉 Ready to Import!</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Slurp can handle millions of rows in seconds.</p>
-                        <a href="slurp.html" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                            Learn More About Slurp
-                        </a>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🎉 Ready to Work with Data!</h3>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Use Slurp for importing CSVs and Cufflink for generating test data.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="slurp.html" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                Learn More About Slurp
+                            </a>
+                            <a href="cufflink.html" class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                Learn More About Cufflink
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -787,8 +905,8 @@
                     <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
                     <span class="text-gray-600">|</span>
                     <a href="https://packages.noundry.com" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="NuGet Packages">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 32 32">
-                            <path d="M2.5,24.5h27v-17h-27Zm24-14v11h-21v-11Zm-18,8v-5h3v5Zm6,0v-5h3v5Zm6,0v-5h3v5Z"/>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.563 28.844c-7.104 0-7.104-10.651 0-10.651 7.099 0 7.099 10.651 0 10.651zM12.932 16.636c-4.437 0-4.437-6.663 0-6.663 4.443 0 4.443 6.663 0 6.663zM23.797 6.24h-8.891c-4.532 0.005-8.204 3.677-8.209 8.208v8.891c0 4.531 3.677 8.203 8.209 8.203h8.891c2.172 0 4.26-0.864 5.801-2.401 1.537-1.541 2.401-3.624 2.401-5.801v-8.891c0-4.531-3.672-8.208-8.203-8.208zM5.328 3.12c0 3.552-5.328 3.552-5.328 0s5.328-3.552 5.328 0z"/>
                         </svg>
                     </a>
                     <a href="https://github.com/noundry" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="GitHub">
