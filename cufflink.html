@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeExample: 'basic' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Tuxedo.Cufflink - Fake Data Generation for .NET</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        },
+                        rose: {
+                            100: '#ffe4e6',
+                            400: '#fb7185',
+                            600: '#e11d48',
+                            900: '#881337'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['JetBrains Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="index.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="ui-components.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">UI Components</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="andy-ai.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">AI</a>
+                            <a href="cloud.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="pricing.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 718.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="pricing.html" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-rose-50 via-pink-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-rose-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-rose-100 dark:bg-rose-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.Tuxedo.<span class="text-rose-600 dark:text-rose-400">Cufflink</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Intelligent fake data generation library and CLI for Noundry.Tuxedo ORM. Generate realistic test data with automatic foreign key and primary key relationship detection.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#installation" class="bg-rose-600 hover:bg-rose-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Get Started
+                    </a>
+                    <a href="#examples" class="border-2 border-rose-600 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">100+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Data Types</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">Auto</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">FK Detection</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">Realistic</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Test Data</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-rose-600 dark:text-rose-400">CLI + Lib</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Two Modes</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Cufflink?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Generate realistic test data for your database with intelligent relationship handling and customizable fake data providers.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Smart Relationship Detection</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Automatically detects and respects foreign key relationships, ensuring referential integrity in your test data.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Customizable Generators</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Built-in support for names, addresses, emails, phone numbers, and more. Easily extend with custom data generators.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-rose-100 dark:bg-rose-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">CLI & Library</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Use as a command-line tool for quick test data generation or integrate directly into your .NET test projects.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Installation</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Get started with Cufflink via NuGet package or CLI tool.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">NuGet Package</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">For integration into your test projects:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <div class="text-rose-500">$ dotnet add package Noundry.Tuxedo.Cufflink</div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">CLI Tool</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">For command-line data generation:</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <div class="text-rose-500">$ dotnet tool install -g Noundry.Tuxedo.Cufflink.CLI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Generate realistic test data using the library or CLI.
+                </p>
+            </div>
+
+            <!-- Example Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex gap-1">
+                    <button @click="activeExample = 'basic'"
+                            :class="activeExample === 'basic' ? 'bg-white dark:bg-gray-700 text-rose-600 dark:text-rose-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        Basic Usage
+                    </button>
+                    <button @click="activeExample = 'relationships'"
+                            :class="activeExample === 'relationships' ? 'bg-white dark:bg-gray-700 text-rose-600 dark:text-rose-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        Relationships
+                    </button>
+                    <button @click="activeExample = 'cli'"
+                            :class="activeExample === 'cli' ? 'bg-white dark:bg-gray-700 text-rose-600 dark:text-rose-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors">
+                        CLI Usage
+                    </button>
+                </div>
+            </div>
+
+            <!-- Basic Usage Example -->
+            <div x-show="activeExample === 'basic'" class="max-w-5xl mx-auto">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Basic Data Generation</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Cufflink</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo</span>;
+
+<span class="text-gray-500">// Define your model</span>
+<span class="text-purple-400">public class</span> <span class="text-yellow-400">Customer</span>
+{
+    <span class="text-purple-400">public int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Email</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public string</span> <span class="text-blue-400">Phone</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// Generate fake data</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">generator</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">CufflinkGenerator</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">customers</span> = <span class="text-blue-400">generator</span>.<span class="text-green-400">Generate</span>&lt;<span class="text-yellow-400">Customer</span>&gt;(<span class="text-orange-400">100</span>);
+
+<span class="text-gray-500">// Insert into database using Tuxedo</span>
+<span class="text-purple-400">using var</span> <span class="text-blue-400">db</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">TuxedoContext</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-purple-400">await</span> <span class="text-blue-400">db</span>.<span class="text-green-400">InsertAsync</span>(<span class="text-blue-400">customers</span>);</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relationships Example -->
+            <div x-show="activeExample === 'relationships'" class="max-w-5xl mx-auto">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Automatic Relationship Handling</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">public class</span> <span class="text-yellow-400">Order</span>
+{
+    <span class="text-purple-400">public int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public int</span> <span class="text-blue-400">CustomerId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; } <span class="text-gray-500">// FK to Customer</span>
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">OrderDate</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public decimal</span> <span class="text-blue-400">Total</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}
+
+<span class="text-gray-500">// Cufflink automatically detects FK relationships</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">generator</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">CufflinkGenerator</span>(<span class="text-blue-400">connectionString</span>);
+
+<span class="text-gray-500">// Generate customers first</span>
+<span class="text-blue-400">generator</span>.<span class="text-green-400">GenerateAndInsert</span>&lt;<span class="text-yellow-400">Customer</span>&gt;(<span class="text-orange-400">50</span>);
+
+<span class="text-gray-500">// Generate orders - CustomerId will reference existing customers</span>
+<span class="text-blue-400">generator</span>.<span class="text-green-400">GenerateAndInsert</span>&lt;<span class="text-yellow-400">Order</span>&gt;(<span class="text-orange-400">200</span>);
+
+<span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">"✓ Generated 50 customers and 200 orders with valid relationships"</span>);</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLI Example -->
+            <div x-show="activeExample === 'cli'" class="max-w-5xl mx-auto">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">CLI Tool Usage</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-6 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># Generate data for a specific table</span>
+<span class="text-rose-500">$ cufflink generate</span> \
+    <span class="text-blue-400">--table</span> Customers \
+    <span class="text-blue-400">--rows</span> <span class="text-orange-400">100</span> \
+    <span class="text-blue-400">--connection</span> <span class="text-orange-400">"Server=localhost;Database=TestDb;..."</span>
+
+<span class="text-green-400">✓ Generated 100 rows for Customers table</span>
+
+<span class="text-gray-500"># Generate data for entire database with relationships</span>
+<span class="text-rose-500">$ cufflink generate-all</span> \
+    <span class="text-blue-400">--connection</span> <span class="text-orange-400">"Server=localhost;Database=TestDb;..."</span> \
+    <span class="text-blue-400">--rows-per-table</span> <span class="text-orange-400">50</span>
+
+<span class="text-green-400">✓ Analyzing schema...</span>
+<span class="text-green-400">✓ Generated data for 5 tables respecting FK constraints</span>
+
+<span class="text-gray-500"># Export generated data to JSON</span>
+<span class="text-rose-500">$ cufflink generate</span> \
+    <span class="text-blue-400">--table</span> Products \
+    <span class="text-blue-400">--rows</span> <span class="text-orange-400">100</span> \
+    <span class="text-blue-400">--output</span> products.json \
+    <span class="text-blue-400">--format</span> json</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Data Types Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Built-in Data Generators</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Cufflink includes realistic generators for common data types.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Personal Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• First & last names</li>
+                        <li>• Email addresses</li>
+                        <li>• Phone numbers</li>
+                        <li>• Dates of birth</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Address Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Street addresses</li>
+                        <li>• Cities & states</li>
+                        <li>• ZIP/postal codes</li>
+                        <li>• Countries</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Business Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Company names</li>
+                        <li>• Job titles</li>
+                        <li>• Department names</li>
+                        <li>• Industry types</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Financial Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Credit card numbers</li>
+                        <li>• Bank account numbers</li>
+                        <li>• Currency amounts</li>
+                        <li>• Transaction types</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Internet Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Usernames</li>
+                        <li>• Domain names</li>
+                        <li>• URLs</li>
+                        <li>• IP addresses</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-lg p-6">
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Product Data</h4>
+                    <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                        <li>• Product names</li>
+                        <li>• SKUs & barcodes</li>
+                        <li>• Descriptions</li>
+                        <li>• Categories</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-rose-600 to-pink-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Generate Test Data?</h2>
+            <p class="text-xl text-rose-100 mb-8 max-w-3xl mx-auto">
+                Start using Cufflink today for intelligent fake data generation with automatic relationship handling.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://www.nuget.org/packages/Noundry.Tuxedo.Cufflink" target="_blank" class="bg-white text-rose-600 hover:bg-rose-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7v10c0 5.5 3.8 9.7 9 11 5.2-1.3 9-5.5 9-11V7l-10-5zm0 2.2l7.5 3.8v8c0 4.4-3 8-7.5 9.3-4.5-1.3-7.5-4.9-7.5-9.3V8l7.5-3.8zM11 8v2h2V8h-2zm0 3v6h2v-6h-2z"/>
+                    </svg>
+                    Install from NuGet
+                </a>
+                <a href="tuxedo.html" class="border-2 border-white text-white hover:bg-white hover:text-rose-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View Tuxedo ORM
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Cufflink is part of the Noundry.Tuxedo ecosystem - modern tools for database-driven .NET development.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Related Tools</h3>
+                    <ul class="space-y-3">
+                        <li><a href="tuxedo.html" class="text-gray-300 hover:text-white transition-colors">Noundry.Tuxedo ORM</a></li>
+                        <li><a href="bowtie.html" class="text-gray-300 hover:text-white transition-colors">Tuxedo.Bowtie</a></li>
+                        <li><a href="slurp.html" class="text-gray-300 hover:text-white transition-colors">Noundry.Slurp</a></li>
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">All Libraries</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="https://github.com/noundry" class="text-gray-300 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition-colors">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

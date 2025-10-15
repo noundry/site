@@ -145,16 +145,16 @@
                     <div class="font-mono text-sm" x-data="{
                         currentStep: 0,
                         steps: [
-                            '$ noundry templates list',
-                            '✓ NDC.Templates.WebApp - Full-stack web application',
-                            '✓ NDC.Templates.Api - REST API with authentication',
-                            '$ noundry templates install NDC.Templates.WebApp',
-                            '✓ Template installed successfully',
-                            '$ dotnet new ndc-webapp -n MyApp',
-                            '✨ Created project with authentication & database',
-                            '$ cd MyApp && dotnet run',
-                            '🚀 Application running on https://localhost:5001',
-                            '✅ Ready for development!'
+                            '$ slurp customers.csv --provider postgres',
+                            '✓ Analyzing CSV structure...',
+                            '✓ Detected schema: 5 columns, 10,000 rows',
+                            '⚡ Ingesting at 125,000 rows/sec',
+                            '✅ Completed: 10,000 rows in 0.08 seconds',
+                            '',
+                            '$ cufflink generate --table Products --rows 500',
+                            '✓ Generated 500 realistic product records',
+                            '✓ Maintaining FK relationships automatically',
+                            '✨ Test data ready for development!'
                         ]
                     }" x-init="
                         setInterval(() => {
@@ -343,6 +343,10 @@
                             <p class="text-gray-600 dark:text-gray-300 text-sm">Code and CLI based database schema synchronization</p>
                         </div>
                         <div class="border-l-4 border-purple-500 pl-4">
+                            <h4 class="font-semibold text-gray-900 dark:text-white"><a href="cufflink.html" class="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Noundry.Tuxedo.Cufflink</a></h4>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Fake data generation with automatic FK/PK relationship detection</p>
+                        </div>
+                        <div class="border-l-4 border-purple-500 pl-4">
                             <h4 class="font-semibold text-gray-900 dark:text-white"><a href="slurp.html" class="hover:text-purple-600 dark:hover:text-purple-400 transition-colors">Noundry.Slurp</a></h4>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">High-performance CSV to database ingestion with smart schema inference</p>
                         </div>
@@ -356,6 +360,7 @@
                         <code class="text-sm font-mono text-gray-800 dark:text-gray-200">
                             dotnet add package Noundry.Tuxedo<br>
                             dotnet add package Noundry.Tuxedo.Bowtie<br>
+                            dotnet add package Noundry.Tuxedo.Cufflink<br>
                             dotnet add package Noundry.Slurp<br>
                             dotnet add package Noundry.Connector
                         </code>
