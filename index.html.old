@@ -566,29 +566,31 @@
                             <div class="ml-4 text-gray-400 text-xs font-mono">UserService.cs</div>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre class="text-sm font-mono"><code><span class="text-purple-400">public class</span> <span class="text-blue-400">UserService</span>
+                            <pre class="text-sm font-mono"><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Guardian</span><span class="text-gray-200">;</span>
+
+<span class="text-purple-400">public class</span> <span class="text-blue-400">UserService</span>
 <span class="text-gray-200">{</span>
     <span class="text-purple-400">public</span> <span class="text-blue-400">User</span> <span class="text-yellow-400">CreateUser</span><span class="text-gray-200">(</span><span class="text-purple-400">string</span> <span class="text-gray-200">email, </span><span class="text-purple-400">int</span> <span class="text-gray-200">age)</span>
     <span class="text-gray-200">{</span>
-        <span class="text-gray-500">// Guard against null or empty</span>
-        <span class="text-gray-200">email.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNullOrEmpty</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(email));</span>
+        <span class="text-gray-500">// Guard against null or whitespace</span>
+        <span class="text-yellow-400">Guard</span><span class="text-gray-200">.</span><span class="text-green-400">Against</span><span class="text-gray-200">.</span><span class="text-green-400">NullOrWhiteSpace</span><span class="text-gray-200">(email);</span>
 
-        <span class="text-gray-500">// Guard against invalid email</span>
-        <span class="text-gray-200">email.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">Email</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(email));</span>
+        <span class="text-gray-500">// Guard against invalid email format</span>
+        <span class="text-yellow-400">Guard</span><span class="text-gray-200">.</span><span class="text-green-400">Against</span><span class="text-gray-200">.</span><span class="text-green-400">InvalidFormat</span><span class="text-gray-200">(email, </span><span class="text-orange-400">@"^[^@\s]+@[^@\s]+\.[^@\s]+$"</span><span class="text-gray-200">);</span>
 
-        <span class="text-gray-500">// Guard against invalid range</span>
-        <span class="text-gray-200">age.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">InRange</span><span class="text-gray-200">(</span><span class="text-blue-400">18</span><span class="text-gray-200">, </span><span class="text-blue-400">120</span><span class="text-gray-200">, </span><span class="text-purple-400">nameof</span><span class="text-gray-200">(age));</span>
+        <span class="text-gray-500">// Guard against invalid age range</span>
+        <span class="text-yellow-400">Guard</span><span class="text-gray-200">.</span><span class="text-green-400">Against</span><span class="text-gray-200">.</span><span class="text-green-400">OutOfRange</span><span class="text-gray-200">(age, </span><span class="text-blue-400">18</span><span class="text-gray-200">, </span><span class="text-blue-400">120</span><span class="text-gray-200">);</span>
 
         <span class="text-purple-400">return new</span> <span class="text-blue-400">User</span> <span class="text-gray-200">{ Email = email, Age = age };</span>
     <span class="text-gray-200">}</span>
 
     <span class="text-purple-400">public</span> <span class="text-blue-400">Product</span> <span class="text-yellow-400">GetProduct</span><span class="text-gray-200">(</span><span class="text-purple-400">int</span> <span class="text-gray-200">id, </span><span class="text-blue-400">Product</span> <span class="text-gray-200">product)</span>
     <span class="text-gray-200">{</span>
-        <span class="text-gray-500">// Guard against negative values</span>
-        <span class="text-gray-200">id.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNegative</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(id));</span>
+        <span class="text-gray-500">// Guard against negative ID</span>
+        <span class="text-yellow-400">Guard</span><span class="text-gray-200">.</span><span class="text-green-400">Against</span><span class="text-gray-200">.</span><span class="text-green-400">Negative</span><span class="text-gray-200">(id);</span>
 
-        <span class="text-gray-500">// Guard against null objects</span>
-        <span class="text-gray-200">product.</span><span class="text-green-400">Guard</span><span class="text-gray-200">().</span><span class="text-green-400">NotNull</span><span class="text-gray-200">(</span><span class="text-purple-400">nameof</span><span class="text-gray-200">(product));</span>
+        <span class="text-gray-500">// Guard against null product</span>
+        <span class="text-yellow-400">Guard</span><span class="text-gray-200">.</span><span class="text-green-400">Against</span><span class="text-gray-200">.</span><span class="text-green-400">Null</span><span class="text-gray-200">(product);</span>
 
         <span class="text-purple-400">return</span> <span class="text-gray-200">product;</span>
     <span class="text-gray-200">}</span>
