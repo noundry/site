@@ -9,7 +9,13 @@
       "Bash(git push:*)",
       "Bash(git mv:*)",
       "Bash(git commit:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(find:*)",
+      "Bash(for file in *.html)",
+      "Bash(do if ! grep -q \"Ecosystem\" \"$file\")",
+      "Bash(then echo \"$file\")",
+      "Bash(fi)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []
