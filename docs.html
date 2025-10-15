@@ -97,8 +97,8 @@
 
     <div class="pt-16 min-h-screen bg-white dark:bg-gray-900">
         <div class="flex">
-             Sidebar 
-            <div class="w-80 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed h-full overflow-y-auto">
+             Sidebar
+            <div class="w-80 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 fixed top-16 bottom-0 overflow-y-auto">
                 <div class="p-6">
                     <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Documentation</h2>
                     
@@ -120,10 +120,15 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 ✅ Noundry.Assertive
                             </button>
-                            <button @click="activeComponent = 'guardian'" 
+                            <button @click="activeComponent = 'guardian'"
                                     :class="activeComponent === 'guardian' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🛡️ Noundry.Guardian
+                            </button>
+                            <button @click="activeComponent = 'sod'"
+                                    :class="activeComponent === 'sod' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                ✓ Noundry.Sod
                             </button>
                         </div>
                     </div>
@@ -462,6 +467,90 @@
 
     <span class="text-gray-500">// Perform transfer...</span>
 }</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noundry.Sod -->
+                <div x-show="activeComponent === 'sod'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Sod</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Zod-inspired schema validation for .NET with fluent API, type-safe validation, and comprehensive error messages.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Sod</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Sod</span>;
+
+<span class="text-gray-500">// Define a schema</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">userSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Object</span>&lt;<span class="text-yellow-400">User</span>&gt;()
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">Username</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Min</span>(<span class="text-orange-400">3</span>).<span class="text-green-400">Max</span>(<span class="text-orange-400">20</span>))
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">Email</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Email</span>())
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">u</span> => <span class="text-blue-400">u</span>.<span class="text-green-400">Age</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Number</span>().<span class="text-green-400">Min</span>(<span class="text-orange-400">18</span>).<span class="text-green-400">Max</span>(<span class="text-orange-400">100</span>));
+
+<span class="text-gray-500">// Validate data</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-blue-400">userSchema</span>.<span class="text-green-400">Parse</span>(<span class="text-blue-400">userData</span>);
+<span class="text-purple-400">if</span> (<span class="text-blue-400">result</span>.<span class="text-green-400">Success</span>)
+{
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Valid user: {result.Data.Username}"</span>);
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">String Validations</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">emailSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Email</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">urlSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Url</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">uuidSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Uuid</span>();
+<span class="text-purple-400">var</span> <span class="text-blue-400">regexSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Regex</span>(<span class="text-orange-400">@"^\d{3}-\d{2}-\d{4}$"</span>);
+
+<span class="text-gray-500">// Transformations</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">upperSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Trim</span>().<span class="text-green-400">ToUpperCase</span>();</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Complex Objects</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">addressSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Object</span>&lt;<span class="text-yellow-400">Address</span>&gt;()
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">a</span> => <span class="text-blue-400">a</span>.<span class="text-green-400">Street</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">NonEmpty</span>())
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">a</span> => <span class="text-blue-400">a</span>.<span class="text-green-400">City</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">NonEmpty</span>())
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">a</span> => <span class="text-blue-400">a</span>.<span class="text-green-400">PostalCode</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Regex</span>(<span class="text-orange-400">@"^\d{5}$"</span>));
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">personSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Object</span>&lt;<span class="text-yellow-400">Person</span>&gt;()
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>().<span class="text-green-400">Min</span>(<span class="text-orange-400">1</span>))
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Age</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Number</span>().<span class="text-green-400">Min</span>(<span class="text-orange-400">0</span>))
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Address</span>, <span class="text-blue-400">addressSchema</span>)
+    .<span class="text-green-400">Field</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Tags</span>, <span class="text-yellow-400">Sod</span>.<span class="text-green-400">Array</span>(<span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>()).<span class="text-green-400">Optional</span>());</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Transforms & Refinements</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Password validation with custom refinements</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">passwordSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>()
+    .<span class="text-green-400">Min</span>(<span class="text-orange-400">8</span>)
+    .<span class="text-green-400">Refine</span>(<span class="text-blue-400">pwd</span> => <span class="text-blue-400">pwd</span>.<span class="text-green-400">Any</span>(<span class="text-purple-400">char</span>.<span class="text-green-400">IsDigit</span>),
+        <span class="text-orange-400">"Password must contain a digit"</span>)
+    .<span class="text-green-400">Refine</span>(<span class="text-blue-400">pwd</span> => <span class="text-blue-400">pwd</span>.<span class="text-green-400">Any</span>(<span class="text-purple-400">char</span>.<span class="text-green-400">IsUpper</span>),
+        <span class="text-orange-400">"Password must contain an uppercase letter"</span>);
+
+<span class="text-gray-500">// Transform input to uppercase</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">upperSchema</span> = <span class="text-yellow-400">Sod</span>.<span class="text-green-400">String</span>()
+    .<span class="text-green-400">Transform</span>(<span class="text-blue-400">s</span> => <span class="text-blue-400">s</span>.<span class="text-green-400">ToUpper</span>());
+
+<span class="text-gray-500">// Coerce string to number</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">numberSchema</span> = <span class="text-yellow-400">Sod</span>.Coerce.<span class="text-green-400">Number</span>();</code></pre>
                         </div>
                     </div>
                 </div>
