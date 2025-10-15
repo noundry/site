@@ -163,16 +163,34 @@
                     <div class="font-mono text-sm overflow-hidden flex-1" x-data="{
                         currentStep: 0,
                         steps: [
-                            '$ slurp customers.csv --provider postgres',
+                            '# Slurp: CSV to Database Ingestion',
+                            '$ slurp customers.csv --provider postgres --connection $DB_URL',
                             '✓ Analyzing CSV structure...',
                             '✓ Detected schema: 5 columns, 10,000 rows',
                             '⚡ Ingesting at 125,000 rows/sec',
                             '✅ Completed: 10,000 rows in 0.08 seconds',
                             '',
-                            '$ cufflink generate --table Products --rows 500',
+                            '# Cufflink: Test Data Generation',
+                            '$ cufflink generate --table Products --rows 500 --seed 42',
                             '✓ Generated 500 realistic product records',
                             '✓ Maintaining FK relationships automatically',
-                            '✨ Test data ready for development!'
+                            '✨ Test data ready for development!',
+                            '',
+                            '# Noundry Jobs: Schedule Background Tasks',
+                            '$ njobs create DailyBackup backup.csx \"0 2 * * *\"',
+                            '✓ Created scheduled job: DailyBackup',
+                            '✓ Cron: 0 2 * * * (Daily at 2:00 AM)',
+                            '$ njobs list',
+                            '✓ DailyBackup - Active - Next run: 2:00 AM',
+                            '',
+                            '# NDC: Multi-Cloud Deployment',
+                            '$ ndc create aws --name MyApi',
+                            '✓ Created Aspire project structure',
+                            '✓ Generated Terraform configs for AWS',
+                            '$ ndc deploy --provider aws',
+                            '🚀 Deploying to AWS App Runner...',
+                            '✅ Deployment successful!',
+                            '🌐 URL: https://myapi.us-west-2.awsapprunner.com'
                         ]
                     }" x-init="
                         setInterval(() => {
@@ -181,7 +199,7 @@
                             } else {
                                 currentStep = 0;
                             }
-                        }, 2000)
+                        }, 1800)
                     ">
                         <template x-for="(step, index) in steps" :key="index">
                             <div x-show="index <= currentStep"
@@ -1149,52 +1167,132 @@
                         </div>
                         <div class="ml-4 text-gray-400 text-sm font-mono">Andy CLI</div>
                     </div>
-                    <div class="font-mono text-sm space-y-3">
-                        <div class="text-accent-500">$ noundry templates list --category blazor</div>
-                        <div class="text-green-400">✓ NDC.Templates.Blazor - Blazor WebAssembly</div>
-                        <div class="text-green-400">✓ NDC.Templates.BlazorServer - Blazor Server</div>
-                        <div class="text-blue-400 mt-2">$ noundry templates install NDC.Templates.Blazor</div>
+                    <div class="font-mono text-sm space-y-2">
+                        <div class="text-gray-500"># List available templates</div>
+                        <div class="text-accent-500">$ noundry templates list --category webapp</div>
+                        <div class="text-green-400">✓ NDC.Templates.WebApp - Full-stack web application</div>
+                        <div class="text-green-400">✓ NDC.Templates.Api - REST API with authentication</div>
+                        <div class="text-green-400">✓ NDC.Templates.MinimalApi - Minimal API template</div>
+                        <div class="text-green-400">✓ NDC.Templates.Blazor - Blazor WebAssembly app</div>
+
+                        <div class="text-gray-500 mt-3"># Install and create new project</div>
+                        <div class="text-accent-500">$ noundry templates install NDC.Templates.WebApp</div>
                         <div class="text-green-400">✓ Template installed successfully</div>
-                        <div class="text-accent-500 mt-2">$ dotnet new ndc-blazor -n MyBlazorApp</div>
-                        <div class="text-green-400">✨ Created MyBlazorApp.csproj</div>
-                        <div class="text-green-400">✨ Created Pages/, Components/, Services/</div>
-                        <div class="text-green-400">✨ Configured Blazor UI components</div>
-                        <div class="text-blue-400">$ cd MyBlazorApp && dotnet run</div>
-                        <div class="text-green-400">✅ Blazor app ready with UI components!</div>
+
+                        <div class="text-accent-500 mt-2">$ dotnet new ndc-webapp -n EcommerceSite</div>
+                        <div class="text-green-400">✨ Created EcommerceSite.csproj</div>
+                        <div class="text-green-400">✨ Generated Controllers/, Models/, Views/</div>
+                        <div class="text-green-400">✨ Configured Noundry.UI TagHelpers</div>
+                        <div class="text-green-400">✨ Added Guardian, Sod, DotEnvX libraries</div>
+                        <div class="text-green-400">✨ Set up authentication & database context</div>
+                        <div class="text-blue-400 mt-2">✅ Project ready with best practices built-in!</div>
                     </div>
                 </div>
             </div>
             
             <div class="mt-16 text-center">
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg max-w-4xl mx-auto">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Noundry CLI Commands</h3>
-                    <div class="grid md:grid-cols-2 gap-6 text-left">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg max-w-6xl mx-auto">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">All Noundry CLI Tools</h3>
+                    <div class="grid md:grid-cols-3 gap-6 text-left">
+                        <!-- Templates & Project Creation -->
                         <div class="space-y-3">
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                            <h4 class="text-sm font-semibold text-orange-600 dark:text-orange-400 mb-2">Templates & Projects</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
                                 <span class="text-accent-500">noundry templates list</span>
                             </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
                                 <span class="text-accent-500">noundry templates install</span> <span class="text-gray-600 dark:text-gray-300">NDC.Templates.WebApp</span>
                             </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
                                 <span class="text-accent-500">dotnet new ndc-webapp</span> <span class="text-gray-600 dark:text-gray-300">-n MyApp</span>
                             </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">dotnet new ndc-api</span> <span class="text-gray-600 dark:text-gray-300">-n MyApi</span>
-                            </div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">noundry templates search</span> <span class="text-gray-600 dark:text-gray-300">blazor</span>
-                            </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
                                 <span class="text-accent-500">dotnet new ndc-blazor</span> <span class="text-gray-600 dark:text-gray-300">-n MySPA</span>
                             </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">dotnet new ndc-cloud</span> <span class="text-gray-600 dark:text-gray-300">-n CloudApp</span>
+                        </div>
+
+                        <!-- Data Management -->
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-cyan-600 dark:text-cyan-400 mb-2">Data Management</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">slurp</span> <span class="text-gray-600 dark:text-gray-300">data.csv --provider postgres</span>
                             </div>
-                            <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">noundry templates update</span>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">slurp</span> <span class="text-gray-600 dark:text-gray-300">data.json --provider sqlserver</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">cufflink generate</span> <span class="text-gray-600 dark:text-gray-300">--table Users --rows 1000</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">cufflink seed</span> <span class="text-gray-600 dark:text-gray-300">--all --seed 42</span>
+                            </div>
+                        </div>
+
+                        <!-- Jobs & Automation -->
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-orange-600 dark:text-orange-400 mb-2">Jobs & Automation</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">njobs create</span> <span class="text-gray-600 dark:text-gray-300">Backup backup.csx "0 2 * * *"</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">njobs list</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">njobs run</span> <span class="text-gray-600 dark:text-gray-300">Backup</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">njobs delete</span> <span class="text-gray-600 dark:text-gray-300">OldJob</span>
+                            </div>
+                        </div>
+
+                        <!-- Cloud Deployment -->
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-cyan-600 dark:text-cyan-400 mb-2">Cloud Deployment</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">ndc create</span> <span class="text-gray-600 dark:text-gray-300">aws --name MyApi</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">ndc create</span> <span class="text-gray-600 dark:text-gray-300">azure --name MyApp</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">ndc deploy</span> <span class="text-gray-600 dark:text-gray-300">--provider aws</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">ndc status</span>
+                            </div>
+                        </div>
+
+                        <!-- Package Management -->
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">Package Management</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet add package</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Guardian</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet add package</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Sod</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet add package</span> <span class="text-gray-600 dark:text-gray-300">Noundry.DotEnvX</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet add package</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Jobs</span>
+                            </div>
+                        </div>
+
+                        <!-- Installation -->
+                        <div class="space-y-3">
+                            <h4 class="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">CLI Installation</h4>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet tool install -g</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Slurp</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet tool install -g</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Cufflink</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet tool install -g</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Jobs</span>
+                            </div>
+                            <div class="font-mono text-xs bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                <span class="text-accent-500">dotnet tool install -g</span> <span class="text-gray-600 dark:text-gray-300">Noundry.Deploy</span>
                             </div>
                         </div>
                     </div>
@@ -1260,20 +1358,29 @@
                         </div>
                         <div class="ml-4 text-gray-400 text-sm font-mono">NDC Project Creation</div>
                     </div>
-                    <div class="font-mono text-sm space-y-3">
-                        <div class="text-cyan-500">$ ndc create azure --name MyApi</div>
-                        <div class="text-gray-400">📦 Created Aspire project structure</div>
+                    <div class="font-mono text-sm space-y-2">
+                        <div class="text-gray-500"># Create cloud-ready project</div>
+                        <div class="text-cyan-500">$ ndc create azure --name ProductApi</div>
+                        <div class="text-gray-400">📦 Created .NET Aspire project structure</div>
                         <div class="text-gray-400">🗂️ Generated Terraform configurations</div>
-                        <div class="text-cyan-500">$ dotnet run --project src/MyApi.AppHost</div>
-                        <div class="text-gray-400">🎯 Starting local development with Aspire</div>
-                        <div class="text-cyan-500">$ terraform apply</div>
-                        <div class="text-gray-400">🚀 Deploying to Azure Container Apps</div>
-                        <div class="text-gray-400">🚀 Deploying to Azure App Service...</div>
-                        <div class="text-gray-400">📊 Configuring Application Insights</div>
-                        <div class="text-gray-400">🗄️ Setting up Azure SQL Database</div>
-                        <div class="text-green-400">✅ Deployment completed successfully!</div>
-                        <div class="text-blue-400">🌐 Application URL: https://myapp.azurewebsites.net</div>
-                        <div class="text-yellow-400">📈 Monitoring dashboard: https://portal.azure.com</div>
+                        <div class="text-gray-400">✓ AppHost/, ApiService/, Infrastructure/ ready</div>
+
+                        <div class="text-gray-500 mt-3"># Local development with Aspire</div>
+                        <div class="text-cyan-500">$ dotnet run --project src/ProductApi.AppHost</div>
+                        <div class="text-gray-400">🎯 Starting Aspire orchestration...</div>
+                        <div class="text-gray-400">✓ PostgreSQL container: localhost:5432</div>
+                        <div class="text-gray-400">✓ Redis container: localhost:6379</div>
+                        <div class="text-gray-400">✓ MinIO (S3): localhost:9000</div>
+                        <div class="text-blue-400">🌐 Dashboard: http://localhost:15000</div>
+
+                        <div class="text-gray-500 mt-3"># Deploy to production (Azure)</div>
+                        <div class="text-cyan-500">$ ndc deploy --provider azure --environment prod</div>
+                        <div class="text-gray-400">🚀 Provisioning Azure Container Apps...</div>
+                        <div class="text-gray-400">🗄️ Creating Azure SQL Database...</div>
+                        <div class="text-gray-400">📊 Configuring Application Insights...</div>
+                        <div class="text-gray-400">🔐 Setting up Key Vault for secrets...</div>
+                        <div class="text-green-400">✅ Deployment successful!</div>
+                        <div class="text-blue-400">🌐 API: https://productapi.azurecontainerapps.io</div>
                     </div>
                 </div>
             </div>
