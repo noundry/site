@@ -973,7 +973,16 @@
                         </div>
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">NoundryMCP</h3>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">Model Context Protocol (MCP) server exposing Noundry documentation to LLM clients like Claude Code with full-text search.</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Hosted Model Context Protocol (MCP) server that provides Noundry documentation directly to Claude with full-text search capabilities.</p>
+
+                    <div class="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                        <p class="text-sm text-blue-800 dark:text-blue-300 mb-2">
+                            <strong>Hosted Service:</strong> The Noundry MCP server is hosted at <code class="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-xs">https://mcp.noundry.ai/mcp</code>
+                        </p>
+                        <p class="text-sm text-blue-700 dark:text-blue-400">
+                            Users access it through Claude - no installation required.
+                        </p>
+                    </div>
 
                     <div class="mb-6">
                         <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Features</h4>
@@ -982,7 +991,7 @@
                                 <svg class="w-4 h-4 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                MCP protocol support
+                                Real-time Noundry documentation access
                             </li>
                             <li class="flex items-center">
                                 <svg class="w-4 h-4 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -994,13 +1003,17 @@
                                 <svg class="w-4 h-4 text-indigo-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                Auto-reload on file changes
+                                Seamless integration with Claude
                             </li>
                         </ul>
                     </div>
 
-                    <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 rounded p-2 mb-4">
-                        dotnet run --project NoundryMCP
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Add to Claude</h4>
+                        <div class="text-sm font-mono bg-gray-100 dark:bg-gray-800 rounded p-3">
+                            <div class="text-gray-500 mb-1"># In Claude, add the MCP server:</div>
+                            <div class="text-indigo-600 dark:text-indigo-400">/mcp add https://mcp.noundry.ai/mcp</div>
+                        </div>
                     </div>
 
                     <a href="docs.html#noundry-mcp" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 font-semibold">
