@@ -127,7 +127,7 @@
                         <a href="pricing.html" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
                             Start Building Today
                         </a>
-                        <a href="#docs" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        <a href="docs.html" class="border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
                             View Documentation
                         </a>
                     </div>
@@ -142,19 +142,19 @@
                         </div>
                         <div class="ml-4 text-gray-400 text-sm font-mono">Terminal</div>
                     </div>
-                    <div class="font-mono text-sm" x-data="{ 
+                    <div class="font-mono text-sm" x-data="{
                         currentStep: 0,
                         steps: [
-                            '$ dotnet new webapi -n MyApp',
-                            '$ cd MyApp',
-                            '$ dotnet add package Noundry.Tuxedo',
-                            '$ dotnet add package Noundry.UI',
-                            '$ andy generate api --entity Product',
-                            '✨ Generated ProductController with CRUD operations',
-                            '✨ Generated Product model with validation',
-                            '✨ Generated database migrations',
-                            '$ dotnet run',
-                            '🚀 Application running on https://localhost:5001'
+                            '$ noundry templates list',
+                            '✓ NDC.Templates.WebApp - Full-stack web application',
+                            '✓ NDC.Templates.Api - REST API with authentication',
+                            '$ noundry templates install NDC.Templates.WebApp',
+                            '✓ Template installed successfully',
+                            '$ dotnet new ndc-webapp -n MyApp',
+                            '✨ Created project with authentication & database',
+                            '$ cd MyApp && dotnet run',
+                            '🚀 Application running on https://localhost:5001',
+                            '✅ Ready for development!'
                         ]
                     }" x-init="
                         setInterval(() => {
@@ -535,53 +535,51 @@
                         <div class="ml-4 text-gray-400 text-sm font-mono">Andy CLI</div>
                     </div>
                     <div class="font-mono text-sm space-y-3">
-                        <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: firstName, lastName, email"</div>
-                        <div class="text-gray-400">🤖 Processing with CodeLlama-7B...</div>
-                        <div class="text-gray-400">📋 Using template: Noundry.UI Form</div>
-                        <div class="text-green-400">✨ Created Models/ContactFormModel.cs</div>
-                        <div class="text-green-400">✨ Created Views/Contact/Create.cshtml</div>
-                        <div class="text-blue-400">Generated form with Noundry TagHelpers:</div>
-                        <div class="text-gray-400">  &lt;noundry-text-input asp-for="FirstName" /&gt;</div>
-                        <div class="text-gray-400">  &lt;noundry-text-input asp-for="Email" type="email" /&gt;</div>
-                        <div class="text-blue-400 mt-2">$ andy generate "service for managing products with CRUD operations"</div>
-                        <div class="text-gray-400">🤖 Processing with CodeLlama-7B...</div>
-                        <div class="text-green-400">✨ Created Services/ProductService.cs</div>
-                        <div class="text-green-400">✨ Created Services/IProductService.cs</div>
-                        <div class="text-green-400">✅ Service ready with async CRUD methods!</div>
+                        <div class="text-accent-500">$ noundry templates list --category blazor</div>
+                        <div class="text-green-400">✓ NDC.Templates.Blazor - Blazor WebAssembly</div>
+                        <div class="text-green-400">✓ NDC.Templates.BlazorServer - Blazor Server</div>
+                        <div class="text-blue-400 mt-2">$ noundry templates install NDC.Templates.Blazor</div>
+                        <div class="text-green-400">✓ Template installed successfully</div>
+                        <div class="text-accent-500 mt-2">$ dotnet new ndc-blazor -n MyBlazorApp</div>
+                        <div class="text-green-400">✨ Created MyBlazorApp.csproj</div>
+                        <div class="text-green-400">✨ Created Pages/, Components/, Services/</div>
+                        <div class="text-green-400">✨ Configured Blazor UI components</div>
+                        <div class="text-blue-400">$ cd MyBlazorApp && dotnet run</div>
+                        <div class="text-green-400">✅ Blazor app ready with UI components!</div>
                     </div>
                 </div>
             </div>
             
             <div class="mt-16 text-center">
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg max-w-4xl mx-auto">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Andy CLI Commands</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Noundry CLI Commands</h3>
                     <div class="grid md:grid-cols-2 gap-6 text-left">
                         <div class="space-y-3">
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"repository for User entity with async CRUD"</span>
+                                <span class="text-accent-500">noundry templates list</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"API controller for Product with pagination"</span>
+                                <span class="text-accent-500">noundry templates install</span> <span class="text-gray-600 dark:text-gray-300">NDC.Templates.WebApp</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"Razor view with Noundry.UI components"</span>
+                                <span class="text-accent-500">dotnet new ndc-webapp</span> <span class="text-gray-600 dark:text-gray-300">-n MyApp</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy chat</span> <span class="text-gray-600 dark:text-gray-300">--context ./src</span>
+                                <span class="text-accent-500">dotnet new ndc-api</span> <span class="text-gray-600 dark:text-gray-300">-n MyApi</span>
                             </div>
                         </div>
                         <div class="space-y-3">
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"validation model with data annotations"</span>
+                                <span class="text-accent-500">noundry templates search</span> <span class="text-gray-600 dark:text-gray-300">blazor</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy generate</span> <span class="text-gray-600 dark:text-gray-300">"service layer with dependency injection"</span>
+                                <span class="text-accent-500">dotnet new ndc-blazor</span> <span class="text-gray-600 dark:text-gray-300">-n MySPA</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy auth login</span>
+                                <span class="text-accent-500">dotnet new ndc-cloud</span> <span class="text-gray-600 dark:text-gray-300">-n CloudApp</span>
                             </div>
                             <div class="font-mono text-sm bg-gray-100 dark:bg-gray-700 p-3 rounded">
-                                <span class="text-accent-500">andy config</span> <span class="text-gray-600 dark:text-gray-300">--api-url https://api.noundry.com</span>
+                                <span class="text-accent-500">noundry templates update</span>
                             </div>
                         </div>
                     </div>
@@ -776,7 +774,7 @@
                             First Application
                         </li>
                     </ul>
-                    <a href="#" class="inline-flex items-center mt-6 text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700 dark:hover:text-primary-300">
+                    <a href="getting-started.html" class="inline-flex items-center mt-6 text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700 dark:hover:text-primary-300">
                         Start Learning
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -818,7 +816,7 @@
                             Testing Strategies
                         </li>
                     </ul>
-                    <a href="#" class="inline-flex items-center mt-6 text-accent-600 dark:text-accent-400 font-semibold hover:text-accent-700 dark:hover:text-accent-300">
+                    <a href="libraries.html" class="inline-flex items-center mt-6 text-accent-600 dark:text-accent-400 font-semibold hover:text-accent-700 dark:hover:text-accent-300">
                         Browse Components
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -860,7 +858,7 @@
                             Custom Extensions
                         </li>
                     </ul>
-                    <a href="#" class="inline-flex items-center mt-6 text-purple-600 dark:text-purple-400 font-semibold hover:text-purple-700 dark:hover:text-purple-300">
+                    <a href="docs.html" class="inline-flex items-center mt-6 text-purple-600 dark:text-purple-400 font-semibold hover:text-purple-700 dark:hover:text-purple-300">
                         Explore Advanced
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -996,9 +994,25 @@
                         </li>
                     </ul>
 
-                    <button class="w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                        Start Solo Plan
-                    </button>
+                    <div x-data="{ showAlert: false }">
+                        <button @click="showAlert = true" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
+                            Start Solo Plan
+                        </button>
+                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
+                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
+                            </div>
+                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Developer Plan -->
@@ -1063,9 +1077,25 @@
                         </li>
                     </ul>
                     
-                    <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                        Start Developer Plan
-                    </button>
+                    <div x-data="{ showAlert: false }">
+                        <button @click="showAlert = true" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
+                            Start Developer Plan
+                        </button>
+                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
+                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
+                            </div>
+                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Team Plan -->
@@ -1134,9 +1164,25 @@
                         </li>
                     </ul>
                     
-                    <button class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                        Start Team Plan
-                    </button>
+                    <div x-data="{ showAlert: false }">
+                        <button @click="showAlert = true" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
+                            Start Team Plan
+                        </button>
+                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
+                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
+                            </div>
+                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -1144,8 +1190,8 @@
                 <p class="text-gray-600 dark:text-gray-300 mb-4">
                     Need an enterprise solution? We offer custom pricing for larger teams.
                 </p>
-                <a href="#" class="text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700 dark:hover:text-primary-300">
-                    Contact Sales →
+                <a href="contact.html" class="text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700 dark:hover:text-primary-300">
+                    Contact Us →
                 </a>
             </div>
             

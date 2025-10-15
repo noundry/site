@@ -80,31 +80,104 @@
                     Complete .NET development platform with production-ready libraries, beautiful UI components, AI-powered code generation, and seamless multi-cloud deployment.
                 </p>
 
-                <!-- Email Signup Form (Hero) -->
-                <div class="max-w-xl mx-auto mb-12">
-                    <div x-show="!emailSubmitted" x-transition>
-                        <form name="waitlist-hero" method="POST" class="flex flex-col sm:flex-row gap-3" @submit.prevent="userEmail = $event.target.email.value; fetch('/', {method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData($event.target)).toString()}).then(() => { emailSubmitted = true; window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}); }).catch(() => { emailSubmitted = true; window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'}); })" netlify>
-                            <input type="hidden" name="form-name" value="waitlist-hero">
+                <!-- Email Signup + Pricing Poll Form (Hero) -->
+                <div class="max-w-2xl mx-auto mb-12">
+                    <div x-show="!pollSubmitted" x-transition>
+                        <form name="waitlist-hero-poll" method="POST" data-netlify="true" class="space-y-4" @submit.prevent="
+                            const formData = new FormData($event.target);
+                            if(formData.get('email') && !emailSubmitted) {
+                                userEmail = formData.get('email');
+                                emailSubmitted = true;
+                            }
+                            fetch('/', {
+                                method: 'POST',
+                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                body: new URLSearchParams(formData).toString()
+                            }).then(() => {
+                                pollSubmitted = true;
+                            }).catch(() => {
+                                pollSubmitted = true;
+                            })
+                        ">
+                            <input type="hidden" name="form-name" value="waitlist-hero-poll">
                             <input type="hidden" name="bot-field">
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                x-model="userEmail"
-                                placeholder="Enter your email for early access"
-                                class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-600 dark:focus:border-primary-400 text-lg">
-                            <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors whitespace-nowrap">
-                                Join Waitlist
+
+                            <!-- Email Input -->
+                            <div x-show="!emailSubmitted" x-transition class="flex flex-col sm:flex-row gap-3">
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    x-model="userEmail"
+                                    placeholder="Enter your email for early access"
+                                    class="flex-1 px-6 py-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-primary-600 dark:focus:border-primary-400 text-lg">
+                            </div>
+
+                            <!-- Hidden email field when already submitted -->
+                            <input x-show="emailSubmitted" type="hidden" name="email" :value="userEmail">
+
+                            <!-- Email Submitted Message -->
+                            <div x-show="emailSubmitted" x-transition class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-4 py-3">
+                                <div class="flex items-center justify-center text-green-800 dark:text-green-300">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    <span class="text-sm font-semibold">Email received! Now share your pricing feedback below.</span>
+                                </div>
+                            </div>
+
+                            <!-- Pricing Poll -->
+                            <div class="bg-gray-50 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl px-6 py-6">
+                                <div class="text-center mb-4">
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Help us build in public!</h3>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">What would you pay per developer per year?</p>
+                                </div>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$99" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$99</span>
+                                    </label>
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$149" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$149</span>
+                                    </label>
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$199" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$199</span>
+                                    </label>
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$299" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$299</span>
+                                    </label>
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$399" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$399</span>
+                                    </label>
+                                    <label class="flex items-center justify-center p-3 bg-white dark:bg-gray-700 rounded-lg border-2 border-transparent hover:border-primary-600 dark:hover:border-primary-400 cursor-pointer transition-colors">
+                                        <input type="radio" name="poll_vote" value="$499+" required class="w-4 h-4 text-primary-600 focus:ring-primary-500">
+                                        <span class="ml-2 text-sm font-medium text-gray-900 dark:text-white">$499+</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                                <span x-show="!emailSubmitted">Join Waitlist & Submit Vote</span>
+                                <span x-show="emailSubmitted">Submit Vote</span>
                             </button>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">Be the first to know when Noundry launches</p>
                         </form>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-3 text-center">Be the first to know when Noundry launches</p>
                     </div>
-                    <div x-show="emailSubmitted" x-transition class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-6 py-4">
-                        <div class="flex items-center justify-center text-green-800 dark:text-green-300">
-                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            <span class="font-semibold">Thanks! Scroll down to share your pricing feedback.</span>
+
+                    <!-- Thank You Message -->
+                    <div x-show="pollSubmitted" x-transition class="bg-green-50 dark:bg-green-900/20 border-2 border-green-500 rounded-lg px-6 py-6">
+                        <div class="flex flex-col items-center justify-center text-green-800 dark:text-green-300 space-y-3">
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="font-semibold">Thank you for your feedback!</span>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 text-center">We'll notify you when Noundry launches.</p>
                         </div>
                     </div>
                 </div>
@@ -655,26 +728,22 @@
                             <div class="ml-4 text-gray-400 text-xs font-mono">Terminal</div>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// Interactive CLI mode</span>
-<span class="text-gray-200">$ slurp data.csv</span>
+                            <pre class="text-sm font-mono"><code><span class="text-gray-500">// List available templates</span>
+<span class="text-gray-200">$ noundry templates list</span>
 
-<span class="text-gray-400">? Select database provider: </span>
-  <span class="text-blue-400">❯ PostgreSQL</span>
-<span class="text-blue-400">    SQL Server
-    MySQL
-    SQLite</span>
+<span class="text-blue-400">Available Templates:</span>
+  <span class="text-green-400">✓ NDC.Templates.WebApp</span> <span class="text-gray-400">- Full-stack web application</span>
+  <span class="text-green-400">✓ NDC.Templates.Api</span> <span class="text-gray-400">- REST API with authentication</span>
+  <span class="text-green-400">✓ NDC.Templates.Blazor</span> <span class="text-gray-400">- Blazor WebAssembly app</span>
+  <span class="text-green-400">✓ NDC.Templates.Cloud</span> <span class="text-gray-400">- Cloud-ready with Terraform</span>
 
-<span class="text-gray-400">? Enter server: </span><span class="text-yellow-400">localhost</span>
-<span class="text-gray-400">? Enter database: </span><span class="text-yellow-400">mydb</span>
+<span class="text-gray-500">// Install a template</span>
+<span class="text-gray-200">$ noundry templates install NDC.Templates.WebApp</span>
+<span class="text-green-400">✓ Template installed successfully</span>
 
-<span class="text-green-400">✓ Ingested 1,234,567 rows in 12.34 seconds</span>
-
-<span class="text-gray-500">// Or use programmatically</span>
-<span class="text-purple-400">var</span> <span class="text-gray-200">slurper = </span><span class="text-purple-400">new</span> <span class="text-blue-400">Slurper</span><span class="text-gray-200">(connectionString);</span>
-<span class="text-purple-400">await</span> <span class="text-gray-200">slurper.</span><span class="text-green-400">IngestAsync</span><span class="text-gray-200">(</span>
-    <span class="text-orange-400">"products.csv"</span><span class="text-gray-200">, </span>
-    <span class="text-orange-400">"Products"</span>
-<span class="text-gray-200">);</span></code></pre>
+<span class="text-gray-500">// Create new project from template</span>
+<span class="text-gray-200">$ dotnet new ndc-webapp -n MyApp</span>
+<span class="text-green-400">✓ Project created successfully</span></code></pre>
                         </div>
                     </div>
                     <div class="order-1 lg:order-2 lg:pl-6">
@@ -1335,8 +1404,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <div>
-                                <span class="font-semibold text-gray-900 dark:text-white">SaaS Starter</span>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Multi-tenant SaaS with billing & subscriptions</p>
+                                <span class="font-semibold text-gray-900 dark:text-white">Web Application (NDC.Templates.WebApp)</span>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Full-stack MVC app with Noundry.UI, authentication, database & migrations</p>
                             </div>
                         </li>
                         <li class="flex items-start">
@@ -1344,8 +1413,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <div>
-                                <span class="font-semibold text-gray-900 dark:text-white">E-commerce Platform</span>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Full shopping cart, payments & inventory</p>
+                                <span class="font-semibold text-gray-900 dark:text-white">REST API (NDC.Templates.Api)</span>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Production-ready API with JWT authentication, Swagger, health checks & logging</p>
                             </div>
                         </li>
                         <li class="flex items-start">
@@ -1353,13 +1422,33 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                             <div>
-                                <span class="font-semibold text-gray-900 dark:text-white">Admin Dashboard</span>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">Complete admin panel with analytics & reporting</p>
+                                <span class="font-semibold text-gray-900 dark:text-white">Blazor WebAssembly (NDC.Templates.Blazor)</span>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Modern SPA with Blazor UI components and API integration</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Cloud-Native (NDC.Templates.Cloud)</span>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Containerized app with Terraform, Azure/AWS deployment & CI/CD</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Minimal API (NDC.Templates.MinimalApi)</span>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Lightweight REST API with minimal overhead and fast startup</p>
                             </div>
                         </li>
                     </ul>
-                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 font-mono text-xs">
-                        <span class="text-emerald-500">$</span> <span class="text-gray-300">ndc new saas-starter MyApp</span>
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 font-mono text-xs space-y-2">
+                        <div><span class="text-emerald-500">$</span> <span class="text-gray-300">noundry templates list</span></div>
+                        <div><span class="text-emerald-500">$</span> <span class="text-gray-300">noundry templates install NDC.Templates.WebApp</span></div>
+                        <div><span class="text-emerald-500">$</span> <span class="text-gray-300">dotnet new ndc-webapp -n MyApp</span></div>
                     </div>
                 </div>
 
@@ -1595,19 +1684,18 @@
                         <div class="ml-4 text-gray-400 text-sm font-mono">Terminal</div>
                     </div>
                     <div class="font-mono text-sm space-y-2">
-                        <div class="text-gray-400"># Install Andy CLI</div>
-                        <div class="text-accent-500">$ dotnet tool install -g Noundry.Andy</div>
-                        <div class="text-gray-400 mt-4"># Generate a service layer</div>
-                        <div class="text-accent-500">$ andy generate "service for managing products with CRUD operations"</div>
-                        <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
-                        <div class="text-green-400 mt-2">✨ Created Services/IProductService.cs</div>
-                        <div class="text-green-400">✨ Created Services/ProductService.cs</div>
-                        <div class="text-blue-400 mt-2">✅ Service layer ready with DI setup!</div>
-                        <div class="text-gray-400 mt-4"># Generate a form UI</div>
-                        <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: name, email, phone"</div>
-                        <div class="text-green-400 mt-2">✨ Created Models/ContactFormModel.cs</div>
-                        <div class="text-green-400">✨ Created Views/Contact/Create.cshtml</div>
-                        <div class="text-blue-400 mt-2">✅ Form ready with validation!</div>
+                        <div class="text-gray-400"># List available templates</div>
+                        <div class="text-accent-500">$ noundry templates list --category webapp</div>
+                        <div class="text-green-400 mt-2">✓ NDC.Templates.WebApp - Full-stack web application</div>
+                        <div class="text-green-400">✓ NDC.Templates.Api - REST API with authentication</div>
+                        <div class="text-green-400">✓ NDC.Templates.MinimalApi - Minimal API template</div>
+                        <div class="text-gray-400 mt-4"># Install and create new project</div>
+                        <div class="text-accent-500">$ noundry templates install NDC.Templates.WebApp</div>
+                        <div class="text-green-400 mt-2">✓ Template installed successfully</div>
+                        <div class="text-accent-500 mt-2">$ dotnet new ndc-webapp -n ProductCatalog</div>
+                        <div class="text-green-400 mt-2">✨ Created ProductCatalog.csproj</div>
+                        <div class="text-green-400">✨ Created Controllers, Models, Views</div>
+                        <div class="text-blue-400 mt-2">✅ Project ready with authentication & database!</div>
                     </div>
                 </div>
             </div>
