@@ -1,21 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)",
-      "Read(//c/Work/Noundry/src/noundry.com/**)",
-      "Read(//c/Work/Noundry/**)",
-      "Bash(cat:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Update landing pages with real noundry commands and enhanced CTAs\n\n- Replace placeholder terminal commands with real noundry template commands\n  (noundry templates list, install, dotnet new ndc-*)\n- Expand Application Templates section with 5 specific templates:\n  Web App, REST API, Blazor, Cloud-Native, and Minimal API\n- Combine email registration and pricing poll in hero CTA section\n- Add \"Coming Soon\" alerts to all pricing plan buttons with Alpine.js\n- Update documentation links to point to real pages (docs.html, getting-started.html)\n- Change \"Contact Sales\" links to \"Contact Us\" (contact.html)\n- Maintain dark mode support and responsive design throughout\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git push:*)",
-      "Bash(git mv:*)",
-      "Bash(git commit:*)",
-      "Bash(git add:*)",
-      "Bash(find:*)",
-      "Bash(for file in *.html)",
-      "Bash(do if ! grep -q \"Ecosystem\" \"$file\")",
-      "Bash(then echo \"$file\")",
-      "Bash(fi)",
-      "Bash(done)"
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []

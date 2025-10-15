@@ -160,7 +160,7 @@
                         </div>
                         <div class="ml-4 text-gray-400 text-sm font-mono">Terminal</div>
                     </div>
-                    <div class="font-mono text-sm overflow-hidden flex-1" x-data="{
+                    <div class="font-mono text-sm overflow-y-auto flex-1" x-data="{
                         currentStep: 0,
                         steps: [
                             '# Slurp: CSV to Database Ingestion',
@@ -208,7 +208,14 @@
                                  x-transition:enter-end="opacity-100 transform translate-y-0"
                                  class="mb-2">
                                 <span x-text="step"
-                                      :class="step.startsWith('$') ? 'text-accent-500' : step.startsWith('✨') ? 'text-green-400' : step.startsWith('🚀') ? 'text-blue-400' : 'text-gray-300'"></span>
+                                      :class="{
+                                          'text-gray-500': step.startsWith('#'),
+                                          'text-accent-500': step.startsWith('$'),
+                                          'text-green-400': step.startsWith('✅') || step.startsWith('✓') || step.startsWith('✨'),
+                                          'text-blue-400': step.startsWith('🚀') || step.startsWith('🌐'),
+                                          'text-yellow-400': step.startsWith('⚡'),
+                                          'text-gray-300': !step.startsWith('#') && !step.startsWith('$') && !step.startsWith('✅') && !step.startsWith('✓') && !step.startsWith('✨') && !step.startsWith('🚀') && !step.startsWith('🌐') && !step.startsWith('⚡') && step !== ''
+                                      }"></span>
                                 <span x-show="index === currentStep && step.startsWith('$')" class="animate-pulse text-accent-500">|</span>
                             </div>
                         </template>
