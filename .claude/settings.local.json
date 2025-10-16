@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Read(//c/Work/Noundry/src/master-docs/**)",
+      "Read(//c/Work/Noundry/src/**)"
     ],
     "deny": [],
     "ask": []
