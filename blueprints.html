@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blueprints - Noundry Code Templates</title>
+    <title>Noundry Blueprints - Library Usage Examples</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -17,6 +17,13 @@
                     }
                 }
             }
+        }
+        function copyCode(blockId) {
+            const codeElement = document.getElementById(blockId);
+            const code = codeElement.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Code copied to clipboard!');
+            });
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -45,9 +52,9 @@
 
     <section class="pt-32 pb-16 bg-gradient-to-br from-cyan-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">Code Blueprints</h1>
+            <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">Noundry Blueprints</h1>
             <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Production-ready code templates and architectural patterns for .NET applications
+                Code examples showing how to use each Noundry library in real-world scenarios
             </p>
         </div>
     </section>
@@ -56,196 +63,495 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-center gap-4 mb-12 flex-wrap">
                 <button @click="category = 'all'" :class="category === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">All</button>
-                <button @click="category = 'api'" :class="category === 'api' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">APIs</button>
-                <button @click="category = 'web'" :class="category === 'web' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Web Apps</button>
-                <button @click="category = 'data'" :class="category === 'data' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Data Access</button>
-                <button @click="category = 'patterns'" :class="category === 'patterns' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Patterns</button>
+                <button @click="category = 'security'" :class="category === 'security' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Security</button>
+                <button @click="category = 'validation'" :class="category === 'validation' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Validation</button>
+                <button @click="category = 'data'" :class="category === 'data' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Data</button>
+                <button @click="category = 'config'" :class="category === 'config' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Config</button>
             </div>
 
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- REST API Blueprint -->
-                <div x-show="category === 'all' || category === 'api'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">REST API Template</h3>
-                        <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">C#</span>
+            <div class="space-y-16">
+                <!-- Noundry.Guardian Blueprint -->
+                <div x-show="category === 'all' || category === 'security'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🛡️ Noundry.Guardian</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Attribute-based authorization with policies and claims</p>
+                        </div>
+                        <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">Security</span>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Complete REST API with CRUD operations, validation, error handling, and Swagger documentation.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>[ApiController]
-[Route("api/[controller]")]
-public class ProductsController : ControllerBase
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Program.cs</span>
+                            <button onclick="copyCode('guardian-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="guardian-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Guardian;
+
+// Add Guardian with policies
+builder.Services.AddGuardian(options =>
 {
-    private readonly IRepository&lt;Product&gt; _repository;
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
 
-    [HttpGet]
-    public async Task&lt;ActionResult&lt;IEnumerable&lt;Product&gt;&gt;&gt; GetAll()
-    {
-        var products = await _repository.GetAllAsync();
-        return Ok(products);
-    }
+    options.AddPolicy("CanEditPosts", policy =>
+        policy.RequireClaim("Permission", "Posts.Edit"));
 
-    [HttpPost]
-    public async Task&lt;ActionResult&lt;Product&gt;&gt; Create(Product product)
-    {
-        await _repository.AddAsync(product);
-        return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
-    }
-}</code></pre>
-                    </div>
-                    <a href="getting-started.html#rest-api" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
-                </div>
-
-                <!-- Repository Pattern -->
-                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Repository Pattern</h3>
-                        <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">C#</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Generic repository with specifications, unit of work, and Tuxedo ORM integration.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>public class Repository&lt;T&gt; : IRepository&lt;T&gt; where T : class
-{
-    private readonly IDbConnection _connection;
-
-    public async Task&lt;T&gt; GetByIdAsync(int id)
-    {
-        return await _connection.GetAsync&lt;T&gt;(id);
-    }
-
-    public async Task&lt;IEnumerable&lt;T&gt;&gt; FindAsync(ISpecification&lt;T&gt; spec)
-    {
-        return await _connection.QueryAsync&lt;T&gt;(spec.ToSql(), spec.Parameters);
-    }
-}</code></pre>
-                    </div>
-                    <a href="getting-started.html#repository" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
-                </div>
-
-                <!-- Razor Pages Blueprint -->
-                <div x-show="category === 'all' || category === 'web'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Razor Pages App</h3>
-                        <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">C#</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Full Razor Pages application with authentication, authorization, and form handling.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>public class IndexModel : PageModel
-{
-    [BindProperty]
-    public ContactForm Form { get; set; }
-
-    public async Task&lt;IActionResult&gt; OnPostAsync()
-    {
-        if (!ModelState.IsValid)
-            return Page();
-
-        await _emailService.SendAsync(Form);
-        return RedirectToPage("Success");
-    }
-}</code></pre>
-                    </div>
-                    <a href="getting-started.html#razor-pages" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
-                </div>
-
-                <!-- CQRS Pattern -->
-                <div x-show="category === 'all' || category === 'patterns'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">CQRS + MediatR</h3>
-                        <span class="px-3 py-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm font-medium">C#</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Command Query Responsibility Segregation pattern with MediatR and validation pipeline.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>public record CreateProductCommand(string Name, decimal Price) : IRequest&lt;int&gt;;
-
-public class CreateProductHandler : IRequestHandler&lt;CreateProductCommand, int&gt;
-{
-    public async Task&lt;int&gt; Handle(CreateProductCommand request, CancellationToken ct)
-    {
-        var product = new Product { Name = request.Name, Price = request.Price };
-        await _repository.AddAsync(product);
-        return product.Id;
-    }
-}</code></pre>
-                    </div>
-                    <a href="getting-started.html#cqrs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
-                </div>
-
-                <!-- Background Jobs -->
-                <div x-show="category === 'all' || category === 'patterns'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Background Jobs</h3>
-                        <span class="px-3 py-1 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">C#</span>
-                    </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Hosted services and background workers with scoped dependencies and error handling.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>public class EmailWorker : BackgroundService
-{
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        while (!stoppingToken.IsCancellationRequested)
+    options.AddPolicy("MinimumAge", policy =>
+        policy.RequireAssertion(context =>
         {
-            using var scope = _services.CreateScope();
-            var queue = scope.ServiceProvider.GetRequiredService&lt;IEmailQueue&gt;();
+            var ageClaim = context.User.FindFirst("age");
+            return ageClaim != null && int.Parse(ageClaim.Value) >= 18;
+        }));
+});
 
-            await queue.ProcessPendingEmailsAsync();
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+// Use in controllers
+[Authorize(Policy = "AdminOnly")]
+public class AdminController : Controller
+{
+    [HttpPost]
+    [Authorize(Policy = "CanEditPosts")]
+    public async Task<IActionResult> EditPost(int id, Post model)
+    {
+        // Only users with "Posts.Edit" claim can access
+        return Ok();
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#guardian" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Noundry.Sod Blueprint -->
+                <div x-show="category === 'all' || category === 'validation'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">✅ Noundry.Sod</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Zod-inspired schema validation for .NET</p>
+                        </div>
+                        <span class="px-4 py-2 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded-full text-sm font-medium">Validation</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">UserValidator.cs</span>
+                            <button onclick="copyCode('sod-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="sod-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Sod;
+
+// Define schema
+var userSchema = Sod.Object<User>()
+    .Field(u => u.Email,
+        Sod.String().Email().Required())
+    .Field(u => u.Age,
+        Sod.Number().Min(18).Max(120))
+    .Field(u => u.Username,
+        Sod.String().Min(3).Max(20).Regex("^[a-zA-Z0-9_]+$"))
+    .Field(u => u.Password,
+        Sod.String().Min(8).Regex(@"^(?=.*[A-Z])(?=.*\d).*$"))
+    .Field(u => u.Website,
+        Sod.String().Url().Optional());
+
+// Validate in controller
+[HttpPost]
+public async Task<IActionResult> Register(User user)
+{
+    var result = userSchema.Parse(user);
+
+    if (!result.Success)
+    {
+        return BadRequest(result.Errors);
+    }
+
+    var validUser = result.Data;
+    await _userService.CreateAsync(validUser);
+    return Ok();
+}</code></pre>
+                    </div>
+                    <a href="docs.html#sod" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Noundry.DotEnvX Blueprint -->
+                <div x-show="category === 'all' || category === 'config'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔐 Noundry.DotEnvX</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Encrypted environment variables with validation</p>
+                        </div>
+                        <span class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium">Config</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Program.cs</span>
+                            <button onclick="copyCode('dotenvx-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="dotenvx-code" class="text-sm font-mono text-gray-100"><code>using Noundry.DotEnvX.Core.Extensions;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Load .env with encryption & validation
+builder.Configuration.AddDotEnvX(options =>
+{
+    options.Path = ".env";
+    options.EnvironmentSpecific = true;  // Also load .env.development
+    options.Required = new[]
+    {
+        "DATABASE_URL",
+        "JWT_SECRET",
+        "STRIPE_API_KEY"
+    };
+    options.EncryptionKey =
+        Environment.GetEnvironmentVariable("DOTENVX_KEY");
+});
+
+// Use configuration
+var jwtSecret = builder.Configuration["JWT_SECRET"];
+var dbUrl = builder.Configuration["DATABASE_URL"];
+
+// .env file example:
+// DATABASE_URL=postgresql://localhost/mydb
+// JWT_SECRET=encrypted:AES256:base64encodedvalue
+// STRIPE_API_KEY=sk_test_encrypted</code></pre>
+                    </div>
+                    <a href="docs.html#dotenvx" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Noundry.Connector Blueprint -->
+                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 Noundry.Connector</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Multi-database connection management</p>
+                        </div>
+                        <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">Data</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Program.cs</span>
+                            <button onclick="copyCode('connector-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="connector-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Connector;
+
+// Add multi-database support
+builder.Services.AddConnector(options =>
+{
+    // Primary database
+    options.AddDatabase("Default", config =>
+    {
+        config.Provider = DatabaseProvider.PostgreSQL;
+        config.ConnectionString = builder.Configuration["DATABASE_URL"];
+    });
+
+    // Read replica
+    options.AddDatabase("ReadReplica", config =>
+    {
+        config.Provider = DatabaseProvider.PostgreSQL;
+        config.ConnectionString = builder.Configuration["READ_REPLICA_URL"];
+        config.ReadOnly = true;
+    });
+
+    // Analytics database
+    options.AddDatabase("Analytics", config =>
+    {
+        config.Provider = DatabaseProvider.ClickHouse;
+        config.ConnectionString = builder.Configuration["ANALYTICS_URL"];
+    });
+});
+
+// Use in services
+public class UserService
+{
+    private readonly IConnectionFactory _factory;
+
+    public async Task<User> GetAsync(int id)
+    {
+        using var conn = await _factory.CreateAsync("ReadReplica");
+        return await conn.QuerySingleAsync<User>(
+            "SELECT * FROM users WHERE id = @id",
+            new { id });
+    }
+
+    public async Task CreateAsync(User user)
+    {
+        using var conn = await _factory.CreateAsync("Default");
+        await conn.ExecuteAsync(
+            "INSERT INTO users (name, email) VALUES (@name, @email)",
+            user);
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#connector" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Noundry.Tuxedo Blueprint -->
+                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎩 Noundry.Tuxedo</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Lightweight ORM with fluent query builder</p>
+                        </div>
+                        <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">Data</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">ProductRepository.cs</span>
+                            <button onclick="copyCode('tuxedo-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="tuxedo-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Tuxedo;
+
+public class ProductRepository
+{
+    private readonly IDbContext _db;
+
+    // Fluent queries
+    public async Task<List<Product>> GetActiveProducts()
+    {
+        return await _db.Query<Product>()
+            .Where(p => p.IsActive == true)
+            .Where(p => p.Stock > 0)
+            .OrderBy(p => p.Name)
+            .ToListAsync();
+    }
+
+    // Joins
+    public async Task<List<ProductWithCategory>> GetProductsWithCategories()
+    {
+        return await _db.Query<Product>()
+            .Join<Category>((p, c) => p.CategoryId == c.Id)
+            .Select((p, c) => new ProductWithCategory
+            {
+                ProductName = p.Name,
+                CategoryName = c.Name,
+                Price = p.Price
+            })
+            .ToListAsync();
+    }
+
+    // Insert/Update
+    public async Task<int> CreateAsync(Product product)
+    {
+        return await _db.InsertAsync(product);
+    }
+
+    public async Task UpdatePriceAsync(int id, decimal newPrice)
+    {
+        await _db.Update<Product>()
+            .Set(p => p.Price, newPrice)
+            .Set(p => p.UpdatedAt, DateTime.UtcNow)
+            .Where(p => p.Id == id)
+            .ExecuteAsync();
+    }
+
+    // Transactions
+    public async Task TransferStock(int fromId, int toId, int quantity)
+    {
+        using var transaction = await _db.BeginTransactionAsync();
+        try
+        {
+            await _db.Update<Product>()
+                .Set(p => p.Stock, p => p.Stock - quantity)
+                .Where(p => p.Id == fromId)
+                .ExecuteAsync();
+
+            await _db.Update<Product>()
+                .Set(p => p.Stock, p => p.Stock + quantity)
+                .Where(p => p.Id == toId)
+                .ExecuteAsync();
+
+            await transaction.CommitAsync();
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
         }
     }
 }</code></pre>
                     </div>
-                    <a href="getting-started.html#background-jobs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                    <a href="docs.html#tuxedo" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Minimal API -->
-                <div x-show="category === 'all' || category === 'api'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Minimal API</h3>
-                        <span class="px-3 py-1 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded-full text-sm font-medium">C#</span>
+                <!-- Noundry.Slurp Blueprint -->
+                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">📥 Noundry.Slurp</h2>
+                            <p class="text-gray-600 dark:text-gray-300">High-performance CSV/JSON to database ingestion</p>
+                        </div>
+                        <span class="px-4 py-2 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded-full text-sm font-medium">Data</span>
                     </div>
-                    <p class="text-gray-600 dark:text-gray-400 mb-4">
-                        Modern minimal API with route groups, filters, and OpenAPI documentation.
-                    </p>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mb-4 overflow-x-auto">
-                        <pre class="text-sm font-mono text-gray-100"><code>var app = builder.Build();
 
-var products = app.MapGroup("/api/products")
-    .WithOpenApi()
-    .AddEndpointFilter&lt;ValidationFilter&gt;();
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">DataImporter.cs</span>
+                            <button onclick="copyCode('slurp-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="slurp-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Slurp;
 
-products.MapGet("/", async (IRepository&lt;Product&gt; repo) =>
-    await repo.GetAllAsync());
-
-products.MapPost("/", async (Product product, IRepository&lt;Product&gt; repo) =>
+public class DataImporter
 {
-    await repo.AddAsync(product);
-    return Results.Created($"/api/products/{product.Id}", product);
-});</code></pre>
+    private readonly ISlurpService _slurp;
+
+    // Import CSV to database
+    public async Task ImportCustomers(Stream csvStream)
+    {
+        var result = await _slurp.IngestCsvAsync(csvStream, options =>
+        {
+            options.TableName = "customers";
+            options.Provider = DatabaseProvider.PostgreSQL;
+            options.ConnectionString = _config["DATABASE_URL"];
+            options.BatchSize = 5000;
+            options.CreateTableIfNotExists = true;
+            options.TruncateBeforeInsert = false;
+
+            // Column mapping
+            options.ColumnMappings = new Dictionary<string, string>
+            {
+                ["First Name"] = "first_name",
+                ["Last Name"] = "last_name",
+                ["E-mail"] = "email"
+            };
+
+            // Transformations
+            options.Transform = (row) =>
+            {
+                row["email"] = row["email"].ToLower();
+                row["created_at"] = DateTime.UtcNow;
+                return row;
+            };
+        });
+
+        Console.WriteLine($"Imported {result.RowsProcessed} rows in {result.Duration}");
+    }
+
+    // CLI Usage
+    // slurp customers.csv --provider postgres --connection $DB_URL
+    // ✓ Analyzing CSV structure...
+    // ✓ Detected schema: 5 columns, 10,000 rows
+    // ⚡ Ingesting at 125,000 rows/sec
+    // ✅ Completed: 10,000 rows in 0.08 seconds
+}</code></pre>
                     </div>
-                    <a href="getting-started.html#minimal-api" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Example →</a>
+                    <a href="docs.html#slurp" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
+
+                <!-- Noundry.Jobs Blueprint -->
+                <div x-show="category === 'all' || category === 'config'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">⏰ Noundry.Jobs</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Job scheduling and automation library</p>
+                        </div>
+                        <span class="px-4 py-2 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm font-medium">Automation</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">cleanup.csx</span>
+                            <button onclick="copyCode('jobs-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="jobs-code" class="text-sm font-mono text-gray-100"><code>#!/usr/bin/env dotnet-script
+#r "nuget: Noundry.Jobs, 1.0.0"
+
+using Noundry.Jobs.Database;
+using Noundry.Jobs.Email;
+
+// Database cleanup job
+var db = new JobsDb(connectionString, DatabaseType.PostgreSQL);
+
+var deleted = await db.ExecuteAsync(
+    "DELETE FROM logs WHERE created_at < @Date",
+    new { Date = DateTime.UtcNow.AddDays(-30) }
+);
+
+Console.WriteLine($"Deleted {deleted} old log entries");
+
+// Send email notification
+using var email = new JobsEmail()
+    .Configure("smtp.gmail.com", 587, username, password)
+    .UseStartTls();
+
+await email.SendAsync(
+    from: "noreply@example.com",
+    to: "admin@example.com",
+    subject: $"Cleanup Complete: {deleted} records deleted",
+    body: "Database cleanup job completed successfully"
+);
+
+// Schedule with njobs CLI:
+// njobs create DailyCleanup cleanup.csx "0 2 * * *"
+// njobs list
+// njobs run DailyCleanup</code></pre>
+                    </div>
+                    <a href="docs.html#jobs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Noundry.Assertive Blueprint -->
+                <div x-show="category === 'all' || category === 'validation'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">⚠️ Noundry.Assertive</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Fluent assertions with custom error messages</p>
+                        </div>
+                        <span class="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">Validation</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">OrderService.cs</span>
+                            <button onclick="copyCode('assertive-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="assertive-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Assertive;
+
+public class OrderService
+{
+    public async Task ProcessOrder(Order order, User user)
+    {
+        // Guard clauses with custom messages
+        Assert.That(order).IsNotNull("Order cannot be null");
+        Assert.That(order.Items).IsNotEmpty("Order must contain at least one item");
+        Assert.That(order.Total).IsGreaterThan(0, "Order total must be positive");
+        Assert.That(user.Email).IsNotNullOrWhiteSpace("User email is required");
+        Assert.That(user.Email).Matches(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", "Invalid email format");
+
+        // Complex assertions
+        Assert.That(order.Items.Sum(i => i.Price * i.Quantity))
+            .IsEqualTo(order.Total, "Order total doesn't match sum of items");
+
+        // Conditional assertions
+        if (order.RequiresShipping)
+        {
+            Assert.That(order.ShippingAddress).IsNotNull("Shipping address required");
+            Assert.That(order.ShippingAddress.ZipCode).IsNotNullOrWhiteSpace();
+        }
+
+        // All assertions throw ArgumentException or custom exception if they fail
+        await SaveOrderAsync(order);
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#assertive" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
             </div>
         </div>
     </section>
 
     <section class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Generate Code with Andy AI</h2>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Start Using Noundry Libraries</h2>
             <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Use Andy CLI to generate these blueprints and customize them for your needs
+                Install any Noundry library via NuGet and start building better .NET applications
             </p>
-            <a href="andy-ai.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
-                Learn About Andy AI
-            </a>
+            <div class="flex gap-4 justify-center">
+                <a href="getting-started.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+                    Get Started
+                </a>
+                <a href="docs.html" class="inline-block border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg font-semibold transition-colors">
+                    View Docs
+                </a>
+            </div>
         </div>
     </section>
 
