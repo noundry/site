@@ -1,9 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)",
-      "Read(//c/Work/Noundry/src/master-docs/**)",
-      "Read(//c/Work/Noundry/src/**)"
+      "Bash(for file in andy-ai.html assertive.html authnz.html blocks.html blueprints.html bowtie.html changelog.html connector.html docs.html dotenvx.html elements.html engine.html guardian.html libraries.html logably.html privacy.html slurp.html sod.html status.html taghelpers.html terms.html tuxedo.html ui-components.html)",
+      "Bash(do sed -i 's|</title>|</title>\\n    <link rel=\"\"icon\"\" type=\"\"image/x-icon\"\" href=\"\"assets/favicon.ico\"\">|' \"$file\")"
     ],
     "deny": [],
     "ask": []
