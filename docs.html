@@ -230,7 +230,7 @@
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Development Tools</h3>
                         <div class="space-y-1">
-                            <button @click="activeComponent = 'dotenvx'" 
+                            <button @click="activeComponent = 'dotenvx'"
                                     :class="activeComponent === 'dotenvx' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🔒 Noundry.DotEnvX
@@ -239,6 +239,22 @@
                                     :class="activeComponent === 'cloud' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 ☁️ Noundry.Cloud CLI
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Project Templates</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'template-webapp'"
+                                    :class="activeComponent === 'template-webapp' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🌐 Web App Template
+                            </button>
+                            <button @click="activeComponent = 'template-api'"
+                                    :class="activeComponent === 'template-api' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔌 API Template
                             </button>
                         </div>
                     </div>
@@ -278,12 +294,16 @@
                     
                     <div class="grid md:grid-cols-2 gap-6 mb-8">
                         <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Getting Started</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">New to Noundry? Start here to learn the basics and set up your first project.</p>
-                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
-                                <div class="text-accent-500">$ dotnet new webapi -n MyApp</div>
-                                <div class="text-accent-500">$ cd MyApp</div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">Getting Started with Templates</h3>
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">Start with our project templates for rapid development.</p>
+                            <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 space-y-2">
+                                <div class="text-gray-500"># Create a new web application</div>
+                                <div class="text-accent-500">$ dotnet new noundry-app -n MyApp</div>
+                                <div class="text-gray-500 mt-3"># Create a new API</div>
+                                <div class="text-accent-500">$ dotnet new noundry-api -n MyApi</div>
+                                <div class="text-gray-500 mt-3"># Add Noundry libraries</div>
                                 <div class="text-accent-500">$ dotnet add package Noundry.UI</div>
+                                <div class="text-accent-500">$ dotnet add package Noundry.Tuxedo</div>
                             </div>
                         </div>
                         
@@ -3425,25 +3445,19 @@
 
                 <!-- Web Application Template -->
                 <div x-show="activeComponent === 'template-webapp'" class="max-w-4xl">
-                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">NDC.Templates.WebApp</h1>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry Web App Template</h1>
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
                         Full-stack web application template with authentication, database integration, Entity Framework migrations, and responsive UI built with Noundry libraries.
                     </p>
 
                     <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-accent-500">$ noundry templates install NDC.Templates.WebApp</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Create New Project</h2>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-accent-500">$ dotnet new ndc-webapp -n MyWebApp</div>
-                            <div class="text-gray-500 mt-2"># Navigate to project</div>
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create a new web application</div>
+                            <div class="text-accent-500">$ dotnet new noundry-app -n MyWebApp</div>
+                            <div class="text-gray-500 mt-3"># Navigate to project</div>
                             <div class="text-accent-500">$ cd MyWebApp</div>
-                            <div class="text-gray-500 mt-2"># Run the application</div>
+                            <div class="text-gray-500 mt-3"># Run the application</div>
                             <div class="text-accent-500">$ dotnet run</div>
                         </div>
                     </div>
@@ -3499,27 +3513,21 @@
 
                 <!-- REST API Template -->
                 <div x-show="activeComponent === 'template-api'" class="max-w-4xl">
-                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">NDC.Templates.Api</h1>
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry API Template</h1>
                     <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
                         Production-ready REST API template with JWT authentication, Swagger documentation, health checks, structured logging, and comprehensive error handling.
                     </p>
 
                     <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-accent-500">$ noundry templates install NDC.Templates.Api</div>
-                        </div>
-                    </div>
-
-                    <div class="mb-8">
-                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Create New Project</h2>
-                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-accent-500">$ dotnet new ndc-api -n MyApi</div>
-                            <div class="text-gray-500 mt-2"># Navigate to project</div>
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-2">
+                            <div class="text-gray-500"># Create a new API</div>
+                            <div class="text-accent-500">$ dotnet new noundry-api -n MyApi</div>
+                            <div class="text-gray-500 mt-3"># Navigate to project</div>
                             <div class="text-accent-500">$ cd MyApi</div>
-                            <div class="text-gray-500 mt-2"># Run the API</div>
+                            <div class="text-gray-500 mt-3"># Run the API</div>
                             <div class="text-accent-500">$ dotnet run</div>
-                            <div class="text-gray-500 mt-2"># API available at https://localhost:5001/swagger</div>
+                            <div class="text-gray-500 mt-3"># API available at https://localhost:5001/swagger</div>
                         </div>
                     </div>
 
