@@ -181,7 +181,7 @@
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Data Access</h3>
                         <div class="space-y-1">
-                            <button @click="activeComponent = 'tuxedo'" 
+                            <button @click="activeComponent = 'tuxedo'"
                                     :class="activeComponent === 'tuxedo' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🗄️ Noundry.Tuxedo
@@ -191,20 +191,37 @@
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ml-3">
                                 🎭 Tuxedo.Bowtie
                             </button>
-                            <button @click="activeComponent = 'cufflink'"
-                                    :class="activeComponent === 'cufflink' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
-                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ml-3">
-                                🔗 Tuxedo.Cufflink
+                            <button @click="activeComponent = 'connector'"
+                                    :class="activeComponent === 'connector' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🔌 Noundry.Connector
                             </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Data Management</h3>
+                        <div class="space-y-1">
                             <button @click="activeComponent = 'slurp'"
                                     :class="activeComponent === 'slurp' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🚀 Noundry.Slurp
                             </button>
-                            <button @click="activeComponent = 'connector'"
-                                    :class="activeComponent === 'connector' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                            <button @click="activeComponent = 'cufflink'"
+                                    :class="activeComponent === 'cufflink' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
-                                🔌 Noundry.Connector
+                                🔗 Tuxedo.Cufflink
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Deployment</h3>
+                        <div class="space-y-1">
+                            <button @click="activeComponent = 'engine'"
+                                    :class="activeComponent === 'engine' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                🚀 Noundry Engine CLI
                             </button>
                         </div>
                     </div>
@@ -3725,6 +3742,282 @@
                         <li>• Learn best practices from AI-powered recommendations</li>
                         <li>• No API keys or authentication required</li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- Noundry Engine CLI -->
+            <div x-show="activeComponent === 'engine'" class="max-w-4xl">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry Engine CLI</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                    Fast .NET deployment automation for Linux servers. Deploy .NET 9.0+ applications with a single command - no Docker, no complex configuration, just pure speed.
+                </p>
+
+                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-8">
+                    <h3 class="text-lg font-semibold text-green-900 dark:text-green-100 mb-2">What is Noundry Engine?</h3>
+                    <p class="text-green-800 dark:text-green-200">
+                        Noundry Engine CLI (<code class="font-mono bg-green-100 dark:bg-green-950 px-2 py-1 rounded">ndng</code>) automates the complete lifecycle of deploying .NET applications to Linux servers. It eliminates manual server configuration, SSL certificate management, and deployment complexity by providing a single unified interface for all deployment operations.
+                    </p>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                        <div class="text-accent-500">$ dotnet tool install --global Noundry.Engine.Cli</div>
+                        <div class="text-gray-500 mt-2"># Verify installation</div>
+                        <div class="text-accent-500">$ ndng --version</div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Start</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Deploy your first .NET application in 3 simple steps:</p>
+
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-primary-500">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">1. Initialize Your Server</h3>
+                            <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-3 font-mono text-sm text-gray-300 mb-2">
+                                <code class="text-accent-500">$ ndng init</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Installs .NET 9.0, Nginx, SSL certificates, and configures firewall on your Ubuntu server</p>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-green-500">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">2. Add Your Application</h3>
+                            <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-3 font-mono text-sm text-gray-300 mb-2">
+                                <code class="text-accent-500">$ ndng add myapp --test --port 5000</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Creates <code class="font-mono bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">myapp.noundry.app</code> with automatic DNS and SSL</p>
+                        </div>
+
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">3. Deploy</h3>
+                            <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-3 font-mono text-sm text-gray-300">
+                                <div><code class="text-gray-500"># Build your application</code></div>
+                                <div><code class="text-accent-500">$ dotnet publish -c Release -o ./publish</code></div>
+                                <div class="mt-2"><code class="text-gray-500"># Deploy to server</code></div>
+                                <div><code class="text-accent-500">$ ndng deploy myapp.noundry.app --source ./publish</code></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">Server Initialization</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">One-command setup of .NET 9.0, Nginx, SSL tools, and firewall</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">Free Test Domains</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Get <code class="font-mono text-xs">*.noundry.app</code> subdomains with automatic DNS and SSL</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">Database Support</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">PostgreSQL, MySQL, SQL Server with auto-configuration</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">Redis & RabbitMQ</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Install cache and message queue with one command</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">Fast Deployment</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">SFTP-based uploads with progress tracking and auto-restart</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mr-3 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-gray-900 dark:text-white mb-1">CI/CD Integration</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">Generate GitHub Actions workflows with one command</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Command Reference</h2>
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-primary-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-primary-600 dark:text-primary-400 font-semibold mr-4 whitespace-nowrap">ndng init</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Initialize server with required software (.NET, Nginx, SSL, firewall)</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-green-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-green-600 dark:text-green-400 font-semibold mr-4 whitespace-nowrap">ndng add &lt;domain&gt;</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Deploy a new application with SSL and reverse proxy</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-blue-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-blue-600 dark:text-blue-400 font-semibold mr-4 whitespace-nowrap">ndng deploy &lt;domain&gt;</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Upload application files and restart service</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-purple-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-purple-600 dark:text-purple-400 font-semibold mr-4 whitespace-nowrap">ndng database</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Install PostgreSQL, MySQL, or SQL Server</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-pink-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-pink-600 dark:text-pink-400 font-semibold mr-4 whitespace-nowrap">ndng cache</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Install Redis cache server</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-yellow-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-yellow-600 dark:text-yellow-400 font-semibold mr-4 whitespace-nowrap">ndng queue</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Install RabbitMQ message queue</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-indigo-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-indigo-600 dark:text-indigo-400 font-semibold mr-4 whitespace-nowrap">ndng list</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">List all deployments and installed components</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-red-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-red-600 dark:text-red-400 font-semibold mr-4 whitespace-nowrap">ndng log [service]</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Stream logs in real-time from systemd journal</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border-l-4 border-cyan-500">
+                            <div class="flex items-start">
+                                <code class="font-mono text-cyan-600 dark:text-cyan-400 font-semibold mr-4 whitespace-nowrap">ndng github-action &lt;domain&gt;</code>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Generate CI/CD workflow file</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Example: Full Deployment Workflow</h2>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500"># 1. Initialize server (one time setup)</span>
+<span class="text-accent-500">$ ndng init \</span>
+<span class="text-accent-500">    --host 192.168.1.100 \</span>
+<span class="text-accent-500">    --key ~/.ssh/id_rsa \</span>
+<span class="text-accent-500">    --email admin@example.com \</span>
+<span class="text-accent-500">    --engine-api-key YOUR_KEY</span>
+
+<span class="text-gray-500"># 2. Install PostgreSQL database</span>
+<span class="text-accent-500">$ ndng database --type postgres --name myapp_db --user myapp_user</span>
+
+<span class="text-gray-500"># 3. Install Redis cache</span>
+<span class="text-accent-500">$ ndng cache</span>
+
+<span class="text-gray-500"># 4. Add application with test domain</span>
+<span class="text-accent-500">$ ndng add myapp --test --port 5000 --email admin@example.com</span>
+
+<span class="text-gray-500"># 5. Build and deploy your .NET app</span>
+<span class="text-accent-500">$ cd /path/to/your/project</span>
+<span class="text-accent-500">$ dotnet publish -c Release -o ./publish</span>
+<span class="text-accent-500">$ ndng deploy myapp.noundry.app --source ./publish</span>
+
+<span class="text-gray-500"># 6. View logs</span>
+<span class="text-accent-500">$ ndng log myapp-noundry-app</span>
+
+<span class="text-gray-500"># Your app is now live at https://myapp.noundry.app! 🚀</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
+                    <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">Perfect For</h3>
+                    <ul class="space-y-2 text-blue-800 dark:text-blue-200">
+                        <li>• Solo developers deploying personal projects</li>
+                        <li>• Startups needing fast iteration cycles</li>
+                        <li>• Agencies deploying multiple client applications</li>
+                        <li>• Development and staging environments</li>
+                        <li>• Teams without dedicated DevOps resources</li>
+                    </ul>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Technology Stack</h3>
+                    <div class="grid md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">.NET 9.0</div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Runtime & ASP.NET Core</p>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">Nginx</div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Reverse Proxy</p>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">Let's Encrypt</div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Free SSL Certificates</p>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">Systemd</div>
+                            <p class="text-xs text-gray-600 dark:text-gray-400">Service Management</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <a href="engine.html" class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold">
+                        View Full Documentation →
+                    </a>
                 </div>
             </div>
         </div>
