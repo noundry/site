@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false, newsletterModal: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -227,7 +227,7 @@
                     <p class="text-gray-600 dark:text-gray-300 mb-4">
                         Get monthly updates, tips, and exclusive content in your inbox.
                     </p>
-                    <a href="#" class="text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700">Subscribe →</a>
+                    <button @click="newsletterModal = true" class="text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700">Subscribe →</button>
                 </div>
             </div>
         </div>
@@ -355,5 +355,78 @@
             </div>
         </div>
     </footer>
+
+    <!-- Newsletter Modal -->
+    <div x-show="newsletterModal"
+         x-cloak
+         @click.away="newsletterModal = false"
+         class="fixed inset-0 z-50 overflow-y-auto"
+         style="display: none;">
+        <!-- Backdrop -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+
+        <!-- Modal Container -->
+        <div class="flex min-h-screen items-center justify-center p-4">
+            <div @click.stop
+                 x-show="newsletterModal"
+                 x-transition:enter="transition ease-out duration-300"
+                 x-transition:enter-start="opacity-0 transform scale-95"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-200"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-8">
+
+                <!-- Close Button -->
+                <button @click="newsletterModal = false"
+                        class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <!-- Modal Content -->
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-accent-100 dark:bg-accent-900 rounded-full mb-4">
+                        <svg class="w-8 h-8 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Subscribe to Our Newsletter</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Get monthly updates, tips, and exclusive content delivered to your inbox.</p>
+                </div>
+
+                <!-- Newsletter Form -->
+                <form name="newsletter" method="POST" netlify netlify-honeypot="bot-field" class="space-y-4">
+                    <!-- Hidden bot field for spam prevention -->
+                    <input type="hidden" name="form-name" value="newsletter">
+                    <div class="hidden">
+                        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               required
+                               placeholder="you@example.com"
+                               class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit"
+                            class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors shadow-lg">
+                        Subscribe Now
+                    </button>
+
+                    <p class="text-xs text-gray-500 dark:text-gray-400 text-center">
+                        We respect your privacy. Unsubscribe at any time.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
