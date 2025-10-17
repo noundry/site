@@ -203,18 +203,23 @@
                         ],
                         currentDemo: 0,
                         currentDemoStep: 0,
+                        isTransitioning: false,
                         get currentSteps() {
                             return this.demos[this.currentDemo];
                         }
                     }" x-init="
                         setInterval(() => {
+                            if (isTransitioning) return;
+
                             if (currentDemoStep < currentSteps.length - 1) {
                                 currentDemoStep++;
                             } else {
                                 // Move to next demo, clear screen
+                                isTransitioning = true;
                                 setTimeout(() => {
                                     currentDemo = (currentDemo + 1) % demos.length;
                                     currentDemoStep = 0;
+                                    isTransitioning = false;
                                 }, 1500);
                             }
                         }, 1200)
@@ -1896,7 +1901,7 @@
                             <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <span class="text-xs text-orange-600 dark:text-orange-400">(additional cost)</span></span>
+                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs text-orange-600 dark:text-orange-400 hover:underline">(subscribe)</a></span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1912,25 +1917,9 @@
                         </li>
                     </ul>
 
-                    <div x-data="{ showAlert: false }">
-                        <button @click="showAlert = true" class="w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                            Start Solo Plan
-                        </button>
-                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <div class="flex-1">
-                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
-                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
-                            </div>
-                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/4gM00c8zo9ZY6xfdCFgjC00' : 'https://buy.stripe.com/dRmcMYdTI4FEcVD1TXgjC06'" class="block w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors text-center">
+                        Start Solo Plan
+                    </a>
                 </div>
 
                 <!-- Developer Plan -->
@@ -1973,7 +1962,7 @@
                             <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <span class="text-xs text-orange-600 dark:text-orange-400">(additional cost)</span></span>
+                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs text-orange-600 dark:text-orange-400 hover:underline">(subscribe)</a></span>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-primary-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1994,26 +1983,10 @@
                             <span class="text-gray-700 dark:text-gray-300">Commercial License</span>
                         </li>
                     </ul>
-                    
-                    <div x-data="{ showAlert: false }">
-                        <button @click="showAlert = true" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                            Start Developer Plan
-                        </button>
-                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <div class="flex-1">
-                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
-                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
-                            </div>
-                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/9B63co16W9ZYdZH425gjC01' : 'https://buy.stripe.com/7sYbIU5ncc866xf6adgjC05'" class="block w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors text-center">
+                        Start Developer Plan
+                    </a>
                 </div>
 
                 <!-- Team Plan -->
@@ -2081,26 +2054,10 @@
                             <span class="text-gray-700 dark:text-gray-300">Architecture Review Service</span>
                         </li>
                     </ul>
-                    
-                    <div x-data="{ showAlert: false }">
-                        <button @click="showAlert = true" class="w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors">
-                            Start Team Plan
-                        </button>
-                        <div x-show="showAlert" x-transition class="mt-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 flex items-start">
-                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <div class="flex-1">
-                                <h4 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">Coming Soon</h4>
-                                <p class="text-sm text-blue-800 dark:text-blue-200">Our pricing plans are launching soon. Contact us to get early access.</p>
-                            </div>
-                            <button @click="showAlert = false" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
+
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/aFa7sEdTIege5tb6adgjC02' : 'https://buy.stripe.com/5kQcMY02S7RQaNveGJgjC04'" class="block w-full bg-primary-600 hover:bg-primary-700 text-white py-4 px-6 rounded-lg font-semibold text-lg transition-colors text-center">
+                        Start Team Plan
+                    </a>
                 </div>
             </div>
             

@@ -234,13 +234,13 @@
                             <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                             </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <span class="text-xs text-orange-600 dark:text-orange-400">(additional cost)</span></span>
+                            <span class="text-gray-700 dark:text-gray-300">Andy AI CLI <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs text-orange-600 dark:text-orange-400 hover:underline">(subscribe)</a></span>
                         </li>
                     </ul>
 
-                    <button class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/4gM00c8zo9ZY6xfdCFgjC00' : 'https://buy.stripe.com/dRmcMYdTI4FEcVD1TXgjC06'" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center">
                         Get Started
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Developer Plan -->
@@ -304,9 +304,9 @@
                         </li>
                     </ul>
 
-                    <button class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/9B63co16W9ZYdZH425gjC01' : 'https://buy.stripe.com/7sYbIU5ncc866xf6adgjC05'" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center">
                         Get Started
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Team Plan (Most Popular) -->
@@ -385,9 +385,9 @@
                         </li>
                     </ul>
 
-                    <button class="w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg">
+                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/aFa7sEdTIege5tb6adgjC02' : 'https://buy.stripe.com/5kQcMY02S7RQaNveGJgjC04'" class="block w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg text-center">
                         Get Started
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Enterprise Plan -->
