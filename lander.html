@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, selectedPlatform: null, billingCycle: 'annual' }" x-init="darkMode = localStorage.getItem('darkMode') === 'true'" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry - Choose Your Stack</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        },
+                        dotnet: {
+                            500: '#512bd4',
+                            600: '#4420b8'
+                        },
+                        typescript: {
+                            500: '#3178c6',
+                            600: '#2b6cb0'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['IBM Plex Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+        /* Ensure all code block children use IBM Plex Mono consistently */
+        pre, pre *, code, code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+
+        /* Gradient animations */
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .gradient-animate {
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Light mode syntax highlighting - ensure visibility */
+        :not(.dark) .text-gray-200,
+        :not(.dark) .text-gray-300,
+        :not(.dark) .text-gray-400,
+        :not(.dark) .text-gray-500 {
+            color: rgb(55 65 81) !important; /* gray-700 */
+        }
+
+        /* Ensure operators and symbols are visible in light mode */
+        :not(.dark) pre span,
+        :not(.dark) code span {
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+        <!-- Animated background -->
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 gradient-animate"></div>
+        </div>
+
+        <!-- Dark mode toggle -->
+        <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="absolute top-6 right-6 p-3 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm hover:bg-white dark:hover:bg-gray-700 transition-colors shadow-lg z-50">
+            <svg x-show="!darkMode" class="w-6 h-6 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+            <svg x-show="darkMode" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+        </button>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Logo -->
+            <div class="mb-8 flex justify-center">
+                <img src="assets/nd-logo-sm.png" alt="Noundry" class="h-16 w-auto dark:hidden">
+                <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-16 w-auto hidden dark:block">
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Choose Your Stack
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-12 max-w-3xl mx-auto font-light">
+                Enterprise-grade development platform with powerful tooling, reusable components, and AI-powered assistance
+            </p>
+
+            <!-- Platform Selection Cards -->
+            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- .NET/C# Platform -->
+                <div class="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 border-4 border-transparent hover:border-dotnet-500 cursor-pointer transform hover:scale-105"
+                     @click="selectedPlatform = 'dotnet'; $el.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => document.getElementById('dotnet-section').scrollIntoView({ behavior: 'smooth' }), 100)">
+
+                    <div class="absolute -top-4 -right-4 bg-dotnet-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        Most Popular
+                    </div>
+
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-20 h-20 bg-gradient-to-br from-dotnet-500 to-purple-600 rounded-2xl flex items-center justify-center transform group-hover:rotate-6 transition-transform">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M3.5 5.5h3v13h-3v-13zm5 0h3v13h-3v-13zm5 0h3v13h-3v-13zm5 0h3v13h-3v-13z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-3 text-gray-900 dark:text-white">noundry.net</h2>
+                    <p class="text-lg text-dotnet-500 dark:text-dotnet-400 font-semibold mb-4">C# / .NET Stack</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Enterprise-proven framework with powerful tooling, Razor & Blazor UI, and comprehensive library ecosystem
+                    </p>
+
+                    <div class="space-y-3 text-left mb-6">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-dotnet-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">C# with .NET 8+</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-dotnet-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">Razor Pages & Blazor UI</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-dotnet-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">50+ NuGet packages</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-dotnet-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">Enterprise support available</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-dotnet-500 hover:bg-dotnet-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                        Explore .NET Stack →
+                    </button>
+                </div>
+
+                <!-- TypeScript/Bun Platform -->
+                <div class="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-300 border-4 border-transparent hover:border-typescript-500 cursor-pointer transform hover:scale-105"
+                     @click="selectedPlatform = 'typescript'; $el.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(() => document.getElementById('typescript-section').scrollIntoView({ behavior: 'smooth' }), 100)">
+
+                    <div class="absolute -top-4 -right-4 bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                        New
+                    </div>
+
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-20 h-20 bg-gradient-to-br from-typescript-500 to-cyan-600 rounded-2xl flex items-center justify-center transform group-hover:rotate-6 transition-transform">
+                            <svg class="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M0 12v12h24V0H0zm19.341-.956c.61.152 1.074.423 1.501.865.221.236.549.666.575.77.008.03-1.036.73-1.668 1.123-.023.015-.115-.084-.217-.236-.31-.45-.633-.644-1.128-.678-.728-.05-1.196.331-1.192.967a.88.88 0 0 0 .102.45c.16.331.458.53 1.39.933 1.719.74 2.454 1.227 2.911 1.92.51.773.625 2.008.278 2.926-.38.998-1.325 1.676-2.655 1.9-.411.073-1.386.062-1.828-.018-.964-.172-1.878-.648-2.442-1.273-.221-.244-.651-.88-.625-.925.011-.016.11-.077.22-.141.108-.061.511-.294.892-.515l.69-.4.145.214c.202.308.643.731.91.872.766.404 1.817.347 2.335-.118a.883.883 0 0 0 .313-.72c0-.278-.035-.4-.18-.61-.186-.266-.567-.49-1.649-.96-1.238-.533-1.771-.864-2.259-1.39a3.165 3.165 0 0 1-.659-1.2c-.091-.339-.114-1.189-.042-1.531.255-1.197 1.158-2.03 2.461-2.278.423-.08 1.406-.05 1.821.053zm-5.634 1.002l.008.983H10.59v8.876H8.381v-8.876H5.257v-.964c0-.534.011-.98.026-.99.012-.016 1.913-.024 4.217-.02l4.195.012z"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <h2 class="text-3xl font-bold mb-3 text-gray-900 dark:text-white">noundry.org</h2>
+                    <p class="text-lg text-typescript-500 dark:text-typescript-400 font-semibold mb-4">TypeScript / Bun + Hono</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Lightning-fast TypeScript framework with modern tooling, HonoX UI, and BFF architecture patterns
+                    </p>
+
+                    <div class="space-y-3 text-left mb-6">
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-typescript-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">TypeScript-first with Bun</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-typescript-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">Hono.js & HonoX framework</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-typescript-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">3x faster than Node.js</span>
+                        </div>
+                        <div class="flex items-start">
+                            <svg class="w-5 h-5 text-typescript-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">100% open source & free</span>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-typescript-500 hover:bg-typescript-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors">
+                        Explore TypeScript Stack →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="mt-16 animate-bounce">
+                <svg class="w-6 h-6 mx-auto text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- .NET/C# Section -->
+    <section id="dotnet-section" class="py-24 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4 px-4 py-1 bg-dotnet-100 dark:bg-dotnet-900/30 rounded-full">
+                    <span class="text-dotnet-700 dark:text-dotnet-400 font-semibold text-sm">C# / .NET Stack</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">noundry.net</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Enterprise-grade C# development platform with 50+ libraries, powerful CLI tools, and production-ready components
+                </p>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-dotnet-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">50+ Libraries</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Comprehensive NuGet packages for auth, validation, data management, and more</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-dotnet-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">UI Components</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Beautiful Razor & Blazor components with Tailwind CSS styling</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-dotnet-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">CLI Tooling</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Powerful command-line tools for data import, job scheduling, and deployment</p>
+                </div>
+            </div>
+
+            <!-- Code Example -->
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-16">
+                <div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Quick Start Example</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Build enterprise applications with powerful validation, authentication, and data management in minutes.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-dotnet-500 rounded-full flex items-center justify-center text-white font-bold mr-3">1</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Install Libraries</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Add NuGet packages to your project</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-dotnet-500 rounded-full flex items-center justify-center text-white font-bold mr-3">2</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Configure Services</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Set up middleware and dependencies</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-dotnet-500 rounded-full flex items-center justify-center text-white font-bold mr-3">3</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Build & Deploy</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Ship production-ready applications</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl overflow-hidden">
+                    <div class="flex items-center px-4 py-3 bg-gray-800 border-b border-gray-700">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-xs font-mono">Program.cs</div>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Guardian</span><span class="text-gray-200">;</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sod</span><span class="text-gray-200">;</span>
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-blue-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>();
+
+<span class="text-gray-500">// Add Guardian auth</span>
+<span class="text-blue-400">builder</span>.<span class="text-blue-400">Services</span>.<span class="text-green-400">AddGuardianAuth</span>();
+
+<span class="text-gray-500">// Add Sod validation</span>
+<span class="text-blue-400">builder</span>.<span class="text-blue-400">Services</span>.<span class="text-green-400">AddSodValidation</span>();
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Libraries -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Popular Libraries</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-xl border border-purple-200 dark:border-purple-800">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Guardian</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">OAuth2 authentication & authorization</p>
+                        <code class="text-xs bg-white dark:bg-gray-900 px-2 py-1 rounded text-dotnet-600 dark:text-dotnet-400">Noundry.Guardian</code>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-xl border border-blue-200 dark:border-blue-800">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Sod</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Schema validation & type safety</p>
+                        <code class="text-xs bg-white dark:bg-gray-900 px-2 py-1 rounded text-dotnet-600 dark:text-dotnet-400">Noundry.Sod</code>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-xl border border-green-200 dark:border-green-800">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Slurp</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Fast data import & ETL pipeline</p>
+                        <code class="text-xs bg-white dark:bg-gray-900 px-2 py-1 rounded text-dotnet-600 dark:text-dotnet-400">Noundry.Slurp</code>
+                    </div>
+                    <div class="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-xl border border-orange-200 dark:border-orange-800">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Jobs</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Background job scheduling & cron</p>
+                        <code class="text-xs bg-white dark:bg-gray-900 px-2 py-1 rounded text-dotnet-600 dark:text-dotnet-400">Noundry.Jobs</code>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Section for .NET -->
+            <div id="pricing" class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">Simple, Transparent Pricing</h3>
+                <p class="text-center text-gray-600 dark:text-gray-300 mb-8">
+                    Get access to premium features, priority support, and exclusive services
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex items-center bg-gray-200 dark:bg-gray-700 rounded-lg p-1">
+                        <button @click="billingCycle = 'monthly'"
+                                :class="billingCycle === 'monthly' ? 'bg-white dark:bg-gray-600 shadow' : ''"
+                                class="px-6 py-2 rounded-md text-sm font-medium transition-all">
+                            Monthly
+                        </button>
+                        <button @click="billingCycle = 'annual'"
+                                :class="billingCycle === 'annual' ? 'bg-white dark:bg-gray-600 shadow' : ''"
+                                class="px-6 py-2 rounded-md text-sm font-medium transition-all flex items-center">
+                            Annual
+                            <span class="ml-2 text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">Save 20%</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                    <!-- Free Tier -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700">
+                        <h4 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Free</h4>
+                        <div class="mb-6">
+                            <span class="text-4xl font-bold text-gray-900 dark:text-white">$0</span>
+                            <span class="text-gray-600 dark:text-gray-400">/forever</span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">All open-source libraries</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Community support</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">GitHub access</span>
+                            </li>
+                        </ul>
+                        <a href="https://github.com/noundryfx" target="_blank" class="block w-full bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white py-3 px-6 rounded-lg font-semibold transition-colors text-center">
+                            Get Started
+                        </a>
+                    </div>
+
+                    <!-- Developer Tier -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-dotnet-500 relative transform scale-105 shadow-xl">
+                        <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-dotnet-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                            Most Popular
+                        </div>
+                        <h4 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Developer</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Perfect for individual developers</p>
+                        <div class="mb-2">
+                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$299' : '$37'">$299</span>
+                            <span class="text-gray-600 dark:text-gray-400" x-text="billingCycle === 'annual' ? '/year' : '/month'">/year</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Per developer license</p>
+                        <div x-show="billingCycle === 'annual'" class="mb-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-500 text-white">
+                                Save $145/year
+                            </span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-dotnet-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300"><strong>Everything in Free</strong></span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-dotnet-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Premium blueprints library</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-dotnet-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Priority support (48h response)</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-dotnet-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Video tutorials & courses</span>
+                            </li>
+                        </ul>
+                        <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/9B63co16W9ZYdZH425gjC01' : 'https://buy.stripe.com/7sYbIU5ncc866xf6adgjC05'" class="block w-full bg-dotnet-500 hover:bg-dotnet-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors text-center">
+                            Start Developer Plan
+                        </a>
+                    </div>
+
+                    <!-- Team Tier -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-gray-200 dark:border-gray-700">
+                        <h4 class="text-2xl font-bold mb-2 text-gray-900 dark:text-white">Team</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">For development teams & organizations</p>
+                        <div class="mb-2">
+                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$999' : '$125'">$999</span>
+                            <span class="text-gray-600 dark:text-gray-400" x-text="billingCycle === 'annual' ? '/year' : '/month'">/year</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4" x-text="billingCycle === 'annual' ? 'Up to 5 developers • $99/additional dev' : 'Up to 5 developers • $15/mo per additional dev'">Up to 5 developers • $99/additional dev</p>
+                        <div x-show="billingCycle === 'annual'" class="mb-4">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-500 text-white">
+                                Save $501/year
+                            </span>
+                        </div>
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300"><strong>Everything in Developer</strong></span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Team collaboration features</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Priority support (24h response)</span>
+                            </li>
+                            <li class="flex items-center text-sm">
+                                <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Team training & custom blueprints</span>
+                            </li>
+                        </ul>
+                        <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/aFa7sEdTIege5tb6adgjC02' : 'https://buy.stripe.com/5kQcMY02S7RQaNveGJgjC04'" class="block w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold transition-colors text-center">
+                            Start Team Plan
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="index.html" class="inline-flex items-center bg-dotnet-500 hover:bg-dotnet-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg">
+                    Explore noundry.net
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- TypeScript/Bun Section -->
+    <section id="typescript-section" class="py-24 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block mb-4 px-4 py-1 bg-typescript-100 dark:bg-typescript-900/30 rounded-full">
+                    <span class="text-typescript-700 dark:text-typescript-400 font-semibold text-sm">TypeScript / Bun + Hono</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">noundry.org</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Lightning-fast TypeScript framework built on Bun runtime with modern BFF architecture patterns
+                </p>
+            </div>
+
+            <!-- Feature Grid -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-typescript-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">3x Faster</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Bun runtime delivers 3x performance over Node.js with native TypeScript support</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-typescript-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Modern Stack</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Hono.js framework with HonoX for server-side rendering and routing</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-6">
+                    <div class="w-12 h-12 bg-typescript-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">BFF Ready</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Backend for Frontend pattern built-in for optimal API aggregation</p>
+                </div>
+            </div>
+
+            <!-- Code Example -->
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-16">
+                <div class="bg-gray-900 dark:bg-black rounded-xl shadow-2xl overflow-hidden order-2 md:order-1">
+                    <div class="flex items-center px-4 py-3 bg-gray-800 border-b border-gray-700">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-xs font-mono">app/routes/index.tsx</div>
+                    </div>
+                    <div class="p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono"><code><span class="text-gray-500">// app/routes/index.tsx</span>
+<span class="text-purple-400">import</span> <span class="text-gray-200">{ Hono }</span> <span class="text-purple-400">from</span> <span class="text-orange-400">'hono'</span>
+<span class="text-purple-400">import</span> <span class="text-gray-200">{ z }</span> <span class="text-purple-400">from</span> <span class="text-orange-400">'zod'</span>
+
+<span class="text-purple-400">const</span> <span class="text-blue-400">app</span> = <span class="text-purple-400">new</span> <span class="text-green-400">Hono</span>()
+
+<span class="text-gray-500">// Define schema</span>
+<span class="text-purple-400">const</span> <span class="text-blue-400">userSchema</span> = <span class="text-blue-400">z</span>.<span class="text-green-400">object</span>({
+  <span class="text-blue-400">email</span>: <span class="text-blue-400">z</span>.<span class="text-green-400">string</span>().<span class="text-green-400">email</span>(),
+  <span class="text-blue-400">name</span>: <span class="text-blue-400">z</span>.<span class="text-green-400">string</span>().<span class="text-green-400">min</span>(<span class="text-orange-400">2</span>)
+})
+
+<span class="text-gray-500">// Create API route</span>
+<span class="text-blue-400">app</span>.<span class="text-green-400">post</span>(<span class="text-orange-400">'/api/users'</span>, <span class="text-purple-400">async</span> (<span class="text-blue-400">c</span>) => {
+  <span class="text-purple-400">const</span> <span class="text-blue-400">data</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">c</span>.<span class="text-blue-400">req</span>.<span class="text-green-400">json</span>()
+  <span class="text-purple-400">const</span> <span class="text-blue-400">user</span> = <span class="text-blue-400">userSchema</span>.<span class="text-green-400">parse</span>(<span class="text-blue-400">data</span>)
+  <span class="text-purple-400">return</span> <span class="text-blue-400">c</span>.<span class="text-green-400">json</span>(<span class="text-blue-400">user</span>)
+})
+
+<span class="text-purple-400">export default</span> <span class="text-blue-400">app</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="order-1 md:order-2">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Quick Start Example</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">
+                        Build blazing-fast APIs with type-safe validation and modern TypeScript patterns.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-typescript-500 rounded-full flex items-center justify-center text-white font-bold mr-3">1</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Initialize Project</h4>
+                                <code class="text-xs bg-gray-800 text-cyan-400 px-2 py-1 rounded mt-1 inline-block">bunx @noundryfx/ndts-cli init</code>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-typescript-500 rounded-full flex items-center justify-center text-white font-bold mr-3">2</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Create Routes</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Add pages and API endpoints</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-8 h-8 bg-typescript-500 rounded-full flex items-center justify-center text-white font-bold mr-3">3</div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 dark:text-white">Deploy Anywhere</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Vercel, Cloudflare, AWS, or Docker</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="mb-16">
+                <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Core Technologies</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Bun Runtime</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">All-in-one JavaScript runtime with native TypeScript</p>
+                        <div class="text-xs text-typescript-600 dark:text-typescript-400 font-mono">3x faster than Node</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Hono.js</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Ultrafast web framework for edge computing</p>
+                        <div class="text-xs text-typescript-600 dark:text-typescript-400 font-mono">Express-like API</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Drizzle ORM</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Type-safe SQL ORM for TypeScript</p>
+                        <div class="text-xs text-typescript-600 dark:text-typescript-400 font-mono">PostgreSQL, MySQL, SQLite</div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <h4 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">Basecoat UI</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Beautiful components without React</p>
+                        <div class="text-xs text-typescript-600 dark:text-typescript-400 font-mono">Pure HTML + Vite</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BFF Architecture -->
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl border border-gray-200 dark:border-gray-700 mb-16">
+                <h3 class="text-2xl font-bold text-center mb-4 text-gray-900 dark:text-white">BFF (Backend for Frontend) Architecture</h3>
+                <p class="text-center text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Perfect for teams using noundry.net APIs with modern frontend applications
+                </p>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">Enterprise API</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">noundry.net (C#/.NET) for robust backend services</p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">BFF Layer</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">noundry.org for API aggregation & optimization</p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
+                            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2">Modern Frontend</h4>
+                        <p class="text-sm text-gray-600 dark:text-gray-300">HonoX + Basecoat UI for fast user experiences</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="https://noundry.org" target="_blank" class="inline-flex items-center bg-typescript-500 hover:bg-typescript-600 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors shadow-lg">
+                    Explore noundry.org
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </a>
+                <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">100% Open Source & Free Forever</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        Choose your stack: Enterprise C#/.NET platform or modern TypeScript framework. Both with powerful tooling and production-ready components.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://x.com/@noundryfx" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/noundryfx" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Platforms</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">noundry.net (C#/.NET)</a></li>
+                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">noundry.org (TypeScript)</a></li>
+                        <li><a href="libraries.html" class="text-gray-300 hover:text-white transition-colors">Libraries</a></li>
+                        <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Support</h3>
+                    <ul class="space-y-3">
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Getting Started</a></li>
+                        <li><a href="community.html" class="text-gray-300 hover:text-white transition-colors">Community</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="pricing.html" class="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-gray-400 text-sm">© 2025 Noundry. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

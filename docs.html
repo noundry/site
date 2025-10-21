@@ -53,6 +53,21 @@ pre, pre *, code, code * {
 }
         .prose pre { background: #1f2937; }
         .prose code { background: #374151; padding: 0.125rem 0.25rem; border-radius: 0.25rem; }
+    
+
+        /* Light mode syntax highlighting - ensure visibility */
+        :not(.dark) .text-gray-200,
+        :not(.dark) .text-gray-300,
+        :not(.dark) .text-gray-400,
+        :not(.dark) .text-gray-500 {
+            color: rgb(55 65 81) !important; /* gray-700 */
+        }
+
+        /* Ensure operators and symbols are visible in light mode */
+        :not(.dark) pre span,
+        :not(.dark) code span {
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">

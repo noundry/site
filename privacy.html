@@ -9,7 +9,22 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>tailwind.config = { darkMode: 'class' }</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Inter', sans-serif; }</style>
+    <style>body { font-family: 'Inter', sans-serif; }
+
+        /* Light mode syntax highlighting - ensure visibility */
+        :not(.dark) .text-gray-200,
+        :not(.dark) .text-gray-300,
+        :not(.dark) .text-gray-400,
+        :not(.dark) .text-gray-500 {
+            color: rgb(55 65 81) !important; /* gray-700 */
+        }
+
+        /* Ensure operators and symbols are visible in light mode */
+        :not(.dark) pre span,
+        :not(.dark) code span {
+            opacity: 1 !important;
+        }
+    </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
     <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50">

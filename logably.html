@@ -54,6 +54,21 @@ pre, pre *, code, code * {
 .code-block code * {
     font-family: 'IBM Plex Mono', monospace !important;
 }
+    
+
+        /* Light mode syntax highlighting - ensure visibility */
+        :not(.dark) .text-gray-200,
+        :not(.dark) .text-gray-300,
+        :not(.dark) .text-gray-400,
+        :not(.dark) .text-gray-500 {
+            color: rgb(55 65 81) !important; /* gray-700 */
+        }
+
+        /* Ensure operators and symbols are visible in light mode */
+        :not(.dark) pre span,
+        :not(.dark) code span {
+            opacity: 1 !important;
+        }
     </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
