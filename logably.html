@@ -56,17 +56,25 @@ pre, pre *, code, code * {
 }
     
 
-        /* Light mode syntax highlighting - ensure visibility */
-        :not(.dark) .text-gray-200,
-        :not(.dark) .text-gray-300,
-        :not(.dark) .text-gray-400,
-        :not(.dark) .text-gray-500 {
-            color: rgb(55 65 81) !important; /* gray-700 */
+        /* Code blocks always have dark backgrounds - ensure all text is visible */
+        pre .text-gray-200,
+        pre .text-gray-300,
+        pre .text-gray-400,
+        pre .text-gray-500,
+        pre .text-gray-600,
+        pre .text-gray-700,
+        code .text-gray-200,
+        code .text-gray-300,
+        code .text-gray-400,
+        code .text-gray-500,
+        code .text-gray-600,
+        code .text-gray-700 {
+            color: rgb(255 255 255) !important; /* white */
         }
 
-        /* Ensure operators and symbols are visible in light mode */
-        :not(.dark) pre span,
-        :not(.dark) code span {
+        /* Ensure operators and symbols are visible */
+        pre span,
+        code span {
             opacity: 1 !important;
         }
     </style>
