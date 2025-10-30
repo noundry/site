@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeExample: 'smtp', activeProvider: 'smtp' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.Sanquhar - Modern Mailing Library for .NET</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['IBM Plex Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+        /* Ensure all code block children use IBM Plex Mono consistently */
+        pre, pre *, code, code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+
+        /* Specific targeting for code blocks with syntax highlighting */
+        .code-block pre,
+        .code-block pre *,
+        .code-block code,
+        .code-block code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+
+        /* Code blocks always have dark backgrounds - ensure all text is visible */
+        pre .text-gray-200,
+        pre .text-gray-300,
+        pre .text-gray-400,
+        pre .text-gray-500,
+        pre .text-gray-600,
+        pre .text-gray-700,
+        code .text-gray-200,
+        code .text-gray-300,
+        code .text-gray-400,
+        code .text-gray-500,
+        code .text-gray-600,
+        code .text-gray-700 {
+            color: rgb(255 255 255) !important; /* white */
+        }
+
+        /* Ensure ALL text in code blocks is white by default */
+        pre, pre code, pre code * {
+            color: rgb(255 255 255) !important; /* white */
+        }
+
+        /* Ensure operators and symbols are visible */
+        pre span,
+        code span {
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+
+                            <!-- UI Components Dropdown -->
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" @click.away="open = false" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors inline-flex items-center">
+                                    UI Components
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                                    <a href="ui-components.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Razor UI</a>
+                                    <a href="blazor-ui.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Blazor UI</a>
+                                </div>
+                            </div>
+
+                            <!-- Ecosystem Dropdown -->
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" @click.away="open = false" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors inline-flex items-center">
+                                    Ecosystem
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                                    <a href="https://authnz.net" target="_blank" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">authnz.net</a>
+                                    <a href="https://logably.net" target="_blank" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">logably.net</a>
+                                    <a href="engine.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">engine.noundry.com</a>
+                                </div>
+                            </div>
+
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Quick Start</a>
+                            <a href="andy-ai.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">AI</a>
+                            <a href="#cloud" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Cloud</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                            <a href="pricing.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <a href="pricing.html" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">Get Started</a>
+                    <!-- Mobile menu button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div x-show="mobileMenuOpen" x-transition class="md:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="libraries.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Libraries</a>
+                <a href="ui-components.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">UI Components</a>
+                <a href="https://authnz.net" target="_blank" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">authnz.net</a>
+                <a href="https://logably.net" target="_blank" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">logably.net</a>
+                <a href="engine.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">engine.noundry.com</a>
+                <a href="getting-started.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Quick Start</a>
+                <a href="andy-ai.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">AI</a>
+                <a href="#cloud" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Cloud</a>
+                <a href="docs.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Docs</a>
+                <a href="pricing.html" class="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">Pricing</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-blue-100 dark:bg-blue-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-blue-600 dark:text-blue-400">Sanquhar</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Modern .NET 9 mailing library with Razor template engine and multi-provider support. Send beautiful, dynamic emails with SMTP, SendGrid, or Mailgun.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#providers" class="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Providers
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">.NET 9</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Modern C# 13</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">3 Providers</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">SMTP, SendGrid, Mailgun</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">Razor</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Template Engine</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">Production</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Ready</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Sanquhar?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Powerful email library designed for .NET developers who need flexible, template-driven email functionality with multiple provider options.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Razor Template Engine</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Create dynamic, beautiful HTML emails using familiar Razor syntax with strongly-typed models and full C# support.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Multi-Provider Support</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Switch seamlessly between SMTP, SendGrid, and Mailgun with a unified API. No vendor lock-in.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">High Performance</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Template caching, async/await throughout, and modern .NET 9 optimizations for blazing fast email generation and sending.</p>
+                </div>
+            </div>
+
+            <!-- Fun Fact Callout -->
+            <div class="mt-16 max-w-3xl mx-auto">
+                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-8 py-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-amber-900 dark:text-amber-200 mb-2">Did You Know?</h3>
+                            <p class="text-amber-800 dark:text-amber-300">
+                                Sanquhar is named after the oldest operating post office in the world, located in Sanquhar, Scotland. It has been continuously operating since 1712—over 310 years of delivering mail!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 5 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install Sanquhar and start sending beautiful emails with Razor templates.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-green-400"># Install Sanquhar</div>
+                            <div class="text-gray-300">$ dotnet add package Noundry.Sanquhar</div>
+                            <div class="text-gray-500"># Optional: SendGrid or Mailgun</div>
+                            <div class="text-gray-300">$ dotnet add package Noundry.Sanquhar.SendGrid</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Configure Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-purple-400">using</div> <div class="text-gray-300">Noundry.Sanquhar.Extensions;</div>
+                            <div class="text-gray-300">builder.Services.<span class="text-green-400">AddSanquhar</span>(builder.Configuration);</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Send Email</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-purple-400">await</div> <div class="text-gray-300">_mailService.<span class="text-green-400">SendFromTemplateAsync</span>(</div>
+                            <div class="text-gray-300">    <span class="text-yellow-400">"Welcome"</span>, model, recipient);</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">EmailTemplates/Welcome.cshtml</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-blue-400">@model</span> <span class="text-yellow-400">WelcomeModel</span>
+
+<span class="text-gray-500">&lt;!DOCTYPE html&gt;</span>
+<span class="text-purple-400">&lt;html&gt;</span>
+<span class="text-purple-400">&lt;body&gt;</span>
+    <span class="text-purple-400">&lt;h1&gt;</span>Welcome, <span class="text-blue-400">@Model.Name</span>!<span class="text-purple-400">&lt;/h1&gt;</span>
+    <span class="text-purple-400">&lt;p&gt;</span>
+        Thank you for joining on
+        <span class="text-blue-400">@Model.Date.ToString("D")</span>.
+    <span class="text-purple-400">&lt;/p&gt;</span>
+<span class="text-purple-400">&lt;/body&gt;</span>
+<span class="text-purple-400">&lt;/html&gt;</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Providers Section -->
+    <section id="providers" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Multiple Email Providers</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Choose the provider that fits your needs. Switch anytime with minimal code changes.
+                </p>
+            </div>
+
+            <!-- Provider Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeProvider = 'smtp'"
+                            :class="activeProvider === 'smtp' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors text-sm">
+                        SMTP
+                    </button>
+                    <button @click="activeProvider = 'sendgrid'"
+                            :class="activeProvider === 'sendgrid' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors text-sm">
+                        SendGrid
+                    </button>
+                    <button @click="activeProvider = 'mailgun'"
+                            :class="activeProvider === 'mailgun' ? 'bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-6 py-3 rounded-lg font-medium transition-colors text-sm">
+                        Mailgun
+                    </button>
+                </div>
+            </div>
+
+            <!-- SMTP Provider -->
+            <div x-show="activeProvider === 'smtp'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">SMTP (MailKit)</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Configuration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Use any SMTP server including Gmail, Outlook, or your own mail server. Built on the reliable MailKit library.</p>
+
+                            <div class="space-y-3">
+                                <div class="border-l-4 border-blue-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Works with Any SMTP Server</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Gmail, Outlook, Office 365, custom servers</p>
+                                </div>
+                                <div class="border-l-4 border-blue-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">SSL/TLS Support</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Secure connections with full SSL/TLS support</p>
+                                </div>
+                                <div class="border-l-4 border-blue-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">MailKit Powered</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Built on the industry-standard MailKit library</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// appsettings.json</span>
+{
+  <span class="text-blue-400">"Sanquhar"</span>: {
+    <span class="text-blue-400">"TemplatePath"</span>: <span class="text-yellow-400">"EmailTemplates"</span>,
+    <span class="text-blue-400">"Smtp"</span>: {
+      <span class="text-blue-400">"Host"</span>: <span class="text-yellow-400">"smtp.gmail.com"</span>,
+      <span class="text-blue-400">"Port"</span>: <span class="text-green-400">587</span>,
+      <span class="text-blue-400">"Username"</span>: <span class="text-yellow-400">"your-email@gmail.com"</span>,
+      <span class="text-blue-400">"Password"</span>: <span class="text-yellow-400">"your-app-password"</span>,
+      <span class="text-blue-400">"EnableSsl"</span>: <span class="text-green-400">true</span>
+    },
+    <span class="text-blue-400">"Mail"</span>: {
+      <span class="text-blue-400">"DefaultFrom"</span>: <span class="text-yellow-400">"noreply@yourdomain.com"</span>
+    }
+  }
+}
+
+<span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Extensions</span>;
+
+builder.Services.<span class="text-green-400">AddSanquhar</span>(builder.Configuration);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SendGrid Provider -->
+            <div x-show="activeProvider === 'sendgrid'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">SendGrid</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">SendGrid API Integration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Use SendGrid's powerful email API with built-in tracking, analytics, and deliverability features.</p>
+
+                            <div class="space-y-3">
+                                <div class="border-l-4 border-purple-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Click & Open Tracking</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Track email opens and link clicks automatically</p>
+                                </div>
+                                <div class="border-l-4 border-purple-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Sandbox Mode</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Test without sending real emails</p>
+                                </div>
+                                <div class="border-l-4 border-purple-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Enterprise Ready</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">High deliverability and scalability</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// appsettings.json</span>
+{
+  <span class="text-blue-400">"Sanquhar"</span>: {
+    <span class="text-blue-400">"SendGrid"</span>: {
+      <span class="text-blue-400">"ApiKey"</span>: <span class="text-yellow-400">"your-sendgrid-api-key"</span>,
+      <span class="text-blue-400">"EnableClickTracking"</span>: <span class="text-green-400">true</span>,
+      <span class="text-blue-400">"EnableOpenTracking"</span>: <span class="text-green-400">true</span>,
+      <span class="text-blue-400">"SandboxMode"</span>: <span class="text-green-400">false</span>
+    }
+  }
+}
+
+<span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Extensions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.SendGrid.Extensions</span>;
+
+builder.Services.<span class="text-green-400">AddSanquhar</span>(
+    builder.Configuration,
+    options => options.<span class="text-green-400">UseSendGrid</span>(builder.Configuration)
+);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mailgun Provider -->
+            <div x-show="activeProvider === 'mailgun'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Mailgun</h3>
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Mailgun API Integration</h4>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6">Powerful email API with excellent deliverability and developer-friendly features. No RestSharp dependency - uses native HttpClient!</p>
+
+                            <div class="space-y-3">
+                                <div class="border-l-4 border-green-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">No RestSharp Dependency</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Built with modern HttpClient and IHttpClientFactory</p>
+                                </div>
+                                <div class="border-l-4 border-green-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Email Tracking</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Track opens, clicks, and delivery status</p>
+                                </div>
+                                <div class="border-l-4 border-green-500 pl-4">
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">Developer Friendly</h5>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Great API documentation and debugging tools</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// appsettings.json</span>
+{
+  <span class="text-blue-400">"Sanquhar"</span>: {
+    <span class="text-blue-400">"Mailgun"</span>: {
+      <span class="text-blue-400">"ApiKey"</span>: <span class="text-yellow-400">"your-mailgun-api-key"</span>,
+      <span class="text-blue-400">"Domain"</span>: <span class="text-yellow-400">"your-domain.mailgun.org"</span>,
+      <span class="text-blue-400">"ApiBaseUrl"</span>: <span class="text-yellow-400">"https://api.mailgun.net/v3"</span>,
+      <span class="text-blue-400">"EnableTracking"</span>: <span class="text-green-400">true</span>,
+      <span class="text-blue-400">"EnableClickTracking"</span>: <span class="text-green-400">true</span>
+    }
+  }
+}
+
+<span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Extensions</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Mailgun.Extensions</span>;
+
+builder.Services.<span class="text-green-400">AddSanquhar</span>(
+    builder.Configuration,
+    options => options.<span class="text-green-400">UseMailgun</span>(builder.Configuration)
+);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Usage Examples Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    See how easy it is to send emails with Sanquhar.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Basic Usage -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Send from Template</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">EmailService</span>
+{
+    <span class="text-purple-400">private readonly</span> <span class="text-yellow-400">IMailService</span> _mailService;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">EmailService</span>(<span class="text-yellow-400">IMailService</span> mailService)
+    {
+        _mailService = mailService;
+    }
+
+    <span class="text-purple-400">public async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">SendWelcome</span>(
+        <span class="text-purple-400">string</span> email,
+        <span class="text-purple-400">string</span> name)
+    {
+        <span class="text-purple-400">var</span> model = <span class="text-purple-400">new</span> <span class="text-yellow-400">WelcomeModel</span>
+        {
+            Name = name,
+            Date = <span class="text-yellow-400">DateTime</span>.Now
+        };
+
+        <span class="text-purple-400">await</span> _mailService.<span class="text-green-400">SendFromTemplateAsync</span>(
+            <span class="text-yellow-400">"Welcome"</span>, model, email);
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Usage -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">With Attachments</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> message = <span class="text-purple-400">await</span> _mailService
+    .<span class="text-green-400">CreateFromTemplateAsync</span>(
+        <span class="text-yellow-400">"Invoice"</span>, model);
+
+message.To.<span class="text-green-400">Add</span>(customer.Email);
+message.Cc.<span class="text-green-400">Add</span>(<span class="text-yellow-400">"manager@company.com"</span>);
+
+<span class="text-gray-500">// Add attachment</span>
+message.Attachments.<span class="text-green-400">Add</span>(<span class="text-purple-400">new</span> <span class="text-yellow-400">MailAttachment</span>
+{
+    FileName = <span class="text-yellow-400">"invoice.pdf"</span>,
+    Content = pdfBytes,
+    ContentType = <span class="text-yellow-400">"application/pdf"</span>
+});
+
+<span class="text-gray-500">// Set priority</span>
+message.Priority = <span class="text-yellow-400">MailPriority</span>.High;
+
+<span class="text-purple-400">await</span> _mailService.<span class="text-green-400">SendAsync</span>(message);</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern .NET 9 Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Modern .NET 9 Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built with the latest C# 13 and .NET 9 features for maximum performance and developer experience.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Collection Expressions</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Modern C# 13 syntax with <code class="text-blue-600 dark:text-blue-400">[]</code></p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">IHttpClientFactory</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Proper HTTP client management</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Source-Generated Regex</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Compile-time regex generation</p>
+                </div>
+<!--
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Nullable Reference Types</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Full nullable context enabled</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Native OpenAPI</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Microsoft.AspNetCore.OpenApi</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Scalar UI</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Modern API documentation</p>
+                </div>
+                -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 dark:bg-black text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2">
+                    <div class="flex items-center mb-6">
+                        <img x-show="darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                    </div>
+                    <p class="text-gray-300 mb-6 max-w-md">
+                        The modern C# development platform that accelerates your journey from idea to production with intelligent tools, reusable components, and AI-powered assistance.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://x.com/@noundryfx" class="text-gray-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Frameworks</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Noundry.com (C#/.NET)</a></li>
+                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">Noundry.org (TypeScript)</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Platform</h3>
+                    <ul class="space-y-3">
+                        <li><a href="blocks.html" class="text-gray-300 hover:text-white transition-colors">Blocks</a></li>
+                        <li><a href="blueprints.html" class="text-gray-300 hover:text-white transition-colors">Blueprints</a></li>
+                        <li><a href="andy-ai.html" class="text-gray-300 hover:text-white transition-colors">Andy AI</a></li>
+                        <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Support</h3>
+                    <ul class="space-y-3">
+                        <li><a href="help.html" class="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="community.html" class="text-gray-300 hover:text-white transition-colors">Community</a></li>
+                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
+                        <li><a href="status.html" class="text-gray-300 hover:text-white transition-colors">Status</a></li>
+                        <li><a href="changelog.html" class="text-gray-300 hover:text-white transition-colors">Changelog</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm">
+                    © 2025 Noundry. All rights reserved.
+                </p>
+                <div class="flex items-center space-x-6 mt-4 md:mt-0">
+                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+                    <span class="text-gray-600">|</span>
+                    <a href="https://packages.noundry.com" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="NuGet Packages">
+                        <svg fill="currentColor" class="w-5 h-5" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M23.563 28.844c-7.104 0-7.104-10.651 0-10.651 7.099 0 7.099 10.651 0 10.651zM12.932 16.636c-4.437 0-4.437-6.663 0-6.663 4.443 0 4.443 6.663 0 6.663zM23.797 6.24h-8.891c-4.532 0.005-8.204 3.677-8.209 8.208v8.891c0 4.531 3.677 8.203 8.209 8.203h8.891c2.172 0 4.26-0.864 5.801-2.401 1.537-1.541 2.401-3.624 2.401-5.801v-8.891c0-4.531-3.672-8.208-8.203-8.208zM5.328 3.12c0 3.552-5.328 3.552-5.328 0s5.328-3.552 5.328 0z"/>
+                        </svg>
+
+                    </a>
+                    <a href="https://github.com/noundry" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="GitHub">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill="#FFFFFFF" fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

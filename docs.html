@@ -192,12 +192,17 @@ pre, pre *, code, code * {
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Web Development</h3>
                         <div class="space-y-1">
-                            <button @click="activeComponent = 'authnz'" 
+                            <button @click="activeComponent = 'authnz'"
                                     :class="activeComponent === 'authnz' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🔐 Noundry.Authnz
                             </button>
-                            <button @click="activeComponent = 'taghelpers'" 
+                            <button @click="activeComponent = 'sanquhar'"
+                                    :class="activeComponent === 'sanquhar' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                📧 Noundry.Sanquhar
+                            </button>
+                            <button @click="activeComponent = 'taghelpers'"
                                     :class="activeComponent === 'taghelpers' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
                                 🏷️ Noundry.TagHelpers
@@ -1460,6 +1465,211 @@ pre, pre *, code, code * {
         <span class="text-green-400">PageSize</span> = <span class="text-blue-400">pageSize</span>
     };
 }</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noundry.Sanquhar -->
+                <div x-show="activeComponent === 'sanquhar'" class="max-w-4xl">
+                    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Noundry.Sanquhar</h1>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Modern .NET 9 mailing library with Razor template engine and multi-provider support. Send beautiful, dynamic emails with SMTP, SendGrid, or Mailgun.
+                    </p>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Key Features</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Razor Template Engine</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• Full Razor syntax support</li>
+                                    <li>• Strongly-typed models</li>
+                                    <li>• Template caching for performance</li>
+                                    <li>• Subject and body templates</li>
+                                    <li>• HTML and plain text versions</li>
+                                </ul>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Multi-Provider Support</h3>
+                                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>• SMTP (MailKit)</li>
+                                    <li>• SendGrid API</li>
+                                    <li>• Mailgun API (no RestSharp!)</li>
+                                    <li>• Unified API across providers</li>
+                                    <li>• Easy provider switching</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-accent-500">$ dotnet add package Noundry.Sanquhar</div>
+                            <div class="text-gray-500 mt-2"># Optional: SendGrid or Mailgun</div>
+                            <div class="text-accent-500">$ dotnet add package Noundry.Sanquhar.SendGrid</div>
+                            <div class="text-accent-500">$ dotnet add package Noundry.Sanquhar.Mailgun</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Quick Setup (SMTP)</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// appsettings.json</span>
+{
+  <span class="text-blue-400">"Sanquhar"</span>: {
+    <span class="text-blue-400">"TemplatePath"</span>: <span class="text-orange-400">"EmailTemplates"</span>,
+    <span class="text-blue-400">"Smtp"</span>: {
+      <span class="text-blue-400">"Host"</span>: <span class="text-orange-400">"smtp.gmail.com"</span>,
+      <span class="text-blue-400">"Port"</span>: <span class="text-purple-400">587</span>,
+      <span class="text-blue-400">"Username"</span>: <span class="text-orange-400">"your-email@gmail.com"</span>,
+      <span class="text-blue-400">"Password"</span>: <span class="text-orange-400">"your-app-password"</span>,
+      <span class="text-blue-400">"EnableSsl"</span>: <span class="text-purple-400">true</span>
+    },
+    <span class="text-blue-400">"Mail"</span>: {
+      <span class="text-blue-400">"DefaultFrom"</span>: <span class="text-orange-400">"noreply@yourdomain.com"</span>
+    }
+  }
+}
+
+<span class="text-gray-500">// Program.cs</span>
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Extensions</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-blue-400">args</span>);
+
+<span class="text-gray-500">// Register Sanquhar services</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddSanquhar</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>);
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Create Email Template</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">@* EmailTemplates/Welcome.cshtml *@</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">WelcomeModel</span>
+
+<span class="text-gray-500">&lt;!DOCTYPE html&gt;</span>
+<span class="text-purple-400">&lt;html&gt;</span>
+<span class="text-purple-400">&lt;body&gt;</span>
+    <span class="text-purple-400">&lt;h1&gt;</span>Welcome, <span class="text-blue-400">@Model.Name</span>!<span class="text-purple-400">&lt;/h1&gt;</span>
+    <span class="text-purple-400">&lt;p&gt;</span>Thank you for joining on <span class="text-blue-400">@Model.Date.ToString("D")</span>.<span class="text-purple-400">&lt;/p&gt;</span>
+<span class="text-purple-400">&lt;/body&gt;</span>
+<span class="text-purple-400">&lt;/html&gt;</span>
+
+<span class="text-gray-500">@* EmailTemplates/Welcome_Subject.cshtml *@</span>
+<span class="text-blue-400">@model</span> <span class="text-yellow-400">WelcomeModel</span>
+Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Send Email</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">EmailService</span>
+{
+    <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">IMailService</span> <span class="text-blue-400">_mailService</span>;
+
+    <span class="text-purple-400">public</span> <span class="text-green-400">EmailService</span>(<span class="text-yellow-400">IMailService</span> <span class="text-blue-400">mailService</span>)
+    {
+        <span class="text-blue-400">_mailService</span> = <span class="text-blue-400">mailService</span>;
+    }
+
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">SendWelcome</span>(<span class="text-purple-400">string</span> <span class="text-blue-400">email</span>, <span class="text-purple-400">string</span> <span class="text-blue-400">name</span>)
+    {
+        <span class="text-purple-400">var</span> <span class="text-blue-400">model</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">WelcomeModel</span>
+        {
+            <span class="text-green-400">Name</span> = <span class="text-blue-400">name</span>,
+            <span class="text-green-400">Date</span> = <span class="text-yellow-400">DateTime</span>.<span class="text-green-400">Now</span>
+        };
+
+        <span class="text-gray-500">// Send email from template</span>
+        <span class="text-purple-400">await</span> <span class="text-blue-400">_mailService</span>.<span class="text-green-400">SendFromTemplateAsync</span>(
+            <span class="text-orange-400">"Welcome"</span>, <span class="text-blue-400">model</span>, <span class="text-blue-400">email</span>);
+    }
+}
+
+<span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">WelcomeModel</span>
+{
+    <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+    <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">Date</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Advanced: Email with Attachments</h2>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">message</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_mailService</span>.<span class="text-green-400">CreateFromTemplateAsync</span>(
+    <span class="text-orange-400">"Invoice"</span>, <span class="text-blue-400">model</span>);
+
+<span class="text-blue-400">message</span>.<span class="text-green-400">To</span>.<span class="text-green-400">Add</span>(<span class="text-blue-400">customer</span>.<span class="text-green-400">Email</span>);
+<span class="text-blue-400">message</span>.<span class="text-green-400">Cc</span>.<span class="text-green-400">Add</span>(<span class="text-orange-400">"manager@company.com"</span>);
+
+<span class="text-gray-500">// Add attachment</span>
+<span class="text-blue-400">message</span>.<span class="text-green-400">Attachments</span>.<span class="text-green-400">Add</span>(<span class="text-purple-400">new</span> <span class="text-yellow-400">MailAttachment</span>
+{
+    <span class="text-green-400">FileName</span> = <span class="text-orange-400">"invoice.pdf"</span>,
+    <span class="text-green-400">Content</span> = <span class="text-blue-400">pdfBytes</span>,
+    <span class="text-green-400">ContentType</span> = <span class="text-orange-400">"application/pdf"</span>
+});
+
+<span class="text-gray-500">// Set priority</span>
+<span class="text-blue-400">message</span>.<span class="text-green-400">Priority</span> = <span class="text-yellow-400">MailPriority</span>.<span class="text-green-400">High</span>;
+
+<span class="text-purple-400">await</span> <span class="text-blue-400">_mailService</span>.<span class="text-green-400">SendAsync</span>(<span class="text-blue-400">message</span>);</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Using SendGrid or Mailgun</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">SendGrid</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.SendGrid.Extensions</span>;
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddSanquhar</span>(
+    <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>,
+    <span class="text-blue-400">options</span> => <span class="text-blue-400">options</span>.<span class="text-green-400">UseSendGrid</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>)
+);</code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Mailgun</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sanquhar.Mailgun.Extensions</span>;
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddSanquhar</span>(
+    <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>,
+    <span class="text-blue-400">options</span> => <span class="text-blue-400">options</span>.<span class="text-green-400">UseMailgun</span>(
+        <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>)
+);</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl p-6">
+                        <div class="flex items-start gap-4">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <h3 class="text-lg font-semibold text-blue-900 dark:text-blue-200 mb-2">Learn More</h3>
+                                <p class="text-blue-800 dark:text-blue-300 mb-3">
+                                    For complete documentation, examples, and provider-specific configuration, visit the dedicated Sanquhar page.
+                                </p>
+                                <a href="sanquhar.html" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+                                    View Full Documentation
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
                             </div>
                         </div>
                     </div>
