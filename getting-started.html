@@ -239,18 +239,30 @@ pre, pre *, code, code * {
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Create Your Project</h3>
                     </div>
                     <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <!-- Noundry CLI Callout -->
+                        <div class="mb-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                Using Noundry CLI (nd)
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">These examples use the <strong>Noundry CLI</strong> (<code class="bg-white dark:bg-gray-800 px-1 py-0.5 rounded">nd</code>), which wraps dotnet commands with beautiful UI and progress tracking.</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Install: <code class="bg-white dark:bg-gray-800 px-1 py-0.5 rounded">dotnet tool install --global Noundry.Cli</code></p>
+                        </div>
+
                         <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto mb-4">
                             <div class="text-gray-500"># Create new web application</div>
-                            <div class="text-accent-500">dotnet new webapp -n MyApp</div>
+                            <div class="text-accent-500">nd dn new webapp -- -n MyApp</div>
                             <div class="text-accent-500">cd MyApp</div>
                             <div class="mt-2 text-gray-500"># Install Noundry components</div>
-                            <div class="text-accent-500">dotnet add package Noundry.UI</div>
-                            <div class="text-accent-500">dotnet add package Noundry.Authnz</div>
-                            <div class="text-accent-500">dotnet add package Noundry.Tuxedo</div>
-                            <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
-                            <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
-                            <div class="mt-2 text-gray-500"># Optional: For CSV data import</div>
-                            <div class="text-accent-500">dotnet tool install --global Noundry.Slurp.Tool</div>
+                            <div class="text-accent-500">nd dn add package Noundry.UI</div>
+                            <div class="text-accent-500">nd dn add package Noundry.Authnz</div>
+                            <div class="text-accent-500">nd dn add package Noundry.Tuxedo</div>
+                            <div class="text-accent-500">nd dn add package Noundry.DotEnvX</div>
+                            <div class="text-accent-500">nd dn add package Microsoft.Data.SqlServer</div>
+                            <div class="mt-2 text-gray-500"># Optional: Install all Noundry tools</div>
+                            <div class="text-accent-500">nd install</div>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">This creates a new ASP.NET Core web application and installs the essential Noundry components for web development.</p>
 
@@ -260,7 +272,7 @@ pre, pre *, code, code * {
                             <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Skip manual package installation! Use our pre-configured web app template:</p>
                             <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-300">
                                 <div class="text-blue-400">noundry templates install NDC.Templates.WebApp</div>
-                                <div class="text-blue-400">dotnet new ndc-webapp -n MyApp</div>
+                                <div class="text-blue-400">nd dn new ndc-webapp -- -n MyApp</div>
                             </div>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Includes Noundry.UI, Authnz, Tuxedo, and DotEnvX pre-configured!</p>
                         </div>
@@ -427,7 +439,7 @@ pre, pre *, code, code * {
                     </div>
                     <div class="bg-accent-50 dark:bg-accent-900/20 rounded-lg p-6">
                         <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
-                            <div class="text-accent-500">dotnet run</div>
+                            <div class="text-accent-500">nd dn run</div>
                         </div>
                         <p class="text-gray-600 dark:text-gray-300 mb-4">Visit <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">https://localhost:7001</code> and you'll see your application with:</p>
                         <ul class="space-y-2 text-gray-600 dark:text-gray-300">
@@ -493,15 +505,15 @@ pre, pre *, code, code * {
                         </div>
                         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
                             <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto mb-4">
-                                <div class="text-gray-500"># Create API project</div>
-                                <div class="text-accent-500">dotnet new webapi -n MyApi</div>
+                                <div class="text-gray-500"># Create API project with nd CLI</div>
+                                <div class="text-accent-500">nd dn new webapi -- -n MyApi</div>
                                 <div class="text-accent-500">cd MyApi</div>
                                 <div class="mt-2 text-gray-500"># Install components</div>
-                                <div class="text-accent-500">dotnet add package Noundry.Tuxedo</div>
-                                <div class="text-accent-500">dotnet add package Noundry.Tuxedo.Bowtie</div>
-                                <div class="text-accent-500">dotnet add package Noundry.DotEnvX</div>
-                                <div class="text-accent-500">dotnet add package Guardian</div>
-                                <div class="text-accent-500">dotnet add package Microsoft.Data.SqlServer</div>
+                                <div class="text-accent-500">nd dn add package Noundry.Tuxedo</div>
+                                <div class="text-accent-500">nd dn add package Noundry.Tuxedo.Bowtie</div>
+                                <div class="text-accent-500">nd dn add package Noundry.DotEnvX</div>
+                                <div class="text-accent-500">nd dn add package Guardian</div>
+                                <div class="text-accent-500">nd dn add package Microsoft.Data.SqlServer</div>
                             </div>
 
                             <!-- Noundry API Template Alternative -->
@@ -510,7 +522,7 @@ pre, pre *, code, code * {
                                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Get a fully-configured REST API with Noundry components:</p>
                                 <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-sm text-gray-300">
                                     <div class="text-blue-400">noundry templates install NDC.Templates.Api</div>
-                                    <div class="text-blue-400">dotnet new ndc-api -n MyApi</div>
+                                    <div class="text-blue-400">nd dn new ndc-api -- -n MyApi</div>
                                 </div>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Includes Tuxedo, Bowtie, DotEnvX, and Guardian pre-configured!</p>
                             </div>
@@ -628,7 +640,7 @@ pre, pre *, code, code * {
                     <!-- Next Steps for API -->
                     <div class="bg-gradient-to-r from-accent-50 to-accent-100 dark:from-accent-900/20 dark:to-accent-800/20 rounded-xl p-8 text-center">
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">🚀 Your API is Ready!</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Run <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">dotnet run</code> and visit <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">/swagger</code> to test your API.</p>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">Run <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">nd dn run</code> and visit <code class="bg-gray-200 dark:bg-gray-700 px-1 py-0.5 rounded text-sm">/swagger</code> to test your API.</p>
                         <a href="docs.html#tuxedo" class="bg-accent-600 hover:bg-accent-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
                             Learn More About Tuxedo ORM
                         </a>
@@ -704,7 +716,7 @@ pre, pre *, code, code * {
                         </div>
                         <div class="bg-accent-50 dark:bg-accent-900/20 rounded-lg p-6">
                             <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-4">
-                                <div class="text-accent-500">dotnet test</div>
+                                <div class="text-accent-500">nd dn test</div>
                             </div>
                             <p class="text-gray-600 dark:text-gray-300">You now have fluent, readable test assertions and comprehensive input validation!</p>
                         </div>

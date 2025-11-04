@@ -228,42 +228,70 @@
                     <div class="font-mono text-sm overflow-y-auto flex-1" x-data="{
                         currentStep: 0,
                         demos: [
-                            // Demo 1: Slurp
+                            // Demo 1: Noundry CLI - Complete Project Setup
+                            [
+                                '# Noundry CLI: Complete Project Setup',
+                                '$ nd init --framework net90',
+                                '✓ Creating noundry.json configuration...',
+                                '✓ Created global.json with SDK 9.0.0',
+                                '⚡ Project initialized in 234ms',
+                                '$ nd install',
+                                '✓ Installing all Noundry CLI tools...',
+                                '✅ 8 tools installed: ndng, slurp, authnz, lgby, jobs, ndotenvx, bowtie, cufflink',
+                                '✓ Installation complete in 4523ms'
+                            ],
+                            // Demo 2: Noundry CLI - Dotnet Wrapper
+                            [
+                                '# Noundry CLI: Dotnet Wrapper with Beautiful UI',
+                                '$ nd dn new webapi -- -n MyApi',
+                                '✓ Creating ASP.NET Web API project...',
+                                '✓ Command completed successfully in 1832ms',
+                                '$ nd dn build',
+                                '✓ Building project...',
+                                '✓ Build succeeded in 2725ms',
+                                '$ nd dn run',
+                                '🚀 Application running at https://localhost:7001',
+                                '✅ Ready in 2278ms'
+                            ],
+                            // Demo 3: Noundry CLI - Deployment with Engine
+                            [
+                                '# Noundry CLI: Deploy with Engine CLI',
+                                '$ nd ng init --host 192.168.1.100 --key ~/.ssh/id_rsa',
+                                '✓ SSH connection verified',
+                                '✓ Installing required packages...',
+                                '✅ Server initialized',
+                                '$ nd ng add myapp.com --port 5000 --ssl',
+                                '✓ Creating Nginx config',
+                                '✓ Obtaining SSL certificate',
+                                '$ nd ng deploy myapp.com --source ./publish',
+                                '🚀 Deploying application...',
+                                '✅ Live at https://myapp.com'
+                            ],
+                            // Demo 4: Slurp
                             [
                                 '# Slurp: CSV to Database Ingestion',
-                                '$ slurp customers.csv --provider postgres --connection $DB_URL',
+                                '$ nd slurp customers.csv --provider postgres --connection $DB_URL',
                                 '✓ Analyzing CSV structure...',
                                 '✓ Detected schema: 5 columns, 10,000 rows',
                                 '⚡ Ingesting at 125,000 rows/sec',
                                 '✅ Completed: 10,000 rows in 0.08 seconds'
                             ],
-                            // Demo 2: Cufflink
+                            // Demo 5: Cufflink
                             [
                                 '# Cufflink: Test Data Generation',
-                                '$ cufflink generate --table Products --rows 500 --seed 42',
+                                '$ nd cufflink generate --table Products --rows 500 --seed 42',
                                 '✓ Generated 500 realistic product records',
                                 '✓ Maintaining FK relationships automatically',
                                 '✨ Test data ready for development!'
                             ],
-                            // Demo 3: Noundry Jobs
+                            // Demo 6: Noundry Jobs
                             [
                                 '# Noundry Jobs: Schedule Background Tasks',
-                                '$ njobs create DailyBackup backup.csx &quot;0 2 * * *&quot;',
+                                '$ nd jobs create DailyBackup backup.csx &quot;0 2 * * *&quot;',
                                 '✓ Created scheduled job: DailyBackup',
                                 '✓ Cron: 0 2 * * * (Daily at 2:00 AM)',
-                                '$ njobs list',
+                                '$ nd jobs list',
                                 '✓ DailyBackup - Active - Next run: 2:00 AM'
-                            ],
-                            // Demo 4: NDC
-                            [
-                                '# NDC: Multi-Cloud Deployment',
-                                '$ ndc create aws --name MyApi',
-                                '✓ Created Aspire project structure',
-                                '✓ Generated Terraform configs for AWS',
-                                '$ ndc deploy --provider aws',
-                                '🚀 Deploying to AWS App Runner...',
-                                '✅ Deployment successful!',
-                                '🌐 URL: https://myapi.us-west-2.awsapprunner.com'
                             ]
                         ],
                         currentDemo: 0,
@@ -307,6 +335,166 @@
                                 <span x-show="index === currentDemoStep && step.startsWith('$')" class="animate-pulse text-accent-500">|</span>
                             </div>
                         </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noundry CLI Highlight Section -->
+    <section class="py-20 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-4">
+                    <svg class="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <span class="text-sm font-semibold text-blue-600 dark:text-blue-400">NEW: Noundry CLI</span>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    One CLI to Rule Them All
+                </h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    The <strong>nd CLI</strong> is your unified interface for dotnet.exe and all Noundry tools. Fast, beautiful, and built for productivity.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8 items-center mb-12">
+                <!-- Left: Key Benefits -->
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Drop-In Replacement</h3>
+                            <p class="text-gray-600 dark:text-gray-300">Replace <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm">dotnet</code> with <code class="bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-400 px-2 py-1 rounded text-sm">nd dn</code> and get beautiful UI, progress tracking, and execution time for every command.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 bg-accent-100 dark:bg-accent-900 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-accent-600 dark:text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">All Tools, One Command</h3>
+                            <p class="text-gray-600 dark:text-gray-300">Access <strong>8 Noundry CLI tools</strong> through a single interface: <code class="text-sm">nd ng</code>, <code class="text-sm">nd slurp</code>, <code class="text-sm">nd authnz</code>, and more. No need to remember package names.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Auto-Install Tools</h3>
+                            <p class="text-gray-600 dark:text-gray-300">When you run <code class="text-sm">nd slurp</code> and Slurp isn't installed, nd prompts to install it automatically. One command: <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm">nd install</code></p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 bg-pink-100 dark:bg-pink-900 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-pink-600 dark:text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Performance Tracking</h3>
+                            <p class="text-gray-600 dark:text-gray-300">Every command shows execution time and progress indicators. Built with .NET 9.0 for maximum speed.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Code Example -->
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">nd CLI</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 space-y-1">
+                        <div class="text-gray-500"># Install nd CLI</div>
+                        <div class="text-accent-500">$ dotnet tool install --global Noundry.Cli</div>
+                        <div class="mt-3 text-gray-500"># Initialize project</div>
+                        <div class="text-accent-500">$ nd init --framework net90</div>
+                        <div class="text-green-400">✓ Creating noundry.json...</div>
+                        <div class="text-green-400">✓ Created global.json with SDK 9.0.0</div>
+                        <div class="text-green-400">⚡ Project initialized in 234ms</div>
+                        <div class="mt-3 text-gray-500"># Install all Noundry tools at once</div>
+                        <div class="text-accent-500">$ nd install</div>
+                        <div class="text-green-400">✓ Installing ndng, slurp, authnz, lgby...</div>
+                        <div class="text-green-400">✅ 8 tools installed in 4523ms</div>
+                        <div class="mt-3 text-gray-500"># Create and build with beautiful UI</div>
+                        <div class="text-accent-500">$ nd dn new webapi -- -n MyApi</div>
+                        <div class="text-green-400">✅ Ready in 1832ms</div>
+                        <div class="text-accent-500">$ nd dn build</div>
+                        <div class="text-green-400">✅ Build succeeded in 2725ms</div>
+                        <div class="mt-3 text-gray-500"># Deploy with Engine CLI</div>
+                        <div class="text-accent-500">$ nd ng deploy myapp.com --source ./publish</div>
+                        <div class="text-blue-400">🚀 Deploying application...</div>
+                        <div class="text-green-400">✅ Live at https://myapp.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center">
+                <a href="nd-cli.html" class="inline-flex items-center bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg">
+                    Get Started with nd CLI
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+                <p class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                    Or install now: <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">dotnet tool install --global Noundry.Cli</code>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noundry Ethos Section -->
+    <section class="py-16 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 border-y border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <div class="inline-block px-4 py-2 bg-primary-100 dark:bg-primary-900/30 rounded-full mb-4">
+                        <span class="text-sm font-semibold text-primary-600 dark:text-primary-400">THE NOUNDRY ETHOS</span>
+                    </div>
+                    <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-6">
+                        Modern C#. Modern Tooling. No Compromises.
+                    </h2>
+                </div>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+                    <div class="text-gray-700 dark:text-gray-300 space-y-4 text-lg">
+                        <p>
+                            <strong>Noundry seeks a clean break from the past.</strong> We deeply respect the .NET ecosystem and C# as a language,
+                            but we're paving the way for a fresh perspective—one free from the Windows-only perception that has long been associated with the dotnet brand.
+                        </p>
+                        <p>
+                            We embrace <strong>modern designs, patterns, and practices in a pragmatic but opinionated way</strong>.
+                            Noundry removes the foot guns and stigma that come baked into default dotnet templates, enabling a new generation
+                            of developers to build world-class, cloud-agnostic solutions with modern UI patterns—without carrying the baggage of legacy assumptions.
+                        </p>
+                        <p class="text-xl font-semibold text-primary-600 dark:text-primary-400 pt-4">
+                            C# is a modern, powerful language. It deserves modern tooling to match.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -2382,11 +2570,18 @@
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm">
-                    © 2025 Noundry. All rights reserved.
-                </p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
+            <div class="border-t border-gray-800 mt-12 pt-8">
+                <div class="mb-6 text-center">
+                    <p class="text-gray-500 text-xs max-w-4xl mx-auto">
+                        Noundry is not affiliated with, endorsed by, or sponsored by Microsoft Corporation. .NET, C#, and related trademarks are property of Microsoft Corporation.
+                        Noundry is an independent framework that provides modern, opinionated tooling and components for C# developers.
+                    </p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        © 2025 Noundry. All rights reserved.
+                    </p>
+                    <div class="flex items-center space-x-6 mt-4 md:mt-0">
                     <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
                     <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
                     <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
@@ -2404,6 +2599,7 @@
                     </a>
                 </div>
             </div>
+                </div>
         </div>
     </footer>
 
