@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, selectedBlock: null }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="blocksApp()" x-init="init()" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noundry UI Blocks - Copy & Paste Ready Components</title>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -19,58 +19,93 @@
                 }
             }
         }
+
         function copyCode(blockId) {
             const codeElement = document.getElementById(blockId);
             const code = codeElement.textContent;
             navigator.clipboard.writeText(code).then(() => {
-                alert('Code copied to clipboard!');
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                }, 2000);
             });
+        }
+
+        function blocksApp() {
+            return {
+                darkMode: false,
+                category: 'all',
+                searchQuery: '',
+                blocks: [],
+
+                init() {
+                    this.darkMode = localStorage.getItem('darkMode') === 'true';
+                    this.$watch('darkMode', val => localStorage.setItem('darkMode', val));
+                    this.initBlocks();
+                },
+
+                initBlocks() {
+                    this.blocks = [
+                        { id: 'login-form', category: 'forms', title: 'Login Form', description: 'Complete login with validation' },
+                        { id: 'contact-form', category: 'forms', title: 'Contact Form', description: 'Multi-field contact form' },
+                        { id: 'registration-form', category: 'forms', title: 'Registration Form', description: 'Sign up with password confirmation' },
+                        { id: 'search-form', category: 'forms', title: 'Search Bar', description: 'Search with filters' },
+
+                        { id: 'hero-section', category: 'marketing', title: 'Hero Section', description: 'Landing page hero with CTA' },
+                        { id: 'hero-split', category: 'marketing', title: 'Split Hero', description: 'Hero with image split' },
+                        { id: 'pricing-cards', category: 'marketing', title: 'Pricing Cards', description: 'Pricing tier cards' },
+                        { id: 'testimonials', category: 'marketing', title: 'Testimonials', description: 'Customer testimonial cards' },
+                        { id: 'cta-section', category: 'marketing', title: 'CTA Section', description: 'Call-to-action banner' },
+                        { id: 'stats-section', category: 'marketing', title: 'Stats Section', description: 'Company statistics display' },
+
+                        { id: 'feature-grid', category: 'content', title: 'Feature Grid', description: 'Product features showcase' },
+                        { id: 'blog-grid', category: 'content', title: 'Blog Grid', description: 'Blog post cards' },
+                        { id: 'team-section', category: 'content', title: 'Team Section', description: 'Team member cards' },
+                        { id: 'timeline', category: 'content', title: 'Timeline', description: 'Vertical timeline component' },
+                        { id: 'faq-accordion', category: 'content', title: 'FAQ Accordion', description: 'Collapsible FAQ list' },
+
+                        { id: 'navbar', category: 'navigation', title: 'Navigation Bar', description: 'Responsive navigation' },
+                        { id: 'sidebar', category: 'navigation', title: 'Sidebar Menu', description: 'Vertical navigation sidebar' },
+                        { id: 'breadcrumbs', category: 'navigation', title: 'Breadcrumbs', description: 'Navigation breadcrumbs' },
+                        { id: 'pagination', category: 'navigation', title: 'Pagination', description: 'Page navigation' },
+                        { id: 'tabs', category: 'navigation', title: 'Tabs', description: 'Tabbed content switcher' },
+
+                        { id: 'data-table', category: 'tables', title: 'Data Table', description: 'Sortable data table' },
+                        { id: 'crud-table', category: 'tables', title: 'CRUD Table', description: 'Table with actions' },
+
+                        { id: 'modal', category: 'overlays', title: 'Modal Dialog', description: 'Popup modal window' },
+                        { id: 'alert-notification', category: 'overlays', title: 'Alert Notification', description: 'Success/Error alerts' },
+                        { id: 'toast', category: 'overlays', title: 'Toast Notification', description: 'Temporary notification' },
+
+                        { id: 'card-basic', category: 'cards', title: 'Basic Card', description: 'Simple content card' },
+                        { id: 'card-profile', category: 'cards', title: 'Profile Card', description: 'User profile card' },
+                        { id: 'card-product', category: 'cards', title: 'Product Card', description: 'E-commerce product card' }
+                    ];
+                },
+
+                get filteredBlocks() {
+                    return this.blocks.filter(block => {
+                        const matchesCategory = this.category === 'all' || block.category === this.category;
+                        const matchesSearch = !this.searchQuery ||
+                            block.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            block.description.toLowerCase().includes(this.searchQuery.toLowerCase());
+                        return matchesCategory && matchesSearch;
+                    });
+                }
+            }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'IBM Plex Mono', monospace; }
-
-/* Ensure all code block children use IBM Plex Mono consistently */
-pre, pre *, code, code * {
-    font-family: 'IBM Plex Mono', monospace !important;
-}
-
-/* Specific targeting for code blocks with syntax highlighting */
-.code-block pre,
-.code-block pre *,
-.code-block code,
-.code-block code * {
-    font-family: 'IBM Plex Mono', monospace !important;
-}
-    
-
-        /* Code blocks always have dark backgrounds - ensure all text is visible */
-        pre .text-gray-200,
-        pre .text-gray-300,
-        pre .text-gray-400,
-        pre .text-gray-500,
-        pre .text-gray-600,
-        pre .text-gray-700,
-        code .text-gray-200,
-        code .text-gray-300,
-        code .text-gray-400,
-        code .text-gray-500,
-        code .text-gray-600,
-        code .text-gray-700 {
-            color: rgb(255 255 255) !important; /* white */
-        }
-
-        /* Ensure ALL text in code blocks is white by default */
-        pre, pre code, pre code * {
-            color: rgb(255 255 255) !important; /* white */
-        }
-
-        /* Ensure operators and symbols are visible */
-        pre span,
-        code span {
-            opacity: 1 !important;
+        pre, pre *, code, code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+            color: rgb(255 255 255) !important;
         }
     </style>
 </head>
@@ -95,9 +130,77 @@ pre, pre *, code, code * {
     <section class="pt-32 pb-16 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-900 dark:to-gray-800">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">Noundry UI Blocks</h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
                 Copy-paste ready UI components built with Noundry.UI TagHelpers. Complete sections for forms, heroes, pricing, and more.
             </p>
+
+            <!-- Premium Notice -->
+            <div class="max-w-4xl mx-auto mt-8 p-6 bg-white/90 dark:bg-gray-800/90 rounded-xl border-2 border-purple-200 dark:border-purple-700 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <svg class="w-6 h-6 text-purple-600 dark:text-purple-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Free Community Blocks</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-3">
+                            You're viewing <strong>28 free UI blocks</strong>. Paid subscribers get access to premium features:
+                        </p>
+                        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-4">
+                            <li>✨ <strong>200+ Premium Blocks</strong> - Advanced components, dashboards, admin panels</li>
+                            <li>🎨 <strong>Theme Variations</strong> - Light, dark, and custom color schemes</li>
+                            <li>📱 <strong>Mobile-First Responsive</strong> - Perfect on all screen sizes</li>
+                            <li>⚡ <strong>Interactive Examples</strong> - Live preview with customization</li>
+                            <li>📦 <strong>Figma Files</strong> - Design files for all components</li>
+                            <li>🚀 <strong>Early Access</strong> - New blocks before public release</li>
+                        </ul>
+                        <div class="flex gap-3">
+                            <a href="https://noundry.com/pricing" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                                Upgrade to Pro
+                            </a>
+                            <a href="https://noundry.com/blocks/compare" class="inline-block border-2 border-purple-600 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-6 py-2 rounded-lg font-semibold transition-colors">
+                                Compare Plans
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filters -->
+    <section class="py-8 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-40">
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative max-w-2xl mx-auto">
+                    <input
+                        type="text"
+                        x-model="searchQuery"
+                        placeholder="Search blocks by name or description..."
+                        class="w-full px-4 py-3 pl-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-purple-500 dark:focus:border-purple-400 focus:outline-none"
+                    >
+                    <svg class="absolute left-4 top-4 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex justify-center gap-3 flex-wrap">
+                <button @click="category = 'all'" :class="category === 'all' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">All Blocks</button>
+                <button @click="category = 'forms'" :class="category === 'forms' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Forms</button>
+                <button @click="category = 'marketing'" :class="category === 'marketing' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Marketing</button>
+                <button @click="category = 'content'" :class="category === 'content' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Content</button>
+                <button @click="category = 'navigation'" :class="category === 'navigation' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Navigation</button>
+                <button @click="category = 'tables'" :class="category === 'tables' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Tables</button>
+                <button @click="category = 'overlays'" :class="category === 'overlays' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Overlays</button>
+                <button @click="category = 'cards'" :class="category === 'cards' ? 'bg-purple-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Cards</button>
+            </div>
+
+            <!-- Results Count -->
+            <div class="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+                Showing <span x-text="filteredBlocks.length"></span> block<span x-show="filteredBlocks.length !== 1">s</span>
+            </div>
         </div>
     </section>
 
@@ -105,7 +208,7 @@ pre, pre *, code, code * {
         <div class="max-w-7xl mx-auto px-4">
 
             <!-- Login Form Block -->
-            <div class="mb-20">
+            <div x-show="filteredBlocks.some(b => b.id === 'login-form')" class="mb-20">
                 <div class="mb-6">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Login Form</h2>
                     <p class="text-gray-600 dark:text-gray-300">Complete login form with validation and remember me checkbox</p>
@@ -113,19 +216,19 @@ pre, pre *, code, code * {
                 <div class="grid lg:grid-cols-2 gap-8 items-start">
                     <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
                         <div class="max-w-md mx-auto bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
-                            <h2 class="text-2xl font-bold mb-6">Sign In</h2>
+                            <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Sign In</h2>
                             <form class="space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Email</label>
-                                    <input type="email" class="w-full px-4 py-2 border rounded-lg" placeholder="you@example.com">
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Email</label>
+                                    <input type="email" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" placeholder="you@example.com">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Password</label>
-                                    <input type="password" class="w-full px-4 py-2 border rounded-lg">
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Password</label>
+                                    <input type="password" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                                 </div>
                                 <div class="flex items-center">
                                     <input type="checkbox" class="mr-2">
-                                    <label class="text-sm">Remember me</label>
+                                    <label class="text-sm text-gray-900 dark:text-white">Remember me</label>
                                 </div>
                                 <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700">Sign In</button>
                             </form>
@@ -137,7 +240,7 @@ pre, pre *, code, code * {
                             <button onclick="copyCode('login-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre id="login-code" class="text-sm font-mono text-gray-300"><code>@page
+                            <pre id="login-code" class="text-sm font-mono"><code>@page
 @model LoginModel
 
 &lt;noundry-card title="Sign In" class="max-w-md mx-auto"&gt;
@@ -173,8 +276,8 @@ pre, pre *, code, code * {
                 </div>
             </div>
 
-            <!-- Contact Form Block -->
-            <div class="mb-20">
+            <!-- Contact Form -->
+            <div x-show="filteredBlocks.some(b => b.id === 'contact-form')" class="mb-20">
                 <div class="mb-6">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Contact Form</h2>
                     <p class="text-gray-600 dark:text-gray-300">Full contact form with textarea and validation</p>
@@ -182,25 +285,25 @@ pre, pre *, code, code * {
                 <div class="grid lg:grid-cols-2 gap-8 items-start">
                     <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
                         <div class="max-w-xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
-                            <h2 class="text-2xl font-bold mb-6">Get In Touch</h2>
+                            <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Get In Touch</h2>
                             <form class="space-y-4">
                                 <div class="grid md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium mb-2">First Name</label>
-                                        <input type="text" class="w-full px-4 py-2 border rounded-lg">
+                                        <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">First Name</label>
+                                        <input type="text" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium mb-2">Last Name</label>
-                                        <input type="text" class="w-full px-4 py-2 border rounded-lg">
+                                        <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Last Name</label>
+                                        <input type="text" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Email</label>
-                                    <input type="email" class="w-full px-4 py-2 border rounded-lg">
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Email</label>
+                                    <input type="email" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium mb-2">Message</label>
-                                    <textarea class="w-full px-4 py-2 border rounded-lg" rows="4"></textarea>
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Message</label>
+                                    <textarea class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600" rows="4"></textarea>
                                 </div>
                                 <button type="submit" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700">Send Message</button>
                             </form>
@@ -212,7 +315,7 @@ pre, pre *, code, code * {
                             <button onclick="copyCode('contact-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre id="contact-code" class="text-sm font-mono text-gray-300"><code>@page
+                            <pre id="contact-code" class="text-sm font-mono"><code>@page
 @model ContactModel
 
 &lt;noundry-card title="Get In Touch" class="max-w-xl mx-auto"&gt;
@@ -253,8 +356,150 @@ pre, pre *, code, code * {
                 </div>
             </div>
 
-            <!-- Hero Section Block -->
-            <div class="mb-20">
+            <!-- Registration Form -->
+            <div x-show="filteredBlocks.some(b => b.id === 'registration-form')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Registration Form</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Sign up form with password confirmation and terms acceptance</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-md mx-auto bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg">
+                            <h2 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Create Account</h2>
+                            <form class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Full Name</label>
+                                    <input type="text" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Email</label>
+                                    <input type="email" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Password</label>
+                                    <input type="password" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2 text-gray-900 dark:text-white">Confirm Password</label>
+                                    <input type="password" class="w-full px-4 py-2 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="mr-2">
+                                    <label class="text-sm text-gray-900 dark:text-white">I agree to Terms & Conditions</label>
+                                </div>
+                                <button type="submit" class="w-full bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700">Create Account</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Register.cshtml</span>
+                            <button onclick="copyCode('register-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="register-code" class="text-sm font-mono"><code>@page
+@model RegisterModel
+
+&lt;noundry-card title="Create Account" class="max-w-md mx-auto"&gt;
+    &lt;form method="post"&gt;
+        &lt;noundry-text-input
+            asp-for="Name"
+            label="Full Name"
+            required="true" /&gt;
+
+        &lt;noundry-text-input
+            asp-for="Email"
+            type="email"
+            label="Email"
+            required="true" /&gt;
+
+        &lt;noundry-text-input
+            asp-for="Password"
+            type="password"
+            label="Password"
+            required="true" /&gt;
+
+        &lt;noundry-text-input
+            asp-for="ConfirmPassword"
+            type="password"
+            label="Confirm Password"
+            required="true" /&gt;
+
+        &lt;noundry-checkbox
+            asp-for="AcceptTerms"
+            label="I agree to Terms & Conditions"
+            required="true" /&gt;
+
+        &lt;noundry-button
+            type="submit"
+            variant="primary"
+            class="w-full"&gt;
+            Create Account
+        &lt;/noundry-button&gt;
+    &lt;/form&gt;
+&lt;/noundry-card&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Form -->
+            <div x-show="filteredBlocks.some(b => b.id === 'search-form')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Search Bar</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Search input with filters and dropdown</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-2xl mx-auto">
+                            <div class="flex gap-2">
+                                <div class="flex-1 relative">
+                                    <input type="text" placeholder="Search products..." class="w-full px-4 py-3 pl-10 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                    <svg class="w-5 h-5 absolute left-3 top-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <select class="px-4 py-3 border rounded-lg dark:bg-gray-800 dark:border-gray-600">
+                                    <option>All Categories</option>
+                                    <option>Electronics</option>
+                                    <option>Clothing</option>
+                                </select>
+                                <button class="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Search.cshtml</span>
+                            <button onclick="copyCode('search-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="search-code" class="text-sm font-mono"><code>&lt;form method="get" class="flex gap-2"&gt;
+    &lt;div class="flex-1"&gt;
+        &lt;noundry-text-input
+            asp-for="SearchTerm"
+            placeholder="Search products..."
+            icon="search" /&gt;
+    &lt;/div&gt;
+
+    &lt;noundry-select
+        asp-for="Category"
+        options="@Model.Categories"
+        placeholder="All Categories" /&gt;
+
+    &lt;noundry-button
+        type="submit"
+        variant="primary"&gt;
+        Search
+    &lt;/noundry-button&gt;
+&lt;/form&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Section -->
+            <div x-show="filteredBlocks.some(b => b.id === 'hero-section')" class="mb-20">
                 <div class="mb-6">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Hero Section</h2>
                     <p class="text-gray-600 dark:text-gray-300">Landing page hero with CTA buttons</p>
@@ -262,7 +507,7 @@ pre, pre *, code, code * {
                 <div class="grid lg:grid-cols-2 gap-8 items-start">
                     <div class="bg-gradient-to-br from-blue-500 to-purple-600 p-16 rounded-xl text-white text-center">
                         <h1 class="text-5xl font-bold mb-6">Build Amazing Apps</h1>
-                        <p class="text-xl mb-8 opacity-90">Create production-ready .NET applications with Noundry's powerful libraries and components</p>
+                        <p class="text-xl mb-8 opacity-90">Create production-ready .NET applications with Noundry's powerful libraries</p>
                         <div class="flex gap-4 justify-center">
                             <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold">Get Started</button>
                             <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold">Learn More</button>
@@ -274,20 +519,17 @@ pre, pre *, code, code * {
                             <button onclick="copyCode('hero-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre id="hero-code" class="text-sm font-mono text-gray-300"><code>@page
-
-&lt;section class="bg-gradient-to-br from-blue-500 to-purple-600 py-20"&gt;
+                            <pre id="hero-code" class="text-sm font-mono"><code>&lt;section class="bg-gradient-to-br from-blue-500 to-purple-600 py-20"&gt;
     &lt;div class="max-w-4xl mx-auto px-4 text-center text-white"&gt;
         &lt;h1 class="text-5xl font-bold mb-6"&gt;
             Build Amazing Apps
         &lt;/h1&gt;
         &lt;p class="text-xl mb-8 opacity-90"&gt;
-            Create production-ready .NET applications with
-            Noundry's powerful libraries and components
+            Create production-ready .NET applications
         &lt;/p&gt;
         &lt;div class="flex gap-4 justify-center"&gt;
             &lt;noundry-button
-                href="/getting-started"
+                href="/start"
                 bg-color="white"
                 text-color="blue-600"
                 size="lg"&gt;
@@ -308,8 +550,95 @@ pre, pre *, code, code * {
                 </div>
             </div>
 
-            <!-- Pricing Cards Block -->
-            <div class="mb-20">
+            <!-- Data Table -->
+            <div x-show="filteredBlocks.some(b => b.id === 'data-table')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Data Table</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Sortable data table with actions</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50 dark:bg-gray-800">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Name</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Email</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Role</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                    <tr>
+                                        <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">John Doe</td>
+                                        <td class="px-6 py-4 text-sm text-gray-900 dark:text-white">john@example.com</td>
+                                        <td class="px-6 py-4 text-sm"><span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">Admin</span></td>
+                                        <td class="px-6 py-4 text-sm">
+                                            <button class="text-blue-600 hover:underline mr-2">Edit</button>
+                                            <button class="text-red-600 hover:underline">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Users.cshtml</span>
+                            <button onclick="copyCode('table-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="table-code" class="text-sm font-mono"><code>&lt;noundry-data-table
+    items="@Model.Users"
+    sortable="true"
+    paginated="true"&gt;
+
+    &lt;noundry-table-column
+        field="Name"
+        header="Name"
+        sortable="true" /&gt;
+
+    &lt;noundry-table-column
+        field="Email"
+        header="Email" /&gt;
+
+    &lt;noundry-table-column
+        field="Role"
+        header="Role"&gt;
+        &lt;template&gt;
+            &lt;noundry-badge
+                text="@item.Role"
+                variant="@(item.IsAdmin ? "success" : "default")" /&gt;
+        &lt;/template&gt;
+    &lt;/noundry-table-column&gt;
+
+    &lt;noundry-table-column header="Actions"&gt;
+        &lt;template&gt;
+            &lt;noundry-button
+                size="sm"
+                variant="link"
+                href="@Url.Action("Edit", new { id = item.Id })"&gt;
+                Edit
+            &lt;/noundry-button&gt;
+            &lt;noundry-button
+                size="sm"
+                variant="link"
+                color="danger"
+                confirm="Delete user?"
+                asp-action="Delete"
+                asp-route-id="@item.Id"&gt;
+                Delete
+            &lt;/noundry-button&gt;
+        &lt;/template&gt;
+    &lt;/noundry-table-column&gt;
+&lt;/noundry-data-table&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Cards -->
+            <div x-show="filteredBlocks.some(b => b.id === 'pricing-cards')" class="mb-20">
                 <div class="mb-6">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pricing Cards</h2>
                     <p class="text-gray-600 dark:text-gray-300">Pricing tier cards with feature lists</p>
@@ -317,15 +646,14 @@ pre, pre *, code, code * {
                 <div class="grid lg:grid-cols-2 gap-8 items-start">
                     <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
                         <div class="grid md:grid-cols-3 gap-6">
-                            <div class="bg-white p-6 rounded-lg shadow text-center">
-                                <h3 class="text-xl font-bold mb-2">Starter</h3>
-                                <div class="text-4xl font-bold mb-4">$29<span class="text-lg">/mo</span></div>
-                                <ul class="space-y-2 mb-6 text-sm">
+                            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow text-center">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Starter</h3>
+                                <div class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">$29<span class="text-lg">/mo</span></div>
+                                <ul class="space-y-2 mb-6 text-sm text-gray-600 dark:text-gray-400">
                                     <li>5 Projects</li>
                                     <li>Basic Support</li>
-                                    <li>1 GB Storage</li>
                                 </ul>
-                                <button class="w-full bg-gray-600 text-white py-2 rounded">Choose Plan</button>
+                                <button class="w-full bg-gray-600 text-white py-2 rounded">Choose</button>
                             </div>
                             <div class="bg-blue-600 text-white p-6 rounded-lg shadow-lg text-center transform scale-105">
                                 <h3 class="text-xl font-bold mb-2">Pro</h3>
@@ -333,19 +661,17 @@ pre, pre *, code, code * {
                                 <ul class="space-y-2 mb-6 text-sm">
                                     <li>Unlimited Projects</li>
                                     <li>Priority Support</li>
-                                    <li>10 GB Storage</li>
                                 </ul>
-                                <button class="w-full bg-white text-blue-600 py-2 rounded font-semibold">Choose Plan</button>
+                                <button class="w-full bg-white text-blue-600 py-2 rounded font-semibold">Choose</button>
                             </div>
-                            <div class="bg-white p-6 rounded-lg shadow text-center">
-                                <h3 class="text-xl font-bold mb-2">Enterprise</h3>
-                                <div class="text-4xl font-bold mb-4">$299<span class="text-lg">/mo</span></div>
-                                <ul class="space-y-2 mb-6 text-sm">
-                                    <li>Unlimited Everything</li>
+                            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow text-center">
+                                <h3 class="text-xl font-bold mb-2 text-gray-900 dark:text-white">Enterprise</h3>
+                                <div class="text-4xl font-bold mb-4 text-gray-900 dark:text-white">$299<span class="text-lg">/mo</span></div>
+                                <ul class="space-y-2 mb-6 text-sm text-gray-600 dark:text-gray-400">
+                                    <li>Everything</li>
                                     <li>24/7 Support</li>
-                                    <li>Unlimited Storage</li>
                                 </ul>
-                                <button class="w-full bg-gray-600 text-white py-2 rounded">Choose Plan</button>
+                                <button class="w-full bg-gray-600 text-white py-2 rounded">Choose</button>
                             </div>
                         </div>
                     </div>
@@ -355,62 +681,245 @@ pre, pre *, code, code * {
                             <button onclick="copyCode('pricing-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre id="pricing-code" class="text-sm font-mono text-gray-300"><code>&lt;div class="grid md:grid-cols-3 gap-6"&gt;
-    &lt;!-- Starter --&gt;
-    &lt;noundry-card class="text-center"&gt;
-        &lt;h3 class="text-xl font-bold mb-2"&gt;Starter&lt;/h3&gt;
-        &lt;div class="text-4xl font-bold mb-4"&gt;
-            $29&lt;span class="text-lg"&gt;/mo&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;ul class="space-y-2 mb-6 text-sm"&gt;
-            &lt;li&gt;5 Projects&lt;/li&gt;
-            &lt;li&gt;Basic Support&lt;/li&gt;
-            &lt;li&gt;1 GB Storage&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;noundry-button class="w-full" bg-color="gray"&gt;
-            Choose Plan
-        &lt;/noundry-button&gt;
-    &lt;/noundry-card&gt;
-
-    &lt;!-- Pro (Featured) --&gt;
-    &lt;noundry-card class="bg-blue-600 text-white transform scale-105"&gt;
-        &lt;h3 class="text-xl font-bold mb-2"&gt;Pro&lt;/h3&gt;
-        &lt;div class="text-4xl font-bold mb-4"&gt;
-            $99&lt;span class="text-lg"&gt;/mo&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;ul class="space-y-2 mb-6 text-sm"&gt;
-            &lt;li&gt;Unlimited Projects&lt;/li&gt;
-            &lt;li&gt;Priority Support&lt;/li&gt;
-            &lt;li&gt;10 GB Storage&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;noundry-button class="w-full" bg-color="white" text-color="blue-600"&gt;
-            Choose Plan
-        &lt;/noundry-button&gt;
-    &lt;/noundry-card&gt;
-
-    &lt;!-- Enterprise --&gt;
-    &lt;noundry-card class="text-center"&gt;
-        &lt;h3 class="text-xl font-bold mb-2"&gt;Enterprise&lt;/h3&gt;
-        &lt;div class="text-4xl font-bold mb-4"&gt;
-            $299&lt;span class="text-lg"&gt;/mo&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;ul class="space-y-2 mb-6 text-sm"&gt;
-            &lt;li&gt;Unlimited Everything&lt;/li&gt;
-            &lt;li&gt;24/7 Support&lt;/li&gt;
-            &lt;li&gt;Unlimited Storage&lt;/li&gt;
-        &lt;/ul&gt;
-        &lt;noundry-button class="w-full" bg-color="gray"&gt;
-            Choose Plan
-        &lt;/noundry-button&gt;
-    &lt;/noundry-card&gt;
+                            <pre id="pricing-code" class="text-sm font-mono"><code>&lt;div class="grid md:grid-cols-3 gap-6"&gt;
+    @foreach(var plan in Model.Plans)
+    {
+        &lt;noundry-card
+            class="text-center @(plan.Featured ? "featured" : "")"&gt;
+            &lt;h3 class="text-xl font-bold mb-2"&gt;@plan.Name&lt;/h3&gt;
+            &lt;div class="text-4xl font-bold mb-4"&gt;
+                $@plan.Price&lt;span class="text-lg"&gt;/mo&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;ul class="space-y-2 mb-6 text-sm"&gt;
+                @foreach(var feature in plan.Features)
+                {
+                    &lt;li&gt;@feature&lt;/li&gt;
+                }
+            &lt;/ul&gt;
+            &lt;noundry-button
+                class="w-full"
+                variant="@(plan.Featured ? "primary" : "secondary")"
+                href="@Url.Action("Subscribe", new { id = plan.Id })"&gt;
+                Choose Plan
+            &lt;/noundry-button&gt;
+        &lt;/noundry-card&gt;
+    }
 &lt;/div&gt;</code></pre>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Feature Grid Block -->
-            <div class="mb-20">
+            <!-- Modal Dialog -->
+            <div x-show="filteredBlocks.some(b => b.id === 'modal')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Modal Dialog</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Popup modal window with overlay</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="relative">
+                            <div class="bg-black/50 p-16 rounded-xl flex items-center justify-center">
+                                <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl max-w-md w-full">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Confirm Action</h3>
+                                        <button class="text-gray-500 hover:text-gray-700">✕</button>
+                                    </div>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-6">Are you sure you want to delete this item?</p>
+                                    <div class="flex gap-3 justify-end">
+                                        <button class="px-4 py-2 border rounded-lg text-gray-700 dark:text-gray-300">Cancel</button>
+                                        <button class="px-4 py-2 bg-red-600 text-white rounded-lg">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Modal.cshtml</span>
+                            <button onclick="copyCode('modal-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="modal-code" class="text-sm font-mono"><code>&lt;noundry-modal
+    id="confirmModal"
+    title="Confirm Action"
+    size="md"&gt;
+
+    &lt;p&gt;Are you sure you want to delete this item?&lt;/p&gt;
+
+    &lt;noundry-modal-footer&gt;
+        &lt;noundry-button
+            variant="secondary"
+            data-modal-close&gt;
+            Cancel
+        &lt;/noundry-button&gt;
+
+        &lt;noundry-button
+            variant="danger"
+            asp-action="Delete"
+            asp-route-id="@Model.Id"&gt;
+            Delete
+        &lt;/noundry-button&gt;
+    &lt;/noundry-modal-footer&gt;
+&lt;/noundry-modal&gt;
+
+&lt;!-- Trigger Button --&gt;
+&lt;noundry-button data-modal-target="confirmModal"&gt;
+    Open Modal
+&lt;/noundry-button&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alert Notification -->
+            <div x-show="filteredBlocks.some(b => b.id === 'alert-notification')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Alert Notification</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Success, error, warning, and info alerts</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl space-y-4">
+                        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg flex items-center gap-3">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            <span>Success! Your changes have been saved.</span>
+                        </div>
+                        <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg flex items-center gap-3">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                            <span>Error! Something went wrong.</span>
+                        </div>
+                        <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg flex items-center gap-3">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            <span>Warning! Please review your input.</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Alerts.cshtml</span>
+                            <button onclick="copyCode('alert-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="alert-code" class="text-sm font-mono"><code>&lt;!-- Success Alert --&gt;
+&lt;noundry-alert
+    variant="success"
+    icon="check-circle"
+    dismissible="true"&gt;
+    Success! Your changes have been saved.
+&lt;/noundry-alert&gt;
+
+&lt;!-- Error Alert --&gt;
+&lt;noundry-alert
+    variant="danger"
+    icon="x-circle"
+    dismissible="true"&gt;
+    Error! Something went wrong.
+&lt;/noundry-alert&gt;
+
+&lt;!-- Warning Alert --&gt;
+&lt;noundry-alert
+    variant="warning"
+    icon="exclamation"
+    dismissible="true"&gt;
+    Warning! Please review your input.
+&lt;/noundry-alert&gt;
+
+&lt;!-- Info Alert --&gt;
+&lt;noundry-alert
+    variant="info"
+    icon="information-circle"
+    dismissible="true"&gt;
+    Info: New features are available.
+&lt;/noundry-alert&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Bar -->
+            <div x-show="filteredBlocks.some(b => b.id === 'navbar')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Navigation Bar</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Responsive navigation with dropdown menus</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <nav class="bg-white dark:bg-gray-900 border rounded-lg px-4 py-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xl font-bold text-gray-900 dark:text-white">Logo</span>
+                                <div class="hidden md:flex gap-6">
+                                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600">Home</a>
+                                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600">Products</a>
+                                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600">About</a>
+                                    <a href="#" class="text-gray-700 dark:text-gray-300 hover:text-blue-600">Contact</a>
+                                </div>
+                                <button class="md:hidden text-gray-700 dark:text-gray-300">☰</button>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">_Layout.cshtml</span>
+                            <button onclick="copyCode('navbar-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="navbar-code" class="text-sm font-mono"><code>&lt;noundry-navbar brand="My App" sticky="true"&gt;
+    &lt;noundry-nav-items&gt;
+        &lt;noundry-nav-link
+            asp-page="/Index"
+            active-class="active"&gt;
+            Home
+        &lt;/noundry-nav-link&gt;
+
+        &lt;noundry-nav-dropdown title="Products"&gt;
+            &lt;noundry-dropdown-item asp-page="/Products/All"&gt;
+                All Products
+            &lt;/noundry-dropdown-item&gt;
+            &lt;noundry-dropdown-item asp-page="/Products/New"&gt;
+                New Arrivals
+            &lt;/noundry-dropdown-item&gt;
+            &lt;noundry-dropdown-divider /&gt;
+            &lt;noundry-dropdown-item asp-page="/Products/Sale"&gt;
+                Sale
+            &lt;/noundry-dropdown-item&gt;
+        &lt;/noundry-nav-dropdown&gt;
+
+        &lt;noundry-nav-link asp-page="/About"&gt;
+            About
+        &lt;/noundry-nav-link&gt;
+
+        &lt;noundry-nav-link asp-page="/Contact"&gt;
+            Contact
+        &lt;/noundry-nav-link&gt;
+    &lt;/noundry-nav-items&gt;
+
+    &lt;noundry-nav-actions&gt;
+        @if (User.Identity.IsAuthenticated)
+        {
+            &lt;noundry-button
+                asp-page="/Account/Logout"
+                variant="outline"
+                size="sm"&gt;
+                Logout
+            &lt;/noundry-button&gt;
+        }
+        else
+        {
+            &lt;noundry-button
+                asp-page="/Account/Login"
+                variant="primary"
+                size="sm"&gt;
+                Login
+            &lt;/noundry-button&gt;
+        }
+    &lt;/noundry-nav-actions&gt;
+&lt;/noundry-navbar&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Grid -->
+            <div x-show="filteredBlocks.some(b => b.id === 'feature-grid')" class="mb-20">
                 <div class="mb-6">
                     <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Feature Grid</h2>
                     <p class="text-gray-600 dark:text-gray-300">Product features showcase with icons</p>
@@ -418,19 +927,19 @@ pre, pre *, code, code * {
                 <div class="grid lg:grid-cols-2 gap-8 items-start">
                     <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
                         <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white p-6 rounded-lg">
+                            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
                                 <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                                     <span class="text-2xl">⚡</span>
                                 </div>
-                                <h3 class="text-lg font-bold mb-2">Fast Performance</h3>
-                                <p class="text-sm text-gray-600">Lightning-fast load times</p>
+                                <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Fast Performance</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Lightning-fast load times</p>
                             </div>
-                            <div class="bg-white p-6 rounded-lg">
+                            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow">
                                 <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
                                     <span class="text-2xl">🔒</span>
                                 </div>
-                                <h3 class="text-lg font-bold mb-2">Secure</h3>
-                                <p class="text-sm text-gray-600">Enterprise-grade security</p>
+                                <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Secure</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Enterprise-grade security</p>
                             </div>
                         </div>
                     </div>
@@ -440,136 +949,495 @@ pre, pre *, code, code * {
                             <button onclick="copyCode('features-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <div class="p-6 overflow-x-auto">
-                            <pre id="features-code" class="text-sm font-mono text-gray-300"><code>&lt;div class="grid md:grid-cols-2 gap-6"&gt;
-    &lt;noundry-card&gt;
-        &lt;div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4"&gt;
-            &lt;span class="text-2xl"&gt;⚡&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;h3 class="text-lg font-bold mb-2"&gt;Fast Performance&lt;/h3&gt;
-        &lt;p class="text-sm text-gray-600"&gt;Lightning-fast load times&lt;/p&gt;
-    &lt;/noundry-card&gt;
-
-    &lt;noundry-card&gt;
-        &lt;div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4"&gt;
-            &lt;span class="text-2xl"&gt;🔒&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;h3 class="text-lg font-bold mb-2"&gt;Secure&lt;/h3&gt;
-        &lt;p class="text-sm text-gray-600"&gt;Enterprise-grade security&lt;/p&gt;
-    &lt;/noundry-card&gt;
-
-    &lt;noundry-card&gt;
-        &lt;div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4"&gt;
-            &lt;span class="text-2xl"&gt;📱&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;h3 class="text-lg font-bold mb-2"&gt;Responsive&lt;/h3&gt;
-        &lt;p class="text-sm text-gray-600"&gt;Works on all devices&lt;/p&gt;
-    &lt;/noundry-card&gt;
-
-    &lt;noundry-card&gt;
-        &lt;div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-4"&gt;
-            &lt;span class="text-2xl"&gt;🎨&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;h3 class="text-lg font-bold mb-2"&gt;Customizable&lt;/h3&gt;
-        &lt;p class="text-sm text-gray-600"&gt;Fully theme-able&lt;/p&gt;
-    &lt;/noundry-card&gt;
+                            <pre id="features-code" class="text-sm font-mono"><code>&lt;div class="grid md:grid-cols-2 gap-6"&gt;
+    @foreach(var feature in Model.Features)
+    {
+        &lt;noundry-card&gt;
+            &lt;div class="w-12 h-12 bg-@feature.Color-100 rounded-lg flex items-center justify-center mb-4"&gt;
+                &lt;span class="text-2xl"&gt;@feature.Icon&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;h3 class="text-lg font-bold mb-2"&gt;@feature.Title&lt;/h3&gt;
+            &lt;p class="text-sm text-gray-600"&gt;@feature.Description&lt;/p&gt;
+        &lt;/noundry-card&gt;
+    }
 &lt;/div&gt;</code></pre>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Blog Grid -->
+            <div x-show="filteredBlocks.some(b => b.id === 'blog-grid')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Blog Grid</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Blog post cards with images and excerpts</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                                <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                                <div class="p-6">
+                                    <div class="text-xs text-blue-600 font-semibold mb-2">Technology</div>
+                                    <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Getting Started with Noundry</h3>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Learn how to build modern .NET applications...</p>
+                                    <a href="#" class="text-blue-600 text-sm font-semibold hover:underline">Read More →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Blog.cshtml</span>
+                            <button onclick="copyCode('blog-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="blog-code" class="text-sm font-mono"><code>&lt;div class="grid md:grid-cols-3 gap-6"&gt;
+    @foreach(var post in Model.Posts)
+    {
+        &lt;noundry-card class="overflow-hidden"&gt;
+            &lt;img src="@post.ImageUrl" alt="@post.Title" class="w-full h-48 object-cover" /&gt;
+
+            &lt;div class="p-6"&gt;
+                &lt;noundry-badge text="@post.Category" variant="primary" /&gt;
+
+                &lt;h3 class="text-lg font-bold mt-2 mb-2"&gt;
+                    @post.Title
+                &lt;/h3&gt;
+
+                &lt;p class="text-sm text-gray-600 mb-4"&gt;
+                    @post.Excerpt
+                &lt;/p&gt;
+
+                &lt;noundry-button
+                    href="@Url.Action("Details", new { id = post.Id })"
+                    variant="link"
+                    size="sm"&gt;
+                    Read More →
+                &lt;/noundry-button&gt;
+            &lt;/div&gt;
+        &lt;/noundry-card&gt;
+    }
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <div x-show="filteredBlocks.some(b => b.id === 'team-section')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Team Section</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Team member cards with photos and social links</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow text-center">
+                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 mx-auto mb-4"></div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">John Doe</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">CEO & Founder</p>
+                                <div class="flex justify-center gap-3">
+                                    <a href="#" class="text-gray-600 hover:text-blue-600">𝕏</a>
+                                    <a href="#" class="text-gray-600 hover:text-blue-600">in</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Team.cshtml</span>
+                            <button onclick="copyCode('team-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="team-code" class="text-sm font-mono"><code>&lt;div class="grid md:grid-cols-4 gap-6"&gt;
+    @foreach(var member in Model.TeamMembers)
+    {
+        &lt;noundry-card class="text-center"&gt;
+            &lt;img
+                src="@member.PhotoUrl"
+                alt="@member.Name"
+                class="w-24 h-24 rounded-full mx-auto mb-4 object-cover" /&gt;
+
+            &lt;h3 class="text-lg font-bold"&gt;@member.Name&lt;/h3&gt;
+            &lt;p class="text-sm text-gray-600 mb-4"&gt;@member.Title&lt;/p&gt;
+
+            &lt;div class="flex justify-center gap-3"&gt;
+                @if (!string.IsNullOrEmpty(member.TwitterUrl))
+                {
+                    &lt;a href="@member.TwitterUrl" class="text-gray-600 hover:text-blue-600"&gt;
+                        &lt;i class="fab fa-twitter"&gt;&lt;/i&gt;
+                    &lt;/a&gt;
+                }
+                @if (!string.IsNullOrEmpty(member.LinkedInUrl))
+                {
+                    &lt;a href="@member.LinkedInUrl" class="text-gray-600 hover:text-blue-600"&gt;
+                        &lt;i class="fab fa-linkedin"&gt;&lt;/i&gt;
+                    &lt;/a&gt;
+                }
+            &lt;/div&gt;
+        &lt;/noundry-card&gt;
+    }
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div x-show="filteredBlocks.some(b => b.id === 'timeline')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Timeline</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Vertical timeline for milestones and history</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-md mx-auto space-y-6">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold">1</div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-gray-900 dark:text-white mb-1">Project Started</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">January 2024</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Initial development phase began</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">2</div>
+                                <div class="flex-1">
+                                    <h4 class="font-bold text-gray-900 dark:text-white mb-1">Beta Launch</h4>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">March 2024</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300">Released to beta testers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Timeline.cshtml</span>
+                            <button onclick="copyCode('timeline-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="timeline-code" class="text-sm font-mono"><code>&lt;noundry-timeline&gt;
+    @foreach(var milestone in Model.Milestones)
+    {
+        &lt;noundry-timeline-item
+            number="@milestone.Order"
+            title="@milestone.Title"
+            date="@milestone.Date.ToString("MMMM yyyy")"
+            variant="@(milestone.IsCompleted ? "success" : "primary")"&gt;
+            @milestone.Description
+        &lt;/noundry-timeline-item&gt;
+    }
+&lt;/noundry-timeline&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div x-show="filteredBlocks.some(b => b.id === 'faq-accordion')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">FAQ Accordion</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Collapsible FAQ list with expand/collapse</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-2xl mx-auto space-y-4">
+                            <div class="bg-white dark:bg-gray-900 border rounded-lg">
+                                <button class="w-full px-6 py-4 text-left font-semibold flex justify-between items-center text-gray-900 dark:text-white">
+                                    What is Noundry?
+                                    <span>▼</span>
+                                </button>
+                                <div class="px-6 pb-4 text-sm text-gray-600 dark:text-gray-400">
+                                    Noundry is a modern development platform for building .NET applications faster.
+                                </div>
+                            </div>
+                            <div class="bg-white dark:bg-gray-900 border rounded-lg">
+                                <button class="w-full px-6 py-4 text-left font-semibold flex justify-between items-center text-gray-900 dark:text-white">
+                                    How much does it cost?
+                                    <span>▶</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">FAQ.cshtml</span>
+                            <button onclick="copyCode('faq-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="faq-code" class="text-sm font-mono"><code>&lt;noundry-accordion&gt;
+    @foreach(var faq in Model.FAQs)
+    {
+        &lt;noundry-accordion-item
+            title="@faq.Question"
+            id="faq-@faq.Id"
+            expanded="@(faq.Id == 1)"&gt;
+            @faq.Answer
+        &lt;/noundry-accordion-item&gt;
+    }
+&lt;/noundry-accordion&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Basic Card -->
+            <div x-show="filteredBlocks.some(b => b.id === 'card-basic')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Basic Card</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Simple content card with header and footer</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-md mx-auto bg-white dark:bg-gray-900 rounded-lg shadow">
+                            <div class="px-6 py-4 border-b">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Card Title</h3>
+                            </div>
+                            <div class="px-6 py-4">
+                                <p class="text-gray-600 dark:text-gray-400">This is the card content. You can add any elements here like text, images, or buttons.</p>
+                            </div>
+                            <div class="px-6 py-4 border-t bg-gray-50 dark:bg-gray-800">
+                                <button class="text-blue-600 text-sm font-semibold">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Card.cshtml</span>
+                            <button onclick="copyCode('card-basic-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="card-basic-code" class="text-sm font-mono"><code>&lt;noundry-card&gt;
+    &lt;noundry-card-header&gt;
+        &lt;h3 class="text-xl font-bold"&gt;Card Title&lt;/h3&gt;
+    &lt;/noundry-card-header&gt;
+
+    &lt;noundry-card-body&gt;
+        &lt;p&gt;This is the card content.&lt;/p&gt;
+    &lt;/noundry-card-body&gt;
+
+    &lt;noundry-card-footer&gt;
+        &lt;noundry-button variant="link"&gt;
+            Learn More
+        &lt;/noundry-button&gt;
+    &lt;/noundry-card-footer&gt;
+&lt;/noundry-card&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Card -->
+            <div x-show="filteredBlocks.some(b => b.id === 'card-profile')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Profile Card</h2>
+                    <p class="text-gray-600 dark:text-gray-300">User profile card with avatar and stats</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-sm mx-auto bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                            <div class="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+                            <div class="px-6 pb-6 text-center">
+                                <div class="w-24 h-24 rounded-full bg-white dark:bg-gray-800 mx-auto -mt-12 mb-4 border-4 border-white dark:border-gray-900 flex items-center justify-center">
+                                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-500"></div>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">John Doe</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Software Engineer</p>
+                                <div class="grid grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <div class="text-xl font-bold text-gray-900 dark:text-white">127</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">Posts</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xl font-bold text-gray-900 dark:text-white">2.5K</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">Followers</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xl font-bold text-gray-900 dark:text-white">512</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-400">Following</div>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold">Follow</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Profile.cshtml</span>
+                            <button onclick="copyCode('card-profile-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="card-profile-code" class="text-sm font-mono"><code>&lt;noundry-profile-card
+    user="@Model.User"
+    show-stats="true"
+    cover-image="@Model.User.CoverImageUrl"&gt;
+
+    &lt;noundry-profile-stats&gt;
+        &lt;noundry-stat label="Posts" value="@Model.User.PostCount" /&gt;
+        &lt;noundry-stat label="Followers" value="@Model.User.FollowerCount" /&gt;
+        &lt;noundry-stat label="Following" value="@Model.User.FollowingCount" /&gt;
+    &lt;/noundry-profile-stats&gt;
+
+    &lt;noundry-profile-actions&gt;
+        &lt;noundry-button
+            asp-action="Follow"
+            asp-route-id="@Model.User.Id"
+            variant="primary"
+            class="w-full"&gt;
+            Follow
+        &lt;/noundry-button&gt;
+    &lt;/noundry-profile-actions&gt;
+&lt;/noundry-profile-card&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Card -->
+            <div x-show="filteredBlocks.some(b => b.id === 'card-product')" class="mb-20">
+                <div class="mb-6">
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Product Card</h2>
+                    <p class="text-gray-600 dark:text-gray-300">E-commerce product card with price and add to cart</p>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8 items-start">
+                    <div class="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl">
+                        <div class="max-w-sm mx-auto bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden">
+                            <div class="h-64 bg-gradient-to-br from-orange-300 to-pink-400"></div>
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h3 class="text-lg font-bold text-gray-900 dark:text-white">Premium Headphones</h3>
+                                    <span class="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">In Stock</span>
+                                </div>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">High-quality wireless headphones with noise cancellation</p>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="text-2xl font-bold text-gray-900 dark:text-white">$299.99</div>
+                                    <div class="flex gap-1">
+                                        <span class="text-yellow-400">★★★★★</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">(128)</span>
+                                    </div>
+                                </div>
+                                <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-black rounded-xl overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 bg-gray-800 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Product.cshtml</span>
+                            <button onclick="copyCode('card-product-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <div class="p-6 overflow-x-auto">
+                            <pre id="card-product-code" class="text-sm font-mono"><code>&lt;noundry-product-card product="@Model.Product"&gt;
+    &lt;noundry-product-image src="@Model.Product.ImageUrl" alt="@Model.Product.Name" /&gt;
+
+    &lt;noundry-product-header&gt;
+        &lt;h3 class="text-lg font-bold"&gt;@Model.Product.Name&lt;/h3&gt;
+        &lt;noundry-badge
+            text="@(Model.Product.InStock ? "In Stock" : "Out of Stock")"
+            variant="@(Model.Product.InStock ? "success" : "danger")" /&gt;
+    &lt;/noundry-product-header&gt;
+
+    &lt;noundry-product-description&gt;
+        @Model.Product.Description
+    &lt;/noundry-product-description&gt;
+
+    &lt;noundry-product-footer&gt;
+        &lt;div class="flex justify-between items-center mb-4"&gt;
+            &lt;div class="text-2xl font-bold"&gt;
+                $@Model.Product.Price.ToString("F2")
+            &lt;/div&gt;
+            &lt;noundry-rating
+                value="@Model.Product.AverageRating"
+                count="@Model.Product.ReviewCount" /&gt;
+        &lt;/div&gt;
+
+        &lt;noundry-button
+            asp-action="AddToCart"
+            asp-route-id="@Model.Product.Id"
+            variant="primary"
+            class="w-full"&gt;
+            Add to Cart
+        &lt;/noundry-button&gt;
+    &lt;/noundry-product-footer&gt;
+&lt;/noundry-product-card&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- No Results Message -->
+            <div x-show="filteredBlocks.length === 0" class="text-center py-16">
+                <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No blocks found</h3>
+                <p class="text-gray-600 dark:text-gray-400">Try adjusting your search or filters</p>
+            </div>
+
         </div>
     </section>
 
-    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+    <section class="py-20 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-900">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ready to Use Noundry UI?</h2>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ready to Build with Noundry UI?</h2>
             <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Install Noundry.UI and start building beautiful interfaces
+                Install Noundry.UI and start building beautiful interfaces with these ready-to-use blocks
             </p>
-            <a href="getting-started.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
-                Get Started
-            </a>
+            <div class="flex gap-4 justify-center">
+                <a href="getting-started.html" class="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+                    Get Started Free
+                </a>
+                <a href="https://noundry.com/pricing" class="inline-block border-2 border-purple-600 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-8 py-4 rounded-lg font-semibold transition-colors">
+                    Upgrade to Pro
+                </a>
+            </div>
         </div>
-    </section>    <!-- Footer -->
+    </section>
+
+    <!-- Footer -->
     <footer class="bg-gray-900 dark:bg-black text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-5 gap-8">
                 <div class="lg:col-span-2">
                     <div class="flex items-center mb-6">
-                        <!-- <span class="text-3xl font-bold text-primary-400">Noundry</span> -->
                         <img x-show="darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
-                            <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                     </div>
                     <p class="text-gray-300 mb-6 max-w-md">
-                        The modern C# development platform that accelerates your journey from idea to production with intelligent tools, reusable components, and AI-powered assistance.
+                        Copy-paste ready UI blocks built with Noundry.UI TagHelpers. Build faster with production-ready components.
                     </p>
-                    <div class="flex space-x-4">
-                        <a href="https://x.com/@noundryfx" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-
-                        <a href="http://youtube.com/noundry" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
 
                 <div>
                     <h3 class="text-lg font-semibold mb-6">Frameworks</h3>
                     <ul class="space-y-3">
-                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Noundry.com (C#/.NET)</a></li>
-                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">Noundry.org (TypeScript)</a></li>
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Noundry.cs (C#/.NET)</a></li>
+                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">Noundry.ts (TypeScript)</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-semibold mb-6">Platform</h3>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="blocks.html" class="text-gray-300 hover:text-white transition-colors">Blocks</a></li>
+                        <li><a href="blocks.html" class="text-gray-300 hover:text-white transition-colors">UI Blocks</a></li>
                         <li><a href="blueprints.html" class="text-gray-300 hover:text-white transition-colors">Blueprints</a></li>
-                        <li><a href="andy-ai.html" class="text-gray-300 hover:text-white transition-colors">Andy AI</a></li>
                         <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
-                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="text-lg font-semibold mb-6">Support</h3>
                     <ul class="space-y-3">
-                        <li><a href="help.html" class="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="community.html" class="text-gray-300 hover:text-white transition-colors">Community</a></li>
-                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
-                        <li><a href="status.html" class="text-gray-300 hover:text-white transition-colors">Status</a></li>
-                        <li><a href="changelog.html" class="text-gray-300 hover:text-white transition-colors">Changelog</a></li>
+                        <li><a href="https://github.com/noundry" class="text-gray-300 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="https://x.com/@noundryfx" class="text-gray-300 hover:text-white transition-colors">Twitter/X</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
                 <p class="text-gray-400 text-sm">
                     © 2025 Noundry. All rights reserved.
                 </p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
-                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
-                    <span class="text-gray-600">|</span>
-                    <a href="https://packages.noundry.com" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="NuGet Packages">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 32 32">
-                            <path d="M2.5,24.5h27v-17h-27Zm24-14v11h-21v-11Zm-18,8v-5h3v5Zm6,0v-5h3v5Zm6,0v-5h3v5Z"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/noundry" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="GitHub">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                </div>
             </div>
         </div>
     </footer>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, category: 'all' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="blueprintsApp()" x-init="init()" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noundry Blueprints - Library Usage Examples</title>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>Noundry Blueprints - Code Examples & Patterns</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
@@ -23,54 +23,84 @@
             const codeElement = document.getElementById(blockId);
             const code = codeElement.textContent;
             navigator.clipboard.writeText(code).then(() => {
-                alert('Code copied to clipboard!');
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.classList.remove('bg-green-600');
+                }, 2000);
             });
+        }
+
+        function blueprintsApp() {
+            return {
+                darkMode: false,
+                framework: 'all', // 'all', 'cs', 'ts'
+                category: 'all',
+                searchQuery: '',
+                blueprints: [],
+
+                init() {
+                    this.darkMode = localStorage.getItem('darkMode') === 'true';
+                    this.$watch('darkMode', val => localStorage.setItem('darkMode', val));
+                    this.initBlueprints();
+                },
+
+                initBlueprints() {
+                    this.blueprints = [
+                        // Noundry.cs Blueprints
+                        { id: 'guardian-auth', framework: 'cs', category: 'security', title: '🛡️ Guardian - Authorization Policies', description: 'Attribute-based authorization with policies and claims', tags: ['auth', 'security', 'policies'] },
+                        { id: 'guardian-guards', framework: 'cs', category: 'validation', title: '🛡️ Guardian - Guard Clauses', description: 'Parameter validation with guard clauses', tags: ['validation', 'guards'] },
+                        { id: 'assertive-tests', framework: 'cs', category: 'testing', title: '⚠️ Assertive - Fluent Assertions', description: 'Fluent assertion library for tests', tags: ['testing', 'assertions'] },
+                        { id: 'sod-validation', framework: 'cs', category: 'validation', title: '✅ Sod - Schema Validation', description: 'Zod-inspired validation for .NET', tags: ['validation', 'schema'] },
+                        { id: 'dotenvx-config', framework: 'cs', category: 'config', title: '🔐 DotEnvX - Encrypted Config', description: 'Encrypted environment variables', tags: ['config', 'security'] },
+                        { id: 'dotenvx-cli', framework: 'cs', category: 'config', title: '🔐 DotEnvX - CLI Tool', description: 'dotenvx CLI for managing secrets', tags: ['config', 'cli'] },
+                        { id: 'connector-api', framework: 'cs', category: 'data', title: '🔌 Connector - API Client', description: 'Strongly-typed API clients with Refit', tags: ['api', 'refit', 'http'] },
+                        { id: 'connector-crud', framework: 'cs', category: 'data', title: '🔌 Connector - CRUD Operations', description: 'Complete CRUD with type-safety', tags: ['crud', 'api'] },
+                        { id: 'connector-oauth', framework: 'cs', category: 'security', title: '🔌 Connector - OAuth 2.0', description: 'OAuth authentication with GitHub', tags: ['oauth', 'auth'] },
+                        { id: 'tuxedo-queries', framework: 'cs', category: 'data', title: '🎩 Tuxedo - Query Builder', description: 'Fluent LINQ-style query builder', tags: ['orm', 'queries', 'database'] },
+                        { id: 'tuxedo-joins', framework: 'cs', category: 'data', title: '🎩 Tuxedo - Complex Joins', description: 'Type-safe joins and aggregations', tags: ['orm', 'joins'] },
+                        { id: 'slurp-csv', framework: 'cs', category: 'data', title: '📥 Slurp - CSV Ingestion', description: 'High-performance CSV to database', tags: ['csv', 'import', 'database'] },
+                        { id: 'andy-cli', framework: 'cs', category: 'tools', title: '🤖 Andy AI - Code Generation', description: 'AI-powered code generation CLI', tags: ['ai', 'cli', 'codegen'] },
+
+                        // Noundry.ts Blueprints
+                        { id: 'ndts-init', framework: 'ts', category: 'setup', title: '🚀 ndts - Project Setup', description: 'Initialize full-stack TypeScript project', tags: ['cli', 'setup', 'bun'] },
+                        { id: 'ndts-dapi', framework: 'ts', category: 'api', title: '🎯 DAPI - Direct API Pattern', description: 'Direct database access with Drizzle ORM', tags: ['api', 'dapi', 'database'] },
+                        { id: 'ndts-bff', framework: 'ts', category: 'api', title: '🔌 BFF - Backend Wrapper', description: 'Wrap existing backend APIs', tags: ['api', 'bff', 'proxy'] },
+                        { id: 'ndts-auth', framework: 'ts', category: 'security', title: '🔐 Auth - JWT Authentication', description: 'JWT auth with token forwarding', tags: ['auth', 'jwt', 'security'] },
+                        { id: 'ndts-crud', framework: 'ts', category: 'data', title: '📝 CRUD - Hono Endpoints', description: 'RESTful CRUD with Hono', tags: ['crud', 'rest', 'hono'] },
+                        { id: 'ndts-drizzle', framework: 'ts', category: 'data', title: '🗃️ Drizzle - Type-safe Queries', description: 'Database queries with Drizzle ORM', tags: ['orm', 'drizzle', 'typescript'] },
+                        { id: 'ndts-client', framework: 'ts', category: 'frontend', title: '🎨 Client - Pure HTML + TS', description: 'Frontend without React (web standards)', tags: ['frontend', 'no-react', 'html'] },
+                        { id: 'ndts-services', framework: 'ts', category: 'api', title: '🛠️ Services - API Proxy Layer', description: 'Service layer for BFF pattern', tags: ['services', 'bff', 'proxy'] }
+                    ];
+                },
+
+                get filteredBlueprints() {
+                    return this.blueprints.filter(bp => {
+                        const matchesFramework = this.framework === 'all' || bp.framework === this.framework;
+                        const matchesCategory = this.category === 'all' || bp.category === this.category;
+                        const matchesSearch = !this.searchQuery ||
+                            bp.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            bp.description.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            bp.tags.some(tag => tag.toLowerCase().includes(this.searchQuery.toLowerCase()));
+
+                        return matchesFramework && matchesCategory && matchesSearch;
+                    });
+                }
+            }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'IBM Plex Mono', monospace; }
-
-/* Ensure all code block children use IBM Plex Mono consistently */
-pre, pre *, code, code * {
-    font-family: 'IBM Plex Mono', monospace !important;
-}
-
-/* Specific targeting for code blocks with syntax highlighting */
-.code-block pre,
-.code-block pre *,
-.code-block code,
-.code-block code * {
-    font-family: 'IBM Plex Mono', monospace !important;
-}
-    
-
-        /* Code blocks always have dark backgrounds - ensure all text is visible */
-        pre .text-gray-200,
-        pre .text-gray-300,
-        pre .text-gray-400,
-        pre .text-gray-500,
-        pre .text-gray-600,
-        pre .text-gray-700,
-        code .text-gray-200,
-        code .text-gray-300,
-        code .text-gray-400,
-        code .text-gray-500,
-        code .text-gray-600,
-        code .text-gray-700 {
-            color: rgb(255 255 255) !important; /* white */
+        pre, pre *, code, code * {
+            font-family: 'IBM Plex Mono', monospace !important;
         }
-
-        /* Ensure ALL text in code blocks is white by default */
         pre, pre code, pre code * {
-            color: rgb(255 255 255) !important; /* white */
-        }
-
-        /* Ensure operators and symbols are visible */
-        pre span,
-        code span {
-            opacity: 1 !important;
+            color: rgb(255 255 255) !important;
         }
     </style>
 </head>
@@ -95,28 +125,98 @@ pre, pre *, code, code * {
     <section class="pt-32 pb-16 bg-gradient-to-br from-cyan-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <h1 class="text-5xl font-bold text-gray-900 dark:text-white mb-6">Noundry Blueprints</h1>
-            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                Code examples showing how to use each Noundry library in real-world scenarios
+            <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-6">
+                Production-ready code patterns and shortcuts for common use cases using Noundry libraries
             </p>
+
+            <!-- Free Version Notice -->
+            <div class="max-w-4xl mx-auto mt-8 p-6 bg-white/90 dark:bg-gray-800/90 rounded-xl border-2 border-blue-200 dark:border-blue-700 backdrop-blur">
+                <div class="flex items-start gap-4">
+                    <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="text-left">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Free Community Edition</h3>
+                        <p class="text-gray-700 dark:text-gray-300 mb-3">
+                            You're viewing the <strong>free version</strong> of Noundry Blueprints. Paid subscribers get access to:
+                        </p>
+                        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-4">
+                            <li>✨ <strong>500+ Additional Blueprints</strong> - Enterprise patterns, advanced architectures, and production examples</li>
+                            <li>🔧 <strong>Interactive Blueprint Builder</strong> - Generate custom code with our AI-powered tool</li>
+                            <li>📚 <strong>Full Source Code Access</strong> - Download complete working projects</li>
+                            <li>🎓 <strong>Video Tutorials</strong> - Step-by-step implementation guides</li>
+                            <li>💬 <strong>Priority Support</strong> - Direct access to Noundry engineers</li>
+                            <li>🚀 <strong>Early Access</strong> - New blueprints and features before public release</li>
+                        </ul>
+                        <div class="flex gap-3">
+                            <a href="https://noundry.com/pricing" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors">
+                                Upgrade to Pro
+                            </a>
+                            <a href="https://noundry.com/blueprints/compare" class="inline-block border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-6 py-2 rounded-lg font-semibold transition-colors">
+                                Compare Plans
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="py-12 bg-white dark:bg-gray-900">
+    <!-- Search and Filters -->
+    <section class="py-8 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-40">
         <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-center gap-4 mb-12 flex-wrap">
-                <button @click="category = 'all'" :class="category === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">All</button>
-                <button @click="category = 'security'" :class="category === 'security' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Security</button>
-                <button @click="category = 'validation'" :class="category === 'validation' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Validation</button>
-                <button @click="category = 'data'" :class="category === 'data' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Data</button>
-                <button @click="category = 'config'" :class="category === 'config' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Config</button>
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <div class="relative max-w-2xl mx-auto">
+                    <input
+                        type="text"
+                        x-model="searchQuery"
+                        placeholder="Search blueprints by name, description, or tags..."
+                        class="w-full px-4 py-3 pl-12 rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none"
+                    >
+                    <svg class="absolute left-4 top-4 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
             </div>
 
+            <!-- Framework Filter -->
+            <div class="flex justify-center gap-4 mb-4">
+                <button @click="framework = 'all'" :class="framework === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">All</button>
+                <button @click="framework = 'cs'" :class="framework === 'cs' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Noundry.cs (C#/.NET)</button>
+                <button @click="framework = 'ts'" :class="framework === 'ts' ? 'bg-primary-600 text-white' : 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'" class="px-6 py-2 rounded-lg font-medium transition-colors">Noundry.ts (TypeScript)</button>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex justify-center gap-3 flex-wrap">
+                <button @click="category = 'all'" :class="category === 'all' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">All Categories</button>
+                <button @click="category = 'security'" :class="category === 'security' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Security</button>
+                <button @click="category = 'validation'" :class="category === 'validation' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Validation</button>
+                <button @click="category = 'data'" :class="category === 'data' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Data</button>
+                <button @click="category = 'api'" :class="category === 'api' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">API</button>
+                <button @click="category = 'config'" :class="category === 'config' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Config</button>
+                <button @click="category = 'frontend'" :class="category === 'frontend' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Frontend</button>
+                <button @click="category = 'testing'" :class="category === 'testing' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Testing</button>
+                <button @click="category = 'tools'" :class="category === 'tools' ? 'bg-accent-500 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors">Tools</button>
+            </div>
+
+            <!-- Results Count -->
+            <div class="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+                Showing <span x-text="filteredBlueprints.length"></span> blueprint<span x-show="filteredBlueprints.length !== 1">s</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blueprints Content -->
+    <section class="py-12 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
             <div class="space-y-16">
-                <!-- Noundry.Guardian Blueprint -->
-                <div x-show="category === 'all' || category === 'security'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+
+                <!-- Guardian - Authorization Policies -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'guardian-auth')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🛡️ Noundry.Guardian</h2>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🛡️ Guardian - Authorization Policies</h2>
                             <p class="text-gray-600 dark:text-gray-300">Attribute-based authorization with policies and claims</p>
                         </div>
                         <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">Security</span>
@@ -125,11 +225,11 @@ pre, pre *, code, code * {
                     <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
                         <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
                             <span class="text-gray-400 text-sm font-mono">Program.cs</span>
-                            <button onclick="copyCode('guardian-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                            <button onclick="copyCode('guardian-auth-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
-                        <pre id="guardian-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Guardian;
+                        <pre id="guardian-auth-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Guardian;
 
-// Add Guardian with policies
+// Add Guardian with custom policies
 builder.Services.AddGuardian(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
@@ -162,12 +262,116 @@ public class AdminController : Controller
                     <a href="docs.html#guardian" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Sod Blueprint -->
-                <div x-show="category === 'all' || category === 'validation'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- Guardian - Guard Clauses -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'guardian-guards')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">✅ Noundry.Sod</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Zod-inspired schema validation for .NET</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🛡️ Guardian - Guard Clauses</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Defensive programming with guard clauses</p>
+                        </div>
+                        <span class="px-4 py-2 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded-full text-sm font-medium">Validation</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Product.cs</span>
+                            <button onclick="copyCode('guardian-guards-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="guardian-guards-code" class="text-sm font-mono text-gray-100"><code>using Guardian;
+
+public class Product
+{
+    public string Name { get; }
+    public decimal Price { get; }
+    public int StockQuantity { get; }
+
+    public Product(string name, decimal price, int stockQuantity)
+    {
+        Name = Guard.Against.NullOrWhiteSpace(name);
+        Price = Guard.Against.NegativeOrZero(price);
+        StockQuantity = Guard.Against.Negative(stockQuantity);
+    }
+}
+
+public class OrderService
+{
+    public async Task ProcessOrder(Order order, User user)
+    {
+        Guard.Against.Default(order.Id);
+        Guard.Against.InvalidFormat(user.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        Guard.Against.OutOfRange(order.Total, 0.01m, 10000m);
+
+        await SaveOrderAsync(order);
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#guardian" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Assertive - Fluent Assertions -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'assertive-tests')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">⚠️ Assertive - Fluent Assertions</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Readable test assertions with method chaining</p>
+                        </div>
+                        <span class="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">Testing</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">UserTests.cs</span>
+                            <button onclick="copyCode('assertive-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="assertive-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Assertive;
+using Xunit;
+
+public class UserTests
+{
+    [Fact]
+    public void TestUserCreation()
+    {
+        var user = new User { Name = "John Doe", Age = 30, Email = "john@example.com" };
+
+        user.Assert()
+            .IsNotNull()
+            .Satisfies(u => u.Age >= 18, "User must be an adult")
+            .Satisfies(u => !string.IsNullOrEmpty(u.Name), "User must have a name");
+    }
+
+    [Fact]
+    public void TestCollectionOperations()
+    {
+        var numbers = new List<int> { 1, 2, 3, 4, 5 };
+
+        numbers.Assert()
+            .IsNotEmpty<int>()
+            .HasCount<int>(5)
+            .Contains(3)
+            .DoesNotContain(10);
+    }
+
+    [Fact]
+    public void TestNumericAssertions()
+    {
+        42.Assert()
+            .IsNotNull()
+            .IsEqualTo(42)
+            .IsOfType<int>()
+            .IsInRange(1, 100)
+            .Satisfies(x => x > 0, "Number should be positive");
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#assertive" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Sod - Schema Validation -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'sod-validation')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">✅ Sod - Schema Validation</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Zod-inspired fluent validation for .NET</p>
                         </div>
                         <span class="px-4 py-2 bg-violet-100 dark:bg-violet-900 text-violet-800 dark:text-violet-200 rounded-full text-sm font-medium">Validation</span>
                     </div>
@@ -179,7 +383,7 @@ public class AdminController : Controller
                         </div>
                         <pre id="sod-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Sod;
 
-// Define schema
+// Define reusable schema
 var userSchema = Sod.Object<User>()
     .Field(u => u.Email,
         Sod.String().Email().Required())
@@ -192,8 +396,8 @@ var userSchema = Sod.Object<User>()
     .Field(u => u.Website,
         Sod.String().Url().Optional());
 
-// Validate in controller
-[HttpPost]
+// Use in API controller
+[HttpPost("register")]
 public async Task<IActionResult> Register(User user)
 {
     var result = userSchema.Parse(user);
@@ -205,18 +409,18 @@ public async Task<IActionResult> Register(User user)
 
     var validUser = result.Data;
     await _userService.CreateAsync(validUser);
-    return Ok();
+    return Ok(new { message = "User created successfully" });
 }</code></pre>
                     </div>
                     <a href="docs.html#sod" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.DotEnvX Blueprint -->
-                <div x-show="category === 'all' || category === 'config'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- DotEnvX - Encrypted Config -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'dotenvx-config')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔐 Noundry.DotEnvX</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Encrypted environment variables with validation</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔐 DotEnvX - Encrypted Configuration</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Secure environment variables with encryption</p>
                         </div>
                         <span class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium">Config</span>
                     </div>
@@ -233,104 +437,258 @@ var builder = WebApplication.CreateBuilder(args);
 // Load .env with encryption & validation
 builder.Configuration.AddDotEnvX(options =>
 {
-    options.Path = ".env";
-    options.EnvironmentSpecific = true;  // Also load .env.development
+    options.Path = new[] { ".env", ".env.production" };
+    options.EnvironmentSpecific = true;
     options.Required = new[]
     {
         "DATABASE_URL",
         "JWT_SECRET",
         "STRIPE_API_KEY"
     };
-    options.EncryptionKey =
-        Environment.GetEnvironmentVariable("DOTENVX_KEY");
+    options.EncryptionKey = Environment.GetEnvironmentVariable("DOTENVX_KEY");
 });
 
-// Use configuration
-var jwtSecret = builder.Configuration["JWT_SECRET"];
+// Use encrypted configuration
+var jwtSecret = builder.Configuration["JWT_SECRET"]; // Automatically decrypted
 var dbUrl = builder.Configuration["DATABASE_URL"];
 
-// .env file example:
+// .env file example (values are encrypted):
 // DATABASE_URL=postgresql://localhost/mydb
-// JWT_SECRET=encrypted:AES256:base64encodedvalue
-// STRIPE_API_KEY=sk_test_encrypted</code></pre>
+// JWT_SECRET="encrypted:BDb7t3QkTRp2..."
+// STRIPE_API_KEY="encrypted:AES256:base64value"</code></pre>
                     </div>
                     <a href="docs.html#dotenvx" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Connector Blueprint -->
-                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- DotEnvX CLI Tool -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'dotenvx-cli')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 Noundry.Connector</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Multi-database connection management</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔐 DotEnvX - CLI Tool</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Manage encrypted secrets from the command line</p>
                         </div>
-                        <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">Data</span>
+                        <span class="px-4 py-2 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium">Config</span>
                     </div>
 
                     <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
                         <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
-                            <span class="text-gray-400 text-sm font-mono">Program.cs</span>
-                            <button onclick="copyCode('connector-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                            <span class="text-gray-400 text-sm font-mono">Terminal</span>
+                            <button onclick="copyCode('dotenvx-cli-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
-                        <pre id="connector-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Connector;
+                        <pre id="dotenvx-cli-code" class="text-sm font-mono text-gray-100"><code># Install CLI tool
+dotnet tool install --global Noundry.DotEnvX.Tool
 
-// Add multi-database support
-builder.Services.AddConnector(options =>
+# Generate encryption keypair
+dotenvx keypair --save
+
+# Set encrypted value
+dotenvx set API_SECRET=supersecret --encrypt
+
+# Set multiple values
+dotenvx set API_KEY=key123 DEBUG=true PORT=3000
+
+# List variables (masks sensitive values)
+dotenvx list
+
+# Get specific value
+dotenvx get DATABASE_URL
+
+# Encrypt all existing values
+dotenvx encrypt
+
+# Decrypt for viewing (doesn't save)
+dotenvx decrypt
+
+# Run command with env loaded
+dotenvx run -- dotnet run</code></pre>
+                    </div>
+                    <a href="docs.html#dotenvx" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Connector - API Client -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'connector-api')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 Connector - Strongly-Typed API Client</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Type-safe HTTP clients with Refit</p>
+                        </div>
+                        <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">API</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">IJsonPlaceholderApi.cs</span>
+                            <button onclick="copyCode('connector-api-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="connector-api-code" class="text-sm font-mono text-gray-100"><code>using Refit;
+using Noundry.Connector.Extensions;
+
+// Define your API interface
+public interface IJsonPlaceholderApi
 {
-    // Primary database
-    options.AddDatabase("Default", config =>
-    {
-        config.Provider = DatabaseProvider.PostgreSQL;
-        config.ConnectionString = builder.Configuration["DATABASE_URL"];
-    });
+    [Get("/users")]
+    Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken = default);
 
-    // Read replica
-    options.AddDatabase("ReadReplica", config =>
-    {
-        config.Provider = DatabaseProvider.PostgreSQL;
-        config.ConnectionString = builder.Configuration["READ_REPLICA_URL"];
-        config.ReadOnly = true;
-    });
+    [Get("/users/{id}")]
+    Task<User> GetUserAsync(int id, CancellationToken cancellationToken = default);
 
-    // Analytics database
-    options.AddDatabase("Analytics", config =>
-    {
-        config.Provider = DatabaseProvider.ClickHouse;
-        config.ConnectionString = builder.Configuration["ANALYTICS_URL"];
-    });
-});
+    [Post("/users")]
+    Task<User> CreateUserAsync([Body] User user, CancellationToken cancellationToken = default);
+}
 
-// Use in services
+// Configure in DI
+builder.Services.AddConnector<IJsonPlaceholderApi>(options =>
+{
+    options.BaseUrl = "https://jsonplaceholder.typicode.com";
+    options.DefaultHeaders["User-Agent"] = "MyApp/1.0.0";
+}, new TokenAuthenticationProvider("your-api-token"));
+
+// Use in your service
 public class UserService
 {
-    private readonly IConnectionFactory _factory;
+    private readonly IJsonPlaceholderApi _api;
 
-    public async Task<User> GetAsync(int id)
+    public async Task<IEnumerable<User>> GetUsersByCityAsync(string city)
     {
-        using var conn = await _factory.CreateAsync("ReadReplica");
-        return await conn.QuerySingleAsync<User>(
-            "SELECT * FROM users WHERE id = @id",
-            new { id });
-    }
-
-    public async Task CreateAsync(User user)
-    {
-        using var conn = await _factory.CreateAsync("Default");
-        await conn.ExecuteAsync(
-            "INSERT INTO users (name, email) VALUES (@name, @email)",
-            user);
+        var users = await _api.GetUsersAsync();
+        return users.Where(u => u.Address.City.Contains(city, StringComparison.OrdinalIgnoreCase));
     }
 }</code></pre>
                     </div>
                     <a href="docs.html#connector" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Tuxedo Blueprint -->
-                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- Connector - CRUD Operations -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'connector-crud')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎩 Noundry.Tuxedo</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Lightweight ORM with fluent query builder</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 Connector - Complete CRUD Operations</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Full Create, Read, Update, Delete with type-safety</p>
+                        </div>
+                        <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">API</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">UserController.cs</span>
+                            <button onclick="copyCode('connector-crud-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="connector-crud-code" class="text-sm font-mono text-gray-100"><code>using Microsoft.AspNetCore.Mvc;
+
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    private readonly IJsonPlaceholderApi _api;
+
+    public UsersController(IJsonPlaceholderApi api) => _api = api;
+
+    // GET: api/users
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    {
+        var users = await _api.GetUsersAsync();
+        return Ok(users);
+    }
+
+    // GET: api/users/{id}
+    [HttpGet("{id}")]
+    public async Task<ActionResult<User>> GetUser(int id)
+    {
+        var user = await _api.GetUserAsync(id);
+        return Ok(user);
+    }
+
+    // POST: api/users
+    [HttpPost]
+    public async Task<ActionResult<User>> CreateUser(User user)
+    {
+        var created = await _api.CreateUserAsync(user);
+        return CreatedAtAction(nameof(GetUser), new { id = created.Id }, created);
+    }
+
+    // PUT: api/users/{id}
+    [HttpPut("{id}")]
+    public async Task<ActionResult<User>> UpdateUser(int id, User user)
+    {
+        var updated = await _api.UpdateUserAsync(id, user);
+        return Ok(updated);
+    }
+
+    // DELETE: api/users/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(int id)
+    {
+        await _api.DeleteUserAsync(id);
+        return NoContent();
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#connector" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Connector - OAuth 2.0 -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'connector-oauth')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 Connector - OAuth 2.0 Authentication</h2>
+                            <p class="text-gray-600 dark:text-gray-300">GitHub API integration with OAuth</p>
+                        </div>
+                        <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">Security</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">Program.cs</span>
+                            <button onclick="copyCode('connector-oauth-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="connector-oauth-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Connector.Extensions;
+
+// Configure OAuth 2.0 for GitHub
+builder.Services.AddOAuthAuthentication(config =>
+{
+    config.ClientId = builder.Configuration["GitHub:ClientId"];
+    config.ClientSecret = builder.Configuration["GitHub:ClientSecret"];
+    config.TokenEndpoint = "https://github.com/login/oauth/access_token";
+    config.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
+    config.Scope = "repo user:email";
+    config.GrantType = "authorization_code";
+});
+
+// Configure GitHub API client
+builder.Services.AddConnector<IGitHubApi>(options =>
+{
+    options.BaseUrl = "https://api.github.com";
+    options.DefaultHeaders["Accept"] = "application/vnd.github.v3+json";
+    options.DefaultHeaders["User-Agent"] = "MyGitHubApp/1.0.0";
+});
+
+// Use in service
+public class GitHubService
+{
+    private readonly IGitHubApi _gitHubApi;
+
+    public async Task<IEnumerable<Repository>> GetMyRepositoriesAsync()
+    {
+        var repos = await _gitHubApi.GetUserRepositoriesAsync("owner");
+
+        // Use LINQ to analyze
+        return repos
+            .Where(r => r.Stars > 0)
+            .OrderByDescending(r => r.Stars)
+            .Take(10);
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#connector" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Tuxedo - Query Builder -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'tuxedo-queries')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎩 Tuxedo - Fluent Query Builder</h2>
+                            <p class="text-gray-600 dark:text-gray-300">LINQ-style database queries with type-safety</p>
                         </div>
                         <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">Data</span>
                     </div>
@@ -346,7 +704,7 @@ public class ProductRepository
 {
     private readonly IDbContext _db;
 
-    // Fluent queries
+    // Basic queries
     public async Task<List<Product>> GetActiveProducts()
     {
         return await _db.Query<Product>()
@@ -356,17 +714,13 @@ public class ProductRepository
             .ToListAsync();
     }
 
-    // Joins
-    public async Task<List<ProductWithCategory>> GetProductsWithCategories()
+    // Pagination
+    public async Task<List<Product>> GetPagedProducts(int page, int size)
     {
         return await _db.Query<Product>()
-            .Join<Category>((p, c) => p.CategoryId == c.Id)
-            .Select((p, c) => new ProductWithCategory
-            {
-                ProductName = p.Name,
-                CategoryName = c.Name,
-                Price = p.Price
-            })
+            .OrderBy(p => p.Name)
+            .Skip((page - 1) * size)
+            .Take(size)
             .ToListAsync();
     }
 
@@ -383,6 +737,85 @@ public class ProductRepository
             .Set(p => p.UpdatedAt, DateTime.UtcNow)
             .Where(p => p.Id == id)
             .ExecuteAsync();
+    }
+
+    // Aggregations
+    public async Task<decimal> GetAveragePriceAsync()
+    {
+        return await _db.Query<Product>()
+            .Where(p => p.IsActive)
+            .AverageAsync(p => p.Price);
+    }
+}</code></pre>
+                    </div>
+                    <a href="docs.html#tuxedo" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- Tuxedo - Complex Joins -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'tuxedo-joins')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎩 Tuxedo - Complex Joins & Aggregations</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Type-safe joins with grouping and aggregations</p>
+                        </div>
+                        <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">Data</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">OrderRepository.cs</span>
+                            <button onclick="copyCode('tuxedo-joins-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="tuxedo-joins-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Tuxedo;
+
+public class OrderRepository
+{
+    private readonly IDbContext _db;
+
+    // Join with projection
+    public async Task<List<ProductWithCategory>> GetProductsWithCategories()
+    {
+        return await _db.Query<Product>()
+            .Join<Category>((p, c) => p.CategoryId == c.Id)
+            .Select((p, c) => new ProductWithCategory
+            {
+                ProductName = p.Name,
+                CategoryName = c.Name,
+                Price = p.Price,
+                InStock = p.Stock > 0
+            })
+            .ToListAsync();
+    }
+
+    // Multiple joins
+    public async Task<List<OrderDetails>> GetOrderDetailsAsync()
+    {
+        return await _db.Query<Order>()
+            .Join<Customer>((o, c) => o.CustomerId == c.Id)
+            .Join<Product>((o, c, p) => o.ProductId == p.Id)
+            .Select((o, c, p) => new OrderDetails
+            {
+                OrderId = o.Id,
+                CustomerName = c.Name,
+                ProductName = p.Name,
+                TotalAmount = o.Quantity * p.Price
+            })
+            .ToListAsync();
+    }
+
+    // Group by with aggregations
+    public async Task<List<CategoryStats>> GetCategoryStatsAsync()
+    {
+        return await _db.Query<Product>()
+            .GroupBy(p => p.CategoryId)
+            .Select(g => new CategoryStats
+            {
+                CategoryId = g.Key,
+                ProductCount = g.Count(),
+                TotalValue = g.Sum(p => p.Price * p.Stock),
+                AveragePrice = g.Average(p => p.Price)
+            })
+            .ToListAsync();
     }
 
     // Transactions
@@ -414,28 +847,28 @@ public class ProductRepository
                     <a href="docs.html#tuxedo" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Slurp Blueprint -->
-                <div x-show="category === 'all' || category === 'data'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- Slurp - CSV Ingestion -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'slurp-csv')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">📥 Noundry.Slurp</h2>
-                            <p class="text-gray-600 dark:text-gray-300">High-performance CSV/JSON to database ingestion</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">📥 Slurp - High-Performance CSV Ingestion</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Fast CSV to database with schema inference</p>
                         </div>
                         <span class="px-4 py-2 bg-cyan-100 dark:bg-cyan-900 text-cyan-800 dark:text-cyan-200 rounded-full text-sm font-medium">Data</span>
                     </div>
 
                     <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
                         <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
-                            <span class="text-gray-400 text-sm font-mono">DataImporter.cs</span>
+                            <span class="text-gray-400 text-sm font-mono">DataImporter.cs / CLI</span>
                             <button onclick="copyCode('slurp-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
                         <pre id="slurp-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Slurp;
 
+// As a Library
 public class DataImporter
 {
     private readonly ISlurpService _slurp;
 
-    // Import CSV to database
     public async Task ImportCustomers(Stream csvStream)
     {
         var result = await _slurp.IngestCsvAsync(csvStream, options =>
@@ -445,7 +878,6 @@ public class DataImporter
             options.ConnectionString = _config["DATABASE_URL"];
             options.BatchSize = 5000;
             options.CreateTableIfNotExists = true;
-            options.TruncateBeforeInsert = false;
 
             // Column mapping
             options.ColumnMappings = new Dictionary<string, string>
@@ -455,7 +887,7 @@ public class DataImporter
                 ["E-mail"] = "email"
             };
 
-            // Transformations
+            // Transform data
             options.Transform = (row) =>
             {
                 row["email"] = row["email"].ToLower();
@@ -466,214 +898,662 @@ public class DataImporter
 
         Console.WriteLine($"Imported {result.RowsProcessed} rows in {result.Duration}");
     }
+}
 
-    // CLI Usage
-    // slurp customers.csv --provider postgres --connection $DB_URL
-    // ✓ Analyzing CSV structure...
-    // ✓ Detected schema: 5 columns, 10,000 rows
-    // ⚡ Ingesting at 125,000 rows/sec
-    // ✅ Completed: 10,000 rows in 0.08 seconds
-}</code></pre>
+// As CLI Tool
+# Install
+dotnet tool install --global Noundry.Slurp.Tool
+
+# Import CSV
+slurp customers.csv --provider postgres --connection $DB_URL --table customers
+
+# Output:
+✓ Analyzing CSV structure...
+✓ Detected schema: 5 columns, 10,000 rows
+⚡ Ingesting at 125,000 rows/sec
+✅ Completed: 10,000 rows in 0.08 seconds</code></pre>
                     </div>
                     <a href="docs.html#slurp" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Jobs Blueprint -->
-                <div x-show="category === 'all' || category === 'config'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- Andy CLI -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'andy-cli')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">⏰ Noundry.Jobs</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Job scheduling and automation library</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🤖 Andy AI - Code Generation CLI</h2>
+                            <p class="text-gray-600 dark:text-gray-300">AI-powered Noundry code generation</p>
                         </div>
-                        <span class="px-4 py-2 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 rounded-full text-sm font-medium">Automation</span>
+                        <span class="px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-full text-sm font-medium">Tools</span>
                     </div>
 
                     <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
                         <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
-                            <span class="text-gray-400 text-sm font-mono">cleanup.csx</span>
-                            <button onclick="copyCode('jobs-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                            <span class="text-gray-400 text-sm font-mono">Terminal</span>
+                            <button onclick="copyCode('andy-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
-                        <pre id="jobs-code" class="text-sm font-mono text-gray-100"><code>#!/usr/bin/env dotnet-script
-#r "nuget: Noundry.Jobs, 1.0.0"
+                        <pre id="andy-code" class="text-sm font-mono text-gray-100"><code># Install Andy CLI
+dotnet tool install -g Noundry.Andy
 
-using Noundry.Jobs.Database;
-using Noundry.Jobs.Email;
+# Authenticate
+andy auth login
 
-// Database cleanup job
-var db = new JobsDb(connectionString, DatabaseType.PostgreSQL);
+# Generate Noundry.UI form
+andy generate "form UI using Noundry.UI with fields: name, email, phone"
 
-var deleted = await db.ExecuteAsync(
-    "DELETE FROM logs WHERE created_at < @Date",
-    new { Date = DateTime.UtcNow.AddDays(-30) }
-);
+# Generate API endpoint
+andy generate "CRUD API for Product entity with Guardian authorization"
 
-Console.WriteLine($"Deleted {deleted} old log entries");
+# Generate Drizzle schema
+andy generate "database schema for e-commerce with users, products, orders"
 
-// Send email notification
-using var email = new JobsEmail()
-    .Configure("smtp.gmail.com", 587, username, password)
-    .UseStartTls();
+# Start interactive chat
+andy chat
 
-await email.SendAsync(
-    from: "noreply@example.com",
-    to: "admin@example.com",
-    subject: $"Cleanup Complete: {deleted} records deleted",
-    body: "Database cleanup job completed successfully"
-);
+# Example output:
+✅ Generated ProductForm.razor
+✅ Generated ProductController.cs
+✅ Generated IProductService.cs
+✅ Applied Guardian authorization policies
+✓ Code generation complete!
 
-// Schedule with njobs CLI:
-// njobs create DailyCleanup cleanup.csx "0 2 * * *"
-// njobs list
-// njobs run DailyCleanup</code></pre>
+# Features:
+- Uses CodeLlama-7B for generation
+- Template-based with Noundry patterns
+- Generates TagHelpers, Services, Controllers
+- Local execution for security
+- Real-time streaming responses</code></pre>
                     </div>
-                    <a href="docs.html#jobs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                    <a href="docs.html#andy" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
-                <!-- Noundry.Assertive Blueprint -->
-                <div x-show="category === 'all' || category === 'validation'" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                <!-- ndts - Project Setup -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-init')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">⚠️ Noundry.Assertive</h2>
-                            <p class="text-gray-600 dark:text-gray-300">Fluent assertions with custom error messages</p>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🚀 ndts - Full-Stack TypeScript Setup</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Initialize Bun + Hono + Drizzle project</p>
                         </div>
-                        <span class="px-4 py-2 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded-full text-sm font-medium">Validation</span>
+                        <span class="px-4 py-2 bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 rounded-full text-sm font-medium">Setup</span>
                     </div>
 
                     <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
                         <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
-                            <span class="text-gray-400 text-sm font-mono">OrderService.cs</span>
-                            <button onclick="copyCode('assertive-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                            <span class="text-gray-400 text-sm font-mono">Terminal</span>
+                            <button onclick="copyCode('ndts-init-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
                         </div>
-                        <pre id="assertive-code" class="text-sm font-mono text-gray-100"><code>using Noundry.Assertive;
+                        <pre id="ndts-init-code" class="text-sm font-mono text-gray-100"><code># Install and run ndts CLI
+bunx @noundryfx/ndts-cli init
 
-public class OrderService
-{
-    public async Task ProcessOrder(Order order, User user)
-    {
-        // Guard clauses with custom messages
-        Assert.That(order).IsNotNull("Order cannot be null");
-        Assert.That(order.Items).IsNotEmpty("Order must contain at least one item");
-        Assert.That(order.Total).IsGreaterThan(0, "Order total must be positive");
-        Assert.That(user.Email).IsNotNullOrWhiteSpace("User email is required");
-        Assert.That(user.Email).Matches(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", "Invalid email format");
+# Or with defaults (fast!)
+bunx @noundryfx/ndts-cli init -y
 
-        // Complex assertions
-        Assert.That(order.Items.Sum(i => i.Price * i.Quantity))
-            .IsEqualTo(order.Total, "Order total doesn't match sum of items");
+# Interactive wizard prompts:
+? Project name: my-app
+? Select API architecture pattern:
+  ❯ Direct API (DAPI) - Own database, cache, queues
+    Backend for Frontend (BFF) - Wrap existing backend
 
-        // Conditional assertions
-        if (order.RequiresShipping)
-        {
-            Assert.That(order.ShippingAddress).IsNotNull("Shipping address required");
-            Assert.That(order.ShippingAddress.ZipCode).IsNotNullOrWhiteSpace();
-        }
+# If DAPI:
+? Select database: SQLite / PostgreSQL / MySQL
+? Select email provider: Resend / SendGrid / SMTP / None
+? Include caching? Y/n
+? Include queues? Y/n
+? Include blob storage? Y/n
 
-        // All assertions throw ArgumentException or custom exception if they fail
-        await SaveOrderAsync(order);
+# Generated structure:
+my-app/
+├── packages/
+│   ├── server/           # Hono API (TypeScript)
+│   │   ├── src/
+│   │   │   ├── routes/       # API endpoints
+│   │   │   ├── schema/       # Drizzle ORM schema
+│   │   │   ├── middleware/   # Auth, logging
+│   │   │   └── config/       # Database, cache
+│   │   └── package.json
+│   └── client/           # Pure HTML + TS (NO React!)
+│       ├── pages/            # HTML files
+│       ├── src/              # TypeScript modules
+│       └── package.json
+
+# Start development
+cd my-app
+bun install
+bun run dev
+
+# Server: http://localhost:3001
+# Client: http://localhost:3000</code></pre>
+                    </div>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- ndts - DAPI Pattern -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-dapi')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎯 DAPI - Direct API Pattern</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Direct database access with Drizzle ORM</p>
+                        </div>
+                        <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">API</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">packages/server/src/routes/users.ts</span>
+                            <button onclick="copyCode('ndts-dapi-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="ndts-dapi-code" class="text-sm font-mono text-gray-100"><code>import { Hono } from 'hono';
+import { db } from '../config/database';
+import { users } from '../schema/users';
+import { eq } from 'drizzle-orm';
+import { auth } from '../middleware/auth';
+
+const userRoutes = new Hono();
+
+// Protect all routes
+userRoutes.use('*', auth);
+
+// GET /api/users - List all users
+userRoutes.get('/', async (c) => {
+  const allUsers = await db.select().from(users);
+  return c.json(allUsers);
+});
+
+// GET /api/users/:id - Get single user
+userRoutes.get('/:id', async (c) => {
+  const id = parseInt(c.req.param('id'));
+  const user = await db.select()
+    .from(users)
+    .where(eq(users.id, id))
+    .get();
+
+  if (!user) {
+    return c.json({ error: 'User not found' }, 404);
+  }
+
+  return c.json(user);
+});
+
+// POST /api/users - Create user
+userRoutes.post('/', async (c) => {
+  const body = await c.req.json();
+
+  const newUser = await db.insert(users)
+    .values({
+      name: body.name,
+      email: body.email,
+      createdAt: new Date()
+    })
+    .returning()
+    .get();
+
+  return c.json(newUser, 201);
+});
+
+// PUT /api/users/:id - Update user
+userRoutes.put('/:id', async (c) => {
+  const id = parseInt(c.req.param('id'));
+  const body = await c.req.json();
+
+  const updated = await db.update(users)
+    .set({
+      name: body.name,
+      email: body.email,
+      updatedAt: new Date()
+    })
+    .where(eq(users.id, id))
+    .returning()
+    .get();
+
+  return c.json(updated);
+});
+
+// DELETE /api/users/:id
+userRoutes.delete('/:id', async (c) => {
+  const id = parseInt(c.req.param('id'));
+
+  await db.delete(users)
+    .where(eq(users.id, id));
+
+  return c.json({ message: 'User deleted' });
+});
+
+export default userRoutes;</code></pre>
+                    </div>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- ndts - BFF Pattern -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-bff')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔌 BFF - Backend for Frontend Pattern</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Wrap and enhance existing backend APIs</p>
+                        </div>
+                        <span class="px-4 py-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">API</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">packages/server/src/services/UserService.ts</span>
+                            <button onclick="copyCode('ndts-bff-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="ndts-bff-code" class="text-sm font-mono text-gray-100"><code>import { BaseService } from './BaseService.js';
+import type { Context } from 'hono';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+export class UserService extends BaseService {
+  // Call real backend, transform for frontend
+  async getUsers(token?: string, c?: Context) {
+    // Forward request to real backend (.NET, Java, Python, etc.)
+    const users = await this.fetchFromBackend<User[]>(
+      '/api/users',
+      token,
+      { method: 'GET' }
+    );
+
+    // Transform data for frontend UI
+    return users.map(user => ({
+      ...user,
+      displayName: user.name,
+      initials: this.generateInitials(user.name),
+      avatarColor: this.generateAvatarColor(user.id)
+    }));
+  }
+
+  // Aggregate multiple backend calls
+  async getUserDashboard(userId: number, token?: string) {
+    const [user, stats, activity] = await Promise.all([
+      this.fetchFromBackend(`/api/users/${userId}`, token),
+      this.fetchFromBackend(`/api/users/${userId}/stats`, token),
+      this.fetchFromBackend(`/api/users/${userId}/activity`, token)
+    ]);
+
+    // Combine and transform
+    return {
+      user,
+      stats,
+      recentActivity: activity.slice(0, 10),
+      hasActivity: activity.length > 0
+    };
+  }
+
+  // Helper methods
+  private generateInitials(name: string): string {
+    return name.split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  }
+
+  private generateAvatarColor(id: number): string {
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
+    return colors[id % colors.length];
+  }
+}
+
+// Use in routes (packages/server/src/routes/users.ts)
+import { Hono } from 'hono';
+import { UserService } from '../services/UserService.js';
+import { auth } from '../middleware/auth.js';
+
+const app = new Hono();
+const userService = new UserService(Bun.env.BACKEND_API_URL!);
+
+app.use('*', auth);
+
+app.get('/', async (c) => {
+  const token = c.get('token');
+  const users = await userService.getUsers(token, c);
+  return c.json(users);
+});
+
+export default app;</code></pre>
+                    </div>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- ndts - JWT Auth -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-auth')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🔐 ndts - JWT Authentication</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Secure authentication with JWT tokens</p>
+                        </div>
+                        <span class="px-4 py-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">Security</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">packages/server/src/middleware/auth.ts</span>
+                            <button onclick="copyCode('ndts-auth-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="ndts-auth-code" class="text-sm font-mono text-gray-100"><code>import { Context, Next } from 'hono';
+import { verify } from 'hono/jwt';
+
+export async function auth(c: Context, next: Next) {
+  const authHeader = c.req.header('Authorization');
+
+  if (!authHeader?.startsWith('Bearer ')) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+
+  const token = authHeader.substring(7);
+
+  try {
+    const payload = await verify(token, Bun.env.JWT_SECRET!);
+    c.set('userId', payload.userId);
+    c.set('token', token); // For BFF forwarding
+    await next();
+  } catch (error) {
+    return c.json({ error: 'Invalid token' }, 401);
+  }
+}
+
+// Login route (packages/server/src/routes/auth.ts)
+import { Hono } from 'hono';
+import { sign } from 'hono/jwt';
+import bcrypt from 'bcryptjs';
+
+const authRoutes = new Hono();
+
+authRoutes.post('/login', async (c) => {
+  const { email, password } = await c.req.json();
+
+  // Verify credentials (from database or backend API)
+  const user = await findUserByEmail(email);
+  if (!user || !await bcrypt.compare(password, user.password)) {
+    return c.json({ error: 'Invalid credentials' }, 401);
+  }
+
+  // Generate JWT
+  const token = await sign(
+    { userId: user.id, email: user.email },
+    Bun.env.JWT_SECRET!
+  );
+
+  return c.json({
+    token,
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email
     }
-}</code></pre>
+  });
+});
+
+authRoutes.post('/register', async (c) => {
+  const { email, password, name } = await c.req.json();
+
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create user
+  const user = await createUser({ email, password: hashedPassword, name });
+
+  // Generate token
+  const token = await sign(
+    { userId: user.id, email: user.email },
+    Bun.env.JWT_SECRET!
+  );
+
+  return c.json({ token, user }, 201);
+});
+
+export default authRoutes;</code></pre>
                     </div>
-                    <a href="docs.html#assertive" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
                 </div>
 
+                <!-- ndts - Drizzle ORM -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-drizzle')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🗃️ Drizzle - Type-Safe Database Queries</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Modern TypeScript ORM with full type-safety</p>
+                        </div>
+                        <span class="px-4 py-2 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">Data</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">packages/server/src/schema/products.ts</span>
+                            <button onclick="copyCode('ndts-drizzle-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="ndts-drizzle-code" class="text-sm font-mono text-gray-100"><code>import { pgTable, serial, varchar, decimal, integer, timestamp } from 'drizzle-orm/pg-core';
+import { eq, and, gte, lte, desc } from 'drizzle-orm';
+
+// Define schema
+export const products = pgTable('products', {
+  id: serial('id').primaryKey(),
+  name: varchar('name', { length: 255 }).notNull(),
+  description: varchar('description', { length: 1000 }),
+  price: decimal('price', { precision: 10, scale: 2 }).notNull(),
+  stock: integer('stock').notNull().default(0),
+  categoryId: integer('category_id').notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
+});
+
+// Use in routes
+import { db } from '../config/database';
+
+// Select with conditions
+const activeProducts = await db.select()
+  .from(products)
+  .where(and(
+    gte(products.stock, 1),
+    lte(products.price, 100)
+  ))
+  .orderBy(desc(products.createdAt));
+
+// Insert
+const newProduct = await db.insert(products)
+  .values({
+    name: 'New Product',
+    price: '29.99',
+    stock: 50,
+    categoryId: 1
+  })
+  .returning();
+
+// Update
+await db.update(products)
+  .set({ stock: 100, updatedAt: new Date() })
+  .where(eq(products.id, 1));
+
+// Delete
+await db.delete(products)
+  .where(eq(products.id, 1));
+
+// Complex joins
+const productsWithCategories = await db.select({
+  product: products,
+  category: categories
+})
+  .from(products)
+  .innerJoin(categories, eq(products.categoryId, categories.id))
+  .where(eq(products.stock, 0));
+
+// Generate migrations
+// bun run db:generate
+// bun run db:migrate</code></pre>
+                    </div>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+                <!-- ndts - Pure HTML + TypeScript Client -->
+                <div x-show="filteredBlueprints.some(bp => bp.id === 'ndts-client')" class="bg-white dark:bg-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">🎨 Client - Pure HTML + TypeScript (NO React)</h2>
+                            <p class="text-gray-600 dark:text-gray-300">Modern web standards without framework overhead</p>
+                        </div>
+                        <span class="px-4 py-2 bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200 rounded-full text-sm font-medium">Frontend</span>
+                    </div>
+
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-6 mb-4 overflow-x-auto">
+                        <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-700">
+                            <span class="text-gray-400 text-sm font-mono">packages/client/pages/products.html + products.ts</span>
+                            <button onclick="copyCode('ndts-client-code')" class="px-3 py-1 bg-primary-600 text-white text-xs rounded hover:bg-primary-700">Copy</button>
+                        </div>
+                        <pre id="ndts-client-code" class="text-sm font-mono text-gray-100"><code><!-- packages/client/pages/products.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/basecoat-css@0.3.2/dist/basecoat.min.css">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="min-h-screen bg-gray-50 p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h1 class="text-3xl font-bold">Products</h1>
+      </div>
+      <div class="card-body">
+        <div id="products-list" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/pages/products.ts"></script>
+</body>
+</html>
+
+// packages/client/src/pages/products.ts
+import { api } from '../lib/api';
+import { requireAuth } from '../lib/auth';
+import '../styles/main.css';
+
+requireAuth(); // Redirect if not logged in
+
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  stock: number;
+}
+
+async function loadProducts() {
+  const products: Product[] = await api.get('/api/products');
+
+  const container = document.getElementById('products-list');
+  if (!container) return;
+
+  container.innerHTML = products.map(product => `
+    <div class="card">
+      <div class="card-body">
+        <h3 class="text-xl font-bold">${escapeHtml(product.name)}</h3>
+        <p class="text-2xl text-blue-600">$${product.price}</p>
+        <p class="text-sm text-gray-600">Stock: ${product.stock}</p>
+        <button
+          class="btn btn-primary w-full mt-4"
+          onclick="addToCart(${product.id})"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+(window as any).addToCart = async (productId: number) => {
+  await api.post('/api/cart/add', { productId, quantity: 1 });
+  alert('Added to cart!');
+};
+
+loadProducts();</code></pre>
+                    </div>
+                    <a href="https://noundry.org/docs" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">View Full Documentation →</a>
+                </div>
+
+            </div>
+
+            <!-- No Results Message -->
+            <div x-show="filteredBlueprints.length === 0" class="text-center py-16">
+                <svg class="w-16 h-16 mx-auto text-gray-400 dark:text-gray-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">No blueprints found</h3>
+                <p class="text-gray-600 dark:text-gray-400">Try adjusting your search or filters</p>
             </div>
         </div>
     </section>
 
     <section class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-4xl mx-auto px-4 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Start Using Noundry Libraries</h2>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Ready to Accelerate Your Development?</h2>
             <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
-                Install any Noundry library via NuGet and start building better .NET applications
+                These blueprints are production-ready patterns you can implement immediately. Upgrade to Pro for 500+ more examples and advanced features.
             </p>
             <div class="flex gap-4 justify-center">
-                <a href="getting-started.html" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
-                    Get Started
+                <a href="https://noundry.com/pricing" class="inline-block bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
+                    Upgrade to Pro
                 </a>
                 <a href="docs.html" class="inline-block border-2 border-primary-600 text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-900/20 px-8 py-4 rounded-lg font-semibold transition-colors">
                     View Docs
                 </a>
             </div>
         </div>
-    </section>    <!-- Footer -->
+    </section>
+
+    <!-- Footer -->
     <footer class="bg-gray-900 dark:bg-black text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-5 gap-8">
                 <div class="lg:col-span-2">
                     <div class="flex items-center mb-6">
-                        <!-- <span class="text-3xl font-bold text-primary-400">Noundry</span> -->
                         <img x-show="darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
-                            <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        <img x-show="!darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
                     </div>
                     <p class="text-gray-300 mb-6 max-w-md">
-                        The modern C# development platform that accelerates your journey from idea to production with intelligent tools, reusable components, and AI-powered assistance.
+                        Production-ready code patterns and blueprints for modern application development. Build faster with Noundry.
                     </p>
-                    <div class="flex space-x-4">
-                        <a href="https://x.com/@noundryfx" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                            </svg>
-                        </a>
-
-                        <a href="http://youtube.com/noundry" class="text-gray-400 hover:text-white transition-colors">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                            </svg>
-                        </a>
-                    </div>
                 </div>
 
                 <div>
                     <h3 class="text-lg font-semibold mb-6">Frameworks</h3>
                     <ul class="space-y-3">
-                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Noundry.com (C#/.NET)</a></li>
-                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">Noundry.org (TypeScript)</a></li>
+                        <li><a href="index.html" class="text-gray-300 hover:text-white transition-colors">Noundry.cs (C#/.NET)</a></li>
+                        <li><a href="https://noundry.org" target="_blank" class="text-gray-300 hover:text-white transition-colors">Noundry.ts (TypeScript)</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-lg font-semibold mb-6">Platform</h3>
+                    <h3 class="text-lg font-semibold mb-6">Resources</h3>
                     <ul class="space-y-3">
-                        <li><a href="blocks.html" class="text-gray-300 hover:text-white transition-colors">Blocks</a></li>
                         <li><a href="blueprints.html" class="text-gray-300 hover:text-white transition-colors">Blueprints</a></li>
-                        <li><a href="andy-ai.html" class="text-gray-300 hover:text-white transition-colors">Andy AI</a></li>
                         <li><a href="docs.html" class="text-gray-300 hover:text-white transition-colors">Documentation</a></li>
-                        <li><a href="getting-started.html" class="text-gray-300 hover:text-white transition-colors">Examples</a></li>
+                        <li><a href="https://noundry.com/pricing" class="text-gray-300 hover:text-white transition-colors">Pricing</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h3 class="text-lg font-semibold mb-6">Support</h3>
                     <ul class="space-y-3">
-                        <li><a href="help.html" class="text-gray-300 hover:text-white transition-colors">Help Center</a></li>
-                        <li><a href="community.html" class="text-gray-300 hover:text-white transition-colors">Community</a></li>
-                        <li><a href="contact.html" class="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
-                        <li><a href="status.html" class="text-gray-300 hover:text-white transition-colors">Status</a></li>
-                        <li><a href="changelog.html" class="text-gray-300 hover:text-white transition-colors">Changelog</a></li>
+                        <li><a href="https://github.com/noundry" class="text-gray-300 hover:text-white transition-colors">GitHub</a></li>
+                        <li><a href="https://x.com/@noundryfx" class="text-gray-300 hover:text-white transition-colors">Twitter/X</a></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
                 <p class="text-gray-400 text-sm">
                     © 2025 Noundry. All rights reserved.
                 </p>
-                <div class="flex items-center space-x-6 mt-4 md:mt-0">
-                    <a href="privacy.html" class="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-                    <a href="terms.html" class="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-                    <a href="cookies.html" class="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
-                    <span class="text-gray-600">|</span>
-                    <a href="https://packages.noundry.com" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="NuGet Packages">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 32 32">
-                            <path d="M2.5,24.5h27v-17h-27Zm24-14v11h-21v-11Zm-18,8v-5h3v5Zm6,0v-5h3v5Zm6,0v-5h3v5Z"/>
-                        </svg>
-                    </a>
-                    <a href="https://github.com/noundry" target="_blank" class="text-gray-400 hover:text-white transition-colors" title="GitHub">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                </div>
             </div>
         </div>
     </footer>
