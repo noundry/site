@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeCategory: 'overview' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noundry.AIG - AI Gateway for .NET</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#10b981',
+                            600: '#059669'
+                        }
+                    },
+                    fontFamily: {
+                        'mono': ['IBM Plex Mono', 'Consolas', 'Monaco', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+        pre, pre *, code, code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+
+        .code-block pre,
+        .code-block pre *,
+        .code-block code,
+        .code-block code * {
+            font-family: 'IBM Plex Mono', monospace !important;
+        }
+
+        pre .text-gray-200,
+        pre .text-gray-300,
+        pre .text-gray-400,
+        pre .text-gray-500,
+        pre .text-gray-600,
+        pre .text-gray-700,
+        code .text-gray-200,
+        code .text-gray-300,
+        code .text-gray-400,
+        code .text-gray-500,
+        code .text-gray-600,
+        code .text-gray-700 {
+            color: rgb(255 255 255) !important;
+        }
+
+        pre, pre code, pre code * {
+            color: rgb(255 255 255) !important;
+        }
+
+        pre span,
+        code span {
+            opacity: 1 !important;
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 z-50" x-data="{ mobileMenuOpen: false }">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <a href="index.html">
+                            <img x-show="!darkMode" src="assets/nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                            <img x-show="darkMode" src="assets/wh-nd-logo-sm.png" alt="Noundry" class="h-8 w-auto">
+                        </a>
+                    </div>
+                    <div class="hidden md:block ml-10">
+                        <div class="flex items-baseline space-x-8">
+                            <a href="libraries.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Libraries</a>
+                            <a href="docs.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Docs</a>
+                            <a href="getting-started.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Getting Started</a>
+                            <a href="pricing.html" class="text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors">Pricing</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button @click="darkMode = !darkMode" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                        <svg x-show="!darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div x-show="mobileMenuOpen" class="md:hidden fixed inset-0 z-40 bg-gray-900/50 backdrop-blur-sm" @click="mobileMenuOpen = false">
+        <div class="fixed inset-y-0 right-0 w-64 bg-white dark:bg-gray-800 shadow-xl p-6">
+            <a href="libraries.html" class="block py-2 text-gray-700 dark:text-gray-300">Libraries</a>
+            <a href="docs.html" class="block py-2 text-gray-700 dark:text-gray-300">Docs</a>
+            <a href="getting-started.html" class="block py-2 text-gray-700 dark:text-gray-300">Getting Started</a>
+            <a href="pricing.html" class="block py-2 text-gray-700 dark:text-gray-300">Pricing</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    AI Infrastructure
+                </div>
+                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+                    Noundry.AIG
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                    Unified AI Gateway for .NET developers - Access OpenAI, Anthropic, Google Gemini, and more through a single, consistent API
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors">
+                        Quick Start
+                    </a>
+                    <a href="https://github.com/noundry/aig" class="px-8 py-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-primary-600 dark:hover:border-primary-400 text-gray-900 dark:text-white rounded-lg font-medium transition-colors">
+                        View on GitHub
+                    </a>
+                </div>
+                <div class="mt-12 bg-gray-900 rounded-lg p-6 text-left max-w-2xl mx-auto">
+                    <pre class="text-sm"><code class="language-bash">dotnet add package Noundry.AIG.Client</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Category Tabs -->
+            <div class="border-b border-gray-200 dark:border-gray-700 mb-12">
+                <nav class="flex space-x-8 overflow-x-auto">
+                    <button @click="activeCategory = 'overview'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'overview', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'overview' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        Overview
+                    </button>
+                    <button @click="activeCategory = 'quickstart'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'quickstart', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'quickstart' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        Quick Start
+                    </button>
+                    <button @click="activeCategory = 'promptbuilder'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'promptbuilder', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'promptbuilder' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        PromptBuilder
+                    </button>
+                    <button @click="activeCategory = 'chainbuilder'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'chainbuilder', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'chainbuilder' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        ChainPromptBuilder
+                    </button>
+                    <button @click="activeCategory = 'streaming'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'streaming', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'streaming' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        Streaming
+                    </button>
+                    <button @click="activeCategory = 'multiprovider'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'multiprovider', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'multiprovider' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        Multi-Provider
+                    </button>
+                    <button @click="activeCategory = 'webapi'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'webapi', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'webapi' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        Web API
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Overview Tab -->
+            <div x-show="activeCategory === 'overview'" class="space-y-12">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">What is Noundry.AIG?</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Noundry AI Gateway (AIG) is a feature-complete AI Gateway for .NET/C# developers, similar to Vercel's AI Gateway but built specifically for the .NET ecosystem. It provides a unified interface to access multiple AI providers through a single, consistent API.
+                    </p>
+                    <p class="text-lg text-gray-600 dark:text-gray-300">
+                        Whether you're building chatbots, content generation tools, or AI-powered applications, AIG simplifies the complexity of integrating with different AI providers while providing advanced features like automatic failover, streaming support, and prompt chaining.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Multi-Provider Support</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Access OpenAI, Anthropic (Claude), Google (Gemini), and more through a unified interface.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Automatic Failover</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Try multiple providers in order with automatic fallback if one fails.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Streaming Support</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Real-time response streaming from all supported providers.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Fluent Prompt Builder</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Intuitive API for building complex prompts with the builder pattern.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Prompt Chaining</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Chain multiple prompts where output feeds into the next input seamlessly.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Thread-Safe</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Built with HttpClientFactory for production-ready, concurrent operations.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Supported Providers</h3>
+                    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center">
+                            <p class="font-semibold text-gray-900 dark:text-white">OpenAI</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">GPT-4, GPT-3.5</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center">
+                            <p class="font-semibold text-gray-900 dark:text-white">Anthropic</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Claude 3.5, 3</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center">
+                            <p class="font-semibold text-gray-900 dark:text-white">Google</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Gemini Pro</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 text-center">
+                            <p class="font-semibold text-gray-900 dark:text-white">More</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Extensible</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Start Tab -->
+            <div x-show="activeCategory === 'quickstart'" class="space-y-8" id="quickstart">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Quick Start Guide</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Get started with Noundry.AIG in minutes. Follow these steps to integrate AI capabilities into your .NET application.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">1. Install the Package</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-bash">dotnet add package Noundry.AIG.Client</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">2. Configure Providers</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">using Noundry.AIG.Client;
+using Noundry.AIG.Client.Configuration;
+using Noundry.AIG.Core.Models;
+using Noundry.AIG.Providers;
+
+var httpClientFactory = new SimpleHttpClientFactory();
+var providerFactory = new ProviderFactory(httpClientFactory);
+
+var options = new AigClientOptions
+{
+    UseLocalProviders = true,
+    EnableRetries = true,
+    MaxRetries = 3,
+    ProviderConfigs = new Dictionary&lt;string, ProviderConfig&gt;
+    {
+        ["openai"] = new ProviderConfig
+        {
+            ApiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY")
+        },
+        ["anthropic"] = new ProviderConfig
+        {
+            ApiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY")
+        }
+    }
+};
+
+var aigClient = new AigClient(providerFactory, options);</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">3. Send Your First Request</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">using Noundry.AIG.Client.Builders;
+using Noundry.AIG.Core.Extensions;
+
+var prompt = new PromptBuilder()
+    .WithModel("anthropic/claude-sonnet-4")
+    .WithTemperature(0.7f)
+    .AddSystemMessage("You are a helpful AI assistant.")
+    .AddUserMessage("Explain quantum computing in simple terms.")
+    .Build();
+
+var response = await aigClient.SendAsync(prompt);
+Console.WriteLine(response.GetTextContent());</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-2">💡 Pro Tip</h4>
+                        <p class="text-blue-800 dark:text-blue-200">
+                            Store your API keys in environment variables or use Azure Key Vault for production applications. Never hardcode API keys in your source code.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PromptBuilder Tab -->
+            <div x-show="activeCategory === 'promptbuilder'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">PromptBuilder</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        PromptBuilder provides a fluent, intuitive API for constructing complex AI prompts with full type safety and IntelliSense support.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Basic Usage</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var prompt = new PromptBuilder()
+    .WithModel("openai/gpt-4")
+    .AddUserMessage("What are the three primary colors?")
+    .Build();
+
+var response = await aigClient.SendAsync(prompt);
+Console.WriteLine(response.GetTextContent());</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Advanced Configuration</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var prompt = new PromptBuilder()
+    .WithModel("anthropic/claude-sonnet-4")
+    .WithTemperature(0.8f)
+    .WithMaxTokens(2000)
+    .WithTopP(0.9f)
+    .WithStopSequences("END", "STOP")
+    .WithRepetitionPenalty(1.15f)
+    .AddSystemMessage("You are a creative writing assistant.")
+    .AddUserMessage("Write a sci-fi story opening.")
+    .Build();
+
+var response = await aigClient.SendAsync(prompt);</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Multi-Turn Conversations</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var conversationBuilder = new PromptBuilder()
+    .WithModel("anthropic/claude-sonnet-4")
+    .WithTemperature(0.8f)
+    .AddSystemMessage("You are a creative storyteller.")
+    .AddUserMessage("Start a story about a robot learning to paint.")
+    .AddAssistantMessage("In a world of circuits and steel, there lived a robot named Canvas-7...")
+    .AddUserMessage("What happens next?")
+    .Build();
+
+var response = await aigClient.SendAsync(conversationBuilder);
+Console.WriteLine(response.GetTextContent());</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Available Methods</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">WithModel(string model)</code> - Set the model (format: "provider/model")</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">WithModels(params string[] models)</code> - Set multiple models for fallback</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">WithTemperature(float temperature)</code> - Control randomness (0.0 to 2.0)</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">WithMaxTokens(int maxTokens)</code> - Maximum tokens to generate</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">WithStreaming(bool stream)</code> - Enable streaming responses</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">AddSystemMessage(string content)</code> - Add system message</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">AddUserMessage(string content)</code> - Add user message</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">AddAssistantMessage(string content)</code> - Add assistant message</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Build()</code> - Build the AI request</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ChainPromptBuilder Tab -->
+            <div x-show="activeCategory === 'chainbuilder'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">ChainPromptBuilder</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        ChainPromptBuilder enables you to create complex AI workflows where the output of one prompt automatically feeds into the next, creating powerful multi-step AI pipelines.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Basic Chain Example</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var chain = new ChainPromptBuilder()
+    .WithDefaultModel("anthropic/claude-sonnet-4")
+
+    // Step 1: Generate an idea
+    .AddStep("Generate Idea", _ =>
+        new PromptBuilder()
+            .AddUserMessage("Give me a random creative writing topic."))
+
+    // Step 2: Write about it
+    .AddStep("Write Content", previousOutput =>
+        new PromptBuilder()
+            .AddUserMessage($"Write a short paragraph about: {previousOutput}"))
+
+    // Step 3: Translate
+    .AddStep("Translate", previousOutput =>
+        new PromptBuilder()
+            .WithModel("openai/gpt-4")
+            .AddUserMessage($"Translate to Spanish:\n{previousOutput}"));
+
+var result = await chain.ExecuteAsync(aigClient);
+
+if (result.Success)
+{
+    Console.WriteLine($"Final output: {result.FinalOutput}");
+
+    // Inspect each step
+    foreach (var step in result.Steps)
+    {
+        Console.WriteLine($"{step.StepName}: {step.Output}");
+    }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Advanced Chain with Different Models</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var chainBuilder = new ChainPromptBuilder()
+    .WithDefaultModel("anthropic/claude-sonnet-4")
+
+    // Generate a random topic
+    .AddStep("Generate Topic", previousOutput =>
+        new PromptBuilder()
+            .WithModel("anthropic/claude-sonnet-4")
+            .AddUserMessage("Give me a random interesting topic in one word."))
+
+    // Write a haiku about the topic
+    .AddStep("Write Haiku", previousOutput =>
+        new PromptBuilder()
+            .WithModel("anthropic/claude-sonnet-4")
+            .AddUserMessage($"Write a haiku about: {previousOutput}"))
+
+    // Translate to Spanish
+    .AddStep("Translate", previousOutput =>
+        new PromptBuilder()
+            .WithModel("openai/gpt-4")
+            .AddUserMessage($"Translate this haiku to Spanish:\n{previousOutput}"));
+
+var chainResult = await chainBuilder.ExecuteAsync(aigClient);
+
+Console.WriteLine($"Chain completed: {chainResult.Success}");
+Console.WriteLine($"Steps executed: {chainResult.Steps.Count}");
+Console.WriteLine($"Final Output: {chainResult.FinalOutput}");</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Chain Result Structure</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <p class="text-gray-600 dark:text-gray-300 mb-4">The ChainResult object provides comprehensive information about the execution:</p>
+                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Steps</code> - List of all executed steps with their results</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">FinalOutput</code> - The output from the last step</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Success</code> - Whether the entire chain succeeded</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">FailedAtStep</code> - Index of the step that failed (if any)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-green-900 dark:text-green-300 mb-2">✨ Use Cases</h4>
+                        <ul class="text-green-800 dark:text-green-200 space-y-1">
+                            <li>• Content generation pipelines (research → outline → write → edit)</li>
+                            <li>• Translation workflows (detect language → translate → verify)</li>
+                            <li>• Data processing (extract → transform → summarize)</li>
+                            <li>• Multi-step analysis (analyze → categorize → report)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streaming Tab -->
+            <div x-show="activeCategory === 'streaming'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Streaming Responses</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Stream responses in real-time for better user experience and reduced perceived latency. All providers support streaming through a unified API.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Basic Streaming</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var streamingPrompt = new PromptBuilder()
+    .WithModel("openai/gpt-4")
+    .WithStreaming(true)
+    .AddUserMessage("Write a short story about a time traveler.")
+    .Build();
+
+Console.Write("Response: ");
+
+await foreach (var chunk in aigClient.SendStreamAsync(streamingPrompt))
+{
+    if (chunk.IsSuccess())
+    {
+        var text = chunk.GetTextContent();
+        if (!string.IsNullOrEmpty(text))
+        {
+            Console.Write(text);
+        }
+    }
+}
+
+Console.WriteLine();</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Streaming with Error Handling</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var prompt = new PromptBuilder()
+    .WithModel("anthropic/claude-sonnet-4")
+    .WithStreaming(true)
+    .AddUserMessage("Explain AI in simple terms.")
+    .Build();
+
+var fullResponse = new StringBuilder();
+
+try
+{
+    await foreach (var chunk in aigClient.SendStreamAsync(prompt))
+    {
+        if (chunk.IsSuccess())
+        {
+            var text = chunk.GetTextContent();
+            fullResponse.Append(text);
+            Console.Write(text);
+        }
+        else
+        {
+            Console.WriteLine($"\nError: {chunk.Error?.Message}");
+            break;
+        }
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Streaming error: {ex.Message}");
+}
+
+Console.WriteLine($"\n\nFull response: {fullResponse}");</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-yellow-900 dark:text-yellow-300 mb-2">⚡ Performance Tip</h4>
+                        <p class="text-yellow-800 dark:text-yellow-200">
+                            Streaming provides a better user experience by showing content as it's generated. It's especially useful for longer responses where waiting for the complete response would create a poor experience.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Provider Tab -->
+            <div x-show="activeCategory === 'multiprovider'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Multi-Provider & Fallback</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Use the order parameter to try multiple providers automatically. The gateway will use the first successful response, providing automatic failover for high availability.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Single Request, Multiple Models</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var multiProviderPrompt = new PromptBuilder()
+    .WithModels("openai/gpt-4", "anthropic/claude-sonnet-4", "google/gemini-pro")
+    .AddUserMessage("What are the three primary colors?")
+    .Build();
+
+var multiResponse = await aigClient.SendMultiAsync(multiProviderPrompt);
+
+Console.WriteLine($"Received {multiResponse.Responses.Count} responses");
+Console.WriteLine($"Time taken: {multiResponse.TotalDurationMs}ms");
+Console.WriteLine($"Has success: {multiResponse.HasSuccess}");
+
+if (multiResponse.FirstSuccess != null)
+{
+    Console.WriteLine($"\nFirst successful response from {multiResponse.FirstSuccess.Provider}:");
+    Console.WriteLine(multiResponse.FirstSuccess.GetTextContent());
+}
+
+// Show all responses
+Console.WriteLine("\nAll responses:");
+foreach (var resp in multiResponse.Responses)
+{
+    var status = resp.IsSuccess() ? "Success" : $"Failed - {resp.Error?.Message}";
+    Console.WriteLine($"- {resp.Model}: {status}");
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Using PromptBuilder for Fallback</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">// Try providers in order of preference
+var prompt = new PromptBuilder()
+    .WithModels(
+        "openai/gpt-4",           // Try OpenAI first
+        "anthropic/claude-sonnet-4",  // Fall back to Anthropic
+        "google/gemini-pro"        // Finally try Google
+    )
+    .WithTemperature(0.7f)
+    .AddSystemMessage("You are helpful assistant.")
+    .AddUserMessage("Generate a creative story idea.")
+    .Build();
+
+var response = await aigClient.SendMultiAsync(prompt);
+
+// Get the first successful response
+if (response.HasSuccess && response.FirstSuccess != null)
+{
+    Console.WriteLine($"Got response from: {response.FirstSuccess.Provider}");
+    Console.WriteLine(response.FirstSuccess.GetTextContent());
+}
+else
+{
+    Console.WriteLine("All providers failed!");
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Analyzing All Responses</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var prompt = new PromptBuilder()
+    .WithModels("openai/gpt-4", "anthropic/claude-sonnet-4")
+    .AddUserMessage("What is the meaning of life?")
+    .Build();
+
+var multiResponse = await aigClient.SendMultiAsync(prompt);
+
+// Compare responses from different providers
+foreach (var response in multiResponse.Responses)
+{
+    Console.WriteLine($"\n--- {response.Provider}/{response.Model} ---");
+
+    if (response.IsSuccess())
+    {
+        Console.WriteLine($"Response: {response.GetTextContent()}");
+        Console.WriteLine($"Tokens: {response.GetTotalTokens()}");
+    }
+    else
+    {
+        Console.WriteLine($"Error: {response.Error?.Message}");
+    }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-2">🎯 When to Use Multi-Provider</h4>
+                        <ul class="text-blue-800 dark:text-blue-200 space-y-1">
+                            <li>• High availability applications requiring automatic failover</li>
+                            <li>• A/B testing different models for the same prompt</li>
+                            <li>• Cost optimization by trying cheaper models first</li>
+                            <li>• Comparing outputs from different AI providers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Web API Tab -->
+            <div x-show="activeCategory === 'webapi'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">Web API</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        Deploy the AI Gateway as a Web API to provide a centralized AI service for your organization or applications.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">API Endpoint</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <p class="text-gray-600 dark:text-gray-300 mb-2"><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">POST /v1/chat/completions</code></p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">Compatible with OpenAI API format</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">cURL Example - Single Model</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-bash">curl -X POST "https://aigw.noundry.ai/v1/chat/completions" \
+  -H "Authorization: Bearer demo-key-12345" \
+  -H "X-API-KEY: Bearer $OPENAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-4",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Why is the sky blue?"
+      }
+    ],
+    "temperature": 0.7,
+    "max_tokens": 1000,
+    "stream": false
+  }'</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">cURL Example - Multi-Provider Fallback</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-bash">curl -X POST "https://aigw.noundry.ai/v1/chat/completions" \
+  -H "Authorization: Bearer demo-key-12345" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai/gpt-4",
+    "order": [
+      "openai/gpt-4",
+      "anthropic/claude-sonnet-4",
+      "google/gemini-pro"
+    ],
+    "messages": [
+      {
+        "role": "user",
+        "content": "What are the three primary colors?"
+      }
+    ]
+  }'</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Configuration (appsettings.json)</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-json">{
+  "ConnectionStrings": {
+    "Analytics": "Data Source=aigw_analytics.db"
+  },
+  "ApiKeys": [
+    "demo-key-12345",
+    "your-api-key-here"
+  ],
+  "Providers": {
+    "openai": {
+      "ApiKey": "YOUR_OPENAI_API_KEY",
+      "TimeoutSeconds": "120"
+    },
+    "anthropic": {
+      "ApiKey": "YOUR_ANTHROPIC_API_KEY",
+      "ApiVersionHeaderValue": "2023-06-01",
+      "TimeoutSeconds": "120"
+    },
+    "google": {
+      "ApiKey": "YOUR_GOOGLE_API_KEY",
+      "TimeoutSeconds": "120"
+    }
+  }
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Analytics Endpoints</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white mb-1">Get Recent Logs</p>
+                                    <code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">GET /v1/analytics/logs?count=100</code>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-900 dark:text-white mb-1">Get Usage Statistics</p>
+                                    <code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">GET /v1/analytics/usage?daysSince=7</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-4">Noundry.AIG</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">
+                        Unified AI Gateway for .NET developers.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Resources</h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 text-sm">
+                        <li><a href="docs.html" class="hover:text-primary-600">Documentation</a></li>
+                        <li><a href="getting-started.html" class="hover:text-primary-600">Getting Started</a></li>
+                        <li><a href="https://github.com/noundry/aig" class="hover:text-primary-600">GitHub</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Community</h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 text-sm">
+                        <li><a href="community.html" class="hover:text-primary-600">Community</a></li>
+                        <li><a href="https://github.com/noundry/aig/issues" class="hover:text-primary-600">Issues</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-400 text-sm">
+                        <li><a href="index.html" class="hover:text-primary-600">About</a></li>
+                        <li><a href="contact.html" class="hover:text-primary-600">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-gray-600 dark:text-gray-400 text-sm">
+                <p>&copy; 2025 Noundry. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
