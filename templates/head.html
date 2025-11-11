@@ -1,0 +1,77 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    primary: {
+                        50: '#eff6ff',
+                        500: '#3b82f6',
+                        600: '#2563eb',
+                        700: '#1d4ed8',
+                        900: '#1e3a8a'
+                    },
+                    accent: {
+                        500: '#10b981',
+                        600: '#059669'
+                    }
+                },
+                fontFamily: {
+                    'mono': ['IBM Plex Mono', 'Consolas', 'Monaco', 'monospace']
+                }
+            }
+        }
+    }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    /* Ensure all code block children use IBM Plex Mono consistently */
+    pre, pre *, code, code * {
+        font-family: 'IBM Plex Mono', monospace !important;
+    }
+
+    /* Specific targeting for code blocks with syntax highlighting */
+    .code-block pre,
+    .code-block pre *,
+    .code-block code,
+    .code-block code * {
+        font-family: 'IBM Plex Mono', monospace !important;
+    }
+
+    /* Code blocks always have dark backgrounds - ensure all text is visible */
+    pre .text-gray-200,
+    pre .text-gray-300,
+    pre .text-gray-400,
+    pre .text-gray-500,
+    pre .text-gray-600,
+    pre .text-gray-700,
+    code .text-gray-200,
+    code .text-gray-300,
+    code .text-gray-400,
+    code .text-gray-500,
+    code .text-gray-600,
+    code .text-gray-700 {
+        color: rgb(255 255 255) !important; /* white */
+    }
+
+    /* Ensure ALL text in code blocks is white by default */
+    pre, pre code, pre code * {
+        color: rgb(255 255 255) !important; /* white */
+    }
+
+    /* Ensure operators and symbols are visible */
+    pre span,
+    code span {
+        opacity: 1 !important;
+    }
+</style>

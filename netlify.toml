@@ -1,0 +1,31 @@
+[build]
+  # Build command
+  command = "npm run build"
+
+  # Publish directory (output folder)
+  publish = "dist"
+
+  # Node version
+  [build.environment]
+    NODE_VERSION = "20"
+
+# Redirect rules (optional - example redirects)
+# [[redirects]]
+#   from = "/old-page"
+#   to = "/new-page"
+#   status = 301
+
+# Headers (optional - security headers)
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Asset caching
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
