@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <title>Example Page - Noundry</title>
+    <%= head %>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <%= header %>
+
+    <!-- Your page-specific content goes here -->
+    <section class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl font-bold mb-6">Example Page</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300">
+                This is an example page showing how to use the Vite template system.
+                The header and footer are automatically injected from the templates folder.
+            </p>
+        </div>
+    </section>
+
+    <%= footer %>
+</body>
+</html>
