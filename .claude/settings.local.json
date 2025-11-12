@@ -10,7 +10,9 @@
       "Bash(find:*)",
       "Bash(mkdir:*)",
       "Bash(npm run build:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(node convert-to-templates.js:*)",
+      "Bash(node cleanup-duplicates.js:*)"
     ],
     "deny": [],
     "ask": []
