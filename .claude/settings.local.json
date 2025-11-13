@@ -12,7 +12,9 @@
       "Bash(npm run build:*)",
       "Bash(cat:*)",
       "Bash(node convert-to-templates.js:*)",
-      "Bash(node cleanup-duplicates.js:*)"
+      "Bash(node cleanup-duplicates.js:*)",
+      "Bash(git pull:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []
