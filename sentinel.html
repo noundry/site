@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <title>Noundry.Sentinel - Application Performance Monitoring for .NET</title>
+    <%= head %>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <%= header %>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-blue-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-blue-600 dark:text-blue-400">Sentinel</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    A comprehensive, production-ready Application Performance Monitoring (APM) system for .NET applications.
+                    Add monitoring to your apps with just <span class="font-semibold text-gray-900 dark:text-white">2 lines of code</span>.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="https://sentinel.noundry.com" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Visit Sentinel Portal
+                    </a>
+                    <a href="#quickstart" class="border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">.NET 9</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Modern C# 13</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">&lt;0.1%</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">CPU Overhead</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">2 Lines</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">To Integrate</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">$0</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Free Tier</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Sentinel?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    A lightweight alternative to Application Insights with complete data ownership and predictable pricing.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Ultra-Lightweight</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Zero-blocking, failure-resilient monitoring with &lt;0.1% CPU overhead. Built with System.Threading.Channels for optimal performance.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Comprehensive Metrics</h3>
+                    <p class="text-gray-600 dark:text-gray-300">CPU, memory, GC stats, threads, HTTP requests, exceptions, database queries, and EventCounters. Complete visibility into your .NET apps.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Your Data, Your Control</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Self-host anywhere or use our managed service. Complete data ownership with no vendor lock-in. Deploy to any cloud.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 5 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install the NuGet package, add configuration, and start monitoring.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-green-400"># Install Sentinel Client</div>
+                            <div class="text-gray-300">$ dotnet add package Noundry.Sentinel.Client</div>
+                            <div class="text-gray-500"># Optional: Tuxedo ORM Integration</div>
+                            <div class="text-gray-300">$ dotnet add package Noundry.Sentinel.Tuxedo</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Configure Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-purple-400">using</div> <div class="text-gray-300">Noundry.Sentinel.Client;</div>
+                            <div class="text-gray-300">builder.Services.<span class="text-green-400">AddNoundrySentinel</span>(builder.Configuration);</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. That's It!</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Your app now sends metrics automatically every 15 seconds to the Sentinel ingestion API.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">appsettings.json</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code>{
+  <span class="text-blue-400">"NoundrySentinel"</span>: {
+    <span class="text-blue-400">"Enabled"</span>: <span class="text-green-400">true</span>,
+    <span class="text-blue-400">"ApiKey"</span>: <span class="text-yellow-400">"your-api-key"</span>,
+    <span class="text-blue-400">"TenantHost"</span>: <span class="text-yellow-400">"tenant.ingest.sentinel.noundry.com"</span>,
+    <span class="text-blue-400">"CollectionIntervalSeconds"</span>: <span class="text-green-400">15</span>
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What Gets Monitored Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">What Gets Monitored</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Complete visibility into your .NET application's performance.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-blue-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Runtime Metrics</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">CPU, memory, GC stats, thread count</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-purple-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">HTTP Requests</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Request timing, status codes, latency</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Exceptions</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Full stack traces, HTTP context, user info</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Database Queries</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">SQL timing, row counts, failed queries</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-cyan-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">EventCounters</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">All .NET runtime counters</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <div class="flex items-center mb-3">
+                        <svg class="w-5 h-5 text-orange-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <h3 class="font-semibold text-gray-900 dark:text-white">Platform Metrics</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Linux/Windows-specific (disk, network, load)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tuxedo Integration Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Tuxedo ORM Integration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Automatic database query tracking with zero code changes to your existing Tuxedo queries.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">What Gets Tracked</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Query Execution Time</span>
+                                <span class="text-gray-600 dark:text-gray-300"> - How long each query takes</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Row Counts</span>
+                                <span class="text-gray-600 dark:text-gray-300"> - Number of rows affected/returned</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Normalized SQL</span>
+                                <span class="text-gray-600 dark:text-gray-300"> - Group similar queries for analysis</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-green-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <span class="font-semibold text-gray-900 dark:text-white">Failed Queries</span>
+                                <span class="text-gray-600 dark:text-gray-300"> - Exception details when queries fail</span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="mt-8">
+                        <a href="tuxedo.html#sentinel" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold">
+                            Learn more about Tuxedo Integration
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-gray-500">// Install the Sentinel.Tuxedo package</span>
+<span class="text-gray-500">// $ dotnet add package Noundry.Sentinel.Tuxedo</span>
+
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sentinel.Tuxedo</span>;
+
+<span class="text-gray-500">// Add Sentinel monitoring</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundrySentinel</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>);
+
+<span class="text-gray-500">// Replace standard Tuxedo registration</span>
+<span class="text-gray-500">// services.AddTuxedoPostgres(connStr);</span>
+
+<span class="text-gray-500">// With Sentinel-instrumented version</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgresWithSentinel</span>(<span class="text-blue-400">connStr</span>);</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Flat monthly pricing with no surprise bills. Start free, scale as you grow.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Free Plan -->
+                <div class="rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8 bg-white dark:bg-gray-800">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Free</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Perfect for getting started</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gray-900 dark:text-white">$0</span>
+                        <span class="text-gray-600 dark:text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            500 MB/month ingestion
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            7-day retention
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Up to 5 applications
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="rounded-xl border-2 border-blue-500 p-8 bg-blue-50 dark:bg-blue-900/20 relative">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+                        <span class="bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">POPULAR</span>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pro</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">For growing teams</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gray-900 dark:text-white">$49</span>
+                        <span class="text-gray-600 dark:text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            5 GB/month ingestion
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            30-day retention
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Up to 25 applications
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Premium Plan -->
+                <div class="rounded-xl border-2 border-gray-200 dark:border-gray-700 p-8 bg-white dark:bg-gray-800">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Premium</h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">For enterprises</p>
+                    <div class="mb-6">
+                        <span class="text-5xl font-bold text-gray-900 dark:text-white">$199</span>
+                        <span class="text-gray-600 dark:text-gray-400">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Unlimited ingestion
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            90-day retention
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-600 dark:text-gray-300">
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                            </svg>
+                            Unlimited applications
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="https://sentinel.noundry.com" target="_blank" class="inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Get Started at sentinel.noundry.com
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ecosystem Integration Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Noundry Ecosystem Integration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Sentinel integrates seamlessly with other Noundry libraries for a complete monitoring solution.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="tuxedo.html" class="bg-white dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Tuxedo ORM</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Automatic SQL query tracking with zero code changes</p>
+                </a>
+                <a href="sanquhar.html" class="bg-white dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Sanquhar</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Email alerting for exceptions and performance issues</p>
+                </a>
+                <a href="ui-components.html" class="bg-white dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Noundry.UI</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Dashboard built with Noundry UI components</p>
+                </a>
+                <a href="bowtie.html" class="bg-white dark:bg-gray-900 rounded-xl p-6 hover:shadow-lg transition-shadow">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Bowtie</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">Database migrations for Sentinel schema</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <%= footer %>
+</body>
+</html>
