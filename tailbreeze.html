@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeExample: 'razorpages' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <title>Tailbreeze - Tailwind CSS Integration for ASP.NET Core</title>
+    <%= head %>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <%= header %>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-cyan-50 via-teal-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-cyan-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-cyan-100 dark:bg-cyan-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    <span class="text-cyan-600 dark:text-cyan-400">Tailbreeze</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    Zero-config Tailwind CSS integration for ASP.NET Core. Auto-installs the standalone CLI, watches for changes in development, and builds optimized CSS for production. No Node.js required.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="https://github.com/noundry/tailbreeze" target="_blank" class="border-2 border-cyan-600 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View on GitHub
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">Zero Config</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Works Out of Box</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">No Node.js</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Standalone CLI</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">Hot Reload</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Dev Experience</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">v3 & v4</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Tailwind Support</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose Tailbreeze?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    The simplest way to add Tailwind CSS to your ASP.NET Core application without the complexity of Node.js tooling.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Zero Configuration</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Just add the NuGet package and call AddTailbreeze(). The CLI is auto-downloaded, config files are auto-generated, and hot reload just works.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-teal-100 dark:bg-teal-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Hot Reload in Development</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Automatically watches your .cshtml and .razor files for changes and rebuilds CSS instantly. See your Tailwind changes without refreshing.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Production Optimized</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Minified, tree-shaken CSS at build time via MSBuild integration. Only the classes you use end up in your final bundle.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in 2 Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Add Tailwind CSS to your ASP.NET Core app with just two packages and three lines of code.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Install Packages</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-2">
+                            <div class="text-cyan-400"># Runtime library</div>
+                            <div class="text-gray-300">$ dotnet add package Tailbreeze</div>
+                            <div class="text-cyan-400 mt-3"># Build-time integration</div>
+                            <div class="text-gray-300">$ dotnet add package Tailbreeze.Build</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Configure Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-500">// Program.cs</div>
+                            <div class="text-gray-300">builder.Services.<span class="text-green-400">AddTailbreeze</span>();</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Add Middleware</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-500">// Program.cs</div>
+                            <div class="text-gray-300">app.<span class="text-green-400">UseTailbreeze</span>();</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">4. Add Stylesheet Link</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-gray-500">&lt;!-- _Layout.cshtml or App.razor --&gt;</div>
+                            <div class="text-gray-300">&lt;<span class="text-blue-400">link</span> <span class="text-purple-400">rel</span>=<span class="text-orange-400">"stylesheet"</span> <span class="text-purple-400">href</span>=<span class="text-orange-400">"/tailbreeze/app.css"</span> /&gt;</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Tailbreeze.Extensions</span>;
+
+<span class="text-purple-400">var</span> builder = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(args);
+
+<span class="text-gray-500">// Add Tailbreeze services</span>
+builder.Services.<span class="text-green-400">AddTailbreeze</span>();
+
+<span class="text-gray-500">// ... other services</span>
+
+<span class="text-purple-400">var</span> app = builder.<span class="text-green-400">Build</span>();
+
+<span class="text-gray-500">// Add Tailbreeze middleware (serves CSS in development)</span>
+app.<span class="text-green-400">UseTailbreeze</span>();
+
+<span class="text-gray-500">// ... other middleware</span>
+
+app.<span class="text-green-400">Run</span>();
+
+<span class="text-gray-500">// That's it! Tailbreeze will:</span>
+<span class="text-gray-500">// - Auto-download the Tailwind CLI</span>
+<span class="text-gray-500">// - Create default tailwind.config.js</span>
+<span class="text-gray-500">// - Create default input CSS file</span>
+<span class="text-gray-500">// - Watch for changes in development</span>
+<span class="text-gray-500">// - Build minified CSS for production</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Configuration Options</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    While Tailbreeze works with zero configuration, you can customize every aspect via appsettings.json or code.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- appsettings.json -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">appsettings.json</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-6">
+                        <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>{
+  <span class="text-cyan-400">"Tailbreeze"</span>: {
+    <span class="text-cyan-400">"TailwindVersion"</span>: <span class="text-orange-400">"latest"</span>,
+    <span class="text-cyan-400">"InputCssPath"</span>: <span class="text-orange-400">"Styles/app.css"</span>,
+    <span class="text-cyan-400">"OutputCssPath"</span>: <span class="text-orange-400">"css/app.css"</span>,
+    <span class="text-cyan-400">"ConfigPath"</span>: <span class="text-orange-400">"tailwind.config.js"</span>,
+    <span class="text-cyan-400">"ServePath"</span>: <span class="text-orange-400">"/tailbreeze/app.css"</span>,
+    <span class="text-cyan-400">"EnableHotReload"</span>: <span class="text-purple-400">true</span>,
+    <span class="text-cyan-400">"AutoInstallCli"</span>: <span class="text-purple-400">true</span>,
+    <span class="text-cyan-400">"MinifyCss"</span>: <span class="text-purple-400">null</span>,
+    <span class="text-cyan-400">"ContentPaths"</span>: [
+      <span class="text-orange-400">"./Pages/**/*.cshtml"</span>,
+      <span class="text-orange-400">"./Views/**/*.cshtml"</span>
+    ],
+    <span class="text-cyan-400">"CliStartupTimeoutSeconds"</span>: <span class="text-purple-400">60</span>
+  }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Options Table -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Options Reference</h3>
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">TailwindVersion</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">"latest", "4", "3", or specific like "3.4.17"</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">InputCssPath</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Source CSS with @tailwind directives</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">OutputCssPath</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Compiled CSS output in wwwroot</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">EnableHotReload</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Watch mode in development (default: true)</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">MinifyCss</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">null = auto (minify in production only)</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">CliDownloadUrl</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Custom URL for CLI download (air-gapped envs)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Examples -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Framework Integration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Tailbreeze works seamlessly with Razor Pages, MVC, and Blazor applications.
+                </p>
+            </div>
+
+            <!-- Example Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeExample = 'razorpages'"
+                            :class="activeExample === 'razorpages' ? 'bg-white dark:bg-gray-600 text-cyan-600 dark:text-cyan-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Razor Pages
+                    </button>
+                    <button @click="activeExample = 'blazorserver'"
+                            :class="activeExample === 'blazorserver' ? 'bg-white dark:bg-gray-600 text-cyan-600 dark:text-cyan-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Blazor Server
+                    </button>
+                    <button @click="activeExample = 'blazorwasm'"
+                            :class="activeExample === 'blazorwasm' ? 'bg-white dark:bg-gray-600 text-cyan-600 dark:text-cyan-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Blazor WebAssembly
+                    </button>
+                </div>
+            </div>
+
+            <!-- Razor Pages Example -->
+            <div x-show="activeExample === 'razorpages'" class="space-y-8">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">_Layout.cshtml</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    <span class="text-cyan-400">&lt;link rel="stylesheet" href="/tailbreeze/app.css" /&gt;</span>
+    &lt;title&gt;@ViewData["Title"]&lt;/title&gt;
+&lt;/head&gt;
+&lt;body class="<span class="text-green-400">bg-gray-50 min-h-screen</span>"&gt;
+    &lt;nav class="<span class="text-green-400">bg-white shadow-sm</span>"&gt;
+        &lt;!-- Navigation --&gt;
+    &lt;/nav&gt;
+    &lt;main class="<span class="text-green-400">container mx-auto px-4 py-8</span>"&gt;
+        @RenderBody()
+    &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Index.cshtml</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>@page
+@model IndexModel
+
+&lt;div class="<span class="text-green-400">max-w-4xl mx-auto</span>"&gt;
+    &lt;h1 class="<span class="text-green-400">text-4xl font-bold text-gray-900 mb-6</span>"&gt;
+        Welcome to Tailbreeze
+    &lt;/h1&gt;
+
+    &lt;div class="<span class="text-green-400">bg-white rounded-xl shadow-lg p-8</span>"&gt;
+        &lt;p class="<span class="text-green-400">text-gray-600 mb-4</span>"&gt;
+            Your ASP.NET Core app is now styled with Tailwind CSS!
+        &lt;/p&gt;
+
+        &lt;button class="<span class="text-green-400">bg-cyan-600 hover:bg-cyan-700
+                       text-white px-6 py-3 rounded-lg
+                       font-semibold transition-colors</span>"&gt;
+            Get Started
+        &lt;/button&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blazor Server Example -->
+            <div x-show="activeExample === 'blazorserver'" class="space-y-8">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">App.razor</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;base href="/" /&gt;
+    <span class="text-cyan-400">&lt;link rel="stylesheet" href="/tailbreeze/app.css" /&gt;</span>
+    &lt;HeadOutlet /&gt;
+&lt;/head&gt;
+&lt;body class="<span class="text-green-400">bg-gray-50 min-h-screen</span>"&gt;
+    &lt;Routes /&gt;
+    &lt;script src="_framework/blazor.web.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Home.razor</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>@page "/"
+
+&lt;div class="<span class="text-green-400">max-w-4xl mx-auto p-8</span>"&gt;
+    &lt;h1 class="<span class="text-green-400">text-4xl font-bold text-gray-900 mb-6</span>"&gt;
+        Blazor + Tailwind
+    &lt;/h1&gt;
+
+    &lt;div class="<span class="text-green-400">grid md:grid-cols-2 gap-6</span>"&gt;
+        &lt;div class="<span class="text-green-400">bg-white rounded-xl shadow p-6</span>"&gt;
+            &lt;h2 class="<span class="text-green-400">text-xl font-semibold mb-2</span>"&gt;Card 1&lt;/h2&gt;
+            &lt;p class="<span class="text-green-400">text-gray-600</span>"&gt;Content here&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="<span class="text-green-400">bg-white rounded-xl shadow p-6</span>"&gt;
+            &lt;h2 class="<span class="text-green-400">text-xl font-semibold mb-2</span>"&gt;Card 2&lt;/h2&gt;
+            &lt;p class="<span class="text-green-400">text-gray-600</span>"&gt;Content here&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blazor WebAssembly Example -->
+            <div x-show="activeExample === 'blazorwasm'" class="space-y-8">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">index.html</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;base href="/" /&gt;
+    <span class="text-cyan-400">&lt;link rel="stylesheet" href="css/app.css" /&gt;</span>
+    &lt;title&gt;Blazor WASM App&lt;/title&gt;
+&lt;/head&gt;
+&lt;body class="<span class="text-green-400">bg-gray-50</span>"&gt;
+    &lt;div id="app"&gt;Loading...&lt;/div&gt;
+    &lt;script src="_framework/blazor.webassembly.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+<span class="text-gray-500">&lt;!-- Note: For standalone WASM, run Tailwind CLI
+     during build with Tailbreeze.Build package --&gt;</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Build Integration</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">&lt;!-- .csproj --&gt;</span>
+&lt;ItemGroup&gt;
+    &lt;PackageReference Include="<span class="text-cyan-400">Tailbreeze.Build</span>"
+                      Version="1.0.0" /&gt;
+&lt;/ItemGroup&gt;
+
+<span class="text-gray-500">&lt;!-- Tailbreeze.Build automatically:
+     - Downloads Tailwind CLI at build time
+     - Compiles CSS during dotnet build
+     - Minifies CSS during dotnet publish
+     - No runtime overhead in WASM apps --&gt;</span>
+
+<span class="text-gray-500"># Build commands</span>
+$ dotnet build   <span class="text-gray-500"># CSS compiled</span>
+$ dotnet publish <span class="text-gray-500"># CSS minified</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">How It Works</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Tailbreeze uses the official Tailwind CSS standalone CLI - no Node.js required.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center">
+                    <div class="w-16 h-16 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Auto-Download CLI</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">On first run, Tailbreeze downloads the Tailwind standalone CLI from GitHub. Platform-specific binary (Windows, macOS, Linux).</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center">
+                    <div class="w-16 h-16 bg-teal-100 dark:bg-teal-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Watch Mode (Dev)</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">In development, runs CLI in watch mode. Detects changes to .cshtml/.razor files and rebuilds CSS instantly.</p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Build Integration</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">MSBuild tasks compile and minify CSS during dotnet build/publish. Production CSS is tree-shaken and optimized.</p>
+                </div>
+            </div>
+
+            <!-- Architecture Diagram -->
+            <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-8 shadow-2xl">
+                <h3 class="text-xl font-bold text-white mb-6">Development Flow</h3>
+                <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                    <pre><code><span class="text-cyan-400">dotnet run</span>
+    │
+    ├── <span class="text-green-400">TailwindHostedService</span> starts
+    │   ├── Downloads CLI (if needed)
+    │   ├── Creates tailwind.config.js (if needed)
+    │   ├── Creates Styles/app.css (if needed)
+    │   └── Starts CLI in watch mode
+    │
+    ├── <span class="text-green-400">TailwindMiddleware</span> serves CSS
+    │   └── GET /tailbreeze/app.css → wwwroot/css/app.css
+    │
+    └── <span class="text-yellow-400">File change detected</span>
+        └── CLI rebuilds CSS automatically
+            └── Browser refresh shows changes
+
+<span class="text-cyan-400">dotnet publish</span>
+    │
+    └── <span class="text-green-400">Tailbreeze.Build MSBuild task</span>
+        ├── Downloads CLI (if needed)
+        ├── Runs: tailwindcss --minify
+        └── Output: wwwroot/css/app.css (minified)</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advanced Features -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Tailbreeze includes features for enterprise deployments and special requirements.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <!-- Custom CLI URL -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Air-Gapped Environments</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Host the CLI on your own server for environments without internet access.</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code>{
+  <span class="text-cyan-400">"Tailbreeze"</span>: {
+    <span class="text-cyan-400">"AutoInstallCli"</span>: <span class="text-purple-400">true</span>,
+    <span class="text-cyan-400">"CliDownloadUrl"</span>: <span class="text-orange-400">"https://internal-mirror.example.com/tailwindcss-{os}-{arch}{extension}"</span>
+  }
+}
+
+<span class="text-gray-500">// Placeholders:</span>
+<span class="text-gray-500">// {os} = windows, macos, linux</span>
+<span class="text-gray-500">// {arch} = x64, arm64</span>
+<span class="text-gray-500">// {extension} = .exe (Windows) or empty</span></code></pre>
+                    </div>
+                </div>
+
+                <!-- Pre-installed CLI -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Pre-Installed CLI</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Disable auto-download and use a CLI already installed on the system.</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code>{
+  <span class="text-cyan-400">"Tailbreeze"</span>: {
+    <span class="text-cyan-400">"AutoInstallCli"</span>: <span class="text-purple-400">false</span>
+  }
+}
+
+<span class="text-gray-500">// Ensure tailwindcss is in PATH or</span>
+<span class="text-gray-500">// installed in the project directory</span>
+
+<span class="text-gray-500"># Download manually:</span>
+$ curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-windows-x64.exe</code></pre>
+                    </div>
+                </div>
+
+                <!-- Code Configuration -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Code Configuration</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Configure Tailbreeze programmatically for dynamic scenarios.</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code>builder.Services.<span class="text-green-400">AddTailbreeze</span>(options =>
+{
+    options.TailwindVersion = <span class="text-orange-400">"4"</span>;
+    options.EnableHotReload =
+        builder.Environment.IsDevelopment();
+    options.ContentPaths.Add(<span class="text-orange-400">"./Components/**/*.razor"</span>);
+    options.MinifyCss =
+        !builder.Environment.IsDevelopment();
+});</code></pre>
+                    </div>
+                </div>
+
+                <!-- CDN Fallback -->
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">CDN Fallback</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Automatically fall back to Tailwind CDN if the CLI fails.</p>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code>{
+  <span class="text-cyan-400">"Tailbreeze"</span>: {
+    <span class="text-cyan-400">"UseCdnFallback"</span>: <span class="text-purple-400">true</span>
+  }
+}
+
+<span class="text-gray-500">// If CLI fails to start or produce output,</span>
+<span class="text-gray-500">// middleware redirects to cdn.tailwindcss.com</span>
+<span class="text-gray-500">// Useful for development resilience</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-cyan-600 to-teal-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready to Add Tailwind CSS?</h2>
+            <p class="text-xl text-cyan-100 mb-8 max-w-3xl mx-auto">
+                Get started with Tailbreeze today. Zero configuration, no Node.js, just beautiful Tailwind CSS in your ASP.NET Core app.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#quickstart" class="bg-white text-cyan-600 hover:bg-cyan-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Get Started
+                </a>
+                <a href="https://github.com/noundry/tailbreeze" target="_blank" class="border-2 border-white text-white hover:bg-white hover:text-cyan-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    View on GitHub
+                </a>
+            </div>
+
+            <!-- Package badges -->
+            <div class="mt-12 flex flex-wrap justify-center gap-4">
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-2 font-mono text-sm">
+                    dotnet add package Tailbreeze
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg px-4 py-2 font-mono text-sm">
+                    dotnet add package Tailbreeze.Build
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%= footer %>
+</body>
+</html>

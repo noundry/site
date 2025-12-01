@@ -964,6 +964,10 @@
                             <h4 class="font-medium text-gray-900 dark:text-white">Logging Integration</h4>
                             <p class="text-gray-600 dark:text-gray-300">Structured logging with context</p>
                         </div>
+                        <div class="text-sm">
+                            <h4 class="font-medium text-gray-900 dark:text-white"><a href="#sentinel" class="text-blue-600 dark:text-blue-400 hover:underline">Sentinel APM</a></h4>
+                            <p class="text-gray-600 dark:text-gray-300">Full query telemetry with zero code changes</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1535,6 +1539,172 @@
     <span class="text-orange-400">"SELECT * FROM audit_log WHERE username = @Username"</span>,
     <span class="text-purple-400">new</span> { <span class="text-blue-400">Username</span> = <span class="text-orange-400">"admin"</span> }
 );</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sentinel Integration Section -->
+    <section id="sentinel" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 dark:bg-indigo-900 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Sentinel APM Integration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Automatically track database query performance with zero code changes. Monitor SQL execution times, identify slow queries, and get comprehensive database telemetry.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Features List -->
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Zero Code Changes</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Replace one line in your DI setup and all queries are automatically instrumented. No changes to existing repositories or services.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Query Duration Tracking</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Track execution time for every query. Identify slow queries and performance regressions before they impact users.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Query Grouping</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Automatic SQL normalization groups similar queries together for aggregated performance analysis regardless of parameter values.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 bg-red-100 dark:bg-red-900 rounded-lg flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Error Tracking</h3>
+                                <p class="text-gray-600 dark:text-gray-300">Failed queries are captured with full exception details. Get alerts when database errors occur in production.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Example -->
+                <div>
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 shadow-2xl mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            </div>
+                            <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                        </div>
+                        <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-gray-500">// Install the Sentinel.Tuxedo package</span>
+<span class="text-gray-500">// $ dotnet add package Noundry.Sentinel.Tuxedo</span>
+
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Sentinel.Tuxedo</span>;
+
+<span class="text-purple-400">var</span> <span class="text-blue-400">builder</span> = <span class="text-yellow-400">WebApplication</span>.<span class="text-green-400">CreateBuilder</span>(<span class="text-blue-400">args</span>);
+
+<span class="text-gray-500">// Add Sentinel monitoring</span>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddNoundrySentinel</span>(<span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>);
+
+<span class="text-gray-500">// Replace AddTuxedoPostgres with instrumented version</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">connStr</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>
+    .<span class="text-green-400">GetConnectionString</span>(<span class="text-orange-400">"DefaultConnection"</span>);
+
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgresWithSentinel</span>(<span class="text-blue-400">connStr</span>);
+
+<span class="text-gray-500">// That's it! All queries are now tracked.</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">app</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Build</span>();
+<span class="text-blue-400">app</span>.<span class="text-green-400">Run</span>();</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Captured -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Metrics Captured</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Duration (ms)</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Rows Affected</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Query Type</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Table Name</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Normalized SQL</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">Error Details</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learn More Link -->
+                    <div class="mt-6 text-center">
+                        <a href="sentinel.html" class="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold">
+                            Learn more about Sentinel APM
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>

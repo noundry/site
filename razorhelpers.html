@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false, activeCategory: 'overview', activeTab: 'html-builder' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <title>RazorHelpers - Fluent HTML Builder for ASP.NET Core Minimal APIs</title>
+    <%= head %>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <%= header %>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-24 h-24 bg-purple-100 dark:bg-purple-900 rounded-full mb-8">
+                    <svg class="w-12 h-12 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    <span class="text-purple-600 dark:text-purple-400">Razor</span>Helpers
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
+                    A powerful library for rendering Razor components as HTML strings or IResult responses in ASP.NET Core minimal APIs. Features fluent HTML builders for tables, selects, and dynamic content.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#quickstart" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Quick Start
+                    </a>
+                    <a href="#api" class="border-2 border-purple-600 text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        API Reference
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">80+</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">HTML Elements</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">.NET 9-10</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Support</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">Fluent</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">API Design</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">Type-Safe</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Collections</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Why Choose RazorHelpers?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Build HTML programmatically with a fluent, type-safe API designed for minimal APIs and server-side rendering.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Fluent HTML Builder</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Chain methods to build complex HTML structures with IntelliSense support and compile-time safety.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Collection Builders</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Generate tables, selects, and lists from collections with automatic column definitions and grouping.</p>
+                </div>
+
+                <div class="text-center p-8 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Minimal API Ready</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Return HTML directly from endpoints with Results.Razor() or render components to strings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section id="quickstart" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Get Started in Minutes</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Install RazorHelpers and start building HTML with a fluent, type-safe API.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">1. Installation</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div class="text-purple-500">$ dotnet add package RazorHelpers</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">2. Register Services</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
+                            <div><span class="text-blue-400">builder</span>.<span class="text-yellow-400">Services</span>.<span class="text-green-400">AddRazorHelpers</span>();</div>
+                        </div>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mt-3">Add to Program.cs</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Start Building</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div><span class="text-blue-400">using</span> <span class="text-yellow-400">RazorHelpers</span>;</div>
+                            <div class="mt-2"><span class="text-blue-400">var</span> html = <span class="text-yellow-400">Html</span>.<span class="text-green-400">Div</span>(<span class="text-orange-400">"Hello World"</span>);</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-blue-400">using</span> RazorHelpers;
+
+<span class="text-blue-400">var</span> builder = WebApplication.CreateBuilder(args);
+builder.Services.<span class="text-green-400">AddRazorHelpers</span>();
+
+<span class="text-blue-400">var</span> app = builder.Build();
+
+<span class="text-gray-500">// Return HTML from minimal API endpoints</span>
+app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/"</span>, () => RazorResults.<span class="text-green-400">Razor</span>(
+    Html.<span class="text-green-400">Div</span>()
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"container"</span>)
+        .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">H1</span>(<span class="text-orange-400">"Welcome!"</span>))
+        .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">P</span>(<span class="text-orange-400">"Built with RazorHelpers"</span>))
+));
+
+<span class="text-gray-500">// Generate tables from collections</span>
+app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/users"</span>, () => RazorResults.<span class="text-green-400">Razor</span>(
+    Html.<span class="text-green-400">Table</span>(users)
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"table"</span>)
+        .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Name"</span>, u => u.Name)
+        .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Email"</span>, u => u.Email)
+));
+
+app.Run();</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference Section -->
+    <section id="api" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">API Reference</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Comprehensive builders for every HTML element and collection type.
+                </p>
+            </div>
+
+            <!-- API Tabs -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex flex-wrap justify-center gap-1">
+                    <button @click="activeTab = 'html-builder'"
+                            :class="activeTab === 'html-builder' ? 'bg-white dark:bg-gray-700 text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        HtmlBuilder
+                    </button>
+                    <button @click="activeTab = 'table-builder'"
+                            :class="activeTab === 'table-builder' ? 'bg-white dark:bg-gray-700 text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        TableBuilder
+                    </button>
+                    <button @click="activeTab = 'select-builder'"
+                            :class="activeTab === 'select-builder' ? 'bg-white dark:bg-gray-700 text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        SelectBuilder
+                    </button>
+                    <button @click="activeTab = 'rendering'"
+                            :class="activeTab === 'rendering' ? 'bg-white dark:bg-gray-700 text-purple-600 dark:text-purple-400' : 'text-gray-600 dark:text-gray-300'"
+                            class="px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+                        Rendering
+                    </button>
+                </div>
+            </div>
+
+            <!-- HtmlBuilder Tab -->
+            <div x-show="activeTab === 'html-builder'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Html Static Factory</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        The <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Html</code> class provides static methods for creating all HTML elements with a fluent API.
+                    </p>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Element Methods</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.Div()</span> - Container element
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.Span()</span> - Inline element
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.H1() - H6()</span> - Headings
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.P()</span> - Paragraph
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.A(href, text)</span> - Anchor link
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.Img(src, alt)</span> - Image
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.Form(action, method)</span> - Form
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">Html.Input(type, name)</span> - Input field
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Build a card component</span>
+<span class="text-blue-400">var</span> card = Html.<span class="text-green-400">Div</span>()
+    .<span class="text-green-400">Class</span>(<span class="text-orange-400">"card"</span>, <span class="text-orange-400">"shadow-lg"</span>)
+    .<span class="text-green-400">Id</span>(<span class="text-orange-400">"user-card"</span>)
+    .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">Img</span>(<span class="text-orange-400">"/avatar.jpg"</span>, <span class="text-orange-400">"Avatar"</span>)
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"rounded-full"</span>))
+    .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">H2</span>(<span class="text-orange-400">"John Doe"</span>))
+    .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">P</span>(<span class="text-orange-400">"Software Engineer"</span>)
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"text-gray-500"</span>))
+    .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">A</span>(<span class="text-orange-400">"mailto:john@example.com"</span>, <span class="text-orange-400">"Email"</span>)
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"btn"</span>, <span class="text-orange-400">"btn-primary"</span>));
+
+<span class="text-gray-500">// Conditional classes</span>
+<span class="text-blue-400">var</span> btn = Html.<span class="text-green-400">Button</span>(<span class="text-orange-400">"Submit"</span>)
+    .<span class="text-green-400">Class</span>(<span class="text-orange-400">"btn"</span>)
+    .<span class="text-green-400">ClassIf</span>(<span class="text-orange-400">"btn-disabled"</span>, isDisabled)
+    .<span class="text-green-400">Attr</span>(<span class="text-orange-400">"disabled"</span>, isDisabled);
+
+<span class="text-gray-500">// Inline styles</span>
+<span class="text-blue-400">var</span> alert = Html.<span class="text-green-400">Div</span>(<span class="text-orange-400">"Success!"</span>)
+    .<span class="text-green-400">Style</span>(<span class="text-orange-400">"color"</span>, <span class="text-orange-400">"green"</span>)
+    .<span class="text-green-400">Style</span>(<span class="text-orange-400">"padding"</span>, <span class="text-orange-400">"1rem"</span>);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fluent Methods -->
+                    <div class="mt-8">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Fluent Methods</h4>
+                        <div class="grid md:grid-cols-3 gap-4 text-sm">
+                            <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Attributes</h5>
+                                <ul class="space-y-1 text-gray-600 dark:text-gray-300">
+                                    <li><code>.Class()</code> - CSS classes</li>
+                                    <li><code>.ClassIf()</code> - Conditional class</li>
+                                    <li><code>.Id()</code> - Element ID</li>
+                                    <li><code>.Attr()</code> - Any attribute</li>
+                                    <li><code>.Attrs()</code> - Multiple attributes</li>
+                                    <li><code>.Data()</code> - Data attributes</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Styling</h5>
+                                <ul class="space-y-1 text-gray-600 dark:text-gray-300">
+                                    <li><code>.Style()</code> - Single style</li>
+                                    <li><code>.Styles()</code> - Multiple styles</li>
+                                </ul>
+                            </div>
+                            <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Content</h5>
+                                <ul class="space-y-1 text-gray-600 dark:text-gray-300">
+                                    <li><code>.Text()</code> - Encoded text</li>
+                                    <li><code>.Raw()</code> - Raw HTML</li>
+                                    <li><code>.Child()</code> - Add child</li>
+                                    <li><code>.Children()</code> - Multiple children</li>
+                                    <li><code>.Content()</code> - RenderFragment</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TableBuilder Tab -->
+            <div x-show="activeTab === 'table-builder'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">TableBuilder&lt;T&gt;</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Generate HTML tables from collections with automatic column definitions, row styling, and custom cell rendering.
+                    </p>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Table Methods</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Header()</span> - Define header row
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Column(header, selector)</span> - Define column
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Row(selector)</span> - Custom row rendering
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.RowClass(selector)</span> - Conditional row class
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Caption()</span> - Table caption
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Foot()</span> - Custom tfoot element
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Simple table from collection</span>
+<span class="text-blue-400">var</span> table = Html.<span class="text-green-400">Table</span>(users)
+    .<span class="text-green-400">Class</span>(<span class="text-orange-400">"table"</span>, <span class="text-orange-400">"table-striped"</span>)
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Name"</span>, u => u.Name)
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Email"</span>, u => u.Email)
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Status"</span>, u => u.IsActive ? <span class="text-orange-400">"Active"</span> : <span class="text-orange-400">"Inactive"</span>);
+
+<span class="text-gray-500">// With custom cell rendering</span>
+<span class="text-blue-400">var</span> table = Html.<span class="text-green-400">Table</span>(users)
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Name"</span>, u => Html.<span class="text-green-400">Strong</span>(u.Name))
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Email"</span>, u =>
+        Html.<span class="text-green-400">A</span>($<span class="text-orange-400">"mailto:{u.Email}"</span>, u.Email))
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Status"</span>, u =>
+        Html.<span class="text-green-400">Span</span>(u.IsActive ? <span class="text-orange-400">"Active"</span> : <span class="text-orange-400">"Inactive"</span>)
+            .<span class="text-green-400">Class</span>(u.IsActive ? <span class="text-orange-400">"text-green-500"</span> : <span class="text-orange-400">"text-red-500"</span>));
+
+<span class="text-gray-500">// Conditional row styling</span>
+<span class="text-blue-400">var</span> table = Html.<span class="text-green-400">Table</span>(orders)
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Order #"</span>, o => o.Id.ToString())
+    .<span class="text-green-400">Column</span>(<span class="text-orange-400">"Total"</span>, o => o.Total.ToString(<span class="text-orange-400">"C"</span>))
+    .<span class="text-green-400">RowClass</span>(o => o.IsPending ? <span class="text-orange-400">"bg-yellow-50"</span> : <span class="text-orange-400">""</span>);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SelectBuilder Tab -->
+            <div x-show="activeTab === 'select-builder'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">SelectBuilder&lt;T&gt;</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Create dropdown selects from collections with support for grouping, placeholders, and conditional selection.
+                    </p>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Select Methods</h4>
+                            <div class="space-y-2 text-sm">
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Value(selector)</span> - Option value
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Text(selector)</span> - Option text
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Placeholder(text)</span> - Empty option
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.SelectedValue(value)</span> - Pre-select option
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.Selected(predicate)</span> - Conditional selection
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.GroupBy(selector)</span> - Create optgroups
+                                </div>
+                                <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
+                                    <span class="text-purple-600 dark:text-purple-400">.DisabledOption(predicate)</span> - Disable options
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Simple select from collection</span>
+<span class="text-blue-400">var</span> select = Html.<span class="text-green-400">Select</span>(countries, <span class="text-orange-400">"country"</span>)
+    .<span class="text-green-400">Value</span>(c => c.Code)
+    .<span class="text-green-400">Text</span>(c => c.Name)
+    .<span class="text-green-400">Placeholder</span>(<span class="text-orange-400">"Select a country..."</span>)
+    .<span class="text-green-400">SelectedValue</span>(<span class="text-orange-400">"us"</span>);
+
+<span class="text-gray-500">// Grouped select (optgroups)</span>
+<span class="text-blue-400">var</span> carSelect = Html.<span class="text-green-400">Select</span>(cars, <span class="text-orange-400">"car"</span>)
+    .<span class="text-green-400">Value</span>(c => c.Id)
+    .<span class="text-green-400">Text</span>(c => c.Model)
+    .<span class="text-green-400">GroupBy</span>(c => c.Manufacturer);
+<span class="text-gray-500">// Renders:
+// &lt;optgroup label="Toyota"&gt;
+//   &lt;option value="1"&gt;Camry&lt;/option&gt;
+// &lt;/optgroup&gt;</span>
+
+<span class="text-gray-500">// With disabled options</span>
+<span class="text-blue-400">var</span> planSelect = Html.<span class="text-green-400">Select</span>(plans, <span class="text-orange-400">"plan"</span>)
+    .<span class="text-green-400">Value</span>(p => p.Id)
+    .<span class="text-green-400">Text</span>(p => p.Name)
+    .<span class="text-green-400">DisabledOption</span>(p => p.RequiresPremium);</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rendering Tab -->
+            <div x-show="activeTab === 'rendering'" class="space-y-8">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Rendering Options</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">
+                        Multiple ways to render HTML elements as strings or IResult responses.
+                    </p>
+
+                    <div class="grid lg:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Rendering Methods</h4>
+                            <div class="space-y-4">
+                                <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                    <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">RazorResults.Razor()</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Returns IResult for minimal API endpoints.</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                    <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">.RenderAsync()</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Renders RenderFragment to HTML string asynchronously.</p>
+                                </div>
+                                <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                                    <h5 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">ComponentHelper</h5>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300">Renders Razor components to strings with parameters.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
+                            <div class="font-mono text-sm text-gray-300 overflow-x-auto">
+                                <pre><code><span class="text-gray-500">// Minimal API endpoint</span>
+app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/page"</span>, () =>
+    RazorResults.<span class="text-green-400">Razor</span>(Html.<span class="text-green-400">Div</span>(<span class="text-orange-400">"Hello"</span>)));
+
+<span class="text-gray-500">// With model binding</span>
+app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/user/{id}"</span>, (int id) =>
+    RazorResults.<span class="text-green-400">Razor</span>(template, <span class="text-blue-400">new</span> { Id = id }));
+
+<span class="text-gray-500">// Render to string</span>
+<span class="text-blue-400">var</span> html = <span class="text-blue-400">await</span> Html.<span class="text-green-400">Div</span>(<span class="text-orange-400">"Content"</span>)
+    .<span class="text-green-400">Render</span>()
+    .<span class="text-green-400">RenderAsync</span>(services);
+
+<span class="text-gray-500">// Render component with parameters</span>
+<span class="text-blue-400">var</span> html = <span class="text-blue-400">await</span> ComponentHelper
+    .<span class="text-green-400">RenderComponentAsync</span>&lt;MyComponent&gt;(
+        services,
+        <span class="text-blue-400">new</span> Dictionary&lt;<span class="text-blue-400">string</span>, <span class="text-blue-400">object</span>?&gt;
+        {
+            [<span class="text-orange-400">"Title"</span>] = <span class="text-orange-400">"Hello"</span>
+        });</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lists and Iteration Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Lists and Iteration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Build lists and repeat elements from collections with Html.Ul(), Html.Ol(), and Html.Each().
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">List Helpers</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code><span class="text-gray-500">// Simple list from strings</span>
+<span class="text-blue-400">var</span> ul = Html.<span class="text-green-400">Ul</span>(items, x => x);
+
+<span class="text-gray-500">// List with custom item rendering</span>
+<span class="text-blue-400">var</span> ul = Html.<span class="text-green-400">Ul</span>(products, p =>
+    Html.<span class="text-green-400">A</span>($<span class="text-orange-400">"/product/{p.Id}"</span>, p.Name));
+
+<span class="text-gray-500">// Ordered list</span>
+<span class="text-blue-400">var</span> ol = Html.<span class="text-green-400">Ol</span>(steps, s => s.Title);</code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Html.Each() Iterator</h3>
+                    <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <pre><code><span class="text-gray-500">// Repeat elements for each item</span>
+<span class="text-blue-400">var</span> cards = Html.<span class="text-green-400">Each</span>(products, p =>
+    Html.<span class="text-green-400">Div</span>()
+        .<span class="text-green-400">Class</span>(<span class="text-orange-400">"card"</span>)
+        .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">H3</span>(p.Name))
+        .<span class="text-green-400">Child</span>(Html.<span class="text-green-400">P</span>(p.Description)));
+
+<span class="text-gray-500">// With index</span>
+<span class="text-blue-400">var</span> rows = Html.<span class="text-green-400">Each</span>(items, (item, i) =>
+    Html.<span class="text-green-400">Div</span>($<span class="text-orange-400">"{i + 1}. {item.Name}"</span>));</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Text Formatting Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Text Formatting Elements</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    All common HTML text formatting elements are available with the fluent API.
+                </p>
+            </div>
+
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                <div class="grid md:grid-cols-4 gap-4 text-sm">
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                        <h4 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Emphasis</h4>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-300 font-mono">
+                            <li>Html.Strong()</li>
+                            <li>Html.Em()</li>
+                            <li>Html.B()</li>
+                            <li>Html.I()</li>
+                            <li>Html.U()</li>
+                            <li>Html.S()</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                        <h4 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Annotations</h4>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-300 font-mono">
+                            <li>Html.Mark()</li>
+                            <li>Html.Del()</li>
+                            <li>Html.Ins()</li>
+                            <li>Html.Sub()</li>
+                            <li>Html.Sup()</li>
+                            <li>Html.Small()</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                        <h4 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Code & Quotes</h4>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-300 font-mono">
+                            <li>Html.Code()</li>
+                            <li>Html.Pre()</li>
+                            <li>Html.Kbd()</li>
+                            <li>Html.Samp()</li>
+                            <li>Html.Var()</li>
+                            <li>Html.Blockquote()</li>
+                            <li>Html.Q()</li>
+                            <li>Html.Cite()</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                        <h4 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">Other</h4>
+                        <ul class="space-y-1 text-gray-600 dark:text-gray-300 font-mono">
+                            <li>Html.Abbr()</li>
+                            <li>Html.Time()</li>
+                            <li>Html.Address()</li>
+                            <li>Html.Br()</li>
+                            <li>Html.Hr()</li>
+                            <li>Html.Wbr()</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section class="py-20 bg-gradient-to-br from-purple-600 to-indigo-700">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold text-white mb-6">Ready to Get Started?</h2>
+            <p class="text-xl text-purple-100 mb-8">
+                Install RazorHelpers and start building HTML with a fluent, type-safe API today.
+            </p>
+            <div class="bg-gray-900 rounded-lg p-6 font-mono text-lg text-gray-300 inline-block">
+                <span class="text-purple-400">$</span> dotnet add package RazorHelpers
+            </div>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="https://github.com/noundry/RazorHelpers" class="bg-white text-purple-600 hover:bg-purple-50 px-6 py-3 rounded-lg font-semibold transition-colors">
+                    View on GitHub
+                </a>
+                <a href="https://www.nuget.org/packages/RazorHelpers" class="border-2 border-white text-white hover:bg-white/10 px-6 py-3 rounded-lg font-semibold transition-colors">
+                    NuGet Package
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <%= footer %>
+</body>
+</html>
