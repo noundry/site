@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<head>
+    <title>Noundry.Streams - High-Performance Event Stream Ingestion</title>
+    <%= head %>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
+    <%= header %>
+
+    <!-- Hero Section -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-sky-50 to-cyan-100 dark:from-gray-900 dark:to-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-sky-100 dark:bg-sky-900 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Noundry.<span class="text-sky-600 dark:text-sky-400">Streams</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
+                    High-performance, self-contained event stream ingestion and relay service. Capture webhooks, buffer events, and relay to downstream systems with 50K+ messages/second throughput and sub-millisecond latency.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#installation" class="bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        Get Started
+                    </a>
+                    <a href="#examples" class="border-2 border-sky-600 text-sky-600 dark:text-sky-400 hover:bg-sky-50 dark:hover:bg-sky-900/20 px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
+                        View Examples
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Metrics -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Enterprise-Grade Performance</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built for high-throughput event streaming with durable persistence and guaranteed delivery.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-8 mb-16">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">50K+</div>
+                    <div class="text-gray-600 dark:text-gray-300">Messages per second</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">&lt;1ms</div>
+                    <div class="text-gray-600 dark:text-gray-300">Ingestion latency (p99)</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">Zero</div>
+                    <div class="text-gray-600 dark:text-gray-300">Message loss</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-sky-600 dark:text-sky-400 mb-2">Crash</div>
+                    <div class="text-gray-600 dark:text-gray-300">Safe persistence</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Powerful Features</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Everything you need for reliable event stream processing and relay.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">High Throughput</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Lock-free channels, batched writes, and optimized SQLite persistence deliver exceptional performance.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            50,000+ messages/second
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Sub-millisecond latency
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Configurable batching
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Durable Persistence</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        SQLite with WAL mode provides crash-safe persistence with configurable retention policies.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Zero message loss
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Crash recovery
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Configurable retention
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Smart Relay</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Built-in relay workers with exponential backoff retry logic and parallel processing.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Automatic retries
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Multiple endpoints
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Ordered or parallel
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Use Cases</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Perfect for event-driven architectures and webhook processing.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Webhook Ingestion</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Capture webhooks from Stripe, GitHub, Twilio, and other services with guaranteed delivery.</p>
+                </div>
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Event Streaming</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Build event pipelines between microservices with durable buffering.</p>
+                </div>
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Audit Logging</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Durable audit trails with replay capability for compliance requirements.</p>
+                </div>
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">API Rate Limiting</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Buffer requests and relay at controlled rates to downstream APIs.</p>
+                </div>
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Service Decoupling</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Decouple producers from consumers with reliable message buffering.</p>
+                </div>
+                <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Data Replication</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Replicate events to multiple downstream systems reliably.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Architecture</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Simple, powerful design for reliable event streaming.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-900 dark:bg-gray-700 rounded-xl p-6 font-mono text-sm text-gray-300">
+                    <pre><code><span class="text-sky-400">HTTP Requests</span> <span class="text-gray-500">───></span> <span class="text-emerald-400">Ingest Channel</span> <span class="text-gray-500">───></span> <span class="text-yellow-400">BatchWriter</span> <span class="text-gray-500">───></span> <span class="text-blue-400">SQLite DB</span>
+                                                                      <span class="text-gray-500">│</span>
+                                                                      <span class="text-gray-500">▼</span>
+                                                              <span class="text-purple-400">RelayChannel</span>
+                                                                      <span class="text-gray-500">│</span>
+                                                                      <span class="text-gray-500">▼</span>
+                                                              <span class="text-rose-400">RelayWorkers</span>
+                                                                      <span class="text-gray-500">│</span>
+                                                                      <span class="text-gray-500">▼</span>
+                                                         <span class="text-sky-400">External Endpoints</span></code></pre>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-12">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ingestion Flow</h3>
+                        <ol class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">1</span>
+                                HTTP POST received at endpoint
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">2</span>
+                                Message queued to ingest channel
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">3</span>
+                                202 Accepted returned (&lt;1ms)
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">4</span>
+                                BatchWriter persists to SQLite
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Relay Flow</h3>
+                        <ol class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">1</span>
+                                Persisted messages forwarded to relay channel
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">2</span>
+                                RelayWorkers POST to configured endpoints
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">3</span>
+                                Failed deliveries retried with backoff
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-sky-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm mr-3 mt-0.5 flex-shrink-0">4</span>
+                                Attempts logged for observability
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Installation</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Deploy as a standalone service with zero external dependencies.
+                </p>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Docker</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-6">
+                        <div class="text-sky-500">$ docker run -p 5000:5000 -v streams-data:/data noundry/streams</div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Direct Download</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 mb-6">
+                        <div class="text-gray-500"># Linux/macOS</div>
+                        <div class="text-sky-500">$ curl -sSL https://noundry.com/install/streams.sh | bash</div>
+                        <div class="mt-2 text-gray-500"># Windows</div>
+                        <div class="text-sky-500">$ iwr https://noundry.com/install/streams.ps1 | iex</div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">.NET Tool</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300">
+                        <div class="text-sky-500">$ dotnet tool install -g Noundry.Streams</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 p-6 bg-sky-50 dark:bg-sky-900/20 rounded-lg border border-sky-200 dark:border-sky-800">
+                    <h4 class="font-medium text-sky-900 dark:text-sky-100 mb-2">Requirements</h4>
+                    <ul class="text-sm text-sky-800 dark:text-sky-200 space-y-1">
+                        <li>No external dependencies - SQLite is embedded</li>
+                        <li>Cross-platform: Linux, macOS, Windows</li>
+                        <li>.NET 9.0 runtime (included in self-contained builds)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Examples Section -->
+    <section id="examples" class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Usage Examples</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Simple REST API for stream management and event ingestion.
+                </p>
+            </div>
+
+            <!-- Create Stream -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">1. Create a Stream</h3>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-sky-500">$ curl -X POST http://localhost:5000/admin/streams</span> \
+  <span class="text-blue-400">-H</span> <span class="text-yellow-400">"Content-Type: application/json"</span> \
+  <span class="text-blue-400">-d</span> <span class="text-yellow-400">'{
+    "streamId": "webhook-events",
+    "displayName": "Webhook Events",
+    "retentionHours": 72,
+    "orderingRequired": false,
+    "relayWorkerCount": 4
+  }'</span>
+
+<span class="text-gray-500"># Response: 201 Created</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Configure Relay -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">2. Configure Relay Endpoint</h3>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-sky-500">$ curl -X POST http://localhost:5000/admin/streams/webhook-events/relays</span> \
+  <span class="text-blue-400">-H</span> <span class="text-yellow-400">"Content-Type: application/json"</span> \
+  <span class="text-blue-400">-d</span> <span class="text-yellow-400">'{
+    "endpointUrl": "https://my-backend.com/process",
+    "httpMethod": "POST",
+    "headers": {"Authorization": "Bearer token123"},
+    "timeoutMs": 5000,
+    "retryAttempts": 3,
+    "retryBackoffMs": 1000
+  }'</span>
+
+<span class="text-gray-500"># Response: 201 Created</span></code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ingest Messages -->
+            <div class="mb-12">
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">3. Ingest Messages</h3>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Path-based routing</h4>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-sky-500">$ curl -X POST http://localhost:5000/streams/webhook-events/ingest</span> \
+  <span class="text-blue-400">-H</span> <span class="text-yellow-400">"Content-Type: application/json"</span> \
+  <span class="text-blue-400">-d</span> <span class="text-yellow-400">'{"event": "user.signup", "userId": 12345}'</span>
+
+<span class="text-gray-500"># Response: 202 Accepted (&lt;1ms)</span></code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Header-based routing</h4>
+                        <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                            <pre><code><span class="text-sky-500">$ curl -X POST http://localhost:5000/ingest</span> \
+  <span class="text-blue-400">-H</span> <span class="text-yellow-400">"X-Stream-Id: webhook-events"</span> \
+  <span class="text-blue-400">-H</span> <span class="text-yellow-400">"Content-Type: application/json"</span> \
+  <span class="text-blue-400">-d</span> <span class="text-yellow-400">'{"event": "order.created"}'</span>
+
+<span class="text-gray-500"># Response: 202 Accepted</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Get Metrics -->
+            <div>
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">4. Monitor Metrics</h3>
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code><span class="text-sky-500">$ curl http://localhost:5000/admin/streams/webhook-events/metrics</span>
+
+<span class="text-gray-500"># Response:</span>
+{
+  <span class="text-green-400">"streamId"</span>: <span class="text-yellow-400">"webhook-events"</span>,
+  <span class="text-green-400">"totalMessagesReceived"</span>: <span class="text-orange-400">125430</span>,
+  <span class="text-green-400">"totalMessagesRelayed"</span>: <span class="text-orange-400">125428</span>,
+  <span class="text-green-400">"pendingMessages"</span>: <span class="text-orange-400">2</span>,
+  <span class="text-green-400">"failedRelays"</span>: <span class="text-orange-400">0</span>,
+  <span class="text-green-400">"avgLatencyMs"</span>: <span class="text-orange-400">0.42</span>
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Configuration -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Configuration</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Flexible configuration via JSON or environment variables.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">appsettings.json</h3>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                        <pre><code>{
+  <span class="text-green-400">"NoundryStreams"</span>: {
+    <span class="text-green-400">"DataPath"</span>: <span class="text-yellow-400">"./data/noundry-streams.db"</span>,
+    <span class="text-green-400">"ApiKey"</span>: <span class="text-yellow-400">"your-secret-key"</span>,
+    <span class="text-green-400">"Defaults"</span>: {
+      <span class="text-green-400">"ChannelCapacity"</span>: <span class="text-orange-400">10000</span>,
+      <span class="text-green-400">"BatchIntervalMs"</span>: <span class="text-orange-400">50</span>,
+      <span class="text-green-400">"BatchMaxSize"</span>: <span class="text-orange-400">500</span>,
+      <span class="text-green-400">"RetentionHours"</span>: <span class="text-orange-400">168</span>,
+      <span class="text-green-400">"RelayWorkerCount"</span>: <span class="text-orange-400">4</span>
+    },
+    <span class="text-green-400">"Sqlite"</span>: {
+      <span class="text-green-400">"CacheSizeMB"</span>: <span class="text-orange-400">256</span>,
+      <span class="text-green-400">"MmapSizeMB"</span>: <span class="text-orange-400">1024</span>
+    }
+  },
+  <span class="text-green-400">"Kestrel"</span>: {
+    <span class="text-green-400">"Endpoints"</span>: {
+      <span class="text-green-400">"Http"</span>: { <span class="text-green-400">"Url"</span>: <span class="text-yellow-400">"http://0.0.0.0:5000"</span> }
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+
+                <div class="mt-8 grid md:grid-cols-2 gap-8">
+                    <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                        <h4 class="font-semibold text-sky-900 dark:text-sky-100 mb-4">Performance Settings</h4>
+                        <ul class="space-y-2 text-sm text-sky-800 dark:text-sky-200">
+                            <li><strong>ChannelCapacity:</strong> Ingest buffer size (default: 10000)</li>
+                            <li><strong>BatchIntervalMs:</strong> Max batch wait (default: 50ms)</li>
+                            <li><strong>BatchMaxSize:</strong> Messages per batch (default: 500)</li>
+                            <li><strong>RelayWorkerCount:</strong> Parallel relays (default: 4)</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-sky-50 dark:bg-sky-900/20 rounded-xl p-6 border border-sky-200 dark:border-sky-800">
+                        <h4 class="font-semibold text-sky-900 dark:text-sky-100 mb-4">Storage Settings</h4>
+                        <ul class="space-y-2 text-sm text-sky-800 dark:text-sky-200">
+                            <li><strong>DataPath:</strong> SQLite database location</li>
+                            <li><strong>RetentionHours:</strong> Message retention (default: 168)</li>
+                            <li><strong>CacheSizeMB:</strong> SQLite page cache (default: 256)</li>
+                            <li><strong>MmapSizeMB:</strong> Memory-mapped I/O (default: 1024)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Observability -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Observability</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Built-in OpenTelemetry support for distributed tracing.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">OpenTelemetry Tracing</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Per-stream distributed tracing with OTLP/gRPC export to your observability platform.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Trace ingestion to relay
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Jaeger, Zipkin, Tempo compatible
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Per-stream configuration
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
+                    <div class="w-12 h-12 bg-sky-100 dark:bg-sky-900 rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-sky-600 dark:text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Structured Logging</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                        Serilog-based structured logging with configurable sinks and log levels.
+                    </p>
+                    <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            JSON log output
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Request correlation IDs
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 text-sky-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            ELK, Seq, Loki compatible
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Reference -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">API Reference</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Complete REST API for stream management and ingestion.
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-6">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Ingestion Endpoints</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <span class="bg-emerald-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">POST</span>
+                            <code class="text-gray-700 dark:text-gray-300">/streams/{streamId}/ingest</code>
+                            <span class="ml-auto text-gray-500 text-sm">Primary ingestion endpoint</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-emerald-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">POST</span>
+                            <code class="text-gray-700 dark:text-gray-300">/ingest</code>
+                            <span class="ml-auto text-gray-500 text-sm">Header/query-based routing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Admin Endpoints</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <span class="bg-emerald-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">POST</span>
+                            <code class="text-gray-700 dark:text-gray-300">/admin/streams</code>
+                            <span class="ml-auto text-gray-500 text-sm">Create stream</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-blue-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">GET</span>
+                            <code class="text-gray-700 dark:text-gray-300">/admin/streams</code>
+                            <span class="ml-auto text-gray-500 text-sm">List all streams</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-blue-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">GET</span>
+                            <code class="text-gray-700 dark:text-gray-300">/admin/streams/{streamId}</code>
+                            <span class="ml-auto text-gray-500 text-sm">Get stream details</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-emerald-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">POST</span>
+                            <code class="text-gray-700 dark:text-gray-300">/admin/streams/{streamId}/relays</code>
+                            <span class="ml-auto text-gray-500 text-sm">Add relay config</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-blue-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">GET</span>
+                            <code class="text-gray-700 dark:text-gray-300">/admin/streams/{streamId}/metrics</code>
+                            <span class="ml-auto text-gray-500 text-sm">Get stream metrics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Health Endpoints</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <span class="bg-blue-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">GET</span>
+                            <code class="text-gray-700 dark:text-gray-300">/health</code>
+                            <span class="ml-auto text-gray-500 text-sm">Liveness check</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="bg-blue-500 text-white text-xs font-mono px-2 py-1 rounded mr-3">GET</span>
+                            <code class="text-gray-700 dark:text-gray-300">/health/ready</code>
+                            <span class="ml-auto text-gray-500 text-sm">Readiness check</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-sky-600 to-cyan-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-4">Ready for Reliable Event Streaming?</h2>
+            <p class="text-xl text-sky-100 mb-8 max-w-3xl mx-auto">
+                Deploy Noundry.Streams today and handle 50K+ messages/second with sub-millisecond latency and zero message loss.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="https://github.com/noundry" target="_blank" class="bg-white text-sky-600 hover:bg-sky-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center justify-center">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path>
+                    </svg>
+                    View on GitHub
+                </a>
+                <a href="libraries.html" class="border-2 border-white text-white hover:bg-white hover:text-sky-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Browse All Libraries
+                </a>
+            </div>
+        </div>
+    </section>
+    <%= footer %>
+</body>
+</html>
