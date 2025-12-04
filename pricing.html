@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" x-data="{ darkMode: false, billingCycle: 'annual' }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
+<html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
     <title>Pricing - Noundry Platform</title>
     <%= head %>
@@ -7,588 +7,84 @@
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
     <%= header %>
 
-    <!-- Hero Section -->
-    <section class="pt-20 pb-16 bg-gradient-to-br from-primary-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-                    Simple, Transparent <span class="text-primary-600 dark:text-primary-400">Pricing</span>
-                </h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-                    Get access to the complete Noundry platform with our flexible licensing options. Choose the plan that fits your team's needs.
-                </p>
-
-                <!-- Billing Toggle -->
-                <div class="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg p-1 mb-8">
-                    <button
-                        @click="billingCycle = 'monthly'"
-                        :class="billingCycle === 'monthly' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
-                        class="px-4 py-2 rounded-md text-sm font-medium transition-all">
-                        Monthly
-                    </button>
-                    <button
-                        @click="billingCycle = 'annual'"
-                        :class="billingCycle === 'annual' ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm' : 'text-gray-600 dark:text-gray-400'"
-                        class="px-4 py-2 rounded-md text-sm font-medium transition-all">
-                        Annual
-                        <span class="ml-1 text-xs text-accent-600 dark:text-accent-400 font-semibold">Save 20%</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Plans -->
-    <section class="py-20 bg-white dark:bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-4 gap-6">
-                <!-- Solo Plan -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-green-300 dark:hover:border-green-600 transition-all transform hover:scale-105">
-                    <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full mb-4">
-                            <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Solo</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">For indie developers and solopreneurs</p>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$199' : '$25'"></span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
-                        </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Single developer license</p>
-                        <div x-show="billingCycle === 'annual'" class="mt-2">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
-                                Save $101/year
-                            </span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Full platform access</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">All libraries and components</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Essential blocks & blueprints</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Community support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Regular updates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Personal use license</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-gray-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                            <span class="text-gray-500 dark:text-gray-400 line-through">Premium training materials</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                <span class="text-gray-700 dark:text-gray-300">+ Andy AI CLI</span>
-                            </div>
-                            <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded font-semibold transition-colors whitespace-nowrap">Subscribe</a>
-                        </li>
-                    </ul>
-
-                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/4gM00c8zo9ZY6xfdCFgjC00' : 'https://buy.stripe.com/dRmcMYdTI4FEcVD1TXgjC06'" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center">
-                        Get Started
-                    </a>
-                </div>
-
-                <!-- Developer Plan -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-600 transition-all transform hover:scale-105">
-                    <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
-                            <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Developer</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Perfect for individual developers and freelancers</p>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$299' : '$37'"></span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
-                        </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Per developer license</p>
-                        <div x-show="billingCycle === 'annual'" class="mt-2">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
-                                Save $145/year
-                            </span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Full platform access</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">All libraries and components</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Blueprint templates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Community support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Regular updates</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-accent-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Personal use license</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                <span class="text-gray-700 dark:text-gray-300">+ Andy AI CLI</span>
-                            </div>
-                            <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded font-semibold transition-colors whitespace-nowrap">Subscribe</a>
-                        </li>
-                    </ul>
-
-                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/9B63co16W9ZYdZH425gjC01' : 'https://buy.stripe.com/7sYbIU5ncc866xf6adgjC05'" class="block w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center">
-                        Get Started
-                    </a>
-                </div>
-
-                <!-- Team Plan (Most Popular) -->
-                <div class="relative bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-2xl shadow-xl p-8 border-2 border-primary-500 dark:border-primary-400 transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-gradient-to-r from-primary-600 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                            POPULAR
-                        </span>
-                    </div>
-
-                    <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-full mb-4">
-                            <svg class="w-8 h-8 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Team</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">Ideal for development teams and growing startups</p>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="text-5xl font-bold text-gray-900 dark:text-white" x-text="billingCycle === 'annual' ? '$999' : '$125'"></span>
-                            <span class="text-gray-600 dark:text-gray-300 ml-2" x-text="billingCycle === 'annual' ? '/year' : '/month'"></span>
-                        </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Up to 5 developers</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            <span x-text="billingCycle === 'annual' ? '$99' : '$12'"></span>/additional dev <span x-text="billingCycle === 'annual' ? 'per year' : 'per month'"></span>
-                        </p>
-                        <div x-show="billingCycle === 'annual'" class="mt-2">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200">
-                                Save $501/year
-                            </span>
-                        </div>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300 font-medium">Everything in Developer</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Priority email support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Team collaboration tools</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Advanced blueprints</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Private package registry</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Commercial use license</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-primary-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Training workshops (2/year)</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                <span class="text-gray-700 dark:text-gray-300">+ Andy AI CLI</span>
-                            </div>
-                            <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded font-semibold transition-colors whitespace-nowrap">Subscribe</a>
-                        </li>
-                    </ul>
-
-                    <a :href="billingCycle === 'annual' ? 'https://buy.stripe.com/aFa7sEdTIege5tb6adgjC02' : 'https://buy.stripe.com/5kQcMY02S7RQaNveGJgjC04'" class="block w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg text-center">
-                        Get Started
-                    </a>
-                </div>
-
-                <!-- Enterprise Plan -->
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-600 transition-all transform hover:scale-105">
-                    <div class="text-center mb-8">
-                        <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full mb-4">
-                            <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Enterprise</h3>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">For large teams (20+ developers) and organizations</p>
-                        <div class="flex items-center justify-center mb-4">
-                            <span class="text-4xl font-bold text-gray-900 dark:text-white">Custom</span>
-                        </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Volume pricing available</p>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tailored to your needs</p>
-                    </div>
-
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300 font-medium">Everything in Team</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Dedicated account manager</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Phone & video support</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Custom training programs</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">SLA guarantees</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">On-premise deployment option</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Custom integrations</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg class="w-5 h-5 text-purple-500 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                            <span class="text-gray-700 dark:text-gray-300">Priority feature requests</span>
-                        </li>
-                        <li class="flex items-center justify-between">
-                            <div class="flex items-start">
-                                <svg class="w-5 h-5 text-orange-500 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
-                                <span class="text-gray-700 dark:text-gray-300">+ Andy AI CLI</span>
-                            </div>
-                            <a href="https://buy.stripe.com/8x2cMY6rg1tsg7P0PTgjC03" class="text-xs bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded font-semibold transition-colors whitespace-nowrap">Subscribe</a>
-                        </li>
-                    </ul>
-
-                    <a href="contact.html" class="w-full bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                        Contact Sales
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Feature Comparison -->
-    <section class="py-20 bg-gray-50 dark:bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Compare Plans</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Choose the perfect plan for your development needs
-                </p>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b border-gray-200 dark:border-gray-700">
-                            <th class="text-left py-4 px-6 font-semibold text-gray-900 dark:text-white">Features</th>
-                            <th class="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Developer</th>
-                            <th class="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white bg-primary-50 dark:bg-primary-900/20">Team</th>
-                            <th class="text-center py-4 px-6 font-semibold text-gray-900 dark:text-white">Enterprise</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Number of Developers</td>
-                            <td class="text-center py-4 px-6">1</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">5-20</td>
-                            <td class="text-center py-4 px-6">20+</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">All Libraries & Components</td>
-                            <td class="text-center py-4 px-6">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                            <td class="text-center py-4 px-6">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Blueprint Templates</td>
-                            <td class="text-center py-4 px-6">Basic</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">Advanced</td>
-                            <td class="text-center py-4 px-6">Custom</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Support</td>
-                            <td class="text-center py-4 px-6">Community</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">Priority Email</td>
-                            <td class="text-center py-4 px-6">24/7 Dedicated</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Training Workshops</td>
-                            <td class="text-center py-4 px-6">-</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">2/year</td>
-                            <td class="text-center py-4 px-6">Unlimited</td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Private Package Registry</td>
-                            <td class="text-center py-4 px-6">-</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                            <td class="text-center py-4 px-6">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">Commercial License</td>
-                            <td class="text-center py-4 px-6">Personal</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                            <td class="text-center py-4 px-6">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                        </tr>
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <td class="py-4 px-6 text-gray-700 dark:text-gray-300">On-Premise Deployment</td>
-                            <td class="text-center py-4 px-6">-</td>
-                            <td class="text-center py-4 px-6 bg-primary-50 dark:bg-primary-900/20">-</td>
-                            <td class="text-center py-4 px-6">
-                                <svg class="w-5 h-5 text-accent-500 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-20 bg-white dark:bg-gray-900">
+    <!-- Coming Soon Hero -->
+    <section class="pt-20 pb-16 bg-gradient-to-br from-primary-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 min-h-[70vh] flex items-center">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300">
-                    Everything you need to know about our pricing and licensing
+            <div class="text-center">
+                <!-- Coming Soon Badge -->
+                <div class="inline-flex items-center px-4 py-2 bg-amber-100 dark:bg-amber-900/30 border border-amber-300 dark:border-amber-700 rounded-full mb-8">
+                    <span class="relative flex h-3 w-3 mr-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+                    </span>
+                    <span class="text-amber-800 dark:text-amber-200 font-semibold text-sm">Coming Soon</span>
+                </div>
+
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
+                    Pricing <span class="text-primary-600 dark:text-primary-400">Coming Soon</span>
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-2xl mx-auto">
+                    We're working hard to bring you flexible pricing options that fit teams of all sizes. Sign up to be notified when pricing is available.
                 </p>
-            </div>
 
-            <div class="space-y-8" x-data="{ openQuestion: null }">
-                <!-- Question 1 -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <button @click="openQuestion = openQuestion === 1 ? null : 1" class="w-full px-6 py-4 text-left flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">Can I switch between plans?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{ 'rotate-180': openQuestion === 1 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="openQuestion === 1" x-collapse class="px-6 pb-4">
-                        <p class="text-gray-600 dark:text-gray-300">
-                            Yes! You can upgrade or downgrade your plan at any time. When upgrading, you'll be charged the prorated difference. When downgrading, we'll credit your account for future billing.
-                        </p>
-                    </div>
+                <!-- Launch Signup Form -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg border border-gray-200 dark:border-gray-700 max-w-md mx-auto" x-data="{ email: '', submitted: false, error: '', loading: false }">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Get notified when we launch</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Be the first to know when pricing is available.</p>
+                    <form @submit.prevent="
+                        if (!email || !email.includes('@')) { error = 'Please enter a valid email'; return; }
+                        loading = true;
+                        error = '';
+                        fetch('https://nounjs.app/api/launchlist', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email })
+                        })
+                        .then(res => {
+                            loading = false;
+                            if (res.ok) {
+                                submitted = true;
+                            } else {
+                                error = 'Something went wrong. Please try again.';
+                            }
+                        })
+                        .catch(() => {
+                            loading = false;
+                            error = 'Something went wrong. Please try again.';
+                        });
+                    " class="space-y-4">
+                        <template x-if="!submitted">
+                            <div class="space-y-3">
+                                <input type="email" x-model="email" placeholder="Enter your email"
+                                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all">
+                                <button type="submit" :disabled="loading"
+                                    class="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                                    <span x-show="!loading">Notify Me</span>
+                                    <span x-show="loading">Sending...</span>
+                                </button>
+                            </div>
+                        </template>
+                        <template x-if="submitted">
+                            <div class="flex items-center justify-center text-green-600 dark:text-green-400 font-medium py-4">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Thanks! We'll notify you when we launch.
+                            </div>
+                        </template>
+                    </form>
+                    <p x-show="error" x-text="error" class="text-red-500 text-sm mt-2"></p>
                 </div>
 
-                <!-- Question 2 -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <button @click="openQuestion = openQuestion === 2 ? null : 2" class="w-full px-6 py-4 text-left flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">What's included in the Enterprise plan?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{ 'rotate-180': openQuestion === 2 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="openQuestion === 2" x-collapse class="px-6 pb-4">
-                        <p class="text-gray-600 dark:text-gray-300">
-                            Enterprise plans are customized for teams with 20+ developers. You get everything in the Team plan plus: dedicated account management, 24/7 phone and video support, custom training programs, SLA guarantees, on-premise deployment options, custom integrations, and priority feature requests. Contact our sales team for a personalized quote.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <button @click="openQuestion = openQuestion === 3 ? null : 3" class="w-full px-6 py-4 text-left flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">Do you offer student discounts?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{ 'rotate-180': openQuestion === 3 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="openQuestion === 3" x-collapse class="px-6 pb-4">
-                        <p class="text-gray-600 dark:text-gray-300">
-                            Yes! We offer a 50% discount for students and educators with valid academic credentials. We also have special programs for bootcamps and educational institutions. Contact us with your .edu email for verification.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <button @click="openQuestion = openQuestion === 4 ? null : 4" class="w-full px-6 py-4 text-left flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">What payment methods do you accept?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{ 'rotate-180': openQuestion === 4 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="openQuestion === 4" x-collapse class="px-6 pb-4">
-                        <p class="text-gray-600 dark:text-gray-300">
-                            We accept all major credit cards (Visa, Mastercard, American Express), PayPal, and ACH transfers for annual plans. Enterprise customers can also pay via invoice with NET 30 terms.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <button @click="openQuestion = openQuestion === 5 ? null : 5" class="w-full px-6 py-4 text-left flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">Is there a free trial?</span>
-                        <svg class="w-5 h-5 text-gray-500 transform transition-transform" :class="{ 'rotate-180': openQuestion === 5 }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div x-show="openQuestion === 5" x-collapse class="px-6 pb-4">
-                        <p class="text-gray-600 dark:text-gray-300">
-                            We provide a 30-day money-back guarantee if you're not satisfied.
-                        </p>
-                    </div>
+                <div class="mt-8">
+                    <a href="docs.html" class="text-primary-600 dark:text-primary-400 hover:underline font-medium">
+                        Explore Documentation in the meantime &rarr;
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="hidden py-20 bg-gradient-to-br from-primary-600 to-blue-700 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-4xl font-bold mb-4">Ready to Accelerate Your Development?</h2>
-            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                Join thousands of developers building amazing applications with Noundry. 
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/pricing.html" class="bg-white text-primary-600 hover:bg-blue-50 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    Get Started
-                </a>
-                <a href="/contact.html" class="border-2 border-white text-white hover:bg-white hover:text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
-                    Contact Sales
-                </a>
-            </div>
-            <p class="mt-6 text-sm text-blue-100">
-                No credit card required • 14-day free trial • Cancel anytime
-            </p>
-        </div>
-    </section>
     <%= footer %>
 </body>
 </html>

@@ -14,7 +14,8 @@
       "Bash(node convert-to-templates.js:*)",
       "Bash(node cleanup-duplicates.js:*)",
       "Bash(git pull:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
