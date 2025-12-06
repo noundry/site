@@ -207,6 +207,11 @@
                     <div class="mb-6">
                         <h3 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">AI & MCP</h3>
                         <div class="space-y-1">
+                            <button @click="activeComponent = 'andy'"
+                                    :class="activeComponent === 'andy' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
+                                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
+                                💡 Andy AI
+                            </button>
                             <button @click="activeComponent = 'mcp'"
                                     :class="activeComponent === 'mcp' ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'"
                                     class="w-full text-left px-3 py-2 rounded-lg text-sm transition-colors">
@@ -4077,6 +4082,210 @@ app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/"
                             <li>• Third-party integrations</li>
                             <li>• Public or partner APIs</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Andy AI -->
+            <div x-show="activeComponent === 'andy'" class="max-w-4xl">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Andy AI</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                    Agentic AI CLI that autonomously reads, writes, and edits your codebase. Multi-provider support with Anthropic Claude, OpenAI GPT-4, Google Gemini, or fully offline local LLM.
+                </p>
+
+                <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 mb-8">
+                    <h3 class="text-lg font-semibold text-orange-900 dark:text-orange-100 mb-2">What is Andy AI?</h3>
+                    <p class="text-orange-800 dark:text-orange-200">
+                        Andy is an agentic AI assistant built with .NET 9.0 and LLamaSharp. It operates in a continuous loop, autonomously executing tools to complete your development tasks. Use cloud providers for maximum capability or run completely offline with CodeLlama-7B and CUDA 12 GPU acceleration.
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Installation</h2>
+
+                    <div class="space-y-4">
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Option 1: NuGet (Recommended)</h3>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-4">
+                                <pre class="text-sm font-mono text-gray-300"><code>dotnet tool install -g Noundry.Andy</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Option 2: Portable ZIP</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">Download from GitHub releases and extract to your PATH.</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Option 3: Local Model (Offline)</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Download CodeLlama-7B GGUF model and configure:</p>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-4 mt-2">
+                                <pre class="text-sm font-mono text-gray-300"><code>andy --provider local --model-path ./models/codellama-7b.Q4_K_M.gguf</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">AI Providers</h2>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Anthropic Claude</h3>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-3">
+                                <code class="text-sm font-mono text-green-400">andy --provider anthropic</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Requires ANTHROPIC_API_KEY</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">OpenAI GPT-4</h3>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-3">
+                                <code class="text-sm font-mono text-green-400">andy --provider openai</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Requires OPENAI_API_KEY</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Google Gemini</h3>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-3">
+                                <code class="text-sm font-mono text-green-400">andy --provider gemini</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">Requires GOOGLE_API_KEY</p>
+                        </div>
+
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Local (Offline)</h3>
+                            <div class="bg-gray-900 dark:bg-black rounded-lg p-3">
+                                <code class="text-sm font-mono text-green-400">andy --provider local</code>
+                            </div>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2">CodeLlama-7B with CUDA 12</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Agentic Tools</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Andy autonomously executes these tools to complete your tasks:</p>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">read_file</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Read file contents from disk</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">write_file</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Create or overwrite files</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">edit_file</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Make targeted edits to files</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">search_files</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Search for patterns across files</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">execute_command</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Run shell commands</p>
+                        </div>
+                        <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
+                            <code class="text-primary-600 dark:text-primary-400 font-mono">list_directory</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Browse directory contents</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Slash Commands</h2>
+
+                    <div class="space-y-3">
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/file</code>
+                            <span class="text-gray-600 dark:text-gray-300">Add file context to conversation</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/run</code>
+                            <span class="text-gray-600 dark:text-gray-300">Execute a shell command</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/search</code>
+                            <span class="text-gray-600 dark:text-gray-300">Search files for a pattern</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/ls</code>
+                            <span class="text-gray-600 dark:text-gray-300">List directory contents</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/mcp</code>
+                            <span class="text-gray-600 dark:text-gray-300">Connect to MCP server</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/tools</code>
+                            <span class="text-gray-600 dark:text-gray-300">Show available tools</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/history</code>
+                            <span class="text-gray-600 dark:text-gray-300">View conversation history</span>
+                        </div>
+                        <div class="flex items-center bg-white dark:bg-gray-900 rounded-lg p-3">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono w-24">/clear</code>
+                            <span class="text-gray-600 dark:text-gray-300">Clear conversation context</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Example Session</h2>
+
+                    <div class="bg-gray-900 dark:bg-black rounded-lg p-6 overflow-x-auto">
+                        <pre class="text-sm font-mono text-gray-300"><code><span class="text-gray-500">$ andy --provider anthropic</span>
+<span class="text-green-400">Andy AI v1.0.0 - Agentic AI Assistant</span>
+<span class="text-blue-400">Provider: Anthropic Claude</span>
+<span class="text-blue-400">Working directory: /home/user/myproject</span>
+
+<span class="text-white">> Add input validation to the UserController</span>
+
+<span class="text-yellow-400">Executing: read_file("Controllers/UserController.cs")</span>
+<span class="text-gray-500">Read 245 lines from Controllers/UserController.cs</span>
+
+<span class="text-yellow-400">Executing: search_files("FluentValidation", "*.cs")</span>
+<span class="text-gray-500">Found 0 matches - need to add validation</span>
+
+<span class="text-yellow-400">Executing: write_file("Validators/UserValidator.cs")</span>
+<span class="text-green-400">Created Validators/UserValidator.cs</span>
+
+<span class="text-yellow-400">Executing: edit_file("Controllers/UserController.cs")</span>
+<span class="text-green-400">Updated UserController with validation</span>
+
+<span class="text-cyan-400">Done! Added FluentValidation to UserController:</span>
+<span class="text-gray-400">- Created UserValidator with Email, Name rules</span>
+<span class="text-gray-400">- Added validation to Create/Update endpoints</span>
+<span class="text-gray-400">- Returns 400 with validation errors</span></code></pre>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">System Requirements</h2>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Cloud Providers</h3>
+                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li>• .NET 9.0 Runtime</li>
+                                <li>• Internet connection</li>
+                                <li>• API key for chosen provider</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Local Model (Offline)</h3>
+                            <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                                <li>• .NET 9.0 Runtime</li>
+                                <li>• NVIDIA GPU (8GB+ VRAM)</li>
+                                <li>• CUDA 12 toolkit</li>
+                                <li>• CodeLlama-7B GGUF model</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

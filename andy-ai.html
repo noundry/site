@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" x-data="{ darkMode: false }" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))" :class="{ 'dark': darkMode }">
 <head>
-    <title>Andy AI - Code Generation CLI | Noundry</title>
+    <title>Andy AI - AI Development Assistant for .NET | Noundry</title>
     <%= head %>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
@@ -16,18 +16,21 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364-.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
                     </svg>
                 </div>
-                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">Andy AI CLI</h1>
-                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-                    Generate production-ready Noundry code with AI-powered natural language commands. Powered by CodeLlama-7B with LlamaSharp.
+                <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">Andy AI</h1>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-4">
+                    AI-powered development assistant for .NET. Like Claude Code, but runs locally or connects to Claude, GPT-4, or Gemini.
+                </p>
+                <p class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+                    Full agentic loop with file operations, command execution, code generation, and MCP integration.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="getting-started.html" class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center">
+                    <a href="#install" class="bg-orange-600 hover:bg-orange-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
-                        Install Andy CLI
+                        Install Andy
                     </a>
-                    <a href="docs.html" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                    <a href="docs.html#andy" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         View Documentation
                     </a>
                 </div>
@@ -35,7 +38,7 @@
 
             <!-- Quick Install -->
             <div class="max-w-3xl mx-auto">
-                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl code-window">
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
                     <div class="flex items-center mb-4">
                         <div class="flex space-x-2">
                             <div class="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -46,94 +49,233 @@
                     </div>
                     <div class="font-mono text-sm space-y-2">
                         <div class="text-gray-400"># Install Andy CLI globally</div>
-                        <div class="text-accent-500">$ dotnet tool install -g Noundry.Andy</div>
-                        <div class="text-gray-400 mt-4"># Authenticate with your Noundry account</div>
-                        <div class="text-accent-500">$ andy auth login</div>
-                        <div class="text-gray-400 mt-4"># Start generating code!</div>
-                        <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: name, email"</div>
+                        <div class="text-orange-400">$ dotnet tool install --global Noundry.Andy</div>
+                        <div class="text-gray-400 mt-4"># Configure your preferred AI provider</div>
+                        <div class="text-orange-400">$ andy config set anthropic.apikey YOUR_API_KEY</div>
+                        <div class="text-gray-400 mt-4"># Start interactive session</div>
+                        <div class="text-orange-400">$ andy</div>
+                        <div class="text-green-400 mt-2">Andy AI v1.0.0 - Ready to assist!</div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-12">
+                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">4</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">AI Providers</div>
+                </div>
+                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">6+</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Built-in Tools</div>
+                </div>
+                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">12+</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Slash Commands</div>
+                </div>
+                <div class="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">GPU</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Acceleration</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Key Features -->
+    <!-- AI Providers Section -->
     <section class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Powerful AI-Driven Development</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300">Everything you need to accelerate .NET development</p>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Choose Your AI Provider</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Use cloud providers or run completely local with CodeLlama</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-orange-100 dark:border-gray-700">
-                    <div class="w-12 h-12 bg-orange-500 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Natural Language Generation</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Describe what you need in plain English. Andy understands and generates the right code using CodeLlama-7B.</p>
-                </div>
-
-                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-blue-100 dark:border-gray-700">
-                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m0 0a2.246 2.246 0 0 0-.75-.128H5.25c-.263 0-.515.045-.75.128m15 0A2.25 2.25 0 0 1 21 12v6a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 18v-6c0-.98.626-1.813 1.5-2.122"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Noundry.UI Integration</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Generate complete forms with validation using Noundry TagHelpers and Tailwind CSS styling.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-purple-100 dark:border-gray-700">
+                    <div class="text-3xl mb-4">🟣</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Anthropic Claude</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Claude Opus 4.5, Sonnet, Haiku</p>
+                    <code class="text-xs bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 px-2 py-1 rounded">claude-opus-4-5-20251101</code>
                 </div>
 
                 <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-green-100 dark:border-gray-700">
+                    <div class="text-3xl mb-4">🟢</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">OpenAI GPT-4</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">GPT-4o, GPT-4 Turbo</p>
+                    <code class="text-xs bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 px-2 py-1 rounded">gpt-4o</code>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-blue-100 dark:border-gray-700">
+                    <div class="text-3xl mb-4">🔵</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Google Gemini</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Gemini Pro</p>
+                    <code class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-2 py-1 rounded">gemini-pro</code>
+                </div>
+
+                <div class="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-orange-100 dark:border-gray-700">
+                    <div class="text-3xl mb-4">🟠</div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Local CodeLlama</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Run offline with GPU</p>
+                    <code class="text-xs bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 px-2 py-1 rounded">codellama-7b-instruct</code>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-gray-900 dark:bg-gray-800 rounded-xl p-6 max-w-3xl mx-auto">
+                <div class="font-mono text-sm text-gray-300">
+                    <div class="text-gray-500"># Configure AI providers</div>
+                    <div class="text-orange-400">$ andy config set anthropic.apikey sk-ant-...</div>
+                    <div class="text-orange-400">$ andy config set openai.apikey sk-...</div>
+                    <div class="text-orange-400">$ andy config set google.apikey AIza...</div>
+                    <div class="mt-3 text-gray-500"># Or use local model (no API key needed)</div>
+                    <div class="text-orange-400">$ andy --local</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Built-in Tools Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Agentic Tool Execution</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Andy can read files, write code, and execute commands autonomously</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">read_file</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Read and analyze any file in your project. Andy understands code context.</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 0 0-1.883 2.542l.857 6a2.25 2.25 0 0 0 2.227 1.932H19.05a2.25 2.25 0 0 0 2.227-1.932l.857-6a2.25 2.25 0 0 0-1.883-2.542m-16.5 0V6A2.25 2.25 0 0 1 6 3.75h3.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 0 1.06.44H18A2.25 2.25 0 0 1 20.25 9v.776"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Smart File Placement</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Analyzes your project structure and places files in the correct directories automatically.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">write_file</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Create new files with generated code. Andy places files in the correct directories.</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-purple-100 dark:border-gray-700">
-                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Interactive Chat Mode</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Conversational interface for iterative development. Refine and improve code through dialogue.</p>
-                </div>
-
-                <div class="bg-gradient-to-br from-yellow-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-yellow-100 dark:border-gray-700">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <div class="w-12 h-12 bg-yellow-500 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Template-Based</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Uses proven templates for instant generation. No training required—just describe and generate.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">edit_file</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Modify existing files with precise text replacements. Fix bugs and refactor code.</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-red-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-red-100 dark:border-gray-700">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                    <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">search_files</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Search for files matching patterns across your entire codebase.</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <div class="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Production Ready</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Generated code includes validation, error handling, and follows ASP.NET Core best practices.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">execute_command</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Run shell commands like dotnet build, npm install, git status, and more.</p>
                 </div>
 
-                <div class="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-indigo-100 dark:border-gray-700">
+                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <div class="w-12 h-12 bg-indigo-500 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">MCP Integration</h3>
-                    <p class="text-gray-600 dark:text-gray-300">Access Noundry documentation in any coding agent via NoundryMCP - a hosted Model Context Protocol server at mcp.noundry.ai/mcp.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">list_directory</h3>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Explore project structure. Andy understands your project layout.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slash Commands Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Quick Slash Commands</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300 mb-8">
+                        Use slash commands for instant actions without waiting for AI processing.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/file &lt;path&gt;</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Read a file</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/run &lt;cmd&gt;</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Execute command</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/search &lt;pattern&gt;</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Find files</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/ls [path]</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">List directory</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/mcp</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">MCP status</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/tools</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">List tools</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/history</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">View history</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <code class="text-orange-600 dark:text-orange-400 font-mono">/clear</code>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Clear context</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Andy Session</div>
+                    </div>
+                    <div class="font-mono text-sm space-y-3">
+                        <div class="text-blue-400">&gt; /file Program.cs</div>
+                        <div class="text-gray-400">Reading Program.cs...</div>
+                        <div class="text-green-400">Content displayed (45 lines)</div>
+
+                        <div class="text-blue-400 mt-4">&gt; /run dotnet build</div>
+                        <div class="text-gray-400">Executing: dotnet build</div>
+                        <div class="text-green-400">Build succeeded. 0 errors, 0 warnings.</div>
+
+                        <div class="text-blue-400 mt-4">&gt; /search *.cs</div>
+                        <div class="text-gray-400">Searching for *.cs...</div>
+                        <div class="text-green-400">Found 23 files</div>
+
+                        <div class="text-blue-400 mt-4">&gt; /mcp</div>
+                        <div class="text-green-400">MCP: Connected to mcp.noundry.ai</div>
+                        <div class="text-gray-400">Tools: 12 available</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -148,46 +290,46 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">NoundryMCP - Documentation for Any Coding Agent</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">MCP Integration</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-                    Access complete Noundry documentation directly in Claude, Cursor, or any MCP-compatible coding agent with our hosted Model Context Protocol server.
+                    Andy connects to NoundryMCP for extended Noundry-specific tools and documentation access.
                 </p>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <div>
                     <div class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-xl">
-                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">What is NoundryMCP?</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Model Context Protocol</h3>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">
-                            NoundryMCP is a hosted Model Context Protocol server that provides real-time access to Noundry documentation, code examples, and best practices directly within your coding agent.
+                            Andy automatically connects to the Noundry MCP server for extended functionality. Access Noundry documentation, code examples, and platform-specific tools.
                         </p>
 
                         <div class="mb-6">
-                            <h4 class="font-semibold text-gray-900 dark:text-white mb-3">Key Features</h4>
+                            <h4 class="font-semibold text-gray-900 dark:text-white mb-3">MCP Features</h4>
                             <ul class="space-y-3 text-gray-600 dark:text-gray-300">
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    <span>Full-text search across all Noundry documentation</span>
+                                    <span>Full-text search across Noundry documentation</span>
                                 </li>
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    <span>Seamless integration with Claude Code, Cursor, and other MCP-compatible agents</span>
+                                    <span>Platform-specific code generation</span>
                                 </li>
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    <span>Always up-to-date with the latest Noundry releases</span>
+                                    <span>Graceful degradation if MCP unavailable</span>
                                 </li>
                                 <li class="flex items-start">
                                     <svg class="w-5 h-5 text-indigo-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                     </svg>
-                                    <span>No installation required - it's hosted by Noundry</span>
+                                    <span>Disable with <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">--no-mcp</code></span>
                                 </li>
                             </ul>
                         </div>
@@ -201,14 +343,14 @@
                 </div>
 
                 <div>
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 shadow-2xl code-window">
+                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 shadow-2xl">
                         <div class="flex items-center mb-4">
                             <div class="flex space-x-2">
                                 <div class="w-3 h-3 bg-red-500 rounded-full"></div>
                                 <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
                                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                             </div>
-                            <div class="ml-4 text-gray-400 text-sm font-mono">Add NoundryMCP to Your Coding Agent</div>
+                            <div class="ml-4 text-gray-400 text-sm font-mono">Use NoundryMCP in Any Agent</div>
                         </div>
 
                         <div class="font-mono text-sm space-y-6">
@@ -219,7 +361,6 @@
 
                             <div>
                                 <div class="text-gray-400 mb-2"># For Cursor IDE</div>
-                                <div class="text-blue-400">Add to Cursor settings:</div>
                                 <div class="bg-gray-800 rounded p-3 mt-2">
                                     <div class="text-gray-300">{</div>
                                     <div class="text-gray-300 pl-4">"mcpServers": {</div>
@@ -230,447 +371,83 @@
                                     <div class="text-gray-300">}</div>
                                 </div>
                             </div>
-
-                            <div>
-                                <div class="text-gray-400 mb-2"># Or use with any MCP-compatible agent</div>
-                                <div class="text-green-400">MCP Server: https://mcp.noundry.ai/mcp</div>
-                            </div>
-
-                            <div class="border-t border-gray-700 pt-4">
-                                <div class="text-accent-500 mb-2"># Example usage in your coding agent:</div>
-                                <div class="text-gray-300">&gt; "How do I use Noundry.UI form validation?"</div>
-                                <div class="text-orange-400 mt-2">🤖 Searching Noundry docs via MCP...</div>
-                                <div class="text-green-400 mt-1">✅ Found documentation and examples!</div>
-                            </div>
                         </div>
                     </div>
 
                     <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
                         <p class="text-sm text-gray-600 dark:text-gray-300">
-                            <strong class="text-indigo-600 dark:text-indigo-400">Universal Compatibility:</strong> Works with Claude Code, Cursor, Windsurf, and any coding agent that supports the Model Context Protocol standard.
+                            <strong class="text-indigo-600 dark:text-indigo-400">Works Everywhere:</strong> Claude Code, Cursor, Windsurf, and any MCP-compatible agent.
                         </p>
                     </div>
                 </div>
             </div>
-
-            <div class="mt-16 text-center">
-                <a href="docs.html#noundry-mcp" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                    </svg>
-                    Learn More About NoundryMCP
-                </a>
-            </div>
         </div>
     </section>
 
-    <!-- Use Case Demos -->
-    <section class="py-20 bg-gray-50 dark:bg-gray-800" x-data="{ activeDemo: 'form' }">
+    <!-- Interactive Demo Section -->
+    <section class="py-20 bg-gray-50 dark:bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-World Use Cases</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300">See what you can build with Andy AI</p>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">See Andy in Action</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Real examples of Andy helping with development tasks</p>
             </div>
 
-            <!-- Tabs -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button @click="activeDemo = 'form'" :class="activeDemo === 'form' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-orange-500 hover:text-white">
-                    Form Generation
-                </button>
-                <button @click="activeDemo = 'service'" :class="activeDemo === 'service' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-orange-500 hover:text-white">
-                    Service Layer
-                </button>
-                <button @click="activeDemo = 'api'" :class="activeDemo === 'api' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-orange-500 hover:text-white">
-                    API Controller
-                </button>
-                <button @click="activeDemo = 'datatable'" :class="activeDemo === 'datatable' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-orange-500 hover:text-white">
-                    Data Table
-                </button>
-                <button @click="activeDemo = 'chat'" :class="activeDemo === 'chat' ? 'bg-orange-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300'" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-orange-500 hover:text-white">
-                    Chat Mode
-                </button>
-            </div>
-
-            <!-- Demo: Form Generation -->
-            <div x-show="activeDemo === 'form'" x-transition class="grid lg:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Generate Contact Form with Validation</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create a complete form UI with Noundry TagHelpers, data annotations, and Tailwind CSS styling in seconds.</p>
-
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 code-window mb-6">
-                        <div class="font-mono text-sm space-y-2">
-                            <div class="text-accent-500">$ andy generate "form UI using Noundry.UI with fields: firstName, lastName, email, phone"</div>
-                            <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
-                            <div class="text-gray-400">📋 Using template: Noundry.UI Form</div>
-                            <div class="text-green-400 mt-2">✨ Created Models/ContactFormModel.cs</div>
-                            <div class="text-green-400">✨ Created Views/Contact/Create.cshtml</div>
-                            <div class="text-blue-400 mt-2">✅ Form ready with validation!</div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                         </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Andy Interactive Session</div>
                     </div>
 
-                    <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
-                        <h4 class="font-semibold text-orange-900 dark:text-orange-300 mb-2">What's Generated:</h4>
-                        <ul class="space-y-2 text-orange-800 dark:text-orange-200">
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                Model class with DataAnnotations validation
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                Razor view with Noundry TagHelpers
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                Client-side and server-side validation
-                            </li>
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                </svg>
-                                Tailwind CSS responsive styling
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 overflow-x-auto">
-                    <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Models/ContactFormModel.cs</h4>
-                    <pre class="text-sm"><code class="text-gray-800 dark:text-gray-200"><span class="text-purple-600 dark:text-purple-400">using</span> System.ComponentModel.DataAnnotations;
-
-<span class="text-purple-600 dark:text-purple-400">public class</span> <span class="text-blue-600 dark:text-blue-400">ContactFormModel</span>
-{
-    [<span class="text-yellow-600 dark:text-yellow-400">Required</span>]
-    [<span class="text-yellow-600 dark:text-yellow-400">Display</span>(Name = <span class="text-green-600 dark:text-green-400">"First Name"</span>)]
-    [<span class="text-yellow-600 dark:text-yellow-400">StringLength</span>(50)]
-    <span class="text-purple-600 dark:text-purple-400">public string</span> FirstName { <span class="text-purple-600 dark:text-purple-400">get</span>; <span class="text-purple-600 dark:text-purple-400">set</span>; } = <span class="text-green-600 dark:text-green-400">""</span>;
-
-    [<span class="text-yellow-600 dark:text-yellow-400">Required</span>]
-    [<span class="text-yellow-600 dark:text-yellow-400">EmailAddress</span>]
-    <span class="text-purple-600 dark:text-purple-400">public string</span> Email { <span class="text-purple-600 dark:text-purple-400">get</span>; <span class="text-purple-600 dark:text-purple-400">set</span>; } = <span class="text-green-600 dark:text-green-400">""</span>;
-
-    [<span class="text-yellow-600 dark:text-yellow-400">Phone</span>]
-    <span class="text-purple-600 dark:text-purple-400">public string</span> Phone { <span class="text-purple-600 dark:text-purple-400">get</span>; <span class="text-purple-600 dark:text-purple-400">set</span>; } = <span class="text-green-600 dark:text-green-400">""</span>;
-}</code></pre>
-
-                    <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2 mt-6">Views/Contact/Create.cshtml</h4>
-                    <pre class="text-sm"><code class="text-gray-800 dark:text-gray-200"><span class="text-blue-600 dark:text-blue-400">&lt;noundry-card&gt;</span>
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-card-body&gt;</span>
-        <span class="text-purple-600 dark:text-purple-400">&lt;form</span> method=<span class="text-green-600 dark:text-green-400">"post"</span><span class="text-purple-600 dark:text-purple-400">&gt;</span>
-            <span class="text-blue-600 dark:text-blue-400">&lt;noundry-text-input</span>
-                asp-for=<span class="text-green-600 dark:text-green-400">"FirstName"</span>
-                placeholder=<span class="text-green-600 dark:text-green-400">"Enter first name"</span> <span class="text-blue-600 dark:text-blue-400">/&gt;</span>
-
-            <span class="text-blue-600 dark:text-blue-400">&lt;noundry-text-input</span>
-                asp-for=<span class="text-green-600 dark:text-green-400">"Email"</span>
-                type=<span class="text-green-600 dark:text-green-400">"email"</span> <span class="text-blue-600 dark:text-blue-400">/&gt;</span>
-
-            <span class="text-blue-600 dark:text-blue-400">&lt;noundry-button</span> type=<span class="text-green-600 dark:text-green-400">"submit"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>Submit<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-button&gt;</span>
-        <span class="text-purple-600 dark:text-purple-400">&lt;/form&gt;</span>
-    <span class="text-blue-600 dark:text-blue-400">&lt;/noundry-card-body&gt;</span>
-<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-card&gt;</span></code></pre>
-                </div>
-            </div>
-
-            <!-- Demo: Service Layer -->
-            <div x-show="activeDemo === 'service'" x-transition class="grid lg:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Generate Service with CRUD Operations</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create a complete service layer with interface, dependency injection, and async methods following best practices.</p>
-
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 code-window mb-6">
-                        <div class="font-mono text-sm space-y-2">
-                            <div class="text-accent-500">$ andy generate "service for managing products with CRUD operations"</div>
-                            <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
-                            <div class="text-gray-400">📋 Analyzing project structure...</div>
-                            <div class="text-green-400 mt-2">✨ Created Services/IProductService.cs</div>
-                            <div class="text-green-400">✨ Created Services/ProductService.cs</div>
-                            <div class="text-blue-400 mt-2">✅ Service ready with DI setup!</div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-2">Features Included:</h4>
-                            <ul class="space-y-1 text-blue-800 dark:text-blue-200 text-sm">
-                                <li>• Interface-based design (IProductService)</li>
-                                <li>• Async CRUD methods (GetAllAsync, CreateAsync, etc.)</li>
-                                <li>• Dependency injection ready</li>
-                                <li>• Error handling and logging</li>
-                                <li>• Repository pattern integration</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 overflow-x-auto">
-                    <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Services/ProductService.cs</h4>
-                    <pre class="text-sm"><code class="text-gray-800 dark:text-gray-200"><span class="text-purple-600 dark:text-purple-400">public interface</span> <span class="text-blue-600 dark:text-blue-400">IProductService</span>
-{
-    <span class="text-purple-600 dark:text-purple-400">Task</span>&lt;<span class="text-blue-600 dark:text-blue-400">IEnumerable</span>&lt;Product&gt;&gt; <span class="text-yellow-600 dark:text-yellow-400">GetAllAsync</span>();
-    <span class="text-purple-600 dark:text-purple-400">Task</span>&lt;Product?&gt; <span class="text-yellow-600 dark:text-yellow-400">GetByIdAsync</span>(<span class="text-purple-600 dark:text-purple-400">int</span> id);
-    <span class="text-purple-600 dark:text-purple-400">Task</span>&lt;Product&gt; <span class="text-yellow-600 dark:text-yellow-400">CreateAsync</span>(Product product);
-    <span class="text-purple-600 dark:text-purple-400">Task</span>&lt;Product&gt; <span class="text-yellow-600 dark:text-yellow-400">UpdateAsync</span>(Product product);
-    <span class="text-purple-600 dark:text-purple-400">Task</span>&lt;<span class="text-purple-600 dark:text-purple-400">bool</span>&gt; <span class="text-yellow-600 dark:text-yellow-400">DeleteAsync</span>(<span class="text-purple-600 dark:text-purple-400">int</span> id);
-}
-
-<span class="text-purple-600 dark:text-purple-400">public class</span> <span class="text-blue-600 dark:text-blue-400">ProductService</span> : IProductService
-{
-    <span class="text-purple-600 dark:text-purple-400">private readonly</span> IRepository&lt;Product&gt; _repository;
-    <span class="text-purple-600 dark:text-purple-400">private readonly</span> ILogger&lt;ProductService&gt; _logger;
-
-    <span class="text-purple-600 dark:text-purple-400">public</span> <span class="text-yellow-600 dark:text-yellow-400">ProductService</span>(
-        IRepository&lt;Product&gt; repository,
-        ILogger&lt;ProductService&gt; logger)
-    {
-        _repository = repository;
-        _logger = logger;
-    }
-
-    <span class="text-purple-600 dark:text-purple-400">public async Task</span>&lt;IEnumerable&lt;Product&gt;&gt; <span class="text-yellow-600 dark:text-yellow-400">GetAllAsync</span>()
-    {
-        _logger.<span class="text-yellow-600 dark:text-yellow-400">LogInformation</span>(<span class="text-green-600 dark:text-green-400">"Fetching all products"</span>);
-        <span class="text-purple-600 dark:text-purple-400">return await</span> _repository.<span class="text-yellow-600 dark:text-yellow-400">GetAllAsync</span>();
-    }
-
-    <span class="text-gray-500 dark:text-gray-400">// Additional methods...</span>
-}</code></pre>
-                </div>
-            </div>
-
-            <!-- Demo: API Controller -->
-            <div x-show="activeDemo === 'api'" x-transition class="grid lg:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Generate REST API Controller</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create a complete API controller with authentication, proper HTTP verbs, and response types.</p>
-
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 code-window mb-6">
-                        <div class="font-mono text-sm space-y-2">
-                            <div class="text-accent-500">$ andy generate "REST API controller for user management with authentication"</div>
-                            <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
-                            <div class="text-gray-400">📋 Template: ASP.NET Core API Controller</div>
-                            <div class="text-green-400 mt-2">✨ Created Controllers/UserController.cs</div>
-                            <div class="text-blue-400 mt-2">✅ API endpoints ready!</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
-                        <h4 class="font-semibold text-green-900 dark:text-green-300 mb-2">Generated Endpoints:</h4>
-                        <ul class="space-y-2 text-green-800 dark:text-green-200 text-sm font-mono">
-                            <li><span class="font-bold text-blue-600">GET</span> /api/user - Get all users</li>
-                            <li><span class="font-bold text-blue-600">GET</span> /api/user/{id} - Get user by ID</li>
-                            <li><span class="font-bold text-green-600">POST</span> /api/user - Create user</li>
-                            <li><span class="font-bold text-yellow-600">PUT</span> /api/user/{id} - Update user</li>
-                            <li><span class="font-bold text-red-600">DELETE</span> /api/user/{id} - Delete user</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 overflow-x-auto">
-                    <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Controllers/UserController.cs</h4>
-                    <pre class="text-sm"><code class="text-gray-800 dark:text-gray-200"><span class="text-purple-600 dark:text-purple-400">using</span> Microsoft.AspNetCore.Mvc;
-<span class="text-purple-600 dark:text-purple-400">using</span> Microsoft.AspNetCore.Authorization;
-
-[<span class="text-yellow-600 dark:text-yellow-400">ApiController</span>]
-[<span class="text-yellow-600 dark:text-yellow-400">Route</span>(<span class="text-green-600 dark:text-green-400">"api/[controller]"</span>)]
-[<span class="text-yellow-600 dark:text-yellow-400">Authorize</span>]
-<span class="text-purple-600 dark:text-purple-400">public class</span> <span class="text-blue-600 dark:text-blue-400">UserController</span> : ControllerBase
-{
-    <span class="text-purple-600 dark:text-purple-400">private readonly</span> IUserService _userService;
-
-    <span class="text-purple-600 dark:text-purple-400">public</span> <span class="text-yellow-600 dark:text-yellow-400">UserController</span>(IUserService userService)
-    {
-        _userService = userService;
-    }
-
-    [<span class="text-yellow-600 dark:text-yellow-400">HttpGet</span>]
-    <span class="text-purple-600 dark:text-purple-400">public async Task</span>&lt;ActionResult&lt;IEnumerable&lt;User&gt;&gt;&gt; <span class="text-yellow-600 dark:text-yellow-400">GetUsers</span>()
-    {
-        <span class="text-purple-600 dark:text-purple-400">var</span> users = <span class="text-purple-600 dark:text-purple-400">await</span> _userService.<span class="text-yellow-600 dark:text-yellow-400">GetAllAsync</span>();
-        <span class="text-purple-600 dark:text-purple-400">return</span> <span class="text-yellow-600 dark:text-yellow-400">Ok</span>(users);
-    }
-
-    [<span class="text-yellow-600 dark:text-yellow-400">HttpPost</span>]
-    <span class="text-purple-600 dark:text-purple-400">public async Task</span>&lt;ActionResult&lt;User&gt;&gt; <span class="text-yellow-600 dark:text-yellow-400">CreateUser</span>(User user)
-    {
-        <span class="text-purple-600 dark:text-purple-400">var</span> created = <span class="text-purple-600 dark:text-purple-400">await</span> _userService.<span class="text-yellow-600 dark:text-yellow-400">CreateAsync</span>(user);
-        <span class="text-purple-600 dark:text-purple-400">return</span> <span class="text-yellow-600 dark:text-yellow-400">CreatedAtAction</span>(<span class="text-purple-600 dark:text-purple-400">nameof</span>(GetUser),
-            <span class="text-purple-600 dark:text-purple-400">new</span> { id = created.Id }, created);
-    }
-}</code></pre>
-                </div>
-            </div>
-
-            <!-- Demo: Data Table -->
-            <div x-show="activeDemo === 'datatable'" x-transition class="grid lg:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Generate Noundry Data Table</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-6">Create a feature-rich data table with sorting, filtering, and action buttons using Noundry components.</p>
-
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 code-window mb-6">
-                        <div class="font-mono text-sm space-y-2">
-                            <div class="text-accent-500">$ andy generate "Noundry data table for products with sorting and filtering"</div>
-                            <div class="text-gray-400 mt-2">🤖 Processing with CodeLlama-7B...</div>
-                            <div class="text-gray-400">📋 Template: Noundry Data Table</div>
-                            <div class="text-green-400 mt-2">✨ Created Views/Products/Index.cshtml</div>
-                            <div class="text-blue-400 mt-2">✅ Interactive table ready!</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
-                        <h4 class="font-semibold text-purple-900 dark:text-purple-300 mb-2">Table Features:</h4>
-                        <ul class="space-y-1 text-purple-800 dark:text-purple-200 text-sm">
-                            <li>• Sortable columns</li>
-                            <li>• Search and filtering</li>
-                            <li>• Action buttons (Edit, Delete, View)</li>
-                            <li>• Responsive design</li>
-                            <li>• Badge indicators for stock status</li>
-                            <li>• Pagination support</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700 overflow-x-auto">
-                    <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Views/Products/Index.cshtml</h4>
-                    <pre class="text-sm"><code class="text-gray-800 dark:text-gray-200"><span class="text-blue-600 dark:text-blue-400">&lt;noundry-page-title&gt;</span>Products<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-page-title&gt;</span>
-
-<span class="text-blue-600 dark:text-blue-400">&lt;noundry-toolbar&gt;</span>
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-search-box</span> placeholder=<span class="text-green-600 dark:text-green-400">"Search..."</span> <span class="text-blue-600 dark:text-blue-400">/&gt;</span>
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-button</span> variant=<span class="text-green-600 dark:text-green-400">"primary"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>
-        New Product
-    <span class="text-blue-600 dark:text-blue-400">&lt;/noundry-button&gt;</span>
-<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-toolbar&gt;</span>
-
-<span class="text-blue-600 dark:text-blue-400">&lt;noundry-data-table</span>
-    source=<span class="text-green-600 dark:text-green-400">"@Model"</span>
-    sortable=<span class="text-green-600 dark:text-green-400">"true"</span>
-    filterable=<span class="text-green-600 dark:text-green-400">"true"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>
-
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-column</span>
-        field=<span class="text-green-600 dark:text-green-400">"Name"</span>
-        title=<span class="text-green-600 dark:text-green-400">"Product Name"</span>
-        sortable=<span class="text-green-600 dark:text-green-400">"true"</span> <span class="text-blue-600 dark:text-blue-400">/&gt;</span>
-
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-column</span>
-        field=<span class="text-green-600 dark:text-green-400">"Price"</span>
-        format=<span class="text-green-600 dark:text-green-400">"{0:C}"</span>
-        sortable=<span class="text-green-600 dark:text-green-400">"true"</span> <span class="text-blue-600 dark:text-blue-400">/&gt;</span>
-
-    <span class="text-blue-600 dark:text-blue-400">&lt;noundry-column</span> title=<span class="text-green-600 dark:text-green-400">"Actions"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>
-        <span class="text-purple-600 dark:text-purple-400">&lt;template&gt;</span>
-            <span class="text-blue-600 dark:text-blue-400">&lt;noundry-button</span> variant=<span class="text-green-600 dark:text-green-400">"info"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>View<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-button&gt;</span>
-            <span class="text-blue-600 dark:text-blue-400">&lt;noundry-button</span> variant=<span class="text-green-600 dark:text-green-400">"warning"</span><span class="text-blue-600 dark:text-blue-400">&gt;</span>Edit<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-button&gt;</span>
-        <span class="text-purple-600 dark:text-purple-400">&lt;/template&gt;</span>
-    <span class="text-blue-600 dark:text-blue-400">&lt;/noundry-column&gt;</span>
-<span class="text-blue-600 dark:text-blue-400">&lt;/noundry-data-table&gt;</span></code></pre>
-                </div>
-            </div>
-
-            <!-- Demo: Chat Mode -->
-            <div x-show="activeDemo === 'chat'" x-transition>
-                <div class="max-w-4xl mx-auto">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 text-center">Interactive Chat Mode</h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-8 text-center">Have a conversation with Andy to iteratively build and refine your code.</p>
-
-                    <div class="bg-gray-900 dark:bg-gray-950 rounded-xl p-6 code-window">
-                        <div class="font-mono text-sm space-y-4">
-                            <div class="text-accent-500">$ andy chat --context ./src</div>
-
-                            <div class="bg-gray-800 rounded-lg p-4 space-y-3">
-                                <div class="text-gray-400">Starting Andy Chat Session</div>
-                                <div class="text-gray-500">Project: Noundry | Directory: C:\Projects\MyApp\src</div>
-
-                                <div class="mt-4 border-t border-gray-700 pt-3">
-                                    <div class="text-blue-400">&gt; Create a complete authentication flow with JWT tokens</div>
-
-                                    <div class="mt-3 text-gray-300">
-                                        <div class="text-orange-400 mb-2">🤖 Generating authentication components...</div>
-                                        <div class="space-y-1 text-sm">
-                                            <div class="text-green-400">✨ Created: Services/AuthenticationService.cs</div>
-                                            <div class="text-green-400">✨ Created: Models/LoginRequest.cs</div>
-                                            <div class="text-green-400">✨ Created: Models/RegisterRequest.cs</div>
-                                            <div class="text-green-400">✨ Created: Controllers/AuthController.cs</div>
-                                            <div class="text-blue-400">✨ Updated: Program.cs (added JWT configuration)</div>
-                                        </div>
-
-                                        <div class="mt-3 text-gray-300">
-                                            The authentication flow includes:
-                                            <ul class="list-disc list-inside text-sm mt-2 space-y-1">
-                                                <li>JWT token generation and validation</li>
-                                                <li>User registration with password hashing</li>
-                                                <li>Login endpoint with token refresh</li>
-                                                <li>Role-based authorization support</li>
-                                            </ul>
-                                        </div>
-
-                                        <div class="mt-3 text-purple-400">Would you like me to add two-factor authentication?</div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-4 border-t border-gray-700 pt-3">
-                                    <div class="text-blue-400">&gt; Yes, add 2FA with email verification</div>
-
-                                    <div class="mt-3 text-gray-300">
-                                        <div class="text-orange-400 mb-2">🤖 Adding two-factor authentication...</div>
-                                        <div class="space-y-1 text-sm">
-                                            <div class="text-green-400">✨ Created: Services/TwoFactorService.cs</div>
-                                            <div class="text-green-400">✨ Created: Services/EmailService.cs</div>
-                                            <div class="text-green-400">✨ Updated: Models/LoginRequest.cs (added 2FA code)</div>
-                                            <div class="text-green-400">✨ Updated: AuthController.cs (added verify endpoint)</div>
-                                        </div>
-
-                                        <div class="mt-3 text-green-400">✅ Two-factor authentication enabled!</div>
-                                        <div class="text-gray-400 text-sm mt-2">Users will receive a 6-digit code via email during login.</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6 mt-8">
-                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-blue-100 dark:border-gray-700">
-                            <h4 class="font-semibold text-blue-900 dark:text-blue-300 mb-3">Chat Mode Benefits</h4>
-                            <ul class="space-y-2 text-blue-800 dark:text-blue-200 text-sm">
-                                <li class="flex items-start">
-                                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Iterative development through conversation
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Context-aware suggestions
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Refine existing code
-                                </li>
-                                <li class="flex items-start">
-                                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Multi-file coordination
-                                </li>
-                            </ul>
+                    <div class="font-mono text-sm space-y-4">
+                        <div>
+                            <div class="text-blue-400">&gt; Create a UserService with methods for GetAll, GetById, Create, Update, Delete</div>
                         </div>
 
-                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border border-green-100 dark:border-gray-700">
-                            <h4 class="font-semibold text-green-900 dark:text-green-300 mb-3">Common Chat Commands</h4>
-                            <div class="space-y-2 text-sm font-mono">
-                                <div class="text-green-800 dark:text-green-200">andy chat</div>
-                                <div class="text-green-800 dark:text-green-200">andy chat --context ./src</div>
-                                <div class="text-green-800 dark:text-green-200">andy chat --model gpt-4</div>
-                                <div class="text-gray-500 dark:text-gray-400 text-xs mt-4">Press Ctrl+C to exit chat mode</div>
-                            </div>
+                        <div class="text-gray-400">
+                            <div class="text-orange-400">Analyzing project structure...</div>
+                            <div class="mt-2">Using tool: <span class="text-cyan-400">search_files</span> to find existing services</div>
+                            <div>Found 3 existing services in Services/ folder</div>
+                        </div>
+
+                        <div class="text-gray-400">
+                            <div class="text-orange-400">Generating UserService...</div>
+                            <div class="mt-2">Using tool: <span class="text-cyan-400">write_file</span></div>
+                        </div>
+
+                        <div class="text-green-400">
+                            <div>Created: Services/IUserService.cs</div>
+                            <div>Created: Services/UserService.cs</div>
+                        </div>
+
+                        <div class="border-t border-gray-700 pt-4 mt-4">
+                            <div class="text-blue-400">&gt; The build is failing with CS1061 error. Can you check the code?</div>
+                        </div>
+
+                        <div class="text-gray-400">
+                            <div class="text-orange-400">Running build to identify errors...</div>
+                            <div class="mt-2">Using tool: <span class="text-cyan-400">execute_command</span></div>
+                            <div class="text-red-400 mt-2">Build error: 'User' does not contain a definition for 'FullName'</div>
+                        </div>
+
+                        <div class="text-gray-400">
+                            <div class="text-orange-400">Reading User model to check properties...</div>
+                            <div class="mt-2">Using tool: <span class="text-cyan-400">read_file</span> Models/User.cs</div>
+                            <div>Found property 'Name' instead of 'FullName'</div>
+                        </div>
+
+                        <div class="text-gray-400">
+                            <div class="text-orange-400">Fixing the error...</div>
+                            <div class="mt-2">Using tool: <span class="text-cyan-400">edit_file</span></div>
+                            <div>Replaced 'FullName' with 'Name' in UserService.cs</div>
+                        </div>
+
+                        <div class="text-green-400 mt-2">
+                            <div>Build succeeded! Error fixed.</div>
                         </div>
                     </div>
                 </div>
@@ -678,66 +455,103 @@
         </div>
     </section>
 
-    <!-- Quick Commands Reference -->
-    <section class="py-20 bg-white dark:bg-gray-900">
+    <!-- Installation Section -->
+    <section id="install" class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Quick Command Reference</h2>
-                <p class="text-xl text-gray-600 dark:text-gray-300">Essential Andy CLI commands</p>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Installation</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300">Choose your preferred installation method</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Authentication</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy auth login</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy auth logout</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy auth status</div>
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- NuGet Install -->
+                <div class="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 rounded-xl p-6 border-2 border-orange-200 dark:border-orange-800">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white">NuGet Tool</h3>
+                            <span class="text-xs bg-orange-200 dark:bg-orange-800 text-orange-800 dark:text-orange-200 px-2 py-1 rounded">Recommended</span>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-orange-400 mb-4">
+                        $ dotnet tool install --global Noundry.Andy
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Easy install, update, and uninstall. Requires .NET 9.0 SDK.</p>
+                </div>
+
+                <!-- ZIP Archive -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gray-500 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">ZIP Archive</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Pre-built binaries for Windows, Linux, and macOS. No .NET SDK required.</p>
+                    <div class="text-xs text-gray-500 dark:text-gray-400 space-y-1">
+                        <div>Windows x64</div>
+                        <div>Linux x64</div>
+                        <div>macOS Intel / Apple Silicon</div>
                     </div>
                 </div>
 
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Code Generation</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy generate "..."</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy generate --dry-run</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy generate --output ./path</div>
+                <!-- Local Model -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Local Model</h3>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Run completely offline with CodeLlama. CUDA 12 for GPU acceleration.</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-3 font-mono text-xs text-gray-400">
+                        ./scripts/download-model.ps1
                     </div>
                 </div>
+            </div>
 
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Interactive Mode</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy chat</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy chat --context ./src</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy chat --model gpt-4</div>
+            <!-- System Requirements -->
+            <div class="mt-16 bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">System Requirements</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Operating System</h4>
+                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                            <li>Windows 10+</li>
+                            <li>Ubuntu 20.04+</li>
+                            <li>macOS 11+</li>
+                        </ul>
                     </div>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Configuration</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy config list</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy config set key value</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy config get key</div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Hardware</h4>
+                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                            <li>4+ CPU cores (8 recommended)</li>
+                            <li>8GB RAM (16GB recommended)</li>
+                            <li>8GB disk (20GB with local model)</li>
+                        </ul>
                     </div>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Usage & Limits</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy usage</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy quota</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy plan</div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Runtime</h4>
+                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                            <li>.NET 9.0+</li>
+                            <li>API key (cloud providers)</li>
+                        </ul>
                     </div>
-                </div>
-
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 class="font-semibold text-gray-900 dark:text-white mb-3">Help & Info</h3>
-                    <div class="space-y-2 font-mono text-sm">
-                        <div class="text-gray-700 dark:text-gray-300">andy help</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy version</div>
-                        <div class="text-gray-700 dark:text-gray-300">andy docs</div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900 dark:text-white mb-2">GPU (Optional)</h4>
+                        <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                            <li>NVIDIA CUDA 12</li>
+                            <li>6GB+ VRAM</li>
+                            <li>30-50 tokens/sec</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -748,16 +562,16 @@
     <section class="py-20 bg-gradient-to-br from-orange-600 to-red-600 text-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-4xl font-bold mb-6">Ready to Accelerate Your Development?</h2>
-            <p class="text-xl mb-8 text-orange-100">Install Andy CLI and start generating production-ready code today.</p>
+            <p class="text-xl mb-8 text-orange-100">Install Andy and start using AI-powered development assistance today.</p>
+            <div class="bg-gray-900 rounded-lg px-8 py-4 inline-block font-mono text-lg text-gray-300 mb-8">
+                dotnet tool install --global Noundry.Andy
+            </div>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="getting-started.html" class="bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    Get Started Free
+                <a href="docs.html#andy" class="bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center">
+                    View Documentation
                 </a>
-                <a href="docs.html" class="bg-orange-700 text-white border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-800 transition-colors">
-                    View Full Documentation
+                <a href="https://www.nuget.org/packages/Noundry.Andy" target="_blank" class="bg-orange-700 text-white border-2 border-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-800 transition-colors">
+                    View on NuGet
                 </a>
             </div>
         </div>
