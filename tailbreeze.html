@@ -20,7 +20,7 @@
                     <span class="text-cyan-600 dark:text-cyan-400">Tailbreeze</span>
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-                    Zero-config Tailwind CSS integration for ASP.NET Core. Auto-installs the standalone CLI, watches for changes in development, and builds optimized CSS for production. No Node.js required.
+                    Zero-config Tailwind CSS integration for ASP.NET Core. Auto-installs the standalone CLI, watches for changes in development, and builds optimized CSS for production. Supports Tailwind v3 LTS and v4 stable. No Node.js required.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#quickstart" class="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
@@ -32,22 +32,26 @@
                 </div>
 
                 <!-- Stats -->
-                <div class="mt-16 grid md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+                <div class="mt-16 grid md:grid-cols-5 gap-6 max-w-5xl mx-auto">
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">Zero Config</div>
+                        <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">Zero Config</div>
                         <div class="text-gray-600 dark:text-gray-400 text-sm">Works Out of Box</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">No Node.js</div>
+                        <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">No Node.js</div>
                         <div class="text-gray-600 dark:text-gray-400 text-sm">Standalone CLI</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">Hot Reload</div>
+                        <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">Hot Reload</div>
                         <div class="text-gray-600 dark:text-gray-400 text-sm">Dev Experience</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-cyan-600 dark:text-cyan-400">v3 & v4</div>
+                        <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">v3 & v4</div>
                         <div class="text-gray-600 dark:text-gray-400 text-sm">Tailwind Support</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400">.NET 8-10</div>
+                        <div class="text-gray-600 dark:text-gray-400 text-sm">Framework Support</div>
                     </div>
                 </div>
             </div>
@@ -228,11 +232,11 @@ app.<span class="text-green-400">Run</span>();
                     <div class="space-y-4">
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h5 class="font-semibold text-gray-900 dark:text-white">TailwindVersion</h5>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">"latest", "4", "3", or specific like "3.4.17"</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">"latest" (v4), "4", "3" (v3.4.17 LTS), or specific like "4.0.0"</p>
                         </div>
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h5 class="font-semibold text-gray-900 dark:text-white">InputCssPath</h5>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Source CSS with @tailwind directives</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Source CSS with @import "tailwindcss" (v4) or @tailwind directives (v3)</p>
                         </div>
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h5 class="font-semibold text-gray-900 dark:text-white">OutputCssPath</h5>
@@ -245,6 +249,14 @@ app.<span class="text-green-400">Run</span>();
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h5 class="font-semibold text-gray-900 dark:text-white">MinifyCss</h5>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">null = auto (minify in production only)</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">CliStartupTimeoutSeconds</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">CLI startup timeout (default: 60, min: 10)</p>
+                        </div>
+                        <div class="border-l-4 border-cyan-500 pl-4">
+                            <h5 class="font-semibold text-gray-900 dark:text-white">UseCdnFallback</h5>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Fall back to CDN if CLI fails (auto: true in dev)</p>
                         </div>
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h5 class="font-semibold text-gray-900 dark:text-white">CliDownloadUrl</h5>
@@ -594,6 +606,114 @@ $ curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download
 <span class="text-gray-500">// If CLI fails to start or produce output,</span>
 <span class="text-gray-500">// middleware redirects to cdn.tailwindcss.com</span>
 <span class="text-gray-500">// Useful for development resilience</span></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enterprise Features Section -->
+    <section class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Enterprise-Ready</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Version 1.1 adds resilience patterns, health monitoring, and production-grade error handling.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Resilience -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <div class="w-14 h-14 bg-cyan-100 dark:bg-cyan-900 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Resilience Patterns</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Built with Polly for retry policies, exponential backoff, and circuit breaker patterns. Downloads survive transient network failures.</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-xs text-gray-300">
+                        <div class="text-green-400">// Automatic retry with exponential backoff</div>
+                        <div class="text-gray-400">// Circuit breaker prevents cascade failures</div>
+                        <div class="text-gray-400">// File size validation after download</div>
+                    </div>
+                </div>
+
+                <!-- Health Checks -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <div class="w-14 h-14 bg-teal-100 dark:bg-teal-900 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Health Checks</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Integrate with ASP.NET Core health checks to monitor CLI availability and CSS compilation status in production.</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-xs text-gray-300">
+                        <div class="text-purple-400">builder</div>.<span class="text-green-400">AddTailbreezeHealthChecks</span>();
+                        <div class="mt-2 text-gray-500">// /health endpoint shows CLI status</div>
+                    </div>
+                </div>
+
+                <!-- Version Management -->
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                    <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Dynamic Version Fetching</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Uses GitHub API to fetch latest Tailwind versions. Results cached for 15 minutes. Supports pinning to specific versions.</p>
+                    <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-xs text-gray-300">
+                        <div class="text-cyan-400">"TailwindVersion"</div>: <span class="text-orange-400">"latest"</span> <span class="text-gray-500">// v4 stable</span>
+                        <div><span class="text-cyan-400">"TailwindVersion"</span>: <span class="text-orange-400">"3"</span> <span class="text-gray-500">// v3.4.17 LTS</span></div>
+                        <div><span class="text-cyan-400">"TailwindVersion"</span>: <span class="text-orange-400">"4.0.0"</span> <span class="text-gray-500">// Pinned</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Framework Support Grid -->
+            <div class="mt-16 bg-gray-50 dark:bg-gray-800 rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center">Full Framework Support</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center p-4">
+                        <div class="text-3xl mb-2">📄</div>
+                        <div class="font-semibold text-gray-900 dark:text-white">Razor Pages</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Full support</div>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <div class="font-semibold text-gray-900 dark:text-white">MVC</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Full support</div>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="text-3xl mb-2">🔥</div>
+                        <div class="font-semibold text-gray-900 dark:text-white">Blazor Server</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Full support</div>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="text-3xl mb-2">🌐</div>
+                        <div class="font-semibold text-gray-900 dark:text-white">Blazor WASM</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400">Via Tailbreeze.Build</div>
+                    </div>
+                </div>
+                <div class="mt-8 flex flex-wrap justify-center gap-4">
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">.NET</span> <span class="text-cyan-600 dark:text-cyan-400">8.0</span>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">.NET</span> <span class="text-cyan-600 dark:text-cyan-400">9.0</span>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">.NET</span> <span class="text-cyan-600 dark:text-cyan-400">10.0</span>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">Windows</span> <span class="text-teal-600 dark:text-teal-400">x64</span>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">macOS</span> <span class="text-teal-600 dark:text-teal-400">x64/arm64</span>
+                    </div>
+                    <div class="bg-white dark:bg-gray-900 px-4 py-2 rounded-lg text-sm font-mono">
+                        <span class="text-gray-500">Linux</span> <span class="text-teal-600 dark:text-teal-400">x64/arm64</span>
                     </div>
                 </div>
             </div>

@@ -2017,6 +2017,115 @@
         </div>
     </section>
 
+    <!-- Tailbreeze Section -->
+    <section id="tailbreeze" class="py-20 bg-gradient-to-br from-cyan-50 to-teal-50 dark:from-gray-800 dark:to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-cyan-100 dark:bg-cyan-900 rounded-full mb-6">
+                    <svg class="w-10 h-10 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+                    </svg>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Tailbreeze - Tailwind CSS for .NET</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Zero-config Tailwind CSS integration for ASP.NET Core. Auto-installs the standalone CLI, hot reload in development, optimized builds in production. No Node.js required.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="w-6 h-6 text-cyan-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Zero Configuration
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300">Just add the NuGet package and call <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">AddTailbreeze()</code>. The CLI is auto-downloaded, config files auto-generated, and hot reload just works.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="w-6 h-6 text-cyan-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Hot Reload in Development
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300">Automatically watches your .cshtml and .razor files for changes. CSS rebuilds instantly when you add Tailwind classes.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="w-6 h-6 text-cyan-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Tailwind v3 & v4 Support
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300">Full support for Tailwind v4 (stable) and v3.4.17 (LTS). Version pinning, dynamic fetching via GitHub API, and CDN fallback.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 dark:bg-gray-800 rounded-xl p-6 shadow-2xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                        </div>
+                        <div class="ml-4 text-gray-400 text-sm font-mono">Program.cs</div>
+                    </div>
+                    <div class="font-mono text-sm space-y-2">
+                        <div class="text-gray-500"># Install packages</div>
+                        <div class="text-cyan-400">$ dotnet add package Tailbreeze</div>
+                        <div class="text-cyan-400">$ dotnet add package Tailbreeze.Build</div>
+
+                        <div class="text-gray-500 mt-4">// Program.cs - 2 lines of code</div>
+                        <div class="text-gray-300">builder.Services.<span class="text-green-400">AddTailbreeze</span>();</div>
+                        <div class="text-gray-300">app.<span class="text-green-400">UseTailbreeze</span>();</div>
+
+                        <div class="text-gray-500 mt-4">&lt;!-- Layout --&gt;</div>
+                        <div class="text-gray-300">&lt;<span class="text-blue-400">link</span> <span class="text-purple-400">href</span>=<span class="text-orange-400">"/tailbreeze/app.css"</span> /&gt;</div>
+
+                        <div class="text-green-400 mt-4">// That's it! Tailbreeze handles:</div>
+                        <div class="text-gray-400">// - CLI download & caching</div>
+                        <div class="text-gray-400">// - Config file generation</div>
+                        <div class="text-gray-400">// - Watch mode in development</div>
+                        <div class="text-gray-400">// - Minification in production</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Grid -->
+            <div class="grid md:grid-cols-4 gap-6 mb-12">
+                <div class="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                    <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">No Node.js</div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Uses standalone Tailwind CLI</p>
+                </div>
+                <div class="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                    <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">.NET 8-10</div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Full framework support</p>
+                </div>
+                <div class="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                    <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">MSBuild</div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Build-time compilation</p>
+                </div>
+                <div class="text-center p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+                    <div class="text-2xl font-bold text-cyan-600 dark:text-cyan-400 mb-2">Resilient</div>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm">Polly retry policies</p>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="tailbreeze.html" class="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors inline-flex items-center">
+                    Explore Tailbreeze
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Documentation Section -->
     <section id="docs" class="py-20 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
