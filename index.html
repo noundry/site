@@ -104,7 +104,7 @@
                                 '⚡ Project initialized in 234ms',
                                 '$ nd install',
                                 '✓ Installing all Noundry CLI tools...',
-                                '✅ 8 tools installed: ndng, slurp, authnz, lgby, jobs, ndotenvx, bowtie, cufflink',
+                                '✅ 8 tools installed: ndng, slurp, ndaz, lgby, jobs, ndotenvx, bowtie, cufflink',
                                 '✓ Installation complete in 4523ms'
                             ],
                             // Demo 2: Noundry CLI - Dotnet Wrapper
@@ -123,16 +123,16 @@
                             // Demo 3: Noundry CLI - Deployment with Engine
                             [
                                 '# Noundry CLI: Deploy with Engine CLI',
-                                '$ nd ng init --host 192.168.1.100 --key ~/.ssh/id_rsa',
-                                '✓ SSH connection verified',
-                                '✓ Installing required packages...',
-                                '✅ Server initialized',
-                                '$ nd ng add myapp.com --port 5000 --ssl',
-                                '✓ Creating Nginx config',
-                                '✓ Obtaining SSL certificate',
-                                '$ nd ng deploy myapp.com --source ./publish',
-                                '🚀 Deploying application...',
-                                '✅ Live at https://myapp.com'
+                                '$ nd ng up myapp --cloud aws',
+                                '✓ Provisioning VM on AWS...',
+                                '✓ Installing Docker + Nginx...',
+                                '✓ Building Docker image (52MB)...',
+                                '✓ Deploying container...',
+                                '✅ Live at https://myapp.noundry.app',
+                                '$ nd ng deploy myapp.noundry.app',
+                                '✓ Rebuilding image...',
+                                '✓ Container updated',
+                                '✅ Redeployed in 34s'
                             ],
                             // Demo 4: Slurp
                             [
@@ -351,7 +351,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">All Tools, One Command</h3>
-                            <p class="text-gray-600 dark:text-gray-300">Access <strong>8 Noundry CLI tools</strong> through a single interface: <code class="text-sm">nd ng</code>, <code class="text-sm">nd slurp</code>, <code class="text-sm">nd authnz</code>, and more. No need to remember package names.</p>
+                            <p class="text-gray-600 dark:text-gray-300">Access <strong>8 Noundry CLI tools</strong> through a single interface: <code class="text-sm">nd ng</code>, <code class="text-sm">nd slurp</code>, <code class="text-sm">nd ndaz</code>, and more. No need to remember package names.</p>
                         </div>
                     </div>
 
@@ -411,10 +411,10 @@
                         <div class="text-green-400">✅ Ready in 1832ms</div>
                         <div class="text-accent-500">$ nd dn build</div>
                         <div class="text-green-400">✅ Build succeeded in 2725ms</div>
-                        <div class="mt-3 text-gray-500"># Deploy with Engine CLI</div>
-                        <div class="text-accent-500">$ nd ng deploy myapp.com --source ./publish</div>
-                        <div class="text-blue-400">🚀 Deploying application...</div>
-                        <div class="text-green-400">✅ Live at https://myapp.com</div>
+                        <div class="mt-3 text-gray-500"># Deploy with Engine CLI (Docker)</div>
+                        <div class="text-accent-500">$ nd ng up myapp --cloud aws</div>
+                        <div class="text-blue-400">🚀 Building Docker image...</div>
+                        <div class="text-green-400">✅ Live at https://myapp.noundry.app</div>
                     </div>
                 </div>
             </div>
@@ -688,11 +688,11 @@
                     <div class="space-y-4">
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h4 class="font-semibold text-gray-900 dark:text-white"><a href="engine.html" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Noundry Engine CLI (ndng)</a></h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Fast C# deployment automation for Linux servers. Deploy C# 9.0+ applications with a single command - server initialization, SSL certificates, database setup, and more.</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Docker-first .NET deployment. Deploy as lightweight containers (~50MB) with one command: <code class="text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">ndng up myapp --cloud aws</code></p>
                         </div>
                         <div class="border-l-4 border-cyan-500 pl-4">
                             <h4 class="font-semibold text-gray-900 dark:text-white"><a href="engine.html" class="hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">Noundry Engine Platform</a></h4>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Free *.noundry.app test domains with automatic DNS management, SSL certificates, and integrated deployment workflows for rapid testing and staging.</p>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm">Free *.noundry.app test domains with Cloudflare SSL. All services (PostgreSQL, Redis, RabbitMQ) run as Docker containers.</p>
                         </div>
                     </div>
                     <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">

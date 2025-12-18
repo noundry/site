@@ -24,7 +24,7 @@
                 </h1>
 
                 <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
-                    Fast .NET deployment automation for Linux servers. Deploy .NET 9.0+ applications with a single command - no Docker, no complex configuration, just pure speed.
+                    Docker-first .NET deployment for Linux servers. Deploy .NET 9.0+ applications as lightweight Docker containers with a single command. Local to live URL in minutes.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -78,7 +78,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">One-Command Server Setup</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Initialize fresh Linux servers with .NET 9.0, Nginx, SSL certificates, and firewall - all via <code class="text-primary-600 dark:text-primary-400">ndng init</code>.</p>
+                    <p class="text-gray-600 dark:text-gray-400">Initialize fresh Linux servers with Docker, Nginx, and firewall via <code class="text-primary-600 dark:text-primary-400">ndng init</code>. Or go from zero to live with <code class="text-primary-600 dark:text-primary-400">ndng up</code>.</p>
                 </div>
 
                 <!-- Domain Management -->
@@ -99,8 +99,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Database Installation</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Install PostgreSQL, MySQL, or SQL Server with automatic user creation, password generation, and connection strings.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Database Containers</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Start PostgreSQL, MySQL, or SQL Server as Docker containers with automatic user creation, password generation, and persistent data volumes.</p>
                 </div>
 
                 <!-- Fast Deployment -->
@@ -110,8 +110,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">SFTP Deployment</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Fast file uploads via SFTP with progress tracking, automatic service restart, and permission management.</p>
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Docker Deployment</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Build chiseled .NET 9 Docker images locally (~50MB), transfer via SSH, and deploy containers with automatic restart policy.</p>
                 </div>
 
                 <!-- Cache & Queue -->
@@ -122,7 +122,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Redis & RabbitMQ</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Install Redis cache and RabbitMQ message queue with one command. Optimized configurations included.</p>
+                    <p class="text-gray-600 dark:text-gray-400">Start Redis cache and RabbitMQ message queue as Docker containers with persistent data volumes and auto-restart.</p>
                 </div>
 
                 <!-- Live Monitoring -->
@@ -133,7 +133,7 @@
                         </svg>
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Real-time Log Tailing</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Stream live logs from any service directly to your terminal via systemd journal integration.</p>
+                    <p class="text-gray-600 dark:text-gray-400">Stream live Docker container logs directly to your terminal via <code class="text-blue-600 dark:text-blue-400">ndng log</code>.</p>
                 </div>
 
                 <!-- SSL Automation -->
@@ -145,17 +145,6 @@
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Automatic SSL Certificates</h3>
                     <p class="text-gray-600 dark:text-gray-400">Let's Encrypt SSL certificates with automatic renewal for all domains. HTTPS by default.</p>
-                </div>
-
-                <!-- CI/CD -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-lg mb-4">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.840 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">GitHub Actions Generator</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Generate complete CI/CD workflows with build, test, and deploy pipelines. Push to deploy automation.</p>
                 </div>
 
                 <!-- Interactive CLI -->
@@ -179,7 +168,7 @@
                         Get Started in Minutes
                     </h2>
                     <p class="text-xl text-gray-600 dark:text-gray-400">
-                        Deploy your first .NET application in 3 simple steps
+                        Deploy your first .NET application with one command
                     </p>
                 </div>
 
@@ -199,42 +188,40 @@
                         </div>
                     </div>
 
-                    <!-- Step 2 -->
+                    <!-- Step 2 - One Command -->
                     <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
                                 2
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Initialize Your Server</h3>
-                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mt-3">
-                                    <code class="text-green-400 font-mono text-sm">ndng init</code>
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Deploy with One Command</h3>
+                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mt-3 space-y-2">
+                                    <div><code class="text-gray-500 font-mono text-sm"># From your .NET project directory</code></div>
+                                    <div><code class="text-green-400 font-mono text-sm">ndng up myapp --cloud aws</code></div>
                                 </div>
                                 <p class="text-gray-600 dark:text-gray-400 mt-3 text-sm">
-                                    Installs .NET 9.0, Nginx, SSL certificates, and configures firewall on your Ubuntu server
+                                    Creates VM, installs Docker + Nginx, builds Docker image, deploys container, configures SSL
                                 </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Step 3 -->
+                    <!-- Step 3 - Result -->
                     <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
                         <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0 w-10 h-10 bg-primary-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
-                                3
+                            <div class="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                                ✓
                             </div>
                             <div class="flex-1">
-                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Deploy Your App</h3>
-                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 mt-3 space-y-2">
-                                    <div><code class="text-gray-500 font-mono text-sm"># Add domain with SSL</code></div>
-                                    <div><code class="text-green-400 font-mono text-sm">ndng add myapp --test --port 5000</code></div>
-                                    <div class="pt-2"><code class="text-gray-500 font-mono text-sm"># Build and deploy</code></div>
-                                    <div><code class="text-green-400 font-mono text-sm">dotnet publish -c Release -o ./publish</code></div>
-                                    <div><code class="text-green-400 font-mono text-sm">ndng deploy myapp.noundry.app --source ./publish</code></div>
-                                </div>
-                                <p class="text-gray-600 dark:text-gray-400 mt-3 text-sm">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Live in 2-3 Minutes</h3>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
                                     Your app is now live at <code class="text-primary-600 dark:text-primary-400 font-mono">https://myapp.noundry.app</code>
                                 </p>
+                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 space-y-2">
+                                    <div><code class="text-gray-500 font-mono text-sm"># Redeploy after code changes (~30-60s)</code></div>
+                                    <div><code class="text-green-400 font-mono text-sm">ndng deploy myapp.noundry.app</code></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -272,40 +259,44 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         <tr>
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng up &lt;name&gt;</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">One-command: create VM + init + deploy</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng down &lt;name&gt;</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Teardown infrastructure and cleanup</td>
+                        </tr>
+                        <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng init</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Initialize server with required software</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Initialize server with Docker + Nginx</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng add &lt;domain&gt;</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Deploy a new application</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Configure domain and Nginx</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng deploy &lt;domain&gt;</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Upload application files</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Build Docker image and deploy container</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng database --type &lt;type&gt;</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Install database (postgres, mysql, sqlserver)</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Start database container (postgres, mysql, sqlserver)</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng cache</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Install Redis cache</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Start Redis container</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng queue</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Install RabbitMQ queue</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Start RabbitMQ container</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng list</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">List all deployments</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">List all containers and deployments</td>
                         </tr>
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng log [service]</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Stream logs in real-time</td>
-                        </tr>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng github-action &lt;domain&gt;</td>
-                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Generate CI/CD workflow</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-primary-600 dark:text-primary-400">ndng log [container]</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 dark:text-gray-400">Stream container logs in real-time</td>
                         </tr>
                     </tbody>
                 </table>
@@ -326,20 +317,20 @@
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="text-center p-6">
-                        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">.NET 9.0</div>
-                        <p class="text-gray-600 dark:text-gray-400">Latest .NET runtime with ASP.NET Core</p>
+                        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">Docker</div>
+                        <p class="text-gray-600 dark:text-gray-400">Containerized apps with chiseled .NET 9 images (~50MB)</p>
                     </div>
                     <div class="text-center p-6">
                         <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">Nginx</div>
-                        <p class="text-gray-600 dark:text-gray-400">High-performance reverse proxy and web server</p>
+                        <p class="text-gray-600 dark:text-gray-400">High-performance reverse proxy to containers</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">Cloudflare</div>
+                        <p class="text-gray-600 dark:text-gray-400">SSL termination for test domains (*.noundry.app)</p>
                     </div>
                     <div class="text-center p-6">
                         <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">Let's Encrypt</div>
-                        <p class="text-gray-600 dark:text-gray-400">Free SSL certificates with automatic renewal</p>
-                    </div>
-                    <div class="text-center p-6">
-                        <div class="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">Systemd</div>
-                        <p class="text-gray-600 dark:text-gray-400">Service management and process supervision</p>
+                        <p class="text-gray-600 dark:text-gray-400">SSL certificates for custom domains</p>
                     </div>
                 </div>
 
@@ -383,8 +374,8 @@
                     <div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Multiple Apps, One Server</h3>
                         <p class="text-gray-600 dark:text-gray-400">
-                            Host multiple .NET applications on a single server. Share infrastructure like databases, Redis, and RabbitMQ.
-                            Each app gets its own domain, SSL certificate, and service management.
+                            Host multiple .NET applications as Docker containers on a single server. Share infrastructure containers (PostgreSQL, Redis, RabbitMQ).
+                            Each app gets its own domain, SSL certificate, and isolated container.
                         </p>
                     </div>
                 </div>

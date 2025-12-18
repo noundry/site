@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: false }" :class="{ 'dark': darkMode }">
+<head>
+    <title>Minutes, Not Months - Noundry Quick Start</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Go from idea to production in minutes with Noundry's unified CLI and platform. Deploy .NET apps to any cloud without the complexity.">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#eff6ff', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' },
+                        accent: { 500: '#10b981', 600: '#059669' }
+                    },
+                    fontFamily: { 'mono': ['IBM Plex Mono', 'Consolas', 'Monaco', 'monospace'] }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'IBM Plex Mono', monospace; }
+        pre, code { font-family: 'IBM Plex Mono', monospace !important; }
+    </style>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+
+<!-- Hero: Minutes Not Months -->
+<section class="min-h-screen flex items-center bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 text-white relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-accent-500 rounded-full blur-3xl"></div>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur rounded-full mb-8">
+                <span class="text-accent-500 font-bold mr-2">7 minutes</span>
+                <span class="text-white/80">from zero to live HTTPS app</span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+                Minutes, Not Months
+            </h1>
+            <p class="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12">
+                Ship your .NET app to production before your coffee gets cold.
+                No DevOps degree required. No vendor lock-in. No excuses.
+            </p>
+        </div>
+
+        <!-- The 7-Minute Promise -->
+        <div class="bg-gray-900/50 backdrop-blur rounded-2xl p-8 max-w-4xl mx-auto">
+            <div class="flex items-center mb-6">
+                <div class="flex space-x-2">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+                <span class="ml-4 text-gray-400 font-mono text-sm">Terminal</span>
+            </div>
+            <div class="font-mono text-sm space-y-3">
+                <div class="flex items-start">
+                    <span class="text-gray-500 w-20 flex-shrink-0">0:00</span>
+                    <div>
+                        <span class="text-green-400">$</span>
+                        <span class="text-white"> dotnet new noundry-webapp -n MyApp</span>
+                        <span class="text-gray-500 ml-4"># scaffold app with auth, UI, database</span>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <span class="text-gray-500 w-20 flex-shrink-0">0:30</span>
+                    <div>
+                        <span class="text-green-400">$</span>
+                        <span class="text-white"> spinup create myapp --cloud digitalocean</span>
+                        <span class="text-gray-500 ml-4"># provision server ($6/mo)</span>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <span class="text-gray-500 w-20 flex-shrink-0">3:00</span>
+                    <div>
+                        <span class="text-green-400">$</span>
+                        <span class="text-white"> ndng init --from-spinup myapp</span>
+                        <span class="text-gray-500 ml-4"># configure server for .NET</span>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <span class="text-gray-500 w-20 flex-shrink-0">4:30</span>
+                    <div>
+                        <span class="text-green-400">$</span>
+                        <span class="text-white"> ndng add myapp --test</span>
+                        <span class="text-gray-500 ml-4"># free SSL domain: myapp.noundry.app</span>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <span class="text-gray-500 w-20 flex-shrink-0">5:00</span>
+                    <div>
+                        <span class="text-green-400">$</span>
+                        <span class="text-white"> ndng deploy myapp.noundry.app</span>
+                        <span class="text-gray-500 ml-4"># build, ship, run</span>
+                    </div>
+                </div>
+                <div class="flex items-start pt-4 border-t border-gray-700">
+                    <span class="text-accent-500 w-20 flex-shrink-0 font-bold">7:00</span>
+                    <div>
+                        <span class="text-accent-400 font-bold">Live at https://myapp.noundry.app</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- The Problem / Solution -->
+<section class="py-24 bg-gray-50 dark:bg-gray-800">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-16">
+            <!-- The Old Way -->
+            <div class="bg-white dark:bg-gray-900 rounded-2xl p-8 border border-red-200 dark:border-red-900">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-red-600">The Old Way</h3>
+                </div>
+                <ul class="space-y-4 text-gray-600 dark:text-gray-400">
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>Weeks configuring CI/CD pipelines</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>DevOps hire just to deploy a web app</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>Cloud console maze of 50+ services</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>SSL certificates? Manual renewal nightmare</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>Vendor lock-in from day one</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-500 mr-3">-</span>
+                        <span>$200+/month before you have users</span>
+                    </li>
+                </ul>
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-3xl font-bold text-red-600">Months to deploy</p>
+                </div>
+            </div>
+
+            <!-- The Noundry Way -->
+            <div class="bg-white dark:bg-gray-900 rounded-2xl p-8 border border-green-200 dark:border-green-900">
+                <div class="flex items-center mb-6">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-green-600">The Noundry Way</h3>
+                </div>
+                <ul class="space-y-4 text-gray-600 dark:text-gray-400">
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>One CLI for everything: <code class="text-primary-600">ndng</code></span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>Your developers can deploy themselves</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>Multi-cloud: AWS, Azure, GCP, DigitalOcean</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>Free SSL via Cloudflare, auto-renewed</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>No vendor lock-in, your servers, your code</span>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-3">+</span>
+                        <span>$6/month gets you started</span>
+                    </li>
+                </ul>
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <p class="text-3xl font-bold text-green-600">Minutes to deploy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- The Stack -->
+<section class="py-24">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Choose Your Path</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400">Two UI stories. One unified platform.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Razor Path -->
+            <div class="bg-gradient-to-br from-purple-50 to-white dark:from-purple-900/20 dark:to-gray-900 rounded-2xl p-8 border border-purple-200 dark:border-purple-800">
+                <div class="flex items-center mb-6">
+                    <img src="assets/dotnet-logo.svg" alt=".NET" class="w-12 h-12 mr-4" onerror="this.style.display='none'">
+                    <div>
+                        <h3 class="text-2xl font-bold text-purple-700 dark:text-purple-400">Razor + Noundry.UI</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Server-side rendering, reactive with Alpine.js</p>
+                    </div>
+                </div>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        71 TagHelper components
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Full model binding (asp-for)
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        DataTables, DatePickers, Forms
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-purple-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Tailwind CSS + Alpine.js
+                    </li>
+                </ul>
+                <div class="bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                    <span class="text-gray-500">&lt;</span><span class="text-pink-400">noundry-data-table</span>
+                    <span class="text-blue-400"> asp-for</span><span class="text-white">=</span><span class="text-green-400">"Users"</span><br>
+                    <span class="text-blue-400">    show-search</span><span class="text-white">=</span><span class="text-green-400">"true"</span><br>
+                    <span class="text-blue-400">    show-pagination</span><span class="text-white">=</span><span class="text-green-400">"true"</span><span class="text-gray-500"> /&gt;</span>
+                </div>
+                <a href="ui-components.html" class="mt-6 inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                    Explore Noundry.UI
+                </a>
+            </div>
+
+            <!-- JavaScript Path -->
+            <div class="bg-gradient-to-br from-yellow-50 to-white dark:from-yellow-900/20 dark:to-gray-900 rounded-2xl p-8 border border-yellow-200 dark:border-yellow-800">
+                <div class="flex items-center mb-6">
+                    <img src="assets/js-logo.svg" alt="JavaScript" class="w-12 h-12 mr-4" onerror="this.style.display='none'">
+                    <div>
+                        <h3 class="text-2xl font-bold text-yellow-700 dark:text-yellow-400">NounJS</h3>
+                        <p class="text-gray-600 dark:text-gray-400">Client-side SPA, ~2kb reactive core</p>
+                    </div>
+                </div>
+                <ul class="space-y-3 mb-6">
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-yellow-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Single-file .noun components
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-yellow-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        No virtual DOM overhead
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-yellow-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Built-in router with guards
+                    </li>
+                    <li class="flex items-center text-gray-700 dark:text-gray-300">
+                        <svg class="w-5 h-5 text-yellow-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Tailwind or Basecoat UI
+                    </li>
+                </ul>
+                <div class="bg-gray-900 rounded-lg p-4 font-mono text-sm">
+                    <span class="text-green-400">$</span>
+                    <span class="text-white"> npx nounjs create my-app</span><br>
+                    <span class="text-green-400">$</span>
+                    <span class="text-white"> cd my-app && npm run dev</span><br>
+                    <span class="text-gray-500"># Live at http://localhost:3000</span>
+                </div>
+                <a href="https://nounjs.com" target="_blank" class="mt-6 inline-block bg-yellow-600 hover:bg-yellow-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                    Explore NounJS
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- The Unified CLI -->
+<section class="py-24 bg-gray-900 text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">One CLI to Rule Them All</h2>
+            <p class="text-xl text-gray-400">From infrastructure to deployment, database to logs.</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gray-800 rounded-xl p-6">
+                <div class="text-2xl font-bold text-primary-400 mb-2">spinup</div>
+                <p class="text-gray-400 mb-4">Provision infrastructure</p>
+                <div class="font-mono text-sm text-gray-300 space-y-2">
+                    <div><span class="text-green-400">spinup create</span> myapp --cloud aws</div>
+                    <div><span class="text-green-400">spinup stack create</span> --template large</div>
+                    <div><span class="text-green-400">spinup destroy</span> --name myapp</div>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6">
+                <div class="text-2xl font-bold text-primary-400 mb-2">ndng</div>
+                <p class="text-gray-400 mb-4">Deploy .NET apps</p>
+                <div class="font-mono text-sm text-gray-300 space-y-2">
+                    <div><span class="text-green-400">ndng init</span> --host 1.2.3.4</div>
+                    <div><span class="text-green-400">ndng add</span> myapp --test --ssl</div>
+                    <div><span class="text-green-400">ndng deploy</span> myapp.noundry.app</div>
+                </div>
+            </div>
+            <div class="bg-gray-800 rounded-xl p-6">
+                <div class="text-2xl font-bold text-primary-400 mb-2">ndng</div>
+                <p class="text-gray-400 mb-4">Manage & Monitor</p>
+                <div class="font-mono text-sm text-gray-300 space-y-2">
+                    <div><span class="text-green-400">ndng log</span> myapp</div>
+                    <div><span class="text-green-400">ndng database</span> --type postgres</div>
+                    <div><span class="text-green-400">ndng env sync</span> myapp</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-16 text-center">
+            <p class="text-gray-400 mb-4">Install in seconds:</p>
+            <div class="inline-block bg-gray-800 rounded-lg px-6 py-3 font-mono">
+                <span class="text-green-400">$</span>
+                <span class="text-white"> dotnet tool install -g Noundry.Engine.Cli</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Scale When Ready -->
+<section class="py-24">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Start Small, Scale When Ready</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400">From single VM to multi-server stacks with one command.</p>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">$6</div>
+                <div class="text-gray-600 dark:text-gray-400 mb-4">/month</div>
+                <div class="font-semibold mb-2">Single VM</div>
+                <div class="text-sm text-gray-500">Perfect for MVPs & side projects</div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">2</div>
+                <div class="text-gray-600 dark:text-gray-400 mb-4">VMs</div>
+                <div class="font-semibold mb-2">Small Stack</div>
+                <div class="text-sm text-gray-500">Web + Database</div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center border-2 border-primary-500">
+                <div class="text-4xl font-bold text-primary-600 mb-2">4</div>
+                <div class="text-gray-600 dark:text-gray-400 mb-4">VMs</div>
+                <div class="font-semibold mb-2">Large Stack</div>
+                <div class="text-sm text-gray-500">3 Web + Data + LB</div>
+            </div>
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center">
+                <div class="text-4xl font-bold text-primary-600 mb-2">7</div>
+                <div class="text-gray-600 dark:text-gray-400 mb-4">VMs</div>
+                <div class="font-semibold mb-2">XL Stack</div>
+                <div class="text-sm text-gray-500">4 Web + 2 DB + Cache + LB</div>
+            </div>
+        </div>
+
+        <div class="mt-12 bg-gray-900 rounded-xl p-6 font-mono text-sm max-w-2xl mx-auto">
+            <span class="text-gray-500"># Scale from 1 to 7 VMs with one command</span><br>
+            <span class="text-green-400">$</span>
+            <span class="text-white"> spinup stack create --template xl --cloud aws --name myapp</span>
+        </div>
+    </div>
+</section>
+
+<!-- Get Started -->
+<section class="py-24 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-4xl font-bold mb-6">Ready to Ship?</h2>
+        <p class="text-xl text-white/80 mb-12">Stop planning deployments. Start deploying.</p>
+
+        <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                <div class="text-3xl font-bold mb-2">1</div>
+                <div class="font-semibold mb-2">Install</div>
+                <code class="text-sm text-white/80">dotnet tool install -g Noundry.Engine.Cli</code>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                <div class="text-3xl font-bold mb-2">2</div>
+                <div class="font-semibold mb-2">Create</div>
+                <code class="text-sm text-white/80">dotnet new noundry-webapp -n MyApp</code>
+            </div>
+            <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                <div class="text-3xl font-bold mb-2">3</div>
+                <div class="font-semibold mb-2">Deploy</div>
+                <code class="text-sm text-white/80">ndng up myapp --cloud do</code>
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="getting-started.html" class="bg-white text-primary-700 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                Full Documentation
+            </a>
+            <a href="https://engine.noundry.com/register" class="border-2 border-white text-white hover:bg-white/10 px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                Get Free API Key
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-400 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="text-white font-bold text-xl">Noundry</span>
+                <span class="ml-4">Minutes, Not Months</span>
+            </div>
+            <div class="flex space-x-6">
+                <a href="docs.html" class="hover:text-white transition-colors">Docs</a>
+                <a href="https://github.com/noundry" class="hover:text-white transition-colors">GitHub</a>
+                <a href="contact.html" class="hover:text-white transition-colors">Contact</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
