@@ -1,0 +1,113 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://noundry.com/schemas/noundry.json",
+  "title": "Noundry Project Configuration",
+  "description": "Schema for Noundry framework project configuration files",
+  "type": "object",
+  "required": ["name", "version", "type"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Reference to this schema"
+    },
+    "name": {
+      "type": "string",
+      "description": "Project name",
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the project",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?$"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable project description"
+    },
+    "framework": {
+      "type": "string",
+      "description": "Target .NET framework version",
+      "enum": ["net8.0", "net9.0", "net10.0"],
+      "default": "net9.0"
+    },
+    "type": {
+      "type": "string",
+      "description": "Project type",
+      "enum": ["web-app", "api", "console", "library", "worker"],
+      "default": "web-app"
+    },
+    "engine": {
+      "type": "object",
+      "description": "Web server and hosting configuration",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "description": "Primary domain for the application",
+          "format": "hostname"
+        },
+        "port": {
+          "type": "integer",
+          "description": "Primary port for the application",
+          "minimum": 1,
+          "maximum": 65535,
+          "default": 5000
+        },
+        "ssl": {
+          "type": "boolean",
+          "description": "Enable SSL/TLS",
+          "default": true
+        },
+        "testDomain": {
+          "type": "boolean",
+          "description": "Use test domain configuration for local development",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "database": {
+      "type": "object",
+      "description": "Database configuration",
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "Database provider",
+          "enum": ["postgres", "sqlserver", "sqlite", "mysql", "mongodb"],
+          "default": "postgres"
+        },
+        "name": {
+          "type": "string",
+          "description": "Database name"
+        },
+        "autoMigrate": {
+          "type": "boolean",
+          "description": "Automatically apply migrations on startup",
+          "default": false
+        },
+        "connectionString": {
+          "type": "string",
+          "description": "Full connection string (overrides other settings)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "features": {
+      "type": "array",
+      "description": "Noundry features to enable",
+      "items": {
+        "type": "string",
+        "enum": [
+          "tuxedo",
+          "bowtie",
+          "noundry-ui",
+          "tailbreeze",
+          "authnz",
+          "aigw",
+          "sanquhar"
+        ]
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
