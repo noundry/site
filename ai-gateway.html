@@ -65,6 +65,9 @@
                     <button @click="activeCategory = 'webapi'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'webapi', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'webapi' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
                         Web API
                     </button>
+                    <button @click="activeCategory = 'toon'" :class="{ 'border-primary-600 text-primary-600': activeCategory === 'toon', 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400': activeCategory !== 'toon' }" class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors">
+                        TOON
+                    </button>
                 </nav>
             </div>
 
@@ -139,6 +142,16 @@
                         </div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Thread-Safe</h3>
                         <p class="text-gray-600 dark:text-gray-300">Built with HttpClientFactory for production-ready, concurrent operations.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                        <div class="w-12 h-12 bg-teal-100 dark:bg-teal-900 rounded-lg flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">TOON Serialization</h3>
+                        <p class="text-gray-600 dark:text-gray-300">Convert data to token-efficient TOON format for ~40% token savings when sending to LLMs.</p>
                     </div>
                 </div>
 
@@ -723,6 +736,166 @@ foreach (var response in multiResponse.Responses)
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOON Tab -->
+            <div x-show="activeCategory === 'toon'" class="space-y-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">TOON Serialization</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-300 mb-6">
+                        TOON (Token-Oriented Object Notation) is a compact, human-readable encoding format optimized for LLM consumption. Convert your DataTables, DataSets, and collections to TOON format for approximately 40% token savings compared to JSON.
+                    </p>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        <strong>Specification:</strong> <a href="https://github.com/toon-format/toon" class="text-primary-600 hover:underline">github.com/toon-format/toon</a>
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">DataTable to TOON</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">using Noundry.AIG.Core.Extensions;
+using System.Data;
+
+var table = new DataTable("users");
+table.Columns.Add("id", typeof(int));
+table.Columns.Add("name", typeof(string));
+table.Columns.Add("role", typeof(string));
+
+table.Rows.Add(1, "Alice", "admin");
+table.Rows.Add(2, "Bob", "user");
+table.Rows.Add(3, "Carol", "user");
+
+var toon = table.ToToon();
+
+// Output:
+// users[3]{id,name,role}:
+//   1,Alice,admin
+//   2,Bob,user
+//   3,Carol,user</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Collection to TOON</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">var products = new List&lt;Product&gt;
+{
+    new Product { Sku = "A1", Name = "Widget", Price = 9.99m },
+    new Product { Sku = "B2", Name = "Gadget", Price = 14.50m }
+};
+
+var toon = products.ToToon(new ToonOptions { RootName = "products" });
+
+// Output:
+// products[2]{Sku,Name,Price}:
+//   A1,Widget,9.99
+//   B2,Gadget,14.5</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Tab-Delimited for Maximum Compression</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">// Use tab delimiters for ~10% additional token savings
+var toon = data.ToToon(ToonOptions.TabDelimited);
+
+// Or use pipe delimiters for data containing commas
+var toon = data.ToToon(new ToonOptions { Delimiter = ToonDelimiter.Pipe });</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Integration with AI Requests</h3>
+                        <div class="bg-gray-900 rounded-lg p-4">
+                            <pre class="text-sm"><code class="language-csharp">// Convert data to TOON for inclusion in prompts
+var salesData = GetSalesData(); // Returns DataTable
+var toonData = salesData.ToToon();
+
+var request = new PromptBuilder()
+    .WithModel("anthropic/claude-sonnet-4")
+    .AddSystemMessage("You are a data analyst. Analyze the sales data.")
+    .AddUserMessage($"Here is the sales data in TOON format:\n\n{toonData}\n\nProvide insights.")
+    .Build();
+
+var response = await aigClient.SendAsync(request);</code></pre>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">ToonOptions Configuration</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <ul class="space-y-3 text-gray-600 dark:text-gray-300">
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">ToonOptions.Default</code> - Comma delimiter, 2-space indentation</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">ToonOptions.TabDelimited</code> - Tab delimiter for maximum compression</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Delimiter</code> - Comma (default), Tab, or Pipe</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">IndentSize</code> - Spaces per indentation level (default: 2)</li>
+                                <li><code class="text-sm bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">RootName</code> - Custom root name for arrays (default: "data")</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">TOON Format Rules</h3>
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full text-sm">
+                                    <thead>
+                                        <tr class="text-left border-b border-gray-200 dark:border-gray-700">
+                                            <th class="py-2 pr-4 font-semibold text-gray-900 dark:text-white">Rule</th>
+                                            <th class="py-2 font-semibold text-gray-900 dark:text-white">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-gray-600 dark:text-gray-300">
+                                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <td class="py-2 pr-4 font-medium">Arrays</td>
+                                            <td class="py-2">Declared as <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">name[N]{fields}:</code></td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <td class="py-2 pr-4 font-medium">Tabular Data</td>
+                                            <td class="py-2">Uniform object arrays use CSV-style rows</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <td class="py-2 pr-4 font-medium">Indentation</td>
+                                            <td class="py-2">2 spaces per level (configurable)</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <td class="py-2 pr-4 font-medium">Quoting</td>
+                                            <td class="py-2">Required for empty strings, reserved words, special chars</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100 dark:border-gray-800">
+                                            <td class="py-2 pr-4 font-medium">Booleans</td>
+                                            <td class="py-2">Lowercase <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">true</code>/<code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">false</code></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 pr-4 font-medium">Null</td>
+                                            <td class="py-2">Lowercase <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded">null</code></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-green-900 dark:text-green-300 mb-2">✨ When to Use TOON</h4>
+                        <ul class="text-green-800 dark:text-green-200 space-y-1">
+                            <li>• <strong>Tabular data</strong> (DataTable, uniform collections) - ~40% token savings</li>
+                            <li>• <strong>Large datasets</strong> being sent to LLMs for analysis</li>
+                            <li>• <strong>Structured reports</strong> and CSV-like data</li>
+                            <li>• <strong>Cost optimization</strong> when token usage is a concern</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-6">
+                        <h4 class="font-semibold text-yellow-900 dark:text-yellow-300 mb-2">⚠️ When to Use JSON Instead</h4>
+                        <ul class="text-yellow-800 dark:text-yellow-200 space-y-1">
+                            <li>• Deeply nested configurations</li>
+                            <li>• Non-uniform data structures</li>
+                            <li>• Streaming responses (better tooling support)</li>
+                        </ul>
                     </div>
                 </div>
             </div>

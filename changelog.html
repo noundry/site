@@ -17,6 +17,38 @@
             <p class="text-center text-gray-600 dark:text-gray-300 mb-12">All notable changes to the Noundry platform</p>
             
             <div class="space-y-8">
+                <!-- January 2026 Release -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 border-l-4 border-teal-600">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.8.1</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2026-01-07</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ New Features</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li><strong>Noundry.AIGW - TOON Serialization</strong> - Token-Oriented Object Notation support for efficient LLM data transfer with ~40% token savings compared to JSON</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-blue-600 dark:text-blue-400 mb-2">🔄 Updated</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li><strong>Noundry.AIG.Core</strong> - New <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">ToonExtensions</code> class with <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">ToToon()</code> extension methods for DataTable, DataSet, and IEnumerable&lt;T&gt;</li>
+                                <li><strong>ToonOptions</strong> - Configuration for delimiter (Comma, Tab, Pipe), indent size, and root naming</li>
+                                <li><strong>ToonSerializer</strong> - Full implementation of TOON spec including tabular arrays, proper quoting, escaping, and number normalization</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">📚 Documentation</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>Added TOON tab to AI Gateway documentation page</li>
+                                <li>Updated LLM.md with comprehensive TOON serialization section</li>
+                                <li>TOON specification: <a href="https://github.com/toon-format/toon" class="text-primary-600 hover:underline">github.com/toon-format/toon</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- December 2025 Release -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-8 border-l-4 border-emerald-600">
                     <div class="flex items-center justify-between mb-4">
