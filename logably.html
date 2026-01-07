@@ -7,6 +7,23 @@
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
     <%= header %>
 
+    <!-- Deprecation Banner -->
+    <section class="bg-amber-600 dark:bg-amber-700 py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center gap-4 text-white">
+                <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <p class="font-semibold">
+                    <strong>Deprecated:</strong> Logably has been merged into <a href="sentinel.html" class="underline hover:no-underline">Noundry.Sentinel</a> as the logging module. Please use Sentinel for all APM and logging needs.
+                </p>
+                <a href="sentinel.html" class="bg-white text-amber-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex-shrink-0">
+                    Go to Sentinel
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Hero Section -->
     <section class="pt-20 pb-16 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-gray-900 dark:via-gray-800 dark:to-amber-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,11 +33,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                     </svg>
                 </div>
+                <div class="inline-block bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 text-sm font-semibold px-4 py-2 rounded-full mb-4">
+                    ⚠️ DEPRECATED - See Noundry.Sentinel
+                </div>
                 <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
                     <span class="text-amber-600 dark:text-amber-400">Logably</span>
                 </h1>
                 <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed max-w-4xl mx-auto">
-                    Modern, multi-tenant logging service built with .NET 9.0 and PostgreSQL. Secure, scalable logging with OAuth authentication, subscription tiers, and powerful search capabilities.
+                    <strong class="text-amber-600">This product has been deprecated.</strong> Logably's logging capabilities have been merged into <a href="sentinel.html" class="text-amber-600 underline hover:no-underline">Noundry.Sentinel</a>, our comprehensive APM platform with runtime metrics, exception tracking, and log aggregation.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <a href="#quickstart" class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors text-center">
