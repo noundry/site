@@ -14,6 +14,18 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
 <head>
     <title>Noundry Elements - Form Validation Library</title>
     <%= head %>
+    <script src="https://unpkg.com/@noundry/elements@latest/dist/index.min.js"></script>
+    <style>
+        /* Noundry Elements error message styles */
+        .noundry-error {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .dark .noundry-error {
+            color: #f87171;
+        }
+    </style>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
     <%= header %>
@@ -79,7 +91,7 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                     Real-time Feedback
                 </button>
                 <button @click="activeExample = 'ajax'" :class="{'bg-blue-600 text-white': activeExample === 'ajax', 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300': activeExample !== 'ajax'}" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-blue-50 dark:hover:bg-gray-700">
-                    AJAX Forms
+                    Event Handling
                 </button>
                 <button @click="activeExample = 'advanced'" :class="{'bg-blue-600 text-white': activeExample === 'advanced', 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300': activeExample !== 'advanced'}" class="px-6 py-3 rounded-lg font-medium transition-colors hover:bg-blue-50 dark:hover:bg-gray-700">
                     Advanced Features
@@ -171,7 +183,7 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
             <div x-show="activeExample === 'custom'" class="space-y-12">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Custom Validation Rules</h2>
-                    <p class="text-xl text-gray-600 dark:text-gray-300">Define custom validation logic with JavaScript functions</p>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">HTML5 validation with pattern matching and custom error messages</p>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12">
@@ -182,10 +194,10 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                             <form @submit.prevent="customFormSubmitted = true" class="space-y-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Username *</label>
-                                    <input 
-                                        type="text" 
-                                        name="username" 
-                                        required 
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        required
                                         minlength="3"
                                         pattern="^[a-zA-Z0-9_]+$"
                                         data-error="Username must be 3+ characters, alphanumeric and underscores only"
@@ -194,10 +206,10 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Password *</label>
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        required 
+                                    <input
+                                        type="password"
+                                        name="password"
+                                        required
                                         minlength="8"
                                         pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
                                         data-error="Password must be 8+ chars with uppercase, lowercase, number and special character"
@@ -205,22 +217,11 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Confirm Password *</label>
-                                    <input 
-                                        type="password" 
-                                        name="confirmPassword" 
-                                        required
-                                        data-match="password"
-                                        data-error="Passwords must match"
-                                        placeholder="Confirm your password"
-                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                                </div>
-                                <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Age *</label>
-                                    <input 
-                                        type="number" 
-                                        name="age" 
-                                        required 
+                                    <input
+                                        type="number"
+                                        name="age"
+                                        required
                                         min="13"
                                         max="120"
                                         data-error="Age must be between 13 and 120"
@@ -247,9 +248,9 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 <code class="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded mt-2 block">pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$"</code>
                             </div>
                             <div class="border-l-4 border-green-500 pl-4">
-                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Field Matching</h4>
-                                <p class="text-gray-600 dark:text-gray-300 text-sm">Ensure two fields match using the data-match attribute</p>
-                                <code class="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded mt-2 block">data-match="password"</code>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Length Validation</h4>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">Enforce minimum and maximum length constraints</p>
+                                <code class="text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded mt-2 block">minlength="8" maxlength="100"</code>
                             </div>
                             <div class="border-l-4 border-purple-500 pl-4">
                                 <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Custom Messages</h4>
@@ -270,20 +271,20 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
             <div x-show="activeExample === 'realtime'" class="space-y-12">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Real-time Validation</h2>
-                    <p class="text-xl text-gray-600 dark:text-gray-300">Instant feedback as users type with live validation states</p>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">Automatic feedback as users type with live validation states</p>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12">
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Contact Form</h3>
-                        <noundry-element data-validate-on="input">
+                        <noundry-element>
                             <form class="space-y-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Company Name *</label>
-                                    <input 
-                                        type="text" 
-                                        name="company" 
-                                        required 
+                                    <input
+                                        type="text"
+                                        name="company"
+                                        required
                                         minlength="2"
                                         data-error="Company name is required (minimum 2 characters)"
                                         placeholder="Acme Corporation"
@@ -291,9 +292,9 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Website URL</label>
-                                    <input 
-                                        type="url" 
-                                        name="website" 
+                                    <input
+                                        type="url"
+                                        name="website"
                                         pattern="https?://.*"
                                         data-error="Please enter a valid URL starting with http:// or https://"
                                         placeholder="https://example.com"
@@ -301,9 +302,9 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Business Email *</label>
-                                    <input 
-                                        type="email" 
-                                        name="businessEmail" 
+                                    <input
+                                        type="email"
+                                        name="businessEmail"
                                         required
                                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                                         data-error="Please enter a valid business email address"
@@ -312,8 +313,8 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Employee Count *</label>
-                                    <select 
-                                        name="employeeCount" 
+                                    <select
+                                        name="employeeCount"
                                         required
                                         data-error="Please select your company size"
                                         class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
@@ -337,51 +338,46 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Real-time Features</h3>
                         <div class="space-y-6">
                             <div class="p-4 border border-blue-200 dark:border-blue-800 rounded-lg bg-blue-50 dark:bg-blue-900/20">
-                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-2">✨ Live Validation</h4>
-                                <p class="text-blue-800 dark:text-blue-200 text-sm">Validation occurs as users type, providing immediate feedback</p>
+                                <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-2">Live Validation</h4>
+                                <p class="text-blue-800 dark:text-blue-200 text-sm">Validation occurs automatically as users type and on field change</p>
                             </div>
                             <div class="p-4 border border-green-200 dark:border-green-800 rounded-lg bg-green-50 dark:bg-green-900/20">
-                                <h4 class="font-semibold text-green-900 dark:text-green-100 mb-2">🎯 Smart Timing</h4>
-                                <p class="text-green-800 dark:text-green-200 text-sm">Validation triggers intelligently to avoid annoying users</p>
+                                <h4 class="font-semibold text-green-900 dark:text-green-100 mb-2">Automatic Error Display</h4>
+                                <p class="text-green-800 dark:text-green-200 text-sm">Error messages are automatically inserted after invalid fields</p>
                             </div>
                             <div class="p-4 border border-purple-200 dark:border-purple-800 rounded-lg bg-purple-50 dark:bg-purple-900/20">
-                                <h4 class="font-semibold text-purple-900 dark:text-purple-100 mb-2">📱 Responsive Design</h4>
-                                <p class="text-purple-800 dark:text-purple-200 text-sm">Error messages adapt beautifully to any screen size</p>
+                                <h4 class="font-semibold text-purple-900 dark:text-purple-100 mb-2">State Tracking</h4>
+                                <p class="text-purple-800 dark:text-purple-200 text-sm">Track dirty, valid, and submitting states with data attributes</p>
                             </div>
                             <div class="p-4 border border-orange-200 dark:border-orange-800 rounded-lg bg-orange-50 dark:bg-orange-900/20">
-                                <h4 class="font-semibold text-orange-900 dark:text-orange-100 mb-2">🔧 Easy Configuration</h4>
-                                <p class="text-orange-800 dark:text-orange-200 text-sm">Control validation timing with simple data attributes</p>
-                                <code class="text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded mt-2 block">data-validate-on="input"</code>
+                                <h4 class="font-semibold text-orange-900 dark:text-orange-100 mb-2">Custom Error Messages</h4>
+                                <p class="text-orange-800 dark:text-orange-200 text-sm">Define custom messages per validation type</p>
+                                <code class="text-xs bg-white dark:bg-gray-800 px-2 py-1 rounded mt-2 block">data-error-valuemissing="This field is required"</code>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- AJAX Forms Example -->
+            <!-- Event Handling Example -->
             <div x-show="activeExample === 'ajax'" class="space-y-12">
                 <div class="text-center mb-12">
-                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">AJAX Form Submission</h2>
-                    <p class="text-xl text-gray-600 dark:text-gray-300">Seamless form submission without page reloads</p>
+                    <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Event Handling</h2>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">Custom form handling with JavaScript events</p>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12">
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Newsletter Signup</h3>
-                        <noundry-element 
-                            data-ajax="true" 
-                            data-endpoint="/api/newsletter" 
-                            data-method="POST"
-                            @submit-success="ajaxFormSubmitted = true; ajaxResponse = 'Thank you for subscribing!'"
-                            @submit-start="ajaxLoading = true"
-                            @submit-end="ajaxLoading = false">
+                        <noundry-element
+                            @noundry-submit.prevent="ajaxLoading = true; setTimeout(() => { ajaxLoading = false; ajaxFormSubmitted = true; ajaxResponse = 'Thank you for subscribing!'; }, 1000)">
                             <form class="space-y-6">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">First Name *</label>
-                                    <input 
-                                        type="text" 
-                                        name="firstName" 
-                                        required 
+                                    <input
+                                        type="text"
+                                        name="firstName"
+                                        required
                                         minlength="2"
                                         data-error="First name is required"
                                         placeholder="John"
@@ -389,9 +385,9 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address *</label>
-                                    <input 
-                                        type="email" 
-                                        name="email" 
+                                    <input
+                                        type="email"
+                                        name="email"
                                         required
                                         data-error="Please enter a valid email address"
                                         placeholder="john@example.com"
@@ -429,28 +425,30 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                     </div>
 
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">AJAX Configuration</h3>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Available Events</h3>
                         <div class="space-y-6">
                             <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 font-mono text-sm">
-                                <div class="text-purple-400">&lt;noundry-element</div>
-                                <div class="text-blue-400">  data-ajax=<span class="text-green-400">"true"</span></div>
-                                <div class="text-blue-400">  data-endpoint=<span class="text-green-400">"/api/newsletter"</span></div>
-                                <div class="text-blue-400">  data-method=<span class="text-green-400">"POST"</span></div>
-                                <div class="text-blue-400">  @submit-success=<span class="text-green-400">"handleSuccess()"</span></div>
-                                <div class="text-purple-400">&gt;</div>
+                                <div class="text-gray-400">// Listen for form submission</div>
+                                <div class="text-gray-300">element.addEventListener(<span class="text-green-400">'noundry-submit'</span>, (e) =&gt; {</div>
+                                <div class="text-gray-300">  console.log(e.detail.values);</div>
+                                <div class="text-gray-300">});</div>
                             </div>
                             <div class="space-y-4">
                                 <div class="border-l-4 border-blue-500 pl-4">
-                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Automatic Submission</h4>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Forms submit via AJAX automatically when configured</p>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">noundry-submit</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Fired when form is valid and submitted. Contains values and formData.</p>
                                 </div>
                                 <div class="border-l-4 border-green-500 pl-4">
-                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Event Hooks</h4>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Listen to submission events for custom handling</p>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">noundry-invalid</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Fired when form validation fails. Contains errors object.</p>
                                 </div>
                                 <div class="border-l-4 border-purple-500 pl-4">
-                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">Error Handling</h4>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Built-in error handling and retry mechanisms</p>
+                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">noundry-input / noundry-change</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Fired on field input/change with field name, value, and all values.</p>
+                                </div>
+                                <div class="border-l-4 border-orange-500 pl-4">
+                                    <h4 class="font-semibold text-gray-900 dark:text-white mb-1">noundry-reset</h4>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Fired when the form is reset via the reset() method.</p>
                                 </div>
                             </div>
                         </div>
@@ -462,61 +460,52 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
             <div x-show="activeExample === 'advanced'" class="space-y-12">
                 <div class="text-center mb-12">
                     <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Advanced Features</h2>
-                    <p class="text-xl text-gray-600 dark:text-gray-300">Advanced validation techniques and configuration options</p>
+                    <p class="text-xl text-gray-600 dark:text-gray-300">JavaScript API and configuration options</p>
                 </div>
 
                 <div class="grid lg:grid-cols-2 gap-12">
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-8 shadow-lg">
-                        <h3 class="text-2xl font-semibent text-gray-900 dark:text-white mb-6">Multi-step Form</h3>
-                        <noundry-element data-multi-step="true">
-                            <form class="space-y-6">
-                                <!-- Step 1 -->
-                                <div data-step="1">
-                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Step 1: Personal Info</h4>
-                                    <div class="space-y-4">
-                                        <input 
-                                            type="text" 
-                                            name="firstName" 
-                                            required 
-                                            placeholder="First Name"
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                                        <input 
-                                            type="text" 
-                                            name="lastName" 
-                                            required 
-                                            placeholder="Last Name"
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                                    </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Form with Auto-Disable</h3>
+                        <noundry-element error-disable-submit>
+                            <form @submit.prevent class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Project Name *</label>
+                                    <input
+                                        type="text"
+                                        name="projectName"
+                                        required
+                                        minlength="3"
+                                        data-error="Project name must be at least 3 characters"
+                                        placeholder="My Awesome Project"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                                 </div>
-
-                                <!-- Step 2 -->
-                                <div data-step="2" style="display: none;">
-                                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Step 2: Contact Info</h4>
-                                    <div class="space-y-4">
-                                        <input 
-                                            type="email" 
-                                            name="email" 
-                                            required 
-                                            placeholder="Email Address"
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                                        <input 
-                                            type="tel" 
-                                            name="phone" 
-                                            placeholder="Phone Number"
-                                            class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
-                                    </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Budget *</label>
+                                    <input
+                                        type="number"
+                                        name="budget"
+                                        required
+                                        min="100"
+                                        max="1000000"
+                                        data-error="Budget must be between $100 and $1,000,000"
+                                        placeholder="5000"
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                                 </div>
-
-                                <div class="flex justify-between">
-                                    <button type="button" data-step-prev class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                        Previous
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                                    <textarea
+                                        name="description"
+                                        rows="3"
+                                        maxlength="500"
+                                        data-error="Description cannot exceed 500 characters"
+                                        placeholder="Describe your project..."
+                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"></textarea>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <button type="submit" class="bg-teal-600 hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                                        Create Project
                                     </button>
-                                    <button type="button" data-step-next class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                        Next
-                                    </button>
-                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors" style="display: none;">
-                                        Complete
-                                    </button>
+                                    <span class="text-gray-500 dark:text-gray-400 text-sm">Submit disabled until valid</span>
                                 </div>
                             </form>
                         </noundry-element>
@@ -526,34 +515,36 @@ x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
                         <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Configuration Options</h3>
                         <div class="space-y-6">
                             <div>
-                                <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Data Attributes</h4>
+                                <h4 class="font-semibold text-gray-900 dark:text-white mb-4">Element Attributes</h4>
                                 <div class="space-y-3">
                                     <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                                        <code class="text-sm">data-validate-on="input"</code>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Validate as user types</p>
+                                        <code class="text-sm">error-disable-submit</code>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Disable submit button when form is invalid</p>
                                     </div>
                                     <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                                        <code class="text-sm">data-ajax="true"</code>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enable AJAX submission</p>
+                                        <code class="text-sm">reset-on-submit</code>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Reset form after successful submission</p>
                                     </div>
                                     <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                                        <code class="text-sm">data-multi-step="true"</code>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Multi-step form support</p>
+                                        <code class="text-sm">default-submit</code>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Allow default form submission behavior</p>
                                     </div>
                                     <div class="bg-gray-100 dark:bg-gray-800 p-3 rounded">
-                                        <code class="text-sm">data-error="Custom message"</code>
-                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Custom error messages</p>
+                                        <code class="text-sm">data-error="message"</code>
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Custom error message for input fields</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div>
                                 <h4 class="font-semibold text-gray-900 dark:text-white mb-4">JavaScript API</h4>
-                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 font-mono text-sm">
-                                    <div class="text-gray-300">const form = document.querySelector(<span class="text-green-400">'noundry-element'</span>);</div>
-                                    <div class="text-gray-300">form.<span class="text-blue-400">validate</span>();</div>
-                                    <div class="text-gray-300">form.<span class="text-blue-400">reset</span>();</div>
-                                    <div class="text-gray-300">form.<span class="text-blue-400">getFormData</span>();</div>
+                                <div class="bg-gray-900 dark:bg-gray-950 rounded-lg p-4 font-mono text-sm space-y-1">
+                                    <div class="text-gray-300">const el = document.querySelector(<span class="text-green-400">'noundry-element'</span>);</div>
+                                    <div class="text-gray-300">el.<span class="text-blue-400">reset</span>();  <span class="text-gray-500">// Reset form</span></div>
+                                    <div class="text-gray-300">el.<span class="text-blue-400">getValues</span>();  <span class="text-gray-500">// Get values</span></div>
+                                    <div class="text-gray-300">el.<span class="text-blue-400">setValues</span>({name: <span class="text-green-400">'John'</span>});</div>
+                                    <div class="text-gray-300">el.<span class="text-blue-400">setValidationRule</span>(<span class="text-green-400">'field'</span>, fn);</div>
+                                    <div class="text-gray-300">el.<span class="text-blue-400">requestSubmit</span>();</div>
                                 </div>
                             </div>
                         </div>

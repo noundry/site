@@ -2751,7 +2751,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">CLI Usage</h2>
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
                             <pre><code><span class="text-gray-500"># Install CLI tool</span>
-<span class="text-accent-500">$ dotnet tool install -g Noundry.Tuxedo.Bowtie.Cli</span>
+<span class="text-accent-500">$ dotnet tool install --global Noundry.Tuxedo.Bowtie.Cli</span>
 
 <span class="text-gray-500"># Generate schema from models</span>
 <span class="text-accent-500">$ bowtie sync --connection "Server=localhost;Database=MyApp;" --provider sqlserver</span>
@@ -2780,7 +2780,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
                             <div class="text-accent-500">$ dotnet add package Noundry.Tuxedo.Cufflink</div>
                             <div class="text-gray-500 mt-2"># Or install CLI tool</div>
-                            <div class="text-accent-500">$ dotnet tool install -g Noundry.Tuxedo.Cufflink.CLI</div>
+                            <div class="text-accent-500">$ dotnet tool install --global Noundry.Tuxedo.Cufflink.CLI</div>
                         </div>
                     </div>
 
@@ -2980,7 +2980,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">CLI Tool</h3>
                                 <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                                    <div class="text-accent-500">$ dotnet tool install -g Noundry.Connector.Generator</div>
+                                    <div class="text-accent-500">$ dotnet tool install --global Noundry.Connector.Generator</div>
                                 </div>
                             </div>
                             <div>
@@ -3305,7 +3305,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
           <span class="text-green-400">DOTENVX_KEY</span>: <span class="text-orange-400">${{ secrets.DOTENVX_ENCRYPTION_KEY }}</span>
         <span class="text-green-400">run</span>: |
           <span class="text-gray-500"># Encrypt production secrets</span>
-          <span class="text-purple-400">dotnet</span> tool install -g Noundry.DotEnvX.Cli
+          <span class="text-purple-400">dotnet</span> tool install --global Noundry.DotEnvX.Cli
           <span class="text-purple-400">dotenvx</span> encrypt --file .env.production --key $DOTENVX_KEY
 
           <span class="text-gray-500"># Verify encrypted values</span>
@@ -3890,7 +3890,7 @@ app.<span class="text-green-400">MapGet</span>(<span class="text-orange-400">"/"
                         <div class="bg-white dark:bg-gray-900 rounded-lg p-4">
                             <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Option 1: NuGet (Recommended)</h3>
                             <div class="bg-gray-900 dark:bg-black rounded-lg p-4">
-                                <pre class="text-sm font-mono text-gray-300"><code>dotnet tool install -g Noundry.Andy</code></pre>
+                                <pre class="text-sm font-mono text-gray-300"><code>dotnet tool install --global Noundry.Andy</code></pre>
                             </div>
                         </div>
 

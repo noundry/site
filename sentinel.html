@@ -131,7 +131,16 @@
                     </div>
 
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. That's It!</h3>
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">3. Add Middleware (Optional)</h3>
+                        <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm space-y-1">
+                            <div class="text-gray-500">// For HTTP request tracking and exception capture</div>
+                            <div class="text-gray-300">app.<span class="text-green-400">UseSentinelRequestTracking</span>();</div>
+                            <div class="text-gray-300">app.<span class="text-green-400">UseSentinelExceptionTracking</span>();</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">4. That's It!</h3>
                         <p class="text-gray-600 dark:text-gray-300">Your app now sends metrics automatically every 15 seconds to the Sentinel ingestion API.</p>
                     </div>
                 </div>
