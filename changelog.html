@@ -17,6 +17,40 @@
             <p class="text-center text-gray-600 dark:text-gray-300 mb-12">All notable changes to the Noundry platform</p>
             
             <div class="space-y-8">
+                <!-- January 2026 - AIGW API Release -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-8 border-l-4 border-primary-600">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">v0.8.2</h2>
+                        <span class="text-sm text-gray-600 dark:text-gray-400">2026-01-08</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-semibold text-green-600 dark:text-green-400 mb-2">✨ New Features</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li><strong>Noundry.AIGW Hosted API</strong> - AI Gateway now deployed at <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">https://api.noundry.ai</code> as a BYOK (Bring Your Own Key) service</li>
+                                <li><strong>BYOK Model</strong> - Users provide their own provider API keys via <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">X-API-KEY</code> header; gateway relays to OpenAI/Anthropic/Google with no markup</li>
+                                <li><strong>Unified Relay Interface</strong> - Single endpoint proxies requests to any supported provider based on model string (e.g., <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">anthropic/claude-sonnet-4</code>)</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-orange-600 dark:text-orange-400 mb-2">🔧 Fixes</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>Fixed ASP0019 warnings - changed <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">Headers.Add()</code> to <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">Headers.Append()</code> in streaming responses</li>
+                                <li>Fixed CA2024 warnings - replaced <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">EndOfStream</code> with proper async pattern in all providers</li>
+                                <li>Fixed CS8604/CS8620 nullability warnings in Core extensions</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-purple-600 dark:text-purple-400 mb-2">📚 Documentation</h3>
+                            <ul class="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+                                <li>Added "Hosted API" section to all AIGW documentation</li>
+                                <li>Updated AI Gateway page with BYOK explanation and usage examples</li>
+                                <li>Updated all URLs from <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">aigw.noundry.ai</code> to <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-sm">api.noundry.ai</code></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- January 2026 Release -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-8 border-l-4 border-teal-600">
                     <div class="flex items-center justify-between mb-4">
