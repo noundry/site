@@ -283,7 +283,7 @@
                 <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
                     <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-gray-500">// Program.cs - PostgreSQL configuration</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgreSQL</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgres</span>(<span class="text-blue-400">connectionString</span>);
 
 <span class="text-gray-500">// Connection string example</span>
 <span class="text-purple-400">var</span> <span class="text-blue-400">connectionString</span> = <span class="text-orange-400">"Host=localhost;Database=myapp;Username=postgres;Password=password"</span>;
@@ -326,7 +326,7 @@
                 <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
                     <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-gray-500">// Program.cs - MySQL configuration</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySQL</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySql</span>(<span class="text-blue-400">connectionString</span>);
 
 <span class="text-gray-500">// Connection string examples</span>
 <span class="text-purple-400">var</span> <span class="text-blue-400">localConnection</span> = <span class="text-orange-400">"Server=localhost;Database=myapp;Uid=root;Pwd=password;"</span>;
@@ -373,7 +373,7 @@
                 <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
                     <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-gray-500">// Program.cs - SQLite configuration</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSQLite</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlite</span>(<span class="text-blue-400">connectionString</span>);
 
 <span class="text-gray-500">// Connection string examples</span>
 <span class="text-purple-400">var</span> <span class="text-blue-400">fileDb</span> = <span class="text-orange-400">"Data Source=myapp.db"</span>;

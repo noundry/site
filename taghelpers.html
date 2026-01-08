@@ -413,7 +413,7 @@
                     <!-- Text Input -->
                     <div class="grid lg:grid-cols-2 gap-8 mb-8">
                         <div>
-                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">noundry-input</h4>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">noundry-text-input</h4>
                             <p class="text-gray-600 dark:text-gray-300 mb-4">Enhanced input field with label, validation, and multiple input types.</p>
                             
                             <div class="space-y-2 text-sm">
@@ -438,7 +438,7 @@
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
                             <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                                 <pre><code><span class="text-gray-500">&lt;!-- Basic text input --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"text"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span>
@@ -446,7 +446,7 @@
     <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
 
 <span class="text-gray-500">&lt;!-- Email input with validation --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span>
@@ -454,7 +454,7 @@
     <span class="text-green-400">help-text</span>=<span class="text-orange-400">"We'll never share your email"</span> <span class="text-blue-400">/&gt;</span>
 
 <span class="text-gray-500">&lt;!-- Password input --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Password"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Password"</span>
@@ -571,7 +571,7 @@
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
                             <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                                 <pre><code><span class="text-gray-500">&lt;!-- Number input with range --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Age"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Age"</span>
@@ -580,7 +580,7 @@
     <span class="text-green-400">help-text</span>=<span class="text-orange-400">"Must be 18 or older"</span> <span class="text-blue-400">/&gt;</span>
 
 <span class="text-gray-500">&lt;!-- Phone input with pattern --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Phone"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"tel"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Phone Number"</span>
@@ -588,7 +588,7 @@
     <span class="text-green-400">pattern</span>=<span class="text-orange-400">"[0-9]{3}-[0-9]{3}-[0-9]{4}"</span> <span class="text-blue-400">/&gt;</span>
 
 <span class="text-gray-500">&lt;!-- URL input --&gt;</span>
-<span class="text-blue-400">&lt;noundry-input</span>
+<span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Website"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"url"</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Website"</span>
@@ -674,13 +674,13 @@
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
                             <h5 class="text-white font-semibold mb-3">Razor Page Implementation</h5>
                             <div class="font-mono text-sm text-gray-300 overflow-x-auto">
-                                <pre><code><span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
-    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-blue-400">/&gt;</span>
-    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
-    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Age"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Age"</span> <span class="text-blue-400">/&gt;</span>
+                                <pre><code><span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Age"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Age"</span> <span class="text-blue-400">/&gt;</span>
     <span class="text-blue-400">&lt;noundry-textarea</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Message"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Message"</span> <span class="text-blue-400">/&gt;</span>
     <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/noundry-button&gt;</span>
-<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+<span class="text-blue-400">&lt;/form&gt;</span></code></pre>
                             </div>
                         </div>
                         
@@ -756,16 +756,16 @@
                         
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6">
                             <div class="font-mono text-sm text-gray-300 overflow-x-auto">
-                                <pre><code><span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-2xl mx-auto space-y-6"</span><span class="text-blue-400">&gt;</span>
+                                <pre><code><span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-2xl mx-auto space-y-6"</span><span class="text-blue-400">&gt;</span>
     <span class="text-gray-500">&lt;!-- Basic product information --&gt;</span>
     <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"grid md:grid-cols-2 gap-4"</span><span class="text-blue-400">&gt;</span>
-        <span class="text-blue-400">&lt;noundry-input</span> 
+        <span class="text-blue-400">&lt;noundry-text-input</span> 
             <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span>
             <span class="text-green-400">label</span>=<span class="text-orange-400">"Product Name"</span>
             <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter product name"</span>
             <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
             
-        <span class="text-blue-400">&lt;noundry-input</span> 
+        <span class="text-blue-400">&lt;noundry-text-input</span> 
             <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Price"</span>
             <span class="text-green-400">type</span>=<span class="text-orange-400">"number"</span>
             <span class="text-green-400">label</span>=<span class="text-orange-400">"Price"</span>
@@ -797,7 +797,7 @@
             Cancel
         <span class="text-blue-400">&lt;/noundry-button&gt;</span>
     <span class="text-blue-400">&lt;/div&gt;</span>
-<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+<span class="text-blue-400">&lt;/form&gt;</span></code></pre>
                             </div>
                         </div>
                         
@@ -886,10 +886,10 @@
     <span class="text-blue-400">&lt;/div&gt;</span>
     
     <span class="text-gray-500">&lt;!-- Traditional registration form --&gt;</span>
-    <span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Register"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-4"</span><span class="text-blue-400">&gt;</span>
-        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
-        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Password"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Password"</span> <span class="text-blue-400">/&gt;</span>
-        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"ConfirmPassword"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Confirm"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Register"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-4"</span><span class="text-blue-400">&gt;</span>
+        <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Password"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Password"</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"ConfirmPassword"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"password"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Confirm"</span> <span class="text-blue-400">/&gt;</span>
         
         <span class="text-blue-400">&lt;noundry-checkbox</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"AcceptTerms"</span> <span class="text-green-400">required</span><span class="text-blue-400">&gt;</span>
             I accept the <span class="text-blue-400">&lt;a</span> <span class="text-green-400">href</span>=<span class="text-orange-400">"/terms"</span><span class="text-blue-400">&gt;</span>terms and conditions<span class="text-blue-400">&lt;/a&gt;</span>
@@ -898,7 +898,7 @@
         <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"w-full"</span><span class="text-blue-400">&gt;</span>
             Create Account
         <span class="text-blue-400">&lt;/noundry-button&gt;</span>
-    <span class="text-blue-400">&lt;/noundry-form&gt;</span>
+    <span class="text-blue-400">&lt;/form&gt;</span>
 <span class="text-blue-400">&lt;/div&gt;</span></code></pre>
                             </div>
                         </div>
@@ -1010,14 +1010,14 @@
 <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"max-w-2xl mx-auto py-8"</span><span class="text-blue-400">&gt;</span>
     <span class="text-blue-400">&lt;h1</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"text-3xl font-bold mb-8"</span><span class="text-blue-400">&gt;</span>Contact Us<span class="text-blue-400">&lt;/h1&gt;</span>
     
-    <span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Submit"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Submit"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span> <span class="text-green-400">validate</span>=<span class="text-orange-400">"true"</span><span class="text-blue-400">&gt;</span>
         <span class="text-gray-500">&lt;!-- Personal Information --&gt;</span>
         <span class="text-blue-400">&lt;div</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"grid md:grid-cols-2 gap-4"</span><span class="text-blue-400">&gt;</span>
-            <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"FirstName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"First Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
-            <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"LastName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Last Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+            <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"FirstName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"First Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+            <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"LastName"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Last Name"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
         <span class="text-blue-400">&lt;/div&gt;</span>
         
-        <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
+        <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span> <span class="text-green-400">required</span> <span class="text-blue-400">/&gt;</span>
         
         <span class="text-blue-400">&lt;noundry-select</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Subject"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Subject"</span> <span class="text-green-400">required</span><span class="text-blue-400">&gt;</span>
             <span class="text-blue-400">&lt;option</span> <span class="text-green-400">value</span>=<span class="text-orange-400">""</span><span class="text-blue-400">&gt;</span>Select a subject<span class="text-blue-400">&lt;/option&gt;</span>
@@ -1036,7 +1036,7 @@
         <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"w-full"</span><span class="text-blue-400">&gt;</span>
             Send Message
         <span class="text-blue-400">&lt;/noundry-button&gt;</span>
-    <span class="text-blue-400">&lt;/noundry-form&gt;</span>
+    <span class="text-blue-400">&lt;/form&gt;</span>
 <span class="text-blue-400">&lt;/div&gt;</span></code></pre>
                 </div>
             </div>

@@ -661,7 +661,7 @@
                     <div class="mb-8">
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-accent-500">$ dotnet add package Guardian</div>
+                            <div class="text-accent-500">$ dotnet add package Noundry.Guardian</div>
                         </div>
                     </div>
 
@@ -944,7 +944,7 @@
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Input Field</h3>
                                 <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                                    <pre><code><span class="text-blue-400">&lt;noundry-input</span>
+                                    <pre><code><span class="text-blue-400">&lt;noundry-text-input</span>
     <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span>
     <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span>
     <span class="text-green-400">placeholder</span>=<span class="text-orange-400">"Enter your email"</span>
@@ -1077,10 +1077,10 @@
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoSqlServer</span>(<span class="text-blue-400">connectionString</span>);
 
 <span class="text-gray-500">// Or for PostgreSQL</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgreSQL</span>(<span class="text-blue-400">connectionString</span>);
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoPostgres</span>(<span class="text-blue-400">connectionString</span>);
 
 <span class="text-gray-500">// Or for MySQL</span>
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySQL</span>(<span class="text-blue-400">connectionString</span>);</code></pre>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoMySql</span>(<span class="text-blue-400">connectionString</span>);</code></pre>
                         </div>
                     </div>
 
@@ -1862,12 +1862,12 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Form TagHelpers</h2>
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
                             <pre><code><span class="text-gray-500">&lt;!-- Enhanced form with validation --&gt;</span>
-<span class="text-blue-400">&lt;noundry-form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span><span class="text-blue-400">&gt;</span>
-    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-green-400">required</span><span class="text-blue-400">/&gt;</span>
-    <span class="text-blue-400">&lt;noundry-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span><span class="text-blue-400">/&gt;</span>
+<span class="text-blue-400">&lt;form</span> <span class="text-green-400">asp-action</span>=<span class="text-orange-400">"Create"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"space-y-6"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Name"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Full Name"</span> <span class="text-green-400">required</span><span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-text-input</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email Address"</span><span class="text-blue-400">/&gt;</span>
     <span class="text-blue-400">&lt;noundry-select</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Country"</span> <span class="text-green-400">asp-items</span>=<span class="text-orange-400">"ViewBag.Countries"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Country"</span><span class="text-blue-400">/&gt;</span>
     <span class="text-blue-400">&lt;noundry-button</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"submit"</span> <span class="text-green-400">variant</span>=<span class="text-orange-400">"primary"</span><span class="text-blue-400">&gt;</span>Submit<span class="text-blue-400">&lt;/noundry-button&gt;</span>
-<span class="text-blue-400">&lt;/noundry-form&gt;</span></code></pre>
+<span class="text-blue-400">&lt;/form&gt;</span></code></pre>
                         </div>
                     </div>
                 </div>
@@ -2998,10 +2998,10 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Generate JSONPlaceholder Client</h3>
                             <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
                                 <pre><code><span class="text-gray-500"># Start the interactive generator</span>
-<span class="text-accent-500">$ noundry-connector generate</span>
+<span class="text-accent-500">$ connector-gen generate</span>
 
 <span class="text-gray-500"># Or use command line options:</span>
-<span class="text-accent-500">$ noundry-connector generate \
+<span class="text-accent-500">$ connector-gen generate \
   --url "https://jsonplaceholder.typicode.com" \
   --client-name "JsonPlaceholderClient" \
   --namespace "MyApp.ApiClients"</span></code></pre>
@@ -3586,7 +3586,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
                     <div class="mb-8">
                         <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Installation</h2>
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
-                            <div class="text-purple-500">$ dotnet add package RazorHelpers</div>
+                            <div class="text-purple-500">$ dotnet add package Noundry.RazorHelpers</div>
                         </div>
                     </div>
 

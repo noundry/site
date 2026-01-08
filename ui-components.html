@@ -418,8 +418,8 @@
                         <div>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Code</h3>
                             <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
-                                <pre class="text-sm text-gray-300"><code>&lt;noundry-input type="text" label="Full Name" placeholder="Enter your name" /&gt;
-&lt;noundry-input type="email" label="Email" placeholder="john@example.com" /&gt;
+                                <pre class="text-sm text-gray-300"><code>&lt;noundry-text-input type="text" label="Full Name" placeholder="Enter your name" /&gt;
+&lt;noundry-text-input type="email" label="Email" placeholder="john@example.com" /&gt;
 &lt;noundry-textarea label="Message" rows="3" placeholder="Your message..." /&gt;</code></pre>
                             </div>
                         </div>
@@ -1995,8 +1995,8 @@ toast.warning('Warning!', 'Please check your input.');</code></pre>
     
     &lt;noundry-slide-over-body&gt;
         &lt;!-- Profile form content --&gt;
-        &lt;noundry-input label="Name" value="@user.Name" /&gt;
-        &lt;noundry-input label="Email" value="@user.Email" /&gt;
+        &lt;noundry-text-input label="Name" value="@user.Name" /&gt;
+        &lt;noundry-text-input label="Email" value="@user.Email" /&gt;
         &lt;noundry-textarea label="Bio" value="@user.Bio" /&gt;
     &lt;/noundry-slide-over-body&gt;
     
@@ -2481,7 +2481,7 @@ toast.warning('Warning!', 'Please check your input.');</code></pre>
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Code</h3>
                             <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
                                 <pre class="text-sm text-gray-300"><code>&lt;noundry-copy-to-clipboard text="@Model.ApiKey"&gt;
-    &lt;noundry-input value="@Model.ApiKey" readonly="true" /&gt;
+    &lt;noundry-text-input value="@Model.ApiKey" readonly="true" /&gt;
     &lt;noundry-copy-button&gt;Copy&lt;/noundry-copy-button&gt;
 &lt;/noundry-copy-to-clipboard&gt;
 
