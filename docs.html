@@ -961,6 +961,139 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Chart Component</h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-4">
+                            Render interactive SVG charts with support for bar, line, area, pie, donut, and radar types. Load data from APIs, inline JSON, or server-side collections.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Bar Chart</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-blue-400">&lt;noundry-chart</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"bar"</span>
+    <span class="text-green-400">title</span>=<span class="text-orange-400">"Monthly Revenue"</span>
+    <span class="text-green-400">x-axis</span>=<span class="text-orange-400">"month"</span>
+    <span class="text-green-400">items</span>=<span class="text-orange-400">"@Model.RevenueData"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-chart-series</span>
+        <span class="text-green-400">key</span>=<span class="text-orange-400">"revenue"</span>
+        <span class="text-green-400">label</span>=<span class="text-orange-400">"Revenue"</span>
+        <span class="text-green-400">color</span>=<span class="text-orange-400">"indigo"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;noundry-chart-series</span>
+        <span class="text-green-400">key</span>=<span class="text-orange-400">"expenses"</span>
+        <span class="text-green-400">label</span>=<span class="text-orange-400">"Expenses"</span>
+        <span class="text-green-400">color</span>=<span class="text-orange-400">"emerald"</span> <span class="text-blue-400">/&gt;</span>
+<span class="text-blue-400">&lt;/noundry-chart&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Example</h3>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                                    <div class="mb-3">
+                                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Monthly Revenue</h4>
+                                    </div>
+                                    <svg viewBox="0 0 400 200" class="w-full" xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="40" y1="20" x2="380" y2="20" stroke="#e2e8f0" stroke-dasharray="4,4"/>
+                                        <line x1="40" y1="60" x2="380" y2="60" stroke="#e2e8f0" stroke-dasharray="4,4"/>
+                                        <line x1="40" y1="100" x2="380" y2="100" stroke="#e2e8f0" stroke-dasharray="4,4"/>
+                                        <line x1="40" y1="140" x2="380" y2="140" stroke="#e2e8f0" stroke-dasharray="4,4"/>
+                                        <line x1="40" y1="170" x2="380" y2="170" stroke="#e2e8f0" stroke-dasharray="4,4"/>
+                                        <rect x="50" y="82" width="22" height="88" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <rect x="76" y="112" width="22" height="58" rx="3" fill="#10b981" opacity="0.85"/>
+                                        <rect x="112" y="68" width="22" height="102" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <rect x="138" y="102" width="22" height="68" rx="3" fill="#10b981" opacity="0.85"/>
+                                        <rect x="174" y="74" width="22" height="96" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <rect x="200" y="108" width="22" height="62" rx="3" fill="#10b981" opacity="0.85"/>
+                                        <rect x="236" y="44" width="22" height="126" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <rect x="262" y="98" width="22" height="72" rx="3" fill="#10b981" opacity="0.85"/>
+                                        <rect x="298" y="52" width="22" height="118" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <rect x="324" y="105" width="22" height="65" rx="3" fill="#10b981" opacity="0.85"/>
+                                        <rect x="358" y="28" width="22" height="142" rx="3" fill="#6366f1" opacity="0.85"/>
+                                        <text x="87" y="188" text-anchor="middle" class="fill-gray-500" style="font-size:9px">Jan</text>
+                                        <text x="149" y="188" text-anchor="middle" class="fill-gray-500" style="font-size:9px">Feb</text>
+                                        <text x="211" y="188" text-anchor="middle" class="fill-gray-500" style="font-size:9px">Mar</text>
+                                        <text x="273" y="188" text-anchor="middle" class="fill-gray-500" style="font-size:9px">Apr</text>
+                                        <text x="335" y="188" text-anchor="middle" class="fill-gray-500" style="font-size:9px">May</text>
+                                    </svg>
+                                    <div class="flex gap-4 mt-2">
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#6366f1]"></span><span class="text-xs text-gray-500">Revenue</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span><span class="text-xs text-gray-500">Expenses</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6 mt-6">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Pie / Donut Chart</h3>
+                                <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
+                                    <pre><code><span class="text-blue-400">&lt;noundry-chart</span>
+    <span class="text-green-400">type</span>=<span class="text-orange-400">"donut"</span>
+    <span class="text-green-400">title</span>=<span class="text-orange-400">"Sales by Category"</span>
+    <span class="text-green-400">label-key</span>=<span class="text-orange-400">"category"</span>
+    <span class="text-green-400">value-key</span>=<span class="text-orange-400">"value"</span>
+    <span class="text-green-400">show-values</span>=<span class="text-orange-400">"true"</span>
+    <span class="text-green-400">items</span>=<span class="text-orange-400">"@Model.SalesData"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;noundry-chart-series</span>
+        <span class="text-green-400">key</span>=<span class="text-orange-400">"value"</span>
+        <span class="text-green-400">color</span>=<span class="text-orange-400">"indigo"</span> <span class="text-blue-400">/&gt;</span>
+<span class="text-blue-400">&lt;/noundry-chart&gt;</span></code></pre>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Example</h3>
+                                <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                                    <div class="mb-3">
+                                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white">Sales by Category</h4>
+                                    </div>
+                                    <svg viewBox="0 0 220 220" class="w-full max-w-[220px] mx-auto" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M110,15 A95,95 0 0,1 198,78 L153,99 A57,57 0 0,0 110,53 Z" fill="#6366f1" stroke="white" stroke-width="2"/>
+                                        <path d="M198,78 A95,95 0 0,1 170,192 L142,155 A57,57 0 0,0 153,99 Z" fill="#10b981" stroke="white" stroke-width="2"/>
+                                        <path d="M170,192 A95,95 0 0,1 50,192 L72,155 A57,57 0 0,0 142,155 Z" fill="#8b5cf6" stroke="white" stroke-width="2"/>
+                                        <path d="M50,192 A95,95 0 0,1 22,78 L67,99 A57,57 0 0,0 72,155 Z" fill="#f59e0b" stroke="white" stroke-width="2"/>
+                                        <path d="M22,78 A95,95 0 0,1 110,15 L110,53 A57,57 0 0,0 67,99 Z" fill="#3b82f6" stroke="white" stroke-width="2"/>
+                                        <text x="110" y="106" text-anchor="middle" class="fill-gray-900 dark:fill-white font-bold" style="font-size:16px">12.5K</text>
+                                        <text x="110" y="122" text-anchor="middle" class="fill-gray-400" style="font-size:10px">Total</text>
+                                    </svg>
+                                    <div class="flex flex-wrap justify-center gap-3 mt-2">
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#6366f1]"></span><span class="text-xs text-gray-500">Electronics</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#10b981]"></span><span class="text-xs text-gray-500">Clothing</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#8b5cf6]"></span><span class="text-xs text-gray-500">Food</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span><span class="text-xs text-gray-500">Books</span></div>
+                                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-[#3b82f6]"></span><span class="text-xs text-gray-500">Other</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Chart Types</h3>
+                            <div class="grid grid-cols-3 md:grid-cols-6 gap-2 text-center text-xs">
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">bar</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">line</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">area</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">pie</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">donut</div>
+                                </div>
+                                <div class="bg-white dark:bg-gray-700 rounded-lg p-2">
+                                    <div class="font-mono text-primary-600 dark:text-primary-400">radar</div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-3">
+                                Colors: indigo, emerald, violet, amber, blue, red, pink, cyan, slate. Data can be loaded via <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">api-url</code>, inline <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">data</code> (JSON), or server-side <code class="bg-gray-200 dark:bg-gray-600 px-1 rounded">items</code>.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Noundry Elements -->
