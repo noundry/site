@@ -172,9 +172,9 @@
     }
 
     <span class="text-gray-500">// Delete user</span>
-    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
     {
-        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>(<span class="text-blue-400">user</span>);
     }
 }</code></pre>
                     </div>
@@ -482,10 +482,10 @@
         <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">UpdateAsync</span>(<span class="text-blue-400">product</span>);
     }
 
-    <span class="text-gray-500">// DELETE - Remove by ID</span>
-    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteProductAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    <span class="text-gray-500">// DELETE - Remove entity</span>
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteProductAsync</span>(<span class="text-yellow-400">Product</span> <span class="text-blue-400">product</span>)
     {
-        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(<span class="text-blue-400">id</span>);
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>(<span class="text-blue-400">product</span>);
     }
 }</code></pre>
                             </div>
@@ -551,7 +551,7 @@
 <span class="text-gray-500">// Paged results for large datasets</span>
 <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-yellow-400">PagedResult</span>&lt;<span class="text-yellow-400">User</span>&gt;&gt; <span class="text-green-400">GetUsersPagedAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">page</span>, <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span>)
 {
-    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetPagedAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">page</span>, <span class="text-blue-400">pageSize</span>);
+    <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">GetPagedAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">page</span>, <span class="text-blue-400">pageSize</span>, <span class="text-blue-400">orderBy</span>: <span class="text-orange-400">"Name ASC"</span>);
 }
 
 <span class="text-gray-500">// Execute scalar queries</span>
@@ -687,17 +687,16 @@
 <span class="text-purple-400">public</span> <span class="text-purple-400">class</span> <span class="text-yellow-400">Product</span>
 {
     <span class="text-blue-400">[Key]</span>
-    <span class="text-blue-400">[ExplicitKey]</span> <span class="text-gray-500">// For manually assigned IDs</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
-    
+
     <span class="text-blue-400">[Required]</span>
     <span class="text-blue-400">[StringLength(100)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
-    
+
     <span class="text-blue-400">[Column("product_price")]</span> <span class="text-gray-500">// Custom column name</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-blue-400">Price</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
-    
-    <span class="text-blue-400">[ForeignKey("CategoryId")]</span>
+
+    <span class="text-blue-400">[ForeignKey("Categories")]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
     
     <span class="text-blue-400">[Computed]</span> <span class="text-gray-500">// Not included in INSERT/UPDATE</span>
@@ -747,9 +746,9 @@
                         <pre><code><span class="text-gray-500">// Dynamic query building</span>
 <span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.QueryBuilder</span>;
 
-<span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+<span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
     .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>)
-    .<span class="text-green-400">Join</span>&lt;<span class="text-yellow-400">Category</span>&gt;(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span>, <span class="text-blue-400">c</span> => <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
+    .<span class="text-green-400">InnerJoin</span>&lt;<span class="text-yellow-400">Category</span>&gt;((<span class="text-blue-400">p</span>, <span class="text-blue-400">c</span>) => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-blue-400">c</span>.<span class="text-green-400">Id</span>)
     .<span class="text-green-400">Select</span>(<span class="text-blue-400">p</span> => <span class="text-purple-400">new</span> {
         <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>,
         <span class="text-blue-400">p</span>.<span class="text-green-400">Price</span>,
@@ -758,7 +757,7 @@
     .<span class="text-green-400">OrderBy</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">Name</span>)
     .<span class="text-green-400">Take</span>(<span class="text-orange-400">50</span>);
 
-<span class="text-purple-400">var</span> <span class="text-blue-400">results</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>.<span class="text-green-400">ToListAsync</span>();</code></pre>
+<span class="text-purple-400">var</span> <span class="text-blue-400">results</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>.<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);</code></pre>
                     </div>
                 </div>
             </div>
@@ -783,7 +782,7 @@
     <span class="text-purple-400">int</span> <span class="text-blue-400">page</span> = <span class="text-orange-400">1</span>,
     <span class="text-purple-400">int</span> <span class="text-blue-400">pageSize</span> = <span class="text-orange-400">20</span>)
 {
-    <span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-blue-400">_connection</span>.<span class="text-green-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
+    <span class="text-purple-400">var</span> <span class="text-blue-400">query</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">QueryBuilder</span>&lt;<span class="text-yellow-400">Product</span>&gt;()
         .<span class="text-green-400">Where</span>(<span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">IsActive</span>);
     
     <span class="text-gray-500">// Dynamic search term</span>
@@ -816,7 +815,7 @@
     <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">query</span>
         .<span class="text-green-400">Skip</span>((<span class="text-blue-400">page</span> - <span class="text-orange-400">1</span>) * <span class="text-blue-400">pageSize</span>)
         .<span class="text-green-400">Take</span>(<span class="text-blue-400">pageSize</span>)
-        .<span class="text-green-400">ToListAsync</span>();
+        .<span class="text-green-400">ToListAsync</span>(<span class="text-blue-400">_connection</span>);
 }</code></pre>
                 </div>
             </div>
@@ -838,20 +837,19 @@
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Bulk Insert & Update</h3>
                     <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 font-mono text-sm">
                         <pre><code><span class="text-gray-500">// Bulk insert thousands of records</span>
+<span class="text-purple-400">var</span> <span class="text-blue-400">bulkOps</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">BulkOperations</span>(<span class="text-yellow-400">TuxedoDialect</span>.<span class="text-green-400">SqlServer</span>);
 <span class="text-purple-400">var</span> <span class="text-blue-400">products</span> = <span class="text-green-400">GenerateProducts</span>(<span class="text-orange-400">10000</span>);
 
-<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BulkInsertAsync</span>(<span class="text-blue-400">products</span>);
+<span class="text-purple-400">await</span> <span class="text-blue-400">bulkOps</span>.<span class="text-green-400">BulkInsertAsync</span>(<span class="text-blue-400">_connection</span>, <span class="text-blue-400">products</span>,
+    <span class="text-blue-400">batchSize</span>: <span class="text-orange-400">1000</span>);
 
-<span class="text-gray-500">// Bulk update with conditions</span>
-<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BulkUpdateAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
-    <span class="text-blue-400">p</span> => <span class="text-blue-400">p</span>.<span class="text-green-400">CategoryId</span> == <span class="text-orange-400">1</span>,
-    <span class="text-purple-400">new</span> { IsDiscounted = <span class="text-purple-400">true</span> });
+<span class="text-gray-500">// Bulk update</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">bulkOps</span>.<span class="text-green-400">BulkUpdateAsync</span>(<span class="text-blue-400">_connection</span>, <span class="text-blue-400">products</span>,
+    <span class="text-blue-400">batchSize</span>: <span class="text-orange-400">1000</span>);
 
-<span class="text-gray-500">// Batch processing with progress</span>
-<span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">BatchProcessAsync</span>(
-    <span class="text-blue-400">products</span>, 
-    <span class="text-blue-400">batchSize</span>: <span class="text-orange-400">1000</span>,
-    <span class="text-blue-400">processor</span>: <span class="text-blue-400">batch</span> => <span class="text-green-400">ProcessBatch</span>(<span class="text-blue-400">batch</span>));</code></pre>
+<span class="text-gray-500">// Bulk delete</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">bulkOps</span>.<span class="text-green-400">BulkDeleteAsync</span>(<span class="text-blue-400">_connection</span>, <span class="text-blue-400">products</span>,
+    <span class="text-blue-400">batchSize</span>: <span class="text-orange-400">1000</span>);</code></pre>
                     </div>
                 </div>
                 
@@ -1053,12 +1051,12 @@
 {
     <span class="text-gray-500">// Retry policy configuration</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">EnableRetryOnFailure</span> = <span class="text-purple-400">true</span>;
-    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryCount</span> = <span class="text-orange-400">3</span>;
-    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryDelay</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
-    
+    <span class="text-blue-400">options</span>.<span class="text-green-400">MaxRetryAttempts</span> = <span class="text-orange-400">3</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">BaseDelay</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromMilliseconds</span>(<span class="text-orange-400">100</span>);
+
     <span class="text-gray-500">// Circuit breaker</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">CircuitBreakerThreshold</span> = <span class="text-orange-400">5</span>;
-    <span class="text-blue-400">options</span>.<span class="text-green-400">CircuitBreakerDuration</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">60</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">CircuitBreakerTimeout</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
     
     <span class="text-gray-500">// Timeout settings</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">CommandTimeout</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromSeconds</span>(<span class="text-orange-400">30</span>);
@@ -1073,7 +1071,7 @@
     <span class="text-blue-400">options</span>.<span class="text-green-400">Configuration</span> = <span class="text-orange-400">"localhost:6379"</span>;
 });
 
-<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoCache</span>(<span class="text-blue-400">cache</span> =>
+<span class="text-blue-400">builder</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">AddTuxedoCaching</span>(<span class="text-blue-400">cache</span> =>
 {
     <span class="text-blue-400">cache</span>.<span class="text-green-400">DefaultExpiration</span> = <span class="text-yellow-400">TimeSpan</span>.<span class="text-green-400">FromMinutes</span>(<span class="text-orange-400">15</span>);
     <span class="text-blue-400">cache</span>.<span class="text-green-400">EnableDistributedCache</span> = <span class="text-purple-400">true</span>;
@@ -1107,7 +1105,7 @@
         {
             <span class="text-gray-500">// Cached query with metrics</span>
             <span class="text-purple-400">var</span> <span class="text-blue-400">product</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>
-                .<span class="text-green-400">QueryCachedAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
+                .<span class="text-green-400">QueryWithCacheAsync</span>&lt;<span class="text-yellow-400">Product</span>&gt;(
                     <span class="text-orange-400">"SELECT * FROM Products WHERE Id = @id"</span>,
                     <span class="text-purple-400">new</span> { <span class="text-blue-400">id</span> },
                     <span class="text-blue-400">cacheKey</span>: <span class="text-orange-400">$"product:{id}"</span>,
@@ -1223,10 +1221,10 @@
     <span class="text-blue-400">[Index("IX_Products_CategoryId")]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
-    <span class="text-blue-400">[Column(DefaultValue = true)]</span>
+    <span class="text-blue-400">[DefaultValue(true)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-green-400">IsActive</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
-    <span class="text-blue-400">[Column(DefaultValue = "GETUTCDATE()")]</span>
+    <span class="text-blue-400">[DefaultValue("GETUTCDATE()", IsRawSql = true)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-green-400">CreatedDate</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }
 
@@ -1238,7 +1236,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-green-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// GIN index for JSON searches</span>
-    <span class="text-blue-400">[Index("IX_Documents_Content_GIN", IndexType.GIN)]</span>
+    <span class="text-blue-400">[Index("IX_Documents_Content_GIN", IndexType = IndexType.GIN)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-green-400">JsonContent</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }</code></pre>
                     </div>
@@ -1300,11 +1298,11 @@
                 <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
                     <h3 class="text-xl font-semibold text-blue-900 dark:text-blue-100 mb-3">🎯 Five Exception Types</h3>
                     <ul class="space-y-2 text-blue-800 dark:text-blue-200">
-                        <li><strong>UniqueConstraintException</strong> - Unique violations with column/constraint names</li>
-                        <li><strong>ForeignKeyException</strong> - Foreign key violations with table references</li>
-                        <li><strong>DataTruncationException</strong> - Data too large for column with max length</li>
-                        <li><strong>ConnectionException</strong> - Database connectivity issues</li>
-                        <li><strong>TransactionException</strong> - Transaction-related failures</li>
+                        <li><strong>UniqueConstraintException</strong> - Duplicate key violation with constraint names</li>
+                        <li><strong>ReferenceConstraintException</strong> - Foreign key violation with constraint names</li>
+                        <li><strong>CannotInsertNullException</strong> - NULL in NOT NULL column</li>
+                        <li><strong>MaxLengthExceededException</strong> - String too long for column with max length</li>
+                        <li><strong>NumericOverflowException</strong> - Number out of range</li>
                     </ul>
                 </div>
 
@@ -1341,12 +1339,12 @@
 }
 <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>)
 {
-    <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
+    <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ConstraintName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
         <span class="text-purple-400">return</span> <span class="text-orange-400">"Email already registered"</span>;
 }
-<span class="text-purple-400">catch</span> (<span class="text-yellow-400">ForeignKeyException</span> <span class="text-blue-400">ex</span>)
+<span class="text-purple-400">catch</span> (<span class="text-yellow-400">ReferenceConstraintException</span> <span class="text-blue-400">ex</span>)
 {
-    <span class="text-purple-400">return</span> <span class="text-orange-400">$"Cannot delete: referenced by {</span><span class="text-blue-400">ex</span>.<span class="text-green-400">ReferencingTable</span>}<span class="text-orange-400">"</span>;
+    <span class="text-purple-400">return</span> <span class="text-orange-400">$"Cannot delete: constraint {</span><span class="text-blue-400">ex</span>.<span class="text-green-400">ConstraintName</span>}<span class="text-orange-400">"</span>;
 }</code></pre>
                     </div>
                 </div>
@@ -1367,15 +1365,15 @@
         }
         <span class="text-purple-400">catch</span> (<span class="text-yellow-400">UniqueConstraintException</span> <span class="text-blue-400">ex</span>)
         {
-            <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
+            <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ConstraintName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Email"</span>) == <span class="text-purple-400">true</span>)
                 <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"Email address is already registered"</span>);
 
-            <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Username"</span>) == <span class="text-purple-400">true</span>)
+            <span class="text-purple-400">if</span> (<span class="text-blue-400">ex</span>.<span class="text-green-400">ConstraintName</span>?.<span class="text-green-400">Contains</span>(<span class="text-orange-400">"Username"</span>) == <span class="text-purple-400">true</span>)
                 <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"Username is already taken"</span>);
 
             <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">"User already exists"</span>);
         }
-        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">DataTruncationException</span> <span class="text-blue-400">ex</span>)
+        <span class="text-purple-400">catch</span> (<span class="text-yellow-400">MaxLengthExceededException</span> <span class="text-blue-400">ex</span>)
         {
             <span class="text-purple-400">return</span> <span class="text-yellow-400">Result</span>.<span class="text-green-400">Error</span>(<span class="text-orange-400">$"{</span><span class="text-blue-400">ex</span>.<span class="text-green-400">ColumnName</span>}<span class="text-orange-400"> is too long (max {</span><span class="text-blue-400">ex</span>.<span class="text-green-400">MaxLength</span>}<span class="text-orange-400">)"</span>);
         }
@@ -1457,12 +1455,12 @@
                     <h3 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Basic Setup</h3>
                     <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-6 font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Auditor</span>;
-<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Tuxedo.Auditor.UserProviders</span>;
 
 <span class="text-gray-500">// Wrap connection with auditing</span>
 <span class="text-purple-400">var</span> <span class="text-blue-400">auditedConn</span> = <span class="text-blue-400">connection</span>.<span class="text-green-400">WithAuditing</span>(<span class="text-blue-400">config</span> =>
 {
     <span class="text-blue-400">config</span>.<span class="text-green-400">UserProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">StaticAuditUserProvider</span>(<span class="text-orange-400">"admin"</span>);
+    <span class="text-blue-400">config</span>.<span class="text-green-400">DataProvider</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SqlServerAuditDataProvider</span>(<span class="text-blue-400">connection</span>);
 });
 
 <span class="text-gray-500">// All CRUD operations are automatically audited</span>

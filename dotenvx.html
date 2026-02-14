@@ -155,13 +155,13 @@
 <span class="text-gray-500">// Load environment variables with encryption support</span>
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
 {
-    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">".env"</span> };
     <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>;
     <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { 
         <span class="text-orange-400">"DATABASE_URL"</span>, 
         <span class="text-orange-400">"JWT_SECRET"</span> 
     };
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-blue-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENV_PRIVATE_KEY"</span>);
 });
 
 <span class="text-gray-500">// Now you can use configuration values</span>
@@ -424,20 +424,20 @@
                                 <div class="text-yellow-500">$ dotnet tool install --global Noundry.DotEnvX.Tool</div>
                                 <div class="text-gray-400">✅ Tool installed successfully</div>
                                 
-                                <div class="text-yellow-500"># Generate encryption key</div>
-                                <div class="text-yellow-500">$ dotenvx keygen</div>
-                                <div class="text-gray-400">🔑 Generated encryption key: Abc123Def456...</div>
+                                <div class="text-yellow-500"># Generate keypair</div>
+                                <div class="text-yellow-500">$ ndotenvx keypair</div>
+                                <div class="text-gray-400">🔑 Generated keypair: Abc123Def456...</div>
                                 
                                 <div class="text-yellow-500"># Encrypt a secret value</div>
-                                <div class="text-yellow-500">$ dotenvx encrypt "my-secret-password"</div>
+                                <div class="text-yellow-500">$ ndotenvx encrypt "my-secret-password"</div>
                                 <div class="text-gray-400">🔐 Encrypted: encrypted:BDb7t3QkTRp2AbCdEf...</div>
                                 
                                 <div class="text-yellow-500"># Encrypt entire .env file</div>
-                                <div class="text-yellow-500">$ dotenvx encrypt-file .env.production</div>
+                                <div class="text-yellow-500">$ ndotenvx encrypt-file .env.production</div>
                                 <div class="text-gray-400">🔐 All secrets encrypted in .env.production</div>
                                 
                                 <div class="text-yellow-500"># Validate configuration</div>
-                                <div class="text-yellow-500">$ dotenvx validate</div>
+                                <div class="text-yellow-500">$ ndotenvx validate</div>
                                 <div class="text-green-400">✅ All required variables present</div>
                                 <div class="text-green-400">✅ All encrypted values valid</div>
                             </div>
@@ -455,7 +455,7 @@
                             <div class="space-y-4">
                                 <div class="border-l-4 border-yellow-500 pl-4">
                                     <h4 class="font-semibold text-gray-900 dark:text-white">Environment Variables</h4>
-                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Store encryption key in DOTENVX_KEY environment variable</p>
+                                    <p class="text-gray-600 dark:text-gray-300 text-sm">Store private key in DOTENV_PRIVATE_KEY environment variable</p>
                                 </div>
                                 <div class="border-l-4 border-yellow-500 pl-4">
                                     <h4 class="font-semibold text-gray-900 dark:text-white">CI/CD Integration</h4>
@@ -473,22 +473,22 @@
                                 <pre><code><span class="text-gray-500">// Key management strategies</span>
 
 <span class="text-gray-500">// 1. Environment variable (recommended)</span>
-<span class="text-green-400">DOTENVX_KEY</span>=<span class="text-orange-400">your-encryption-key-here</span>
+<span class="text-green-400">DOTENV_PRIVATE_KEY</span>=<span class="text-orange-400">your-private-key-here</span>
 
 <span class="text-gray-500">// 2. Configuration method</span>
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
 {
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">GetEncryptionKeyFromVault</span>();
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-blue-400">GetPrivateKeyFromVault</span>();
 });
 
 <span class="text-gray-500">// 3. Azure Key Vault integration</span>
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
 {
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"Azure:KeyVault:DotEnvXKey"</span>];
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>[<span class="text-orange-400">"Azure:KeyVault:DotEnvXKey"</span>];
 });
 
 <span class="text-gray-500">// 4. AWS Secrets Manager</span>
-<span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-blue-400">await</span> <span class="text-blue-400">GetAwsSecret</span>(<span class="text-orange-400">"dotenvx-key"</span>);</code></pre>
+<span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-blue-400">await</span> <span class="text-blue-400">GetAwsSecret</span>(<span class="text-orange-400">"dotenvx-key"</span>);</code></pre>
                             </div>
                         </div>
                     </div>
@@ -577,7 +577,7 @@
 <span class="text-gray-500">// Or with options</span>
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
 {
-    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">".env"</span> };
     <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>;
     <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"DATABASE_URL"</span> };
 });

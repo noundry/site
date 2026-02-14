@@ -38,7 +38,7 @@
                         <div class="text-gray-600 dark:text-gray-400 text-sm">TagHelpers</div>
                     </div>
                     <div class="text-center">
-                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">.NET 6-9</div>
+                        <div class="text-3xl font-bold text-orange-600 dark:text-orange-400">.NET 8-10</div>
                         <div class="text-gray-600 dark:text-gray-400 text-sm">Support</div>
                     </div>
                     <div class="text-center">
@@ -146,7 +146,7 @@
                     <div class="font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-gray-500">&lt;!-- Conditional rendering and modern features --&gt;</span>
 <span class="text-gray-500">&lt;!-- Show admin panel only for admins --&gt;</span>
-<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span>=<span class="text-orange-400">"Admin"</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"bg-red-50 p-4 rounded"</span><span class="text-blue-400">&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span> <span class="text-green-400">class</span>=<span class="text-orange-400">"bg-red-50 p-4 rounded"</span><span class="text-blue-400">&gt;</span>
     <span class="text-blue-400">&lt;h2&gt;</span>Admin Dashboard<span class="text-blue-400">&lt;/h2&gt;</span>
 <span class="text-blue-400">&lt;/div&gt;</span>
 
@@ -158,17 +158,16 @@
     <span class="text-blue-400">&lt;img</span> <span class="text-green-400">lazy</span> <span class="text-green-400">src</span>=<span class="text-orange-400">"profile-picture.jpg"</span> <span class="text-green-400">alt</span>=<span class="text-orange-400">"Profile"</span> <span class="text-blue-400">/&gt;</span>
     
     <span class="text-gray-500">&lt;!-- Web Share API --&gt;</span>
-    <span class="text-blue-400">&lt;button</span> <span class="text-green-400">web-share</span> 
-            <span class="text-green-400">title</span>=<span class="text-orange-400">"My Profile"</span> 
-            <span class="text-green-400">url</span>=<span class="text-orange-400">"@Url.Page("/Profile")"</span><span class="text-blue-400">&gt;</span>
+    <span class="text-blue-400">&lt;button</span> <span class="text-green-400">web-share</span>=<span class="text-orange-400">"true"</span>
+            <span class="text-green-400">web-share-title</span>=<span class="text-orange-400">"My Profile"</span>
+            <span class="text-green-400">web-share-url</span>=<span class="text-orange-400">"@Url.Page("/Profile")"</span><span class="text-blue-400">&gt;</span>
         Share Profile
     <span class="text-blue-400">&lt;/button&gt;</span>
 <span class="text-blue-400">&lt;/section&gt;</span>
 
 <span class="text-gray-500">&lt;!-- Show login form when not authenticated --&gt;</span>
 <span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-unless</span>=<span class="text-orange-400">"User.Identity.IsAuthenticated"</span><span class="text-blue-400">&gt;</span>
-    <span class="text-blue-400">&lt;form-group</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span><span class="text-blue-400">&gt;</span>
-        <span class="text-blue-400">&lt;input</span> <span class="text-green-400">type</span>=<span class="text-orange-400">"email"</span> <span class="text-green-400">name</span>=<span class="text-orange-400">"email"</span> <span class="text-blue-400">/&gt;</span>
+    <span class="text-blue-400">&lt;form-group</span> <span class="text-green-400">asp-for</span>=<span class="text-orange-400">"Email"</span> <span class="text-green-400">label</span>=<span class="text-orange-400">"Email"</span><span class="text-blue-400">&gt;</span>
     <span class="text-blue-400">&lt;/form-group&gt;</span>
 <span class="text-blue-400">&lt;/div&gt;</span></code></pre>
                     </div>
@@ -262,7 +261,7 @@
                             
                             <div class="space-y-2 text-sm">
                                 <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
-                                    <span class="text-gray-600 dark:text-gray-400">asp-authz</span> - Show for specific role
+                                    <span class="text-gray-600 dark:text-gray-400">asp-authz</span> - Show for authenticated users (bool)
                                 </div>
                                 <div class="font-mono bg-gray-100 dark:bg-gray-700 p-2 rounded">
                                     <span class="text-gray-600 dark:text-gray-400">asp-authz-policy</span> - Show when ALL policies met
@@ -275,8 +274,8 @@
                         
                         <div class="bg-gray-900 dark:bg-gray-800 rounded-lg p-4">
                             <div class="font-mono text-sm text-gray-300 overflow-x-auto">
-                                <pre><code><span class="text-gray-500">&lt;!-- Show only for admin users --&gt;</span>
-<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span>=<span class="text-orange-400">"Admin"</span><span class="text-blue-400">&gt;</span>
+                                <pre><code><span class="text-gray-500">&lt;!-- Show only for authenticated users --&gt;</span>
+<span class="text-blue-400">&lt;div</span> <span class="text-green-400">asp-authz</span><span class="text-blue-400">&gt;</span>
     <span class="text-blue-400">&lt;h2&gt;</span>Admin Dashboard<span class="text-blue-400">&lt;/h2&gt;</span>
     <span class="text-blue-400">&lt;button&gt;</span>Delete User<span class="text-blue-400">&lt;/button&gt;</span>
 <span class="text-blue-400">&lt;/div&gt;</span>
@@ -306,27 +305,33 @@
                 <div class="space-y-6">
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Lazy Loading</h4>
-                        <pre><code class="language-html">&lt;img src="placeholder.jpg" lazy="hero-image.jpg" alt="Hero" /&gt;
-&lt;div lazy="expensive-component.html"&gt;Loading...&lt;/div&gt;</code></pre>
+                        <pre><code class="language-html">&lt;img lazy src="hero-image.jpg" alt="Hero" /&gt;
+&lt;img lazy lazy-placeholder="placeholder.jpg" src="hero-image.jpg" alt="Hero" /&gt;</code></pre>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Web Share</h4>
-                        <pre><code class="language-html">&lt;button web-share="{ title: 'Amazing Product', text: 'Check this out!', url: '/products/123' }"&gt;
+                        <pre><code class="language-html">&lt;button web-share="true"
+        web-share-title="Amazing Product"
+        web-share-text="Check this out!"
+        web-share-url="/products/123"&gt;
     Share Product
 &lt;/button&gt;</code></pre>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Intersection Observer</h4>
-                        <pre><code class="language-html">&lt;div intersection-observe="{ threshold: 0.5, action: 'fadeIn' }"&gt;
+                        <pre><code class="language-html">&lt;div intersection-observe
+     observe-threshold="0.5"
+     observe-enter-class="fadeIn"
+     observe-once="true"&gt;
     Animate when visible
 &lt;/div&gt;</code></pre>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">PWA Install</h4>
-                        <pre><code class="language-html">&lt;button pwa-install="Install App"&gt;Install&lt;/button&gt;</code></pre>
+                        <pre><code class="language-html">&lt;pwa-install install-text="Install App"&gt;&lt;/pwa-install&gt;</code></pre>
                     </div>
                 </div>
             </div>
@@ -341,21 +346,20 @@
                 <div class="space-y-6">
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Form Groups</h4>
-                        <pre><code class="language-html">&lt;div form-group="email"&gt;
-    &lt;label asp-for="Email"&gt;&lt;/label&gt;
-    &lt;input asp-for="Email" /&gt;
-    &lt;span asp-validation-for="Email"&gt;&lt;/span&gt;
-&lt;/div&gt;</code></pre>
+                        <pre><code class="language-html">&lt;form-group asp-for="Email"
+            label="Email Address"
+            help-text="We'll never share your email"&gt;
+&lt;/form-group&gt;</code></pre>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">Alerts</h4>
-                        <pre><code class="language-html">&lt;div alert="success" dismissible="true"&gt;
+                        <pre><code class="language-html">&lt;alert alert-type="success" dismissible="true"&gt;
     Operation completed successfully!
-&lt;/div&gt;
-&lt;div alert="error" asp-if="ViewBag.HasError"&gt;
+&lt;/alert&gt;
+&lt;alert alert-type="error" asp-if="ViewBag.HasError"&gt;
     @ViewBag.ErrorMessage
-&lt;/div&gt;</code></pre>
+&lt;/alert&gt;</code></pre>
                     </div>
                     
                     <div>
@@ -382,13 +386,16 @@
                 <div class="space-y-6">
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">SEO Meta Tags</h4>
-                        <pre><code class="language-html">&lt;head seo="{ title: 'Product Name', description: 'Amazing product description', keywords: 'product,amazing' }"&gt;
-&lt;/head&gt;</code></pre>
+                        <pre><code class="language-html">&lt;seo title="Product Name"
+     description="Amazing product description"
+     og-title="Product Name"
+     og-description="Amazing product description"
+     twitter-card="summary" /&gt;</code></pre>
                     </div>
                     
                     <div>
                         <h4 class="text-lg font-semibold text-gray-900 mb-2">JSON-LD Structured Data</h4>
-                        <pre><code class="language-html">&lt;div json-ld="{ '@type': 'Product', name: 'Product Name', price: '99.99' }"&gt;&lt;/div&gt;</code></pre>
+                        <pre><code class="language-html">&lt;json-ld type="Product" data="@Model.ProductJsonLd" /&gt;</code></pre>
                     </div>
                     
                     <div>

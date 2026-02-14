@@ -342,7 +342,7 @@ builder.Configuration.AddDotEnvX(options =>
         "JWT_SECRET",
         "STRIPE_API_KEY"
     };
-    options.EncryptionKey = Environment.GetEnvironmentVariable("DOTENVX_KEY");
+    options.PrivateKey = Environment.GetEnvironmentVariable("DOTENV_PRIVATE_KEY");
 });
 
 // Use encrypted configuration

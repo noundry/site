@@ -167,7 +167,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
     
     <span class="text-blue-400">[Column(TypeName = "datetime2")]</span>
-    <span class="text-blue-400">[DefaultValue("GETUTCDATE()")]</span>
+    <span class="text-blue-400">[DefaultValue("GETUTCDATE()", IsRawSql = true)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }
 
@@ -305,7 +305,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span>? <span class="text-blue-400">Balance</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-blue-400">[Column(TypeName = "datetime2")]</span>
-    <span class="text-blue-400">[DefaultValue("GETUTCDATE()")]</span>
+    <span class="text-blue-400">[DefaultValue("GETUTCDATE()", IsRawSql = true)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }
 
@@ -342,7 +342,7 @@
                                     <p class="text-gray-600 dark:text-gray-300 text-sm">Create unique index</p>
                                 </div>
                                 <div class="border-l-4 border-purple-500 pl-4">
-                                    <h5 class="font-semibold text-gray-900 dark:text-white">[Index("name", Type = IndexType.Hash)]</h5>
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">[Index("name", IndexType = IndexType.Hash)]</h5>
                                     <p class="text-gray-600 dark:text-gray-300 text-sm">Specify index type (B-Tree, Hash, GIN)</p>
                                 </div>
                             </div>
@@ -367,14 +367,14 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">SKU</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Composite index for category + active filtering</span>
-    <span class="text-blue-400">[Index("IX_Products_Category_Active", Order = 1)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Category_Active", Group = "IX_Products_Category_Active", Order = 1)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">CategoryId</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
-    <span class="text-blue-400">[Index("IX_Products_Category_Active", Order = 2)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Category_Active", Group = "IX_Products_Category_Active", Order = 2)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">bool</span> <span class="text-blue-400">IsActive</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Hash index for PostgreSQL (fast equality lookups)</span>
-    <span class="text-blue-400">[Index("IX_Products_Hash", Type = IndexType.Hash)]</span>
+    <span class="text-blue-400">[Index("IX_Products_Hash", IndexType = IndexType.Hash)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">Guid</span> <span class="text-blue-400">ProductCode</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }</code></pre>
                             </div>
@@ -402,7 +402,7 @@
                                     <p class="text-gray-600 dark:text-gray-300 text-sm">Set column default values</p>
                                 </div>
                                 <div class="border-l-4 border-green-500 pl-4">
-                                    <h5 class="font-semibold text-gray-900 dark:text-white">[UniqueConstraint("name")]</h5>
+                                    <h5 class="font-semibold text-gray-900 dark:text-white">[Unique("name")]</h5>
                                     <p class="text-gray-600 dark:text-gray-300 text-sm">Create unique constraints</p>
                                 </div>
                             </div>
@@ -417,7 +417,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Unique order number constraint</span>
-    <span class="text-blue-400">[UniqueConstraint("UQ_Orders_OrderNumber")]</span>
+    <span class="text-blue-400">[Unique("UQ_Orders_OrderNumber")]</span>
     <span class="text-blue-400">[Column(MaxLength = 50)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">OrderNumber</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
@@ -427,13 +427,13 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">decimal</span> <span class="text-blue-400">Total</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Default value for status</span>
-    <span class="text-blue-400">[DefaultValue("'Pending'")]</span>
+    <span class="text-blue-400">[DefaultValue("Pending")]</span>
     <span class="text-blue-400">[Column(MaxLength = 20)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Status</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Date range constraint</span>
     <span class="text-blue-400">[CheckConstraint("OrderDate >= '2024-01-01'")]</span>
-    <span class="text-blue-400">[DefaultValue("GETUTCDATE()")]</span>
+    <span class="text-blue-400">[DefaultValue("GETUTCDATE()", IsRawSql = true)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">OrderDate</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Multiple constraints on single property</span>
@@ -497,7 +497,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-404">get</span>; <span class="text-purple-404">set</span>; }
 
     <span class="text-gray-500">// Foreign key with cascade delete</span>
-    <span class="text-blue-400">[ForeignKey("Categories", "Id", OnDelete = ReferentialAction.Cascade)]</span>
+    <span class="text-blue-400">[ForeignKey("Categories", ReferencedColumn = "Id", OnDelete = ReferentialAction.Cascade)]</span>
     <span class="text-purple-404">public</span> <span class="text-purple-404">int</span> <span class="text-blue-404">CategoryId</span> { <span class="text-purple-404">get</span>; <span class="text-purple-404">set</span>; }
 }
 
@@ -681,7 +681,7 @@
     <span class="text-blue-400">[Index("IX_Products_Name")]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
-    <span class="text-blue-400">[UniqueConstraint("UQ_Products_SKU")]</span>
+    <span class="text-blue-400">[Unique("UQ_Products_SKU")]</span>
     <span class="text-blue-400">[Column(MaxLength = 50)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">SKU</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
@@ -702,7 +702,7 @@
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">StockQuantity</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-gray-500">// Audit trail</span>
-    <span class="text-blue-400">[DefaultValue("GETUTCDATE()")]</span>
+    <span class="text-blue-400">[DefaultValue("GETUTCDATE()", IsRawSql = true)]</span>
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span> <span class="text-blue-400">CreatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
     <span class="text-purple-400">public</span> <span class="text-yellow-400">DateTime</span>? <span class="text-blue-400">UpdatedAt</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
@@ -750,16 +750,10 @@
 });
 
 <span class="text-gray-500">// Manual synchronization</span>
-<span class="text-purple-400">var</span> <span class="text-blue-400">syncService</span> = <span class="text-blue-400">app</span>.<span class="text-green-400">Services</span>.<span class="text-green-400">GetRequiredService</span>&lt;<span class="text-yellow-400">IBowtieService</span>&gt;();
+<span class="text-purple-400">var</span> <span class="text-blue-400">synchronizer</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">DatabaseSynchronizer</span>(<span class="text-blue-400">connection</span>, <span class="text-yellow-400">TuxedoDialect</span>.<span class="text-green-400">SqlServer</span>);
 
-<span class="text-gray-500">// Check what changes would be made</span>
-<span class="text-purple-400">var</span> <span class="text-blue-400">changes</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">syncService</span>.<span class="text-green-400">GetPendingChangesAsync</span>();
-
-<span class="text-purple-400">if</span> (<span class="text-blue-400">changes</span>.<span class="text-green-400">Any</span>())
-{
-    <span class="text-gray-500">// Apply changes</span>
-    <span class="text-purple-400">await</span> <span class="text-blue-400">syncService</span>.<span class="text-green-400">SynchronizeSchemaAsync</span>();
-}</code></pre>
+<span class="text-gray-500">// Synchronize schema with assembly containing POCO models</span>
+<span class="text-purple-400">await</span> <span class="text-blue-400">synchronizer</span>.<span class="text-green-400">SynchronizeAsync</span>(<span class="text-purple-400">typeof</span>(<span class="text-yellow-400">Product</span>).<span class="text-green-400">Assembly</span>);</code></pre>
                             </div>
                         </div>
                     </div>
@@ -792,19 +786,15 @@
                             <p class="text-gray-600 dark:text-gray-300 text-sm">Validate model definitions and check for issues</p>
                         </div>
                         <div class="border-l-4 border-green-500 pl-4">
-                            <div class="font-mono text-sm text-green-600 dark:text-green-400 mb-1">bowtie generate-sql</div>
+                            <div class="font-mono text-sm text-green-600 dark:text-green-400 mb-1">bowtie generate</div>
                             <p class="text-gray-600 dark:text-gray-300 text-sm">Generate SQL scripts without executing</p>
-                        </div>
-                        <div class="border-l-4 border-yellow-500 pl-4">
-                            <div class="font-mono text-sm text-yellow-600 dark:text-yellow-400 mb-1">bowtie status</div>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Check current database schema status</p>
                         </div>
                     </div>
                     
                     <div class="mt-6 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
                         <h5 class="font-semibold text-gray-900 dark:text-white mb-2">Install CLI Tool:</h5>
                         <div class="font-mono text-sm text-gray-700 dark:text-gray-300">
-                            $ dotnet tool install --global Noundry.Tuxedo.Bowtie.Tool
+                            $ dotnet tool install --global Noundry.Tuxedo.Bowtie.CLI
                         </div>
                     </div>
                 </div>
@@ -820,16 +810,16 @@
   <span class="text-blue-400">deploy:</span>
     <span class="text-blue-400">steps:</span>
     <span class="text-blue-400">- name:</span> <span class="text-orange-400">Validate Schema</span>
-      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie validate --connection "${{ secrets.DB_CONNECTION }}"</span>
-      
+      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie validate --connection-string "${{ secrets.DB_CONNECTION }}" --assembly MyApp.dll</span>
+
     <span class="text-blue-400">- name:</span> <span class="text-orange-400">Generate Schema SQL</span>
-      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie generate-sql --output schema-changes.sql</span>
-      
+      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie generate --connection-string "${{ secrets.DB_CONNECTION }}" --assembly MyApp.dll --output schema-changes.sql</span>
+
     <span class="text-blue-400">- name:</span> <span class="text-orange-400">Review Changes</span>
       <span class="text-blue-400">run:</span> <span class="text-orange-400">cat schema-changes.sql</span>
-      
+
     <span class="text-blue-400">- name:</span> <span class="text-orange-400">Apply Schema Changes</span>
-      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie sync --connection "${{ secrets.DB_CONNECTION }}" --confirm</span>
+      <span class="text-blue-400">run:</span> <span class="text-orange-400">bowtie sync --connection-string "${{ secrets.DB_CONNECTION }}" --assembly MyApp.dll --confirm</span>
 
 <span class="text-gray-500"># Azure DevOps Pipeline</span>
 <span class="text-blue-400">- task:</span> <span class="text-yellow-400">DotNetCoreCLI@2</span>
@@ -837,7 +827,7 @@
   <span class="text-blue-400">inputs:</span>
     <span class="text-blue-400">command:</span> <span class="text-orange-400">'custom'</span>
     <span class="text-blue-400">custom:</span> <span class="text-orange-400">'bowtie'</span>
-    <span class="text-blue-400">arguments:</span> <span class="text-orange-400">'sync --connection "$(ConnectionString)" --validate-first'</span></code></pre>
+    <span class="text-blue-400">arguments:</span> <span class="text-orange-400">'sync --connection-string "$(ConnectionString)" --assembly MyApp.dll --validate-first'</span></code></pre>
                     </div>
                 </div>
             </div>
@@ -912,8 +902,8 @@
     <span class="text-blue-400">[Key]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">int</span> <span class="text-blue-400">Id</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 
-    <span class="text-blue-400">[Index("IX_Products_Search", Type = IndexType.GIN)]</span> <span class="text-gray-500">// PostgreSQL: GIN index</span>
-    <span class="text-blue-400">[Index("IX_Products_Search", Type = IndexType.FullText)]</span> <span class="text-gray-500">// SQL Server: Full-text</span>
+    <span class="text-blue-400">[Index("IX_Products_Search", IndexType = IndexType.GIN)]</span> <span class="text-gray-500">// PostgreSQL: GIN index</span>
+    <span class="text-blue-400">[Index("IX_Products_Search", IndexType = IndexType.FullText)]</span> <span class="text-gray-500">// SQL Server: Full-text</span>
     <span class="text-blue-400">[Column(MaxLength = 100)]</span>
     <span class="text-purple-400">public</span> <span class="text-purple-400">string</span> <span class="text-blue-400">Name</span> { <span class="text-purple-400">get</span>; <span class="text-purple-400">set</span>; }
 }

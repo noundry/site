@@ -1257,9 +1257,9 @@
     }
 
     <span class="text-gray-500">// Delete</span>
-    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-purple-400">int</span> <span class="text-blue-400">id</span>)
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span>&lt;<span class="text-purple-400">bool</span>&gt; <span class="text-green-400">DeleteAsync</span>(<span class="text-yellow-400">User</span> <span class="text-blue-400">user</span>)
     {
-        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>&lt;<span class="text-yellow-400">User</span>&gt;(<span class="text-blue-400">id</span>);
+        <span class="text-purple-400">return</span> <span class="text-purple-400">await</span> <span class="text-blue-400">_connection</span>.<span class="text-green-400">DeleteAsync</span>(<span class="text-blue-400">user</span>);
     }
 }</code></pre>
                         </div>
@@ -3312,10 +3312,10 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
 <span class="text-gray-500">// Add DotEnvX configuration</span>
 <span class="text-blue-400">builder</span>.<span class="text-green-400">Configuration</span>.<span class="text-green-400">AddDotEnvX</span>(<span class="text-blue-400">options</span> =>
 {
-    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-orange-400">".env"</span>;
+    <span class="text-blue-400">options</span>.<span class="text-green-400">Path</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">".env"</span> };
     <span class="text-blue-400">options</span>.<span class="text-green-400">EnvironmentSpecific</span> = <span class="text-purple-400">true</span>; <span class="text-gray-500">// Loads .env.development, .env.production, etc.</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">Required</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">"DATABASE_URL"</span>, <span class="text-orange-400">"JWT_SECRET"</span> };
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-orange-400">"your-encryption-key"</span>; <span class="text-gray-500">// For encrypted values</span>
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-orange-400">"your-encryption-key"</span>; <span class="text-gray-500">// For encrypted values</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">ThrowOnMissingRequired</span> = <span class="text-purple-400">true</span>;
 });</code></pre>
                         </div>
@@ -3367,7 +3367,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
 <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"encrypted:{</span><span class="text-blue-400">encryptedValue</span><span class="text-orange-400">}"</span>);
 
 <span class="text-gray-500">// Or use CLI tool</span>
-<span class="text-gray-500">// $ dotenvx encrypt "my-secret-value"</span>
+<span class="text-gray-500">// $ ndotenvxencrypt "my-secret-value"</span>
 <span class="text-gray-500">// encrypted:BDb7t3QkTRp2AbCdEfGhIjKlMnOpQrStUv...</span>
 
 <span class="text-gray-500">// Values are automatically decrypted when loaded</span>
@@ -3405,7 +3405,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
     <span class="text-blue-400">options</span>.<span class="text-green-400">OverrideExistingVariables</span> = <span class="text-purple-400">false</span>;
     
     <span class="text-gray-500">// Security settings</span>
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENV_PRIVATE_KEY"</span>);
     <span class="text-blue-400">options</span>.<span class="text-green-400">RequireEncryption</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsProduction</span>();
 });</code></pre>
                         </div>
@@ -3435,11 +3435,11 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
       <span class="text-gray-500"># Store encryption key in GitHub Secrets</span>
       - <span class="text-green-400">name</span>: <span class="text-orange-400">Setup environment</span>
         <span class="text-green-400">env</span>:
-          <span class="text-green-400">DOTENVX_KEY</span>: <span class="text-orange-400">${{ secrets.DOTENVX_ENCRYPTION_KEY }}</span>
+          <span class="text-green-400">DOTENV_PRIVATE_KEY</span>: <span class="text-orange-400">${{ secrets.DOTENVX_ENCRYPTION_KEY }}</span>
         <span class="text-green-400">run</span>: |
           <span class="text-gray-500"># Encrypt production secrets</span>
           <span class="text-purple-400">dotnet</span> tool install --global Noundry.DotEnvX.Cli
-          <span class="text-purple-400">dotenvx</span> encrypt --file .env.production --key $DOTENVX_KEY
+          <span class="text-purple-400">dotenvx</span> encrypt --file .env.production --key $DOTENV_PRIVATE_KEY
 
           <span class="text-gray-500"># Verify encrypted values</span>
           <span class="text-purple-400">dotenvx</span> validate --file .env.production
@@ -3515,7 +3515,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
     <span class="text-blue-400">options</span>.<span class="text-green-400">Files</span> = <span class="text-purple-400">new</span>[] { <span class="text-orange-400">".env"</span>, <span class="text-orange-400">$".env.{</span><span class="text-blue-400">env</span><span class="text-orange-400">}"</span> };
 
     <span class="text-gray-500">// Get encryption key from system environment (set by deployment platform)</span>
-    <span class="text-blue-400">options</span>.<span class="text-green-400">EncryptionKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENVX_KEY"</span>);
+    <span class="text-blue-400">options</span>.<span class="text-green-400">PrivateKey</span> = <span class="text-yellow-400">Environment</span>.<span class="text-green-400">GetEnvironmentVariable</span>(<span class="text-orange-400">"DOTENV_PRIVATE_KEY"</span>);
 
     <span class="text-gray-500">// Require encryption in production</span>
     <span class="text-blue-400">options</span>.<span class="text-green-400">RequireEncryption</span> = <span class="text-blue-400">builder</span>.<span class="text-green-400">Environment</span>.<span class="text-green-400">IsProduction</span>();
@@ -3532,7 +3532,7 @@ Welcome to Our Service, <span class="text-blue-400">@Model.Name</span>!</code></
 {
     <span class="text-purple-400">private</span> <span class="text-purple-400">readonly</span> <span class="text-yellow-400">ILogger</span>&lt;<span class="text-yellow-400">KeyRotationService</span>&gt; <span class="text-blue-400">_logger</span>;
 
-    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">RotateEncryptionKeyAsync</span>(
+    <span class="text-purple-400">public</span> <span class="text-purple-400">async</span> <span class="text-yellow-400">Task</span> <span class="text-green-400">RotatePrivateKeyAsync</span>(
         <span class="text-purple-400">string</span> <span class="text-blue-400">envFilePath</span>,
         <span class="text-purple-400">string</span> <span class="text-blue-400">oldKey</span>,
         <span class="text-purple-400">string</span> <span class="text-blue-400">newKey</span>)

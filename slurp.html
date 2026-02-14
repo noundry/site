@@ -201,7 +201,7 @@
                 <div class="mt-8 p-6 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
                     <h4 class="font-medium text-emerald-900 dark:text-emerald-100 mb-2">Requirements</h4>
                     <ul class="text-sm text-emerald-800 dark:text-emerald-200 space-y-1">
-                        <li>• .NET 8.0 or 9.0 SDK</li>
+                        <li>• .NET 8.0, 9.0, or 10.0 SDK</li>
                         <li>• Supported database (SQL Server, PostgreSQL, MySQL, or SQLite)</li>
                         <li>• CSV files with consistent structure</li>
                     </ul>
@@ -320,7 +320,7 @@
                 <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                     <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
                         <pre><code><span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Slurp</span>;
-<span class="text-purple-400">using</span> <span class="text-yellow-400">System.Threading.Tasks</span>;
+<span class="text-purple-400">using</span> <span class="text-yellow-400">Noundry.Slurp.Configuration</span>;
 
 <span class="text-purple-400">class</span> <span class="text-yellow-400">Program</span>
 {
@@ -329,29 +329,23 @@
         <span class="text-gray-500">// Configure the Slurp engine</span>
         <span class="text-purple-400">var</span> <span class="text-blue-400">config</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpConfiguration</span>
         {
-            <span class="text-green-400">Provider</span> = <span class="text-yellow-400">DatabaseProvider</span>.<span class="text-blue-400">PostgreSQL</span>,
+            <span class="text-green-400">Provider</span> = <span class="text-orange-400">"postgres"</span>,
             <span class="text-green-400">ConnectionString</span> = <span class="text-orange-400">"Host=localhost;Database=mydb;Username=user;Password=pass"</span>,
             <span class="text-green-400">BatchSize</span> = <span class="text-orange-400">10000</span>,
-            <span class="text-green-400">ParallelDegree</span> = <span class="text-orange-400">4</span>
+            <span class="text-green-400">TableName</span> = <span class="text-orange-400">"target_table"</span>
         };
 
         <span class="text-gray-500">// Create the engine and ingest data</span>
-        <span class="text-purple-400">var</span> <span class="text-blue-400">engine</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpEngine</span>(<span class="text-blue-400">config</span>);
+        <span class="text-purple-400">using var</span> <span class="text-blue-400">engine</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">SlurpEngine</span>(<span class="text-blue-400">config</span>);
 
-        <span class="text-gray-500">// Configure CSV options</span>
-        <span class="text-purple-400">var</span> <span class="text-blue-400">csvOptions</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">CsvOptions</span>
+        <span class="text-gray-500">// Subscribe to progress events</span>
+        <span class="text-blue-400">engine</span>.<span class="text-green-400">ProgressChanged</span> += (<span class="text-blue-400">sender</span>, <span class="text-blue-400">e</span>) =>
         {
-            <span class="text-green-400">Delimiter</span> = <span class="text-orange-400">','</span>,
-            <span class="text-green-400">HasHeaders</span> = <span class="text-purple-400">true</span>,
-            <span class="text-green-400">QuoteCharacter</span> = <span class="text-orange-400">'"'</span>
+            <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Progress: </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">PercentComplete</span>:F1}<span class="text-orange-400">% - </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">RowsPerSecond</span>:N0}<span class="text-orange-400"> rows/sec"</span>);
         };
 
         <span class="text-gray-500">// Perform the ingestion</span>
-        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(
-            <span class="text-orange-400">"data/large_dataset.csv"</span>,
-            <span class="text-orange-400">"target_table"</span>,
-            <span class="text-blue-400">csvOptions</span>
-        );
+        <span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(<span class="text-orange-400">"data/large_dataset.csv"</span>);
 
         <span class="text-gray-500">// Check the results</span>
         <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"✓ Ingested </span>{<span class="text-blue-400">result</span>.<span class="text-green-400">RowsInserted</span>}<span class="text-orange-400"> rows"</span>);
@@ -389,17 +383,15 @@
                     <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-lg">
                         <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Progress Monitoring</h4>
                         <div class="bg-gray-900 dark:bg-gray-700 rounded-lg p-4 font-mono text-sm text-gray-300 overflow-x-auto">
-                            <pre><code><span class="text-purple-400">var</span> <span class="text-blue-400">progress</span> = <span class="text-purple-400">new</span> <span class="text-yellow-400">Progress</span>&lt;<span class="text-yellow-400">SlurpProgress</span>&gt;(<span class="text-blue-400">p</span> =>
+                            <pre><code><span class="text-gray-500">// Subscribe to progress events</span>
+<span class="text-blue-400">engine</span>.<span class="text-green-400">ProgressChanged</span> += (<span class="text-blue-400">sender</span>, <span class="text-blue-400">e</span>) =>
 {
-    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Progress: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">PercentComplete</span>:P}<span class="text-orange-400">"</span>);
-    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Rows: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">RowsProcessed</span>:N0}<span class="text-orange-400"> / </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">TotalRows</span>:N0}<span class="text-orange-400">"</span>);
-    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Speed: </span>{<span class="text-blue-400">p</span>.<span class="text-green-400">RowsPerSecond</span>:N0}<span class="text-orange-400"> rows/sec"</span>);
-});
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Progress: </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">PercentComplete</span>:F1}<span class="text-orange-400">%"</span>);
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Rows: </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">RowsProcessed</span>:N0}<span class="text-orange-400"> / </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">TotalRows</span>:N0}<span class="text-orange-400">"</span>);
+    <span class="text-yellow-400">Console</span>.<span class="text-green-400">WriteLine</span>(<span class="text-orange-400">$"Speed: </span>{<span class="text-blue-400">e</span>.<span class="text-green-400">RowsPerSecond</span>:N0}<span class="text-orange-400"> rows/sec"</span>);
+};
 
-<span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(
-    <span class="text-orange-400">"huge_file.csv"</span>,
-    <span class="text-green-400">progress:</span> <span class="text-blue-400">progress</span>
-);</code></pre>
+<span class="text-purple-400">var</span> <span class="text-blue-400">result</span> = <span class="text-purple-400">await</span> <span class="text-blue-400">engine</span>.<span class="text-green-400">IngestAsync</span>(<span class="text-orange-400">"huge_file.csv"</span>);</code></pre>
                         </div>
                     </div>
                 </div>

@@ -664,7 +664,7 @@
                     <div class="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                         <code class="text-sm font-mono text-gray-800 dark:text-gray-200">
                             dotnet add package Noundry.UI<br>
-                            npm install @noundry/elements<br>
+                            npm install @noundryfx/noundry-elements<br>
                             dotnet add package Noundry.TagHelpers<br>
                             dotnet add package Noundry.Authnz<br>
                             dotnet add package Noundry.Sanquhar<br>
@@ -1013,8 +1013,8 @@
         <span class="text-orange-400">"DATABASE_URL"</span><span class="text-gray-200">, </span>
         <span class="text-orange-400">"JWT_SECRET"</span>
     <span class="text-gray-200">};</span>
-    <span class="text-gray-200">options.EncryptionKey = </span>
-        <span class="text-gray-200">Environment.</span><span class="text-green-400">GetEnvironmentVariable</span><span class="text-gray-200">(</span><span class="text-orange-400">"DOTENVX_KEY"</span><span class="text-gray-200">);</span>
+    <span class="text-gray-200">options.PrivateKey = </span>
+        <span class="text-gray-200">Environment.</span><span class="text-green-400">GetEnvironmentVariable</span><span class="text-gray-200">(</span><span class="text-orange-400">"DOTENV_PRIVATE_KEY"</span><span class="text-gray-200">);</span>
 <span class="text-gray-200">});</span>
 
 <span class="text-gray-500">// Use configuration values</span>
@@ -1284,6 +1284,12 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                                 </svg>
                                 <span class="text-gray-700 dark:text-gray-300">Server-side rendering with SEO benefits</span>
+                            </li>
+                            <li class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-600 dark:text-blue-400 mr-3 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                <span class="text-gray-700 dark:text-gray-300">73+ components including interactive charts (bar, line, area, pie, donut, radar)</span>
                             </li>
                         </ul>
                     </div>
